@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gray_light_background"
+    android:padding="8dp" >
+
+    <TextView
+        android:id="@+id/textViewWeightTOtal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/card"
+        android:gravity="center_horizontal"
+        android:textColor="@color/gray_dark"
+        android:textSize="17sp" />
+
+    <TextView
+        android:id="@+id/tvComment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/textViewWeightTOtal"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/card"
+        android:gravity="center_horizontal"
+        android:visibility="gone"
+        android:textColor="@color/gray_dark"
+        android:textSize="17sp" />
+
+    <FrameLayout
+        android:id="@+id/content_frame"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/tvComment" >
+    </FrameLayout>
+
+</RelativeLayout>

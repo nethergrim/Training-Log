@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.nethergrim.combogymdiary"
+    android:installLocation="auto"
+    android:versionCode="103"
+    android:versionName="1.4.25" >
+
+    <uses-sdk
+        android:minSdkVersion="15"
+        android:targetSdkVersion="19" />
+
+    <uses-permission android:name="com.android.vending.BILLING" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <application
+        android:name="com.nethergrim.combogymdiary.MyApp"
+        android:allowBackup="false"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:largeHeap="true"
+        android:theme="@style/Theme.Mynewactionbar" >
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
+        <activity
+            android:name="com.nethergrim.combogymdiary.activities.StartActivity"
+            android:screenOrientation="portrait" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.nethergrim.combogymdiary.activities.SettingsActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.nethergrim.combogymdiary.activities.AddingProgramActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" >
+        </activity>
+        <activity
+            android:name="com.nethergrim.combogymdiary.activities.HistoryDetailedActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.nethergrim.combogymdiary.activities.CatalogDetailedActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.nethergrim.combogymdiary.activities.AddingMeasurementActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" >
+        </activity>
+        <activity
+            android:name="com.nethergrim.combogymdiary.activities.MeasurementsDetailedActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.nethergrim.combogymdiary.activities.EditingProgramAtTrainingActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" >
+        </activity>
+
+        <service
+            android:name="com.nethergrim.combogymdiary.TrainingService"
+            android:process=":myservice" >
+        </service>
+
+        <meta-data
+            android:name="metrica:api:key"
+            android:value="20452" />
+
+        <service
+            android:name="com.yandex.metrica.MetricaService"
+            android:process=":Metrica"
+            tools:ignore="ExportedService" >
+            <intent-filter>
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <action android:name="com.yandex.metrica.IMetricaService" />
+
+                <data android:scheme="metrica" />
+            </intent-filter>
+
+            <meta-data
+                android:name="metrica:api:level"
+                android:value="4" />
+        </service>
+
+        <receiver
+            android:name="com.yandex.metrica.MetricaEventHandler"
+            tools:ignore="ExportedReceiver" >
+            <intent-filter>
+                <action android:name="com.yandex.metrica.intent.action.SYNC" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_ADDED" />
+                <action android:name="android.intent.action.PACKAGE_DATA_CLEARED" />
+
+                <data android:scheme="package" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name="com.yandex.metrica.CampaignReceiver"
+            android:exported="true"
+            tools:ignore="ExportedReceiver" >
+            <intent-filter>
+                <action android:name="com.android.vending.INSTALL_REFERRER" />
+            </intent-filter>
+        </receiver>
+
+        <provider
+            android:name="com.nethergrim.combogymdiary.provider.MetricaContentProvider"
+            android:authorities="com.nethergrim.combogymdiary.MetricaContentProvider"
+            android:exported="true"
+            tools:ignore="ExportedContentProvider" />
+
+        <activity
+            android:name="com.nethergrim.combogymdiary.activities.BasicMenuActivityNew"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.nethergrim.combogymdiary.activities.StatisticsActivity"
+            android:label="@string/title_activity_statistics" >
+        </activity>
+        <activity
+            android:name="com.google.android.gms.ads.AdActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize" />
+        <activity
+            android:name="com.nethergrim.combogymdiary.TestActivity"
+            android:label="@string/title_activity_test" >
+        </activity>
+        <activity
+            android:name="com.nethergrim.combogymdiary.googledrive.BaseDriveActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/title_activity_base_drive"
+            android:theme="@style/FullscreenTheme" >
+        </activity>
+        <activity
+            android:name="com.nethergrim.combogymdiary.googledrive.DriveBackupActivity"
+            android:label="@string/title_activity_drive_backup"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.DeviceDefault.Light.NoActionBar" >
+        </activity>
+        <activity
+            android:name="com.nethergrim.combogymdiary.googledrive.DriveRestoreActivity"
+            android:label="@string/title_activity_drive_restore"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.DeviceDefault.Light.NoActionBar" >
+        </activity>
+
+        <receiver
+            android:name="WidgetStatistics"
+            android:icon="@drawable/ic_launcher"
+            android:label="Example Widget of Training Diary" >
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_info" />
+        </receiver>
+    </application>
+
+</manifest>
