@@ -2,17 +2,23 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/card_half_alpha" >
+    android:background="@drawable/card_half_alpha">
+
+    <!--<View-->
+        <!--android:id="@+id/center"-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_centerHorizontal="true" />-->
 
     <LinearLayout
         android:id="@+id/linearLayout1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/card"
-        android:orientation="vertical" >
+        android:orientation="vertical">
 
         <TextView
-            android:id="@+id/tvWidget1"
+            android:id="@+id/tvtext_fav_exe_result"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
@@ -21,7 +27,7 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/textView1"
+            android:id="@+id/text_fav_exe"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
@@ -30,30 +36,33 @@
             android:textSize="16sp" />
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/tvWidget2"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
         android:layout_below="@+id/linearLayout1"
         android:layout_marginTop="6dp"
         android:background="@drawable/card"
-        android:gravity="center_vertical"
-        android:text="Статистика вчера"
-        android:textColor="@color/gray_middle" />
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/tvWidget3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/tvWidget2"
-        android:layout_alignRight="@+id/tvWidget2"
-        android:layout_below="@+id/tvWidget2"
-        android:layout_marginTop="6dp"
-        android:background="@drawable/card"
-        android:gravity="center_vertical"
-        android:text="Статистика за эту неделю"
-        android:textColor="@color/gray_middle" />
+        <TextView
+            android:id="@+id/text_weight_delta_result"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:text="Вес"
+            android:textColor="@color/gray_middle" />
+
+        <TextView
+            android:id="@+id/text_weight_delta"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/gray_google_light"
+            android:textSize="16sp"
+            android:gravity="center"
+            android:text="Вес за 30 дней"/>
+    </LinearLayout>
 
 </RelativeLayout>
