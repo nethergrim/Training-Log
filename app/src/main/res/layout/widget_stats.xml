@@ -4,12 +4,6 @@
     android:layout_height="match_parent"
     android:background="@drawable/card_half_alpha">
 
-    <!--<View-->
-        <!--android:id="@+id/center"-->
-        <!--android:layout_width="0dp"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:layout_centerHorizontal="true" />-->
-
     <LinearLayout
         android:id="@+id/linearLayout1"
         android:layout_width="match_parent"
@@ -22,7 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:textColor="@color/gray_middle"
+            android:textColor="@color/gray"
             android:textSize="20sp"
             android:textStyle="bold" />
 
@@ -32,7 +26,7 @@
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:text="@string/fav_exercise"
-            android:textColor="@color/gray_google_light"
+            android:textColor="@color/gray_middle"
             android:textSize="16sp" />
     </LinearLayout>
 
@@ -52,17 +46,16 @@
             android:textSize="20sp"
             android:textStyle="bold"
             android:gravity="center"
-            android:text="Вес"
-            android:textColor="@color/gray_middle" />
+            android:textColor="@color/gray" />
 
         <TextView
             android:id="@+id/text_weight_delta"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/gray_google_light"
+            android:textColor="@color/gray_middle"
             android:textSize="16sp"
             android:gravity="center"
-            android:text="Вес за 30 дней"/>
+            android:text="@string/weight_for_30_days"/>
     </LinearLayout>
 
 </RelativeLayout>

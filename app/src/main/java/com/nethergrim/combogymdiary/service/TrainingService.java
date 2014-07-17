@@ -1,4 +1,4 @@
-package com.nethergrim.combogymdiary;
+package com.nethergrim.combogymdiary.service;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 
+import com.nethergrim.combogymdiary.R;
 import com.nethergrim.combogymdiary.activities.StartActivity;
 
 public class TrainingService extends Service {

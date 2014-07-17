@@ -1,7 +1,9 @@
-package com.nethergrim.combogymdiary;
+package com.nethergrim.combogymdiary.tools;
 
 import android.content.Context;
 import android.widget.SimpleExpandableListAdapter;
+
+import com.nethergrim.combogymdiary.R;
 
 import java.util.ArrayList;
 import java.util.HashMap;

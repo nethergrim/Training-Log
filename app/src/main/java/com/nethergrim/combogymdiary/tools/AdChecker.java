@@ -1,6 +1,6 @@
-package com.nethergrim.combogymdiary;
+package com.nethergrim.combogymdiary.tools;
 
-public class AdEnabler {
+public class AdChecker {
 
     private static boolean isPaid = false;
 

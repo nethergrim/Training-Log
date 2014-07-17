@@ -43,11 +43,11 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.nethergrim.combogymdiary.DB;
-import com.nethergrim.combogymdiary.DynamicListView;
-import com.nethergrim.combogymdiary.DynamicListView.onElementsSwapped;
+import com.nethergrim.combogymdiary.view.DynamicListView;
+import com.nethergrim.combogymdiary.view.DynamicListView.onElementsSwapped;
 import com.nethergrim.combogymdiary.R;
-import com.nethergrim.combogymdiary.StableArrayAdapter;
-import com.nethergrim.combogymdiary.TrainingService;
+import com.nethergrim.combogymdiary.tools.StableArrayAdapter;
+import com.nethergrim.combogymdiary.service.TrainingService;
 import com.nethergrim.combogymdiary.activities.BasicMenuActivityNew;
 import com.nethergrim.combogymdiary.activities.EditingProgramAtTrainingActivity;
 import com.nethergrim.combogymdiary.activities.HistoryDetailedActivity;

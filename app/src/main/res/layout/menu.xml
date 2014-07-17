@@ -49,7 +49,7 @@
         android:layout_gravity="start"
         android:background="@color/gray_dark"
         android:choiceMode="singleChoice"
-        android:divider="@color/gray_google_light"
+        android:divider="@color/gray_middle"
         android:dividerHeight="1px" />
 
 </android.support.v4.widget.DrawerLayout>

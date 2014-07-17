@@ -24,8 +24,8 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.android.vending.billing.IInAppBillingService;
-import com.nethergrim.combogymdiary.AdEnabler;
-import com.nethergrim.combogymdiary.Backuper;
+import com.nethergrim.combogymdiary.tools.AdChecker;
+import com.nethergrim.combogymdiary.tools.Backuper;
 import com.nethergrim.combogymdiary.DB;
 import com.nethergrim.combogymdiary.R;
 import com.nethergrim.combogymdiary.dialogs.DialogRestoreFromBackup;
@@ -182,7 +182,7 @@ public class SettingsActivity extends PreferenceActivity implements MyInterface 
                 });
 
         btnRemoveAds = (Preference) findPreference("ads");
-        if (AdEnabler.IsPaid()) {
+        if (AdChecker.IsPaid()) {
             btnRemoveAds.setEnabled(false);
         }
         btnRemoveAds
@@ -296,7 +296,7 @@ public class SettingsActivity extends PreferenceActivity implements MyInterface 
                     String sku = jo.getString("productId");
                     Counter.sharedInstance().reportEvent(
                             "bought the " + sku + ".");
-                    AdEnabler.setPaid(true);
+                    AdChecker.setPaid(true);
                     PreferenceManager.getDefaultSharedPreferences(this).edit()
                             .putBoolean("ad", true).apply();
 

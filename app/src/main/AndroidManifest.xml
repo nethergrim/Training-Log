@@ -73,7 +73,7 @@
         </activity>
 
         <service
-            android:name="com.nethergrim.combogymdiary.TrainingService"
+            android:name=".service.TrainingService"
             android:process=":myservice" >
         </service>
 
@@ -131,31 +131,18 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="com.nethergrim.combogymdiary.activities.StatisticsActivity"
-            android:label="@string/title_activity_statistics" >
+            android:name="com.nethergrim.combogymdiary.activities.StatisticsActivity" >
         </activity>
         <activity
             android:name="com.google.android.gms.ads.AdActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize" />
         <activity
-            android:name="com.nethergrim.combogymdiary.TestActivity"
-            android:label="@string/title_activity_test" >
-        </activity>
-        <activity
-            android:name="com.nethergrim.combogymdiary.googledrive.BaseDriveActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="@string/title_activity_base_drive"
-            android:theme="@style/FullscreenTheme" >
-        </activity>
-        <activity
             android:name="com.nethergrim.combogymdiary.googledrive.DriveBackupActivity"
-            android:label="@string/title_activity_drive_backup"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.DeviceDefault.Light.NoActionBar" >
         </activity>
         <activity
             android:name="com.nethergrim.combogymdiary.googledrive.DriveRestoreActivity"
-            android:label="@string/title_activity_drive_restore"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.DeviceDefault.Light.NoActionBar" >
         </activity>

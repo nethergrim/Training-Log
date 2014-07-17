@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.nethergrim.combogymdiary.CheckableLinearLayout
+<com.nethergrim.combogymdiary.view.CheckableLinearLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
   android:layout_width="match_parent"
   android:minHeight="48dp"
@@ -24,4 +24,4 @@
       android:paddingLeft="4dp"
       android:textSize="17sp" />
 
-</com.nethergrim.combogymdiary.CheckableLinearLayout>
+</com.nethergrim.combogymdiary.view.CheckableLinearLayout>

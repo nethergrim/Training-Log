@@ -15,7 +15,7 @@ import android.widget.ExpandableListView.OnGroupCollapseListener;
 import android.widget.ExpandableListView.OnGroupExpandListener;
 import android.widget.SimpleExpandableListAdapter;
 
-import com.nethergrim.combogymdiary.AdapterHelper;
+import com.nethergrim.combogymdiary.tools.AdapterHelper;
 import com.nethergrim.combogymdiary.R;
 import com.nethergrim.combogymdiary.activities.CatalogDetailedActivity;
 

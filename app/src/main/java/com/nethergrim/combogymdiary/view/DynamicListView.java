@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.nethergrim.combogymdiary;
+package com.nethergrim.combogymdiary.view;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -37,6 +37,9 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
+
+import com.nethergrim.combogymdiary.R;
+import com.nethergrim.combogymdiary.tools.StableArrayAdapter;
 
 import java.util.ArrayList;
 

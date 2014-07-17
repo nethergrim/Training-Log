@@ -30,14 +30,11 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.android.vending.billing.IInAppBillingService;
-import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
-import com.nethergrim.combogymdiary.AdEnabler;
-import com.nethergrim.combogymdiary.Backuper;
+import com.google.android.gms.ads.InterstitialAd;
+import com.nethergrim.combogymdiary.Constants;
 import com.nethergrim.combogymdiary.DB;
 import com.nethergrim.combogymdiary.R;
-import com.nethergrim.combogymdiary.TrainingService;
 import com.nethergrim.combogymdiary.WidgetStatistics;
 import com.nethergrim.combogymdiary.dialogs.DialogAddExercise;
 import com.nethergrim.combogymdiary.dialogs.DialogExitFromTraining.MyInterface;
@@ -55,6 +52,9 @@ import com.nethergrim.combogymdiary.fragments.StartTrainingFragment.OnSelectedLi
 import com.nethergrim.combogymdiary.fragments.TrainingFragment;
 import com.nethergrim.combogymdiary.googledrive.BaseDriveActivity;
 import com.nethergrim.combogymdiary.googledrive.DriveBackupActivity;
+import com.nethergrim.combogymdiary.service.TrainingService;
+import com.nethergrim.combogymdiary.tools.AdChecker;
+import com.nethergrim.combogymdiary.tools.Backuper;
 import com.yandex.metrica.Counter;
 
 import java.text.SimpleDateFormat;
@@ -104,7 +104,10 @@ public class BasicMenuActivityNew extends FragmentActivity implements
     private ArrayAdapter<String> adapter;
     private int previouslyChecked = 0;
     private DB db;
-    private AdView adView;
+    //    private AdView adView;
+    private InterstitialAd interstitial;
+    private static int adStepCounter = 0;
+    private static int adStepCounterLimit = 4;
     private boolean doubleBackToExitPressedOnce = false;
 
     private IInAppBillingService mService;
@@ -198,26 +201,16 @@ public class BasicMenuActivityNew extends FragmentActivity implements
             getFragmentManager().beginTransaction()
                     .add(R.id.content, currentFragment).commit();
         mDrawerList.setItemChecked(0, true);
-
         if (savedInstanceState == null) {
             selectItem(0);
         }
-
         if (sp.getBoolean("ad", false)) {
-            AdEnabler.setPaid(true);
+            AdChecker.setPaid(true);
         }
-
-        adView = (AdView) this.findViewById(R.id.adView);
+        interstitial = new InterstitialAd(this);
+        interstitial.setAdUnitId(Constants.AD_INTERTISTIAL_BLOCK_ID);
         AdRequest adRequest = new AdRequest.Builder().build();
-        adView.loadAd(adRequest);
-        adView.setAdListener(new AdListener() {
-            @Override
-            public void onAdLoaded() {
-                if (!AdEnabler.IsPaid())
-                    adView.setVisibility(View.VISIBLE);
-            }
-        });
-
+        interstitial.loadAd(adRequest);
     }
 
     private boolean checkAd() {
@@ -233,14 +226,14 @@ public class BasicMenuActivityNew extends FragmentActivity implements
                         + purchaseDataList.size());
 
                 if (purchaseDataList.size() > 0) {
-                    AdEnabler.setPaid(true);
+                    AdChecker.setPaid(true);
                     PreferenceManager.getDefaultSharedPreferences(this).edit()
                             .putBoolean("ad", true).apply();
                     Counter.sharedInstance()
                             .reportEvent("checkAd() true, paid");
                     return true;
                 } else if (purchaseDataList.size() == 0) {
-                    AdEnabler.setPaid(false);
+                    AdChecker.setPaid(false);
 
                     PreferenceManager.getDefaultSharedPreferences(this).edit()
                             .putBoolean("ad", false).apply();
@@ -249,12 +242,12 @@ public class BasicMenuActivityNew extends FragmentActivity implements
                     return false;
                 }
 
-                if (AdEnabler.IsPaid()
+                if (AdChecker.IsPaid()
                         && !PreferenceManager.getDefaultSharedPreferences(this)
                         .getBoolean("ad", false)) {
                     Counter.sharedInstance()
                             .reportEvent(
-                                    "AdEnabler.getIsPaid() && !PreferenceManager.getDefaultSharedPreferences(this).getBoolean(\"ad\", false)");
+                                    "AdChecker.getIsPaid() && !PreferenceManager.getDefaultSharedPreferences(this).getBoolean(\"ad\", false)");
                 }
 
             }
@@ -290,6 +283,11 @@ public class BasicMenuActivityNew extends FragmentActivity implements
 
     public void selectItem(int position) {
         mDrawerLayout.closeDrawer(mDrawerList);
+        adStepCounter++;
+        if (adStepCounter >= adStepCounterLimit ){
+            adStepCounter = 0;
+            showAd();
+        }
         if (previouslyChecked == position) {
             return;
         }
@@ -375,24 +373,13 @@ public class BasicMenuActivityNew extends FragmentActivity implements
     @Override
     protected void onResume() {
         super.onResume();
-        AdEnabler.setPaid(PreferenceManager.getDefaultSharedPreferences(this)
+        AdChecker.setPaid(PreferenceManager.getDefaultSharedPreferences(this)
                 .getBoolean("ad", false));
-        if (!AdEnabler.IsPaid() && adView != null) {
-            adView.resume();
-        } else if (adView != null) {
-            adView.setVisibility(View.GONE);
-        }
         Counter.sharedInstance().onResumeActivity(this);
     }
 
     @Override
     protected void onPause() {
-
-        if (!AdEnabler.IsPaid()) {
-            if (!(adView == null))
-                adView.pause();
-        }
-
         super.onPause();
         Counter.sharedInstance().onPauseActivity(this);
     }
@@ -418,8 +405,22 @@ public class BasicMenuActivityNew extends FragmentActivity implements
         approve.show(getFragmentManager(), "");
     }
 
+    private void showAd(){
+        if (interstitial != null && interstitial.isLoaded() && !AdChecker.IsPaid()){
+            interstitial.show();
+            AdRequest adRequest = new AdRequest.Builder().build();
+            interstitial.loadAd(adRequest);
+        } else{
+            interstitial = new InterstitialAd(this);
+            interstitial.setAdUnitId(Constants.AD_INTERTISTIAL_BLOCK_ID);
+            AdRequest adRequest = new AdRequest.Builder().build();
+            interstitial.loadAd(adRequest);
+        }
+    }
+
     @Override
     public void onChoose() {
+        showAd();
         DB db = new DB(this);
         db.open();
         Cursor tmpCursor = db.getDataMain(null, null, null, null, null, null);
@@ -477,7 +478,6 @@ public class BasicMenuActivityNew extends FragmentActivity implements
                 R.string.startTrainingButtonString);
         adapter.notifyDataSetChanged();
         db.close();
-        WidgetStatistics.updateWidget(this, AppWidgetManager.getInstance(this), sp, sp.getInt("widget_id", -1));
     }
 
     @Override
@@ -555,9 +555,6 @@ public class BasicMenuActivityNew extends FragmentActivity implements
 
     @Override
     public void onDestroy() {
-        if (!AdEnabler.IsPaid()) {
-            adView.destroy();
-        }
         if (mService != null) {
             unbindService(mServiceConn);
         }

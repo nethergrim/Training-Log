@@ -1,4 +1,4 @@
-package com.nethergrim.combogymdiary;
+package com.nethergrim.combogymdiary.view;
 
 import android.content.Context;
 import android.util.AttributeSet;
