@@ -49,7 +49,7 @@ public class AddingMeasurementActivity extends Activity {
         tvTmp = (TextView) findViewById(R.id.textView1weight);
         SharedPreferences sp = PreferenceManager
                 .getDefaultSharedPreferences(this);
-        String item = sp.getString(BasicMenuActivityNew.MEASURE_ITEM, "1");
+        String item = sp.getString(BaseActivity.MEASURE_ITEM, "1");
         String measureItem = "";
         if (item.equals("1")) {
             measureItem = " ("

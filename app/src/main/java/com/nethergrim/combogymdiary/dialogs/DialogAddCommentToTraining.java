@@ -13,7 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.nethergrim.combogymdiary.R;
-import com.nethergrim.combogymdiary.activities.BasicMenuActivityNew;
+import com.nethergrim.combogymdiary.activities.BaseActivity;
 
 public class DialogAddCommentToTraining extends DialogFragment implements
         OnClickListener {
@@ -31,9 +31,9 @@ public class DialogAddCommentToTraining extends DialogFragment implements
         et = (EditText) v.findViewById(R.id.editText1AddComment);
         btn = (Button) v.findViewById(R.id.buttonSave);
         btn.setOnClickListener(this);
-        if (!sp.getString(BasicMenuActivityNew.COMMENT_TO_TRAINING, "").equals(
+        if (!sp.getString(BaseActivity.COMMENT_TO_TRAINING, "").equals(
                 "")) {
-            et.setText(sp.getString(BasicMenuActivityNew.COMMENT_TO_TRAINING,
+            et.setText(sp.getString(BaseActivity.COMMENT_TO_TRAINING,
                     ""));
         }
         return v;
@@ -44,7 +44,7 @@ public class DialogAddCommentToTraining extends DialogFragment implements
         int id = v.getId();
         if (id == R.id.buttonSave) {
             sp.edit()
-                    .putString(BasicMenuActivityNew.COMMENT_TO_TRAINING,
+                    .putString(BaseActivity.COMMENT_TO_TRAINING,
                             et.getText().toString()).apply();
             dismiss();
         }

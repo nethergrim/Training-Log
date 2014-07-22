@@ -34,7 +34,7 @@ import android.widget.Toast;
 import com.nethergrim.combogymdiary.DB;
 import com.nethergrim.combogymdiary.R;
 import com.nethergrim.combogymdiary.activities.AddingProgramActivity;
-import com.nethergrim.combogymdiary.activities.BasicMenuActivityNew;
+import com.nethergrim.combogymdiary.activities.BaseActivity;
 import com.nethergrim.combogymdiary.activities.EditingProgramAtTrainingActivity;
 import com.nethergrim.combogymdiary.dialogs.DialogGoToMarket;
 
@@ -116,9 +116,9 @@ public class StartTrainingFragment extends Fragment implements
                 .getLoader(LOADER_ID).forceLoad();
         SharedPreferences sp = PreferenceManager
                 .getDefaultSharedPreferences(getActivity());
-        if (sp.contains(BasicMenuActivityNew.TRAININGS_DONE_NUM)
-                && sp.getInt(BasicMenuActivityNew.TRAININGS_DONE_NUM, 0) > 5
-                && !sp.contains(BasicMenuActivityNew.MARKET_LEAVED_FEEDBACK)) {
+        if (sp.contains(BaseActivity.TRAININGS_DONE_NUM)
+                && sp.getInt(BaseActivity.TRAININGS_DONE_NUM, 0) > 5
+                && !sp.contains(BaseActivity.MARKET_LEAVED_FEEDBACK)) {
             DialogFragment dialog = new DialogGoToMarket();
             dialog.show(getActivity().getFragmentManager(),
                     "dialog_goto_market");

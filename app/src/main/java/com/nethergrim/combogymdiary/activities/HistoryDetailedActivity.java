@@ -121,7 +121,7 @@ public class HistoryDetailedActivity extends Activity {
 
         SharedPreferences sp = PreferenceManager
                 .getDefaultSharedPreferences(this);
-        String item = sp.getString(BasicMenuActivityNew.MEASURE_ITEM, "1");
+        String item = sp.getString(BaseActivity.MEASURE_ITEM, "1");
         measureItem = "";
         if (item.equals("1")) {
             measureItem = " ("

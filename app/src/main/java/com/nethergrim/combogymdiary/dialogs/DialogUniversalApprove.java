@@ -10,7 +10,7 @@ import android.os.Bundle;
 
 import com.nethergrim.combogymdiary.DB;
 import com.nethergrim.combogymdiary.R;
-import com.nethergrim.combogymdiary.activities.BasicMenuActivityNew;
+import com.nethergrim.combogymdiary.activities.BaseActivity;
 
 public class DialogUniversalApprove extends DialogFragment implements
         OnClickListener {
@@ -29,10 +29,10 @@ public class DialogUniversalApprove extends DialogFragment implements
         AlertDialog.Builder adb = null;
         Bundle args = getArguments();
         if (args != null) {
-            type_of_dialog = args.getInt(BasicMenuActivityNew.TYPE_OF_DIALOG);
+            type_of_dialog = args.getInt(BaseActivity.TYPE_OF_DIALOG);
         }
         if (type_of_dialog == 0) {
-            tra_id = args.getInt(BasicMenuActivityNew.ID);
+            tra_id = args.getInt(BaseActivity.ID);
             String tra_name = db.getTrainingName(tra_id);
 
             adb = new AlertDialog.Builder(getActivity())
@@ -44,8 +44,8 @@ public class DialogUniversalApprove extends DialogFragment implements
                                     + ": " + tra_name + " ?"
                     );
         } else if (type_of_dialog == 1) {
-            id = args.getLong(BasicMenuActivityNew.ID);
-            pos = args.getInt(BasicMenuActivityNew.POSITION);
+            id = args.getLong(BaseActivity.ID);
+            pos = args.getInt(BaseActivity.POSITION);
             String exe_name = db.getExerciseByID((int) id);
 
             adb = new AlertDialog.Builder(getActivity())

@@ -1,7 +1,7 @@
 <component name="libraryTable">
-  <library name="GraphView-3.1.1">
+  <library name="TapForTap">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/app/libs/GraphView-3.1.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/app/libs/TapForTap.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

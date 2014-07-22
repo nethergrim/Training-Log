@@ -10,7 +10,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
-import com.nethergrim.combogymdiary.activities.BasicMenuActivityNew;
+import com.nethergrim.combogymdiary.activities.BaseActivity;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -86,7 +86,7 @@ public class DB {
     public String getWeightMeasureType(Context context){
         SharedPreferences sp = PreferenceManager
                 .getDefaultSharedPreferences(context);
-        String item = sp.getString(BasicMenuActivityNew.MEASURE_ITEM, "1");
+        String item = sp.getString(BaseActivity.MEASURE_ITEM, "1");
         if (item.equals("1")) {
             return context.getResources().getStringArray(R.array.measure_items)[0];
         } else if (item.equals("2")) {

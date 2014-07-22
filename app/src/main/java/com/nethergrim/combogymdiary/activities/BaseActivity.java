@@ -61,7 +61,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class BasicMenuActivityNew extends FragmentActivity implements
+public class BaseActivity extends FragmentActivity implements
         OnSelectedListener, MyInterface, OnStartTrainingAccept, OnExerciseEdit,
         OnEditExerciseAccept {
     public final static String TOTAL_WEIGHT = "total_weight";
@@ -109,6 +109,8 @@ public class BasicMenuActivityNew extends FragmentActivity implements
     private static int adStepCounter = 0;
     private static int adStepCounterLimit = 4;
     private boolean doubleBackToExitPressedOnce = false;
+    private boolean resumed = false;
+    private AdRequest adRequest;
 
     private IInAppBillingService mService;
 
@@ -209,8 +211,7 @@ public class BasicMenuActivityNew extends FragmentActivity implements
         }
         interstitial = new InterstitialAd(this);
         interstitial.setAdUnitId(Constants.AD_INTERTISTIAL_BLOCK_ID);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        interstitial.loadAd(adRequest);
+        loadAd();
     }
 
     private boolean checkAd() {
@@ -287,7 +288,10 @@ public class BasicMenuActivityNew extends FragmentActivity implements
         if (adStepCounter >= adStepCounterLimit ){
             adStepCounter = 0;
             showAd();
+        } else if (adStepCounter == (adStepCounterLimit -1)){
+            loadAd();
         }
+
         if (previouslyChecked == position) {
             return;
         }
@@ -376,12 +380,14 @@ public class BasicMenuActivityNew extends FragmentActivity implements
         AdChecker.setPaid(PreferenceManager.getDefaultSharedPreferences(this)
                 .getBoolean("ad", false));
         Counter.sharedInstance().onResumeActivity(this);
+        resumed = true;
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         Counter.sharedInstance().onPauseActivity(this);
+        resumed = false;
     }
 
     @Override
@@ -403,17 +409,23 @@ public class BasicMenuActivityNew extends FragmentActivity implements
         args.putInt(ID, id);
         approve.setArguments(args);
         approve.show(getFragmentManager(), "");
+        loadAd();
     }
 
     private void showAd(){
-        if (interstitial != null && interstitial.isLoaded() && !AdChecker.IsPaid()){
+        if (interstitial != null && /*interstitial.isLoaded() &&*/ !AdChecker.IsPaid() && resumed){
             interstitial.show();
-            AdRequest adRequest = new AdRequest.Builder().build();
-            interstitial.loadAd(adRequest);
-        } else{
+            loadAd();
+        } else if (interstitial == null){
             interstitial = new InterstitialAd(this);
             interstitial.setAdUnitId(Constants.AD_INTERTISTIAL_BLOCK_ID);
-            AdRequest adRequest = new AdRequest.Builder().build();
+            loadAd();
+        }
+    }
+
+    private void loadAd(){
+        if (interstitial != null){
+            adRequest = new AdRequest.Builder().setGender(AdRequest.GENDER_MALE).build();
             interstitial.loadAd(adRequest);
         }
     }

@@ -29,7 +29,7 @@ public class StartActivity extends Activity {
     }
 
     private void goNext() {
-        Intent gotoStartTraining = new Intent(this, BasicMenuActivityNew.class);
+        Intent gotoStartTraining = new Intent(this, BaseActivity.class);
         startActivity(gotoStartTraining);
     }
 

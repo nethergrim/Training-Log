@@ -43,12 +43,12 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.nethergrim.combogymdiary.DB;
+import com.nethergrim.combogymdiary.activities.BaseActivity;
 import com.nethergrim.combogymdiary.view.DynamicListView;
 import com.nethergrim.combogymdiary.view.DynamicListView.onElementsSwapped;
 import com.nethergrim.combogymdiary.R;
 import com.nethergrim.combogymdiary.tools.StableArrayAdapter;
 import com.nethergrim.combogymdiary.service.TrainingService;
-import com.nethergrim.combogymdiary.activities.BasicMenuActivityNew;
 import com.nethergrim.combogymdiary.activities.EditingProgramAtTrainingActivity;
 import com.nethergrim.combogymdiary.activities.HistoryDetailedActivity;
 import com.nethergrim.combogymdiary.dialogs.DialogAddCommentToTraining;
@@ -251,7 +251,7 @@ public class TrainingFragment extends Fragment implements
         db = new DB(getActivity());
         db.open();
         sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        trainingId = getArguments().getInt(BasicMenuActivityNew.TRAINING_ID);
+        trainingId = getArguments().getInt(BaseActivity.TRAINING_ID);
         isTrainingAtProgress = sp.getBoolean(TRAINING_AT_PROGRESS, false);
         sp.edit().putInt(TRA_ID, trainingId).apply();
         sp.edit().putBoolean(TRAINING_AT_PROGRESS, true).apply();
@@ -433,12 +433,12 @@ public class TrainingFragment extends Fragment implements
         } catch (Exception e) {
             vibrateLenght = 2;
         }
-        if (sp.getString(BasicMenuActivityNew.MEASURE_ITEM, "1").equals("1")) {
+        if (sp.getString(BaseActivity.MEASURE_ITEM, "1").equals("1")) {
             tvWeight.setText(getResources().getString(R.string.Weight) + " ("
                     + getResources().getStringArray(R.array.measure_items)[0]
                     + ")");
             measureItem = getResources().getStringArray(R.array.measure_items)[0];
-        } else if (sp.getString(BasicMenuActivityNew.MEASURE_ITEM, "1").equals(
+        } else if (sp.getString(BaseActivity.MEASURE_ITEM, "1").equals(
                 "2")) {
             tvWeight.setText(getResources().getString(R.string.Weight) + " ("
                     + getResources().getStringArray(R.array.measure_items)[1]
@@ -665,8 +665,8 @@ public class TrainingFragment extends Fragment implements
             alSetList.set(checkedPosition, tmp);
             set = alSetList.get(checkedPosition);
             total = wei * rep_s;
-            total += sp.getInt(BasicMenuActivityNew.TOTAL_WEIGHT, 0);
-            sp.edit().putInt(BasicMenuActivityNew.TOTAL_WEIGHT, total).apply();
+            total += sp.getInt(BaseActivity.TOTAL_WEIGHT, 0);
+            sp.edit().putInt(BaseActivity.TOTAL_WEIGHT, total).apply();
             db.addRecMainTable(traName, exeName, date, wei, rep_s, set);
             currentSet = set;
             initSetButtons();
