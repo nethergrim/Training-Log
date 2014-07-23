@@ -23,10 +23,19 @@
             android:id="@+id/content"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_above="@+id/adView"
+            android:layout_above="@+id/banner"
             android:layout_alignParentLeft="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true" />
+
+        <com.tapfortap.Banner
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/banner"
+            android:layout_width="320dip"
+            android:layout_height="50dip"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            />
 
         <com.google.android.gms.ads.AdView
             android:id="@+id/adView"

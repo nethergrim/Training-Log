@@ -55,6 +55,9 @@ import com.nethergrim.combogymdiary.googledrive.DriveBackupActivity;
 import com.nethergrim.combogymdiary.service.TrainingService;
 import com.nethergrim.combogymdiary.tools.AdChecker;
 import com.nethergrim.combogymdiary.tools.Backuper;
+import com.tapfortap.Banner;
+import com.tapfortap.Interstitial;
+import com.tapfortap.TapForTap;
 import com.yandex.metrica.Counter;
 
 import java.text.SimpleDateFormat;
@@ -104,16 +107,8 @@ public class BaseActivity extends FragmentActivity implements
     private ArrayAdapter<String> adapter;
     private int previouslyChecked = 0;
     private DB db;
-    //    private AdView adView;
-    private InterstitialAd interstitial;
-    private static int adStepCounter = 0;
-    private static int adStepCounterLimit = 4;
     private boolean doubleBackToExitPressedOnce = false;
-    private boolean resumed = false;
-    private AdRequest adRequest;
-
     private IInAppBillingService mService;
-
     private ServiceConnection mServiceConn = new ServiceConnection() {
         @Override
         public void onServiceDisconnected(ComponentName name) {
@@ -126,7 +121,6 @@ public class BaseActivity extends FragmentActivity implements
             checkAd();
         }
     };
-
     private CatalogFragment catalogFragment = new CatalogFragment();
     private ExerciseListFragment exerciseListFragment = new ExerciseListFragment();
     private HistoryFragment historyFragment = new HistoryFragment();
@@ -209,9 +203,29 @@ public class BaseActivity extends FragmentActivity implements
         if (sp.getBoolean("ad", false)) {
             AdChecker.setPaid(true);
         }
-        interstitial = new InterstitialAd(this);
-        interstitial.setAdUnitId(Constants.AD_INTERTISTIAL_BLOCK_ID);
-        loadAd();
+
+        Banner banner = (Banner) findViewById(R.id.banner);
+        TapForTap.setGender(TapForTap.Gender.MALE);
+        banner.setListener(new Banner.BannerListener() {
+            @Override
+            public void bannerOnReceive(Banner banner) {
+                if (!AdChecker.IsPaid()) {
+                    banner.setVisibility(View.VISIBLE);
+                } else {
+                    banner.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void bannerOnFail(Banner banner, String s, Throwable throwable) {
+                banner.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void bannerOnTap(Banner banner) {
+                Counter.sharedInstance().reportEvent("tap on banner");
+            }
+        });
     }
 
     private boolean checkAd() {
@@ -284,13 +298,6 @@ public class BaseActivity extends FragmentActivity implements
 
     public void selectItem(int position) {
         mDrawerLayout.closeDrawer(mDrawerList);
-        adStepCounter++;
-        if (adStepCounter >= adStepCounterLimit ){
-            adStepCounter = 0;
-            showAd();
-        } else if (adStepCounter == (adStepCounterLimit -1)){
-            loadAd();
-        }
 
         if (previouslyChecked == position) {
             return;
@@ -380,14 +387,12 @@ public class BaseActivity extends FragmentActivity implements
         AdChecker.setPaid(PreferenceManager.getDefaultSharedPreferences(this)
                 .getBoolean("ad", false));
         Counter.sharedInstance().onResumeActivity(this);
-        resumed = true;
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         Counter.sharedInstance().onPauseActivity(this);
-        resumed = false;
     }
 
     @Override
@@ -409,30 +414,11 @@ public class BaseActivity extends FragmentActivity implements
         args.putInt(ID, id);
         approve.setArguments(args);
         approve.show(getFragmentManager(), "");
-        loadAd();
-    }
-
-    private void showAd(){
-        if (interstitial != null && /*interstitial.isLoaded() &&*/ !AdChecker.IsPaid() && resumed){
-            interstitial.show();
-            loadAd();
-        } else if (interstitial == null){
-            interstitial = new InterstitialAd(this);
-            interstitial.setAdUnitId(Constants.AD_INTERTISTIAL_BLOCK_ID);
-            loadAd();
-        }
-    }
-
-    private void loadAd(){
-        if (interstitial != null){
-            adRequest = new AdRequest.Builder().setGender(AdRequest.GENDER_MALE).build();
-            interstitial.loadAd(adRequest);
-        }
+//        loadAd();
     }
 
     @Override
     public void onChoose() {
-        showAd();
         DB db = new DB(this);
         db.open();
         Cursor tmpCursor = db.getDataMain(null, null, null, null, null, null);
@@ -485,7 +471,7 @@ public class BaseActivity extends FragmentActivity implements
         set_TRAINING_STARTED(false);
         getFragmentManager().beginTransaction()
                 .replace(R.id.content, new StartTrainingFragment()).commit();
-        getActionBar().setSubtitle(" ");
+        getActionBar().setSubtitle("");
         listButtons[0] = getResources().getString(
                 R.string.startTrainingButtonString);
         adapter.notifyDataSetChanged();
