@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="TapForTap">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/app/libs/TapForTap.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>

@@ -71,10 +71,10 @@
     <orderEntry type="library" exported="" name="GraphView-3.1.1" level="project" />
     <orderEntry type="library" exported="" name="google-oauth-client-1.16.0-rc" level="project" />
     <orderEntry type="library" exported="" name="google-api-client-android-1.16.0-rc" level="project" />
-    <orderEntry type="library" exported="" name="TapForTap" level="project" />
     <orderEntry type="library" exported="" name="jackson-core-asl-1.9.11" level="project" />
     <orderEntry type="library" exported="" name="play-services-4.4.52" level="project" />
     <orderEntry type="library" exported="" name="google-http-client-gson-1.17.0-rc" level="project" />
+    <orderEntry type="library" exported="" name="exchanger_sdk_v1_1_1" level="project" />
     <orderEntry type="library" exported="" name="gson-2.1" level="project" />
     <orderEntry type="library" exported="" name="google-play-services" level="project" />
     <orderEntry type="library" exported="" name="google-api-services-drive-v2-rev126-1.16.0-rc" level="project" />

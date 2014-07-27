@@ -32,6 +32,7 @@ import android.widget.Toast;
 import com.android.vending.billing.IInAppBillingService;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
+import com.metaps.Exchanger;
 import com.nethergrim.combogymdiary.Constants;
 import com.nethergrim.combogymdiary.DB;
 import com.nethergrim.combogymdiary.R;
@@ -55,9 +56,6 @@ import com.nethergrim.combogymdiary.googledrive.DriveBackupActivity;
 import com.nethergrim.combogymdiary.service.TrainingService;
 import com.nethergrim.combogymdiary.tools.AdChecker;
 import com.nethergrim.combogymdiary.tools.Backuper;
-import com.tapfortap.Banner;
-import com.tapfortap.Interstitial;
-import com.tapfortap.TapForTap;
 import com.yandex.metrica.Counter;
 
 import java.text.SimpleDateFormat;
@@ -128,6 +126,7 @@ public class BaseActivity extends FragmentActivity implements
     private StartTrainingFragment startTrainingFragment = new StartTrainingFragment();
     private TrainingFragment trainingFragment = new TrainingFragment();
     private Fragment currentFragment;
+    private int adCounter = 0, adLimitCounter = 3;
 
     public static boolean get_TRAINING_STARTED() {
         return IF_TRAINING_STARTED;
@@ -204,28 +203,13 @@ public class BaseActivity extends FragmentActivity implements
             AdChecker.setPaid(true);
         }
 
-        Banner banner = (Banner) findViewById(R.id.banner);
-        TapForTap.setGender(TapForTap.Gender.MALE);
-        banner.setListener(new Banner.BannerListener() {
-            @Override
-            public void bannerOnReceive(Banner banner) {
-                if (!AdChecker.IsPaid()) {
-                    banner.setVisibility(View.VISIBLE);
-                } else {
-                    banner.setVisibility(View.GONE);
-                }
-            }
+        Exchanger.start(this, "9ab8bdfc55178f44", Exchanger.ORIENTATION_PORTRAIT, false);
+    }
 
-            @Override
-            public void bannerOnFail(Banner banner, String s, Throwable throwable) {
-                banner.setVisibility(View.GONE);
-            }
-
-            @Override
-            public void bannerOnTap(Banner banner) {
-                Counter.sharedInstance().reportEvent("tap on banner");
-            }
-        });
+    private void showAd(){
+        if (!AdChecker.IsPaid()){
+            Exchanger.showFullScreen(this, null, false);
+        }
     }
 
     private boolean checkAd() {
@@ -298,6 +282,11 @@ public class BaseActivity extends FragmentActivity implements
 
     public void selectItem(int position) {
         mDrawerLayout.closeDrawer(mDrawerList);
+        adCounter++;
+        if (adCounter >= adLimitCounter){
+            adCounter = 0;
+            showAd();
+        }
 
         if (previouslyChecked == position) {
             return;
@@ -420,6 +409,7 @@ public class BaseActivity extends FragmentActivity implements
     @Override
     public void onChoose() {
         DB db = new DB(this);
+        showAd();
         db.open();
         Cursor tmpCursor = db.getDataMain(null, null, null, null, null, null);
         if (tmpCursor.getCount() > 10) {
