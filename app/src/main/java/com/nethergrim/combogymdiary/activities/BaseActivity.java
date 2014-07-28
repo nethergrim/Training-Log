@@ -62,7 +62,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class BaseActivity extends FragmentActivity implements
+public class BaseActivity extends AnalyticsActivity implements
         OnSelectedListener, MyInterface, OnStartTrainingAccept, OnExerciseEdit,
         OnEditExerciseAccept {
     public final static String TOTAL_WEIGHT = "total_weight";

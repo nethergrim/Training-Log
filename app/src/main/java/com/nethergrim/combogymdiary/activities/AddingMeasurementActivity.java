@@ -17,7 +17,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 
-public class AddingMeasurementActivity extends Activity {
+public class AddingMeasurementActivity extends AnalyticsActivity {
 
     private EditText etWeight, etTall, etChest, etWaist, etHip, etLeg, etCalf,
             etArm;

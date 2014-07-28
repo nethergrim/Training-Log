@@ -12,7 +12,7 @@ import com.nethergrim.combogymdiary.DB;
 import com.nethergrim.combogymdiary.R;
 import com.yandex.metrica.Counter;
 
-public class StartActivity extends Activity {
+public class StartActivity extends AnalyticsActivity {
 
     private final static String DATABASE_FILLED = "database_filled";
     public static boolean TEST = false;

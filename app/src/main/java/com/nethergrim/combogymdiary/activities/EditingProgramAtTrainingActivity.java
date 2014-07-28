@@ -19,7 +19,7 @@ import android.widget.ListView;
 import com.nethergrim.combogymdiary.DB;
 import com.nethergrim.combogymdiary.R;
 
-public class EditingProgramAtTrainingActivity extends FragmentActivity
+public class EditingProgramAtTrainingActivity extends AnalyticsActivity
         implements LoaderCallbacks<Cursor> {
 
     private ListView lvMain;

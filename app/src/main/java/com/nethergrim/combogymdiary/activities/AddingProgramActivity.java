@@ -20,7 +20,7 @@ import android.widget.Toast;
 import com.nethergrim.combogymdiary.DB;
 import com.nethergrim.combogymdiary.R;
 
-public class AddingProgramActivity extends FragmentActivity implements
+public class AddingProgramActivity extends AnalyticsActivity implements
         LoaderCallbacks<Cursor>, OnClickListener {
 
     private Button btnAdd;

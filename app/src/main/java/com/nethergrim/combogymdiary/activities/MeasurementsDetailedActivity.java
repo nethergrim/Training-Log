@@ -12,7 +12,7 @@ import android.widget.TextView;
 import com.nethergrim.combogymdiary.DB;
 import com.nethergrim.combogymdiary.R;
 
-public class MeasurementsDetailedActivity extends Activity {
+public class MeasurementsDetailedActivity extends AnalyticsActivity {
 
     private String date;
     private DB db;

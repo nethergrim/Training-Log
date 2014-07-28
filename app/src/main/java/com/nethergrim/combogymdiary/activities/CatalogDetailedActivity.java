@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import com.nethergrim.combogymdiary.R;
 
-public class CatalogDetailedActivity extends Activity {
+public class CatalogDetailedActivity extends AnalyticsActivity {
 
     private TextView tvMain;
     private ImageView imageV;

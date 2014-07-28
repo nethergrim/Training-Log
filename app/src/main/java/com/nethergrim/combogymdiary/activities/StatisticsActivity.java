@@ -16,7 +16,7 @@ import com.nethergrim.combogymdiary.fragments.StatisticsWeightsFragment;
 
 import java.util.Locale;
 
-public class StatisticsActivity extends FragmentActivity implements
+public class StatisticsActivity extends AnalyticsActivity implements
         ActionBar.TabListener {
 
     /**
