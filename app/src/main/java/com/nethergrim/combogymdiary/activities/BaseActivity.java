@@ -2,10 +2,11 @@ package com.nethergrim.combogymdiary.activities;
 
 import android.app.Fragment;
 import android.app.NotificationManager;
-import android.appwidget.AppWidgetManager;
+import android.app.PendingIntent;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -18,7 +19,6 @@ import android.os.IBinder;
 import android.os.RemoteException;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
@@ -30,13 +30,13 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.android.vending.billing.IInAppBillingService;
+import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.InterstitialAd;
-import com.metaps.Exchanger;
-import com.nethergrim.combogymdiary.Constants;
+import com.google.android.gms.plus.model.people.Person;
 import com.nethergrim.combogymdiary.DB;
 import com.nethergrim.combogymdiary.R;
-import com.nethergrim.combogymdiary.WidgetStatistics;
 import com.nethergrim.combogymdiary.dialogs.DialogAddExercise;
 import com.nethergrim.combogymdiary.dialogs.DialogExitFromTraining.MyInterface;
 import com.nethergrim.combogymdiary.dialogs.DialogInfo;
@@ -58,9 +58,13 @@ import com.nethergrim.combogymdiary.tools.AdChecker;
 import com.nethergrim.combogymdiary.tools.Backuper;
 import com.yandex.metrica.Counter;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Random;
 
 public class BaseActivity extends AnalyticsActivity implements
         OnSelectedListener, MyInterface, OnStartTrainingAccept, OnExerciseEdit,
@@ -70,32 +74,19 @@ public class BaseActivity extends AnalyticsActivity implements
     public final static String COMMENT_TO_TRAINING = "comment_to_training";
     public final static String START_TIME = "start_time";
     public final static String MEASURE_ITEM = "measureItem";
-    public final static String LIST_OF_SETS = "list_of_sets";
     public final static String TRAINING_ID = "training_id";
-    public final static String TRAINING_NAME = "training_name";
     public final static String TRA_ID = "tra_id";
-    public final static String TRAINING_LIST = "training_list";
-    public final static String TIMER_IS_ON = "timerIsOn";
-    public final static String MY_AD_UNIT_ID = "ca-app-pub-5652589022154086/4102541457";
-    public final static String MY_ACCOUNT_NAME = "account_name";
-    public final static String DRIVE_FOLDER_ID_ENCODED_TO_STRING = "drive_folder_id";
-    public final static String DRIVE_EXISTS = "drive_exists";
     public final static String MARKET_LEAVED_FEEDBACK = "market_leaved_feedback";
-    public final static String DATABASE_FILLED = "database_filled";
     public final static String AUTO_BACKUP_TO_DRIVE = "settingAutoBackup";
-    public final static String PROGRESS = "progress";
     public final static String TRAININGS_DONE_NUM = "trainings_done_num";
     public final static String USER_CLICKED_POSITION = "user_clicked_position";
-    public final static String APPLICAITON_ID = "52ebc42807089e0f00000000";
-    public final static String MINUTES = "minutes";
     public final static String SECONDS = "seconds";
     public final static String TYPE_OF_DIALOG = "type_of_dialog";
     public final static String ID = "id";
     public final static String POSITION = "position";
     private final static String FRAGMENT_ID = "fragment_id";
+    private static final char[] symbols = new char[36];
     private static boolean IF_TRAINING_STARTED = false;
-    protected final String LOG_TAG = "myLogs";
-    protected SharedPreferences sPref;
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
@@ -107,16 +98,16 @@ public class BaseActivity extends AnalyticsActivity implements
     private DB db;
     private boolean doubleBackToExitPressedOnce = false;
     private IInAppBillingService mService;
-    private ServiceConnection mServiceConn = new ServiceConnection() {
+    ServiceConnection mServiceConn = new ServiceConnection() {
         @Override
         public void onServiceDisconnected(ComponentName name) {
             mService = null;
         }
 
         @Override
-        public void onServiceConnected(ComponentName name, IBinder service) {
+        public void onServiceConnected(ComponentName name,
+                                       IBinder service) {
             mService = IInAppBillingService.Stub.asInterface(service);
-            checkAd();
         }
     };
     private CatalogFragment catalogFragment = new CatalogFragment();
@@ -126,7 +117,8 @@ public class BaseActivity extends AnalyticsActivity implements
     private StartTrainingFragment startTrainingFragment = new StartTrainingFragment();
     private TrainingFragment trainingFragment = new TrainingFragment();
     private Fragment currentFragment;
-    private int adCounter = 0, adLimitCounter = 3;
+    private AdView adView;
+    private InterstitialAd interstitialAd;
 
     public static boolean get_TRAINING_STARTED() {
         return IF_TRAINING_STARTED;
@@ -203,13 +195,27 @@ public class BaseActivity extends AnalyticsActivity implements
             AdChecker.setPaid(true);
         }
 
-        Exchanger.start(this, "9ab8bdfc55178f44", Exchanger.ORIENTATION_PORTRAIT, false);
-    }
+        adView = (AdView) findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().setGender(Person.Gender.MALE).build();
+        adView.loadAd(adRequest);
+        adView.setAdListener(new AdListener() {
+            @Override
+            public void onAdLoaded() {
+                super.onAdLoaded();
+                if (!AdChecker.isPaid()) {
+                    adView.setVisibility(View.VISIBLE);
+                }
+            }
 
-    private void showAd(){
-        if (!AdChecker.IsPaid()){
-            Exchanger.showFullScreen(this, null, false);
-        }
+            @Override
+            public void onAdFailedToLoad(int errorCode) {
+                super.onAdFailedToLoad(errorCode);
+                adView.setVisibility(View.GONE);
+            }
+        });
+        interstitialAd = new InterstitialAd(this);
+        interstitialAd.setAdUnitId("ca-app-pub-6482129418049695/5278587361");
+
     }
 
     private boolean checkAd() {
@@ -241,7 +247,7 @@ public class BaseActivity extends AnalyticsActivity implements
                     return false;
                 }
 
-                if (AdChecker.IsPaid()
+                if (AdChecker.isPaid()
                         && !PreferenceManager.getDefaultSharedPreferences(this)
                         .getBoolean("ad", false)) {
                     Counter.sharedInstance()
@@ -257,6 +263,57 @@ public class BaseActivity extends AnalyticsActivity implements
         return false;
     }
 
+    private void removeAds() {
+        RandomString randomString = new RandomString(36);
+        String payload = randomString.nextString();
+        try {
+            Bundle buyIntentBundle = mService.getBuyIntent(3, getPackageName(),
+                    "remove_ad", "inapp", payload);
+            int response = buyIntentBundle.getInt("BILLING_RESPONSE_RESULT_OK");
+            if (response == 0) {
+
+                PendingIntent pendingIntent = buyIntentBundle
+                        .getParcelable("BUY_INTENT");
+                try {
+                    startIntentSenderForResult(pendingIntent.getIntentSender(),
+                            1001, new Intent(), Integer.valueOf(0),
+                            Integer.valueOf(0), Integer.valueOf(0));
+
+                } catch (IntentSender.SendIntentException e) {
+                    Counter.sharedInstance().reportError("", e);
+                    e.printStackTrace();
+                }
+            }
+
+        } catch (RemoteException e) {
+            Counter.sharedInstance().reportError("", e);
+            e.printStackTrace();
+        }
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 1001 && resultCode == RESULT_OK) {
+            String purchaseData = data.getStringExtra("INAPP_PURCHASE_DATA");
+            try {
+                JSONObject jo = new JSONObject(purchaseData);
+                String sku = jo.getString("productId");
+                Counter.sharedInstance().reportEvent(
+                        "bought the " + sku + ".");
+                AdChecker.setPaid(true);
+                initStrings();
+                adapter.notifyDataSetChanged();
+                PreferenceManager.getDefaultSharedPreferences(this).edit()
+                        .putBoolean("ad", true).apply();
+
+            } catch (JSONException e) {
+                Counter.sharedInstance().reportError("", e);
+            }
+
+        }
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (mDrawerToggle.onOptionsItemSelected(item)) {
@@ -266,7 +323,12 @@ public class BaseActivity extends AnalyticsActivity implements
     }
 
     private void initStrings() {
-        listButtons = new String[8];
+        if (!AdChecker.isPaid()) {
+            listButtons = new String[9];
+            listButtons[8] = getString(R.string.remove_ads);
+        } else {
+            listButtons = new String[8];
+        }
         listButtons[0] = getResources().getString(
                 R.string.startTrainingButtonString);
         listButtons[1] = getResources().getString(
@@ -282,10 +344,10 @@ public class BaseActivity extends AnalyticsActivity implements
 
     public void selectItem(int position) {
         mDrawerLayout.closeDrawer(mDrawerList);
-        adCounter++;
-        if (adCounter >= adLimitCounter){
-            adCounter = 0;
-            showAd();
+        if (position == 8) {
+            removeAds();
+            mDrawerList.setItemChecked(previouslyChecked, true);
+            return;
         }
 
         if (previouslyChecked == position) {
@@ -376,10 +438,18 @@ public class BaseActivity extends AnalyticsActivity implements
         AdChecker.setPaid(PreferenceManager.getDefaultSharedPreferences(this)
                 .getBoolean("ad", false));
         Counter.sharedInstance().onResumeActivity(this);
+        if (adView != null) {
+            adView.resume();
+        }
+        initStrings();
+        adapter.notifyDataSetChanged();
     }
 
     @Override
     protected void onPause() {
+        if (adView != null) {
+            adView.pause();
+        }
         super.onPause();
         Counter.sharedInstance().onPauseActivity(this);
     }
@@ -403,14 +473,17 @@ public class BaseActivity extends AnalyticsActivity implements
         args.putInt(ID, id);
         approve.setArguments(args);
         approve.show(getFragmentManager(), "");
-//        loadAd();
+        AdRequest adRequest = new AdRequest.Builder().build();
+        interstitialAd.loadAd(adRequest);
     }
 
     @Override
     public void onChoose() {
         DB db = new DB(this);
-        showAd();
         db.open();
+        if (!AdChecker.isPaid() && interstitialAd != null && interstitialAd.isLoaded()) {
+            interstitialAd.show();
+        }
         Cursor tmpCursor = db.getDataMain(null, null, null, null, null, null);
         if (tmpCursor.getCount() > 10) {
             Backuper backUP = new Backuper();
@@ -546,6 +619,9 @@ public class BaseActivity extends AnalyticsActivity implements
         if (mService != null) {
             unbindService(mServiceConn);
         }
+        if (adView != null) {
+            adView.destroy();
+        }
         super.onDestroy();
     }
 
@@ -558,4 +634,24 @@ public class BaseActivity extends AnalyticsActivity implements
         }
     }
 
+
+    public class RandomString {
+
+        private final Random random = new Random();
+
+        private final char[] buf;
+
+        public RandomString(int length) {
+            if (length < 1)
+                throw new IllegalArgumentException("length < 1: " + length);
+            buf = new char[length];
+        }
+
+        public String nextString() {
+            for (int idx = 0; idx < buf.length; ++idx)
+                buf[idx] = symbols[random.nextInt(symbols.length)];
+            return new String(buf);
+        }
+
+    }
 }

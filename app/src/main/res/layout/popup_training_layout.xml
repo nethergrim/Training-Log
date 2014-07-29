@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_margin="16dp"
+    android:padding="16dp"
+    android:background="@drawable/rounded"
+    android:layout_height="100dp">
+
+    <View
+        android:id="@+id/center_view"
+        android:layout_centerHorizontal="true"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"/>
+
+    <View
+        android:id="@+id/horizontal"
+        android:layout_centerVertical="true"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"/>
+
+    <TextView
+        android:id="@+id/text1"
+        android:layout_toLeftOf="@id/center_view"
+        android:text="@string/Weight"
+        android:layout_marginRight="4dp"
+        android:layout_above="@id/horizontal"
+        android:textSize="18sp"
+        android:gravity="right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/text_weight_delta"
+        android:layout_toRightOf="@+id/center_view"
+        android:gravity="left"
+        android:textSize="18sp"
+        android:layout_above="@id/horizontal"
+        android:layout_marginLeft="4dp"
+        android:text="sometext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/text2"
+        android:layout_below="@+id/horizontal"
+        android:layout_toLeftOf="@id/center_view"
+        android:layout_width="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginRight="4dp"
+        android:textSize="18sp"
+        android:gravity="right"
+        android:text="@string/reps"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/text_reps_delta"
+        android:layout_width="wrap_content"
+        android:layout_toRightOf="@id/center_view"
+        android:textSize="18sp"
+        android:text="reps text"
+        android:layout_below="@id/horizontal"
+        android:layout_marginTop="4dp"
+        android:layout_marginLeft="4dp"
+        android:gravity="left"
+        android:layout_height="wrap_content" />
+
+
+
+</RelativeLayout>

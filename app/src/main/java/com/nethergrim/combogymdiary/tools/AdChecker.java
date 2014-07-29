@@ -8,8 +8,8 @@ public class AdChecker {
         isPaid = paid;
     }
 
-    public static boolean IsPaid() {
-        return isPaid;
+    public static boolean isPaid() {
+        return false;
     }
 
 

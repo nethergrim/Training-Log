@@ -9,6 +9,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.graphics.Typeface;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.RingtoneManager;
@@ -22,6 +23,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.SparseBooleanArray;
 import android.view.ActionMode;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -29,6 +31,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
@@ -38,6 +41,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
@@ -67,43 +72,39 @@ import kankan.wheel.widget.adapters.WheelViewAdapter;
 public class TrainingFragment extends Fragment implements
         OnCheckedChangeListener, OnClickListener, onElementsSwapped {
 
-    public final static String LOG_TAG = "myLogs";
     public final static String TRAINING_AT_PROGRESS = "training_at_progress";
-    public final static String TRAINING_NAME = "training_name";
     public final static String TRA_ID = "tra_id";
     public final static String CHECKED_POSITION = "checked_pos";
-    public final static String TRAININGS_DONE_NUM = "trainings_done_num";
     private final static String START_TIME = "start_time";
     private final static String LIST_OF_SETS = "list_of_sets";
     private final static String PROGRESS = "progress";
     private static final String TOTAL_WEIGHT = "total_weight";
     private final static String TIMER_IS_ON = "timerIsOn";
     public String RINGTONE = "ringtone";
-    private ToggleButton tglTimerOn;
     private ActionBar bar;
     private Boolean tglChecked = true, vibrate = false;
     private EditText etTimer;
     private DB db;
-    private String[] exersices;
     private String traName = "", exeName = "", date = "", measureItem = "";
     private SharedPreferences sp;
     private int checkedPosition = 0, set = 0, currentSet = 0, oldReps = 0,
             oldWeight = 0, timerValue = 0, vibrateLenght = 0, currentId = 0;
-    private DialogFragment dlg1;
     private long startTime = 0;
     private Handler h;
-    private MediaPlayer mMediaPlayer;
     private WheelView repsWheel, weightWheel;
     private TextView tvInfoText, tvWeight;
     private ArrayList<String> alExersicesList = new ArrayList<String>();
     private ArrayList<Integer> alSetList = new ArrayList<Integer>();
-    private int seconds, minutes, trainingId = 0, total = 0;
+    private int trainingId = 0;
+    private int total = 0;
+    private boolean btnBlocked = false;
+    private PopupWindow popupWindow;
     Runnable timerRunnable = new Runnable() {
         @Override
         public void run() {
             long millis = System.currentTimeMillis() - startTime;
-            seconds = (int) (millis / 1000);
-            minutes = (seconds / 60);
+            int seconds = (int) (millis / 1000);
+            int minutes = (seconds / 60);
             seconds = (seconds % 60);
             bar.setSubtitle((String.format("%d:%02d", minutes, seconds)) + " "
                     + total + " " + measureItem + " " + " ["
@@ -114,7 +115,10 @@ public class TrainingFragment extends Fragment implements
         }
     };
     private Handler timerHandler = new Handler();
-    private LinearLayout llBack, llSave, llForward, llBottom, llTimerProgress;
+    private LinearLayout llBack;
+    private LinearLayout llSave;
+    private LinearLayout llForward;
+    private LinearLayout llBottom;
     private ImageView ivBack, ivForward;
     private Animation anim = null;
     private boolean isTrainingAtProgress = false, toPlaySound = false;
@@ -231,7 +235,7 @@ public class TrainingFragment extends Fragment implements
         alExersicesList = new ArrayList<String>();
         try {
             if (db.getTrainingList(trainingId) != null) {
-                exersices = db.convertStringToArray(db
+                String[] exersices = db.convertStringToArray(db
                         .getTrainingList(trainingId));
                 for (int i = 0; i < exersices.length; i++) {
                     alExersicesList.add(exersices[i]);
@@ -273,7 +277,7 @@ public class TrainingFragment extends Fragment implements
                              Bundle savedInstanceState) {
         View v = inflater.inflate(
                 R.layout.training_at_progress_new_wheel_new_list, null);
-        llTimerProgress = (LinearLayout) v.findViewById(R.id.llProgressShow);
+        LinearLayout llTimerProgress = (LinearLayout) v.findViewById(R.id.llProgressShow);
 
         llTimerProgress.setVisibility(View.GONE);
         llBottom = (LinearLayout) v.findViewById(R.id.LLBottom);
@@ -304,7 +308,7 @@ public class TrainingFragment extends Fragment implements
         weightWheel.setShadowColor(0xFFFFFF, 0xFFFFFF, 0xFFFFFF);
         weightWheel.setViewAdapter((WheelViewAdapter) new WeightsAdapter(
                 getActivity()));
-        tglTimerOn = (ToggleButton) v.findViewById(R.id.tglTurnOff);
+        ToggleButton tglTimerOn = (ToggleButton) v.findViewById(R.id.tglTurnOff);
         tglTimerOn.setOnCheckedChangeListener(this);
         etTimer = (EditText) v.findViewById(R.id.etTimerValueAtTraining);
         etTimer.setOnClickListener(this);
@@ -554,7 +558,7 @@ public class TrainingFragment extends Fragment implements
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemId = item.getItemId();
         if (itemId == R.id.itemExit) {
-            dlg1 = new DialogExitFromTraining();
+            DialogFragment dlg1 = new DialogExitFromTraining();
             dlg1.setCancelable(false);
             if (!dlg1.isAdded())
                 dlg1.show(getFragmentManager(), "dlg1");
@@ -657,7 +661,7 @@ public class TrainingFragment extends Fragment implements
                     Toast.LENGTH_LONG).show();
             return;
         }
-        if (id == R.id.llBtnSave && currentSet == set) {
+        if (id == R.id.llBtnSave && currentSet == set && !btnBlocked) {
             int wei = (weightWheel.getCurrentItem() + 1);
             int rep_s = (repsWheel.getCurrentItem() + 1);
             int tmp = alSetList.get(checkedPosition);
@@ -672,6 +676,10 @@ public class TrainingFragment extends Fragment implements
             initSetButtons();
             Toast.makeText(getActivity(), R.string.saved, Toast.LENGTH_SHORT)
                     .show();
+            if (isActiveDialog) {
+                h.sendEmptyMessage(0);
+            }
+            showPopup();
             oldReps = db.getLastWeightOrReps(exeName, set, false);
             oldWeight = db.getLastWeightOrReps(exeName, set, true);
             if (oldReps > 0 && oldWeight > 0) {
@@ -683,13 +691,6 @@ public class TrainingFragment extends Fragment implements
             } else {
                 tvInfoText.setText(getResources().getString(R.string.new_set)
                         + " (" + (set + 1) + ")");
-            }
-            if (isActiveDialog) {
-                h.sendEmptyMessage(0);
-            }
-            if (tglChecked) {
-                sp.edit().putInt(PROGRESS, 0).apply();
-                goDialogProgress();
             }
         } else if (id == R.id.llBtnSave && currentSet < set) {
             int wei = (weightWheel.getCurrentItem() + 1);
@@ -743,6 +744,107 @@ public class TrainingFragment extends Fragment implements
         initSetButtons();
     }
 
+    private void showPopup() {
+        if (oldReps > 0 && oldWeight > 0){
+            int wei = (weightWheel.getCurrentItem() + 1);
+            int rep_s = (repsWheel.getCurrentItem() + 1);
+
+            int weightDelta = wei - oldWeight;
+            int repsDelta = rep_s - oldReps;
+
+            LayoutInflater inflater = (LayoutInflater)getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            View v = inflater.inflate(R.layout.popup_training_layout, null);
+//            Typeface face = Typeface.createFromAsset(getActivity().getAssets(),"fonts/Roboto-Light.ttf");
+
+            TextView textViewWeightDelta = (TextView) v.findViewById(R.id.text_weight_delta);
+            TextView text1 = (TextView)v.findViewById(R.id.text1);
+            TextView textViewRepsDelta = (TextView)v.findViewById(R.id.text_reps_delta);
+            TextView text2 = (TextView)v.findViewById(R.id.text2);
+
+//            textViewWeightDelta.setTypeface(face);
+//            text1.setTypeface(face);
+//            textViewRepsDelta.setTypeface(face);
+//            text2.setTypeface(face);
+
+            if (weightDelta > 0){
+                textViewWeightDelta.setTextColor(getActivity().getResources().getColor(R.color.holo_green_light));
+                text1.setTextColor(getActivity().getResources().getColor(R.color.holo_green_light));
+                textViewWeightDelta.setText("+" + String.valueOf(weightDelta));
+            } else {
+                textViewWeightDelta.setTextColor(getActivity().getResources().getColor(R.color.holo_red_light));
+                text1.setTextColor(getActivity().getResources().getColor(R.color.holo_red_light));
+                textViewWeightDelta.setText(String.valueOf(weightDelta));
+            }
+
+            if(repsDelta > 0){
+                textViewRepsDelta.setTextColor(getActivity().getResources().getColor(R.color.holo_green_light));
+                text2.setTextColor(getActivity().getResources().getColor(R.color.holo_green_light));
+                textViewRepsDelta.setText("+" + String.valueOf(weightDelta));
+            }else {
+                textViewRepsDelta.setText(String.valueOf(repsDelta));
+                textViewRepsDelta.setTextColor(getActivity().getResources().getColor(R.color.holo_red_light));
+                text2.setTextColor(getActivity().getResources().getColor(R.color.holo_red_light));
+            }
+
+            WindowManager wm = (WindowManager) getActivity().getSystemService(Context.WINDOW_SERVICE);
+            Display display = wm.getDefaultDisplay();
+            int widthDp = dpFromPx(display.getWidth());
+
+            popupWindow = new PopupWindow(v, pxFromDp(widthDp-24),  pxFromDp(120));
+            popupWindow.setAnimationStyle(R.style.PopupAnimation);
+            popupWindow.showAsDropDown(listView, pxFromDp(8), pxFromDp(20));
+            btnBlocked = true;
+
+            Thread thread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try{
+                        Thread.sleep(2500);
+                    } catch (Exception e){
+
+                    }
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            hidePopup();
+                        }
+                    });
+
+                    try{
+                        Thread.sleep(100);
+                    } catch (Exception e){
+
+                    }
+
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (tglChecked) {
+                                sp.edit().putInt(PROGRESS, 0).apply();
+                                goDialogProgress();
+                            }
+                        }
+                    });
+                }
+            });
+            thread.start();
+        } else {
+            if (tglChecked) {
+                sp.edit().putInt(PROGRESS, 0).apply();
+                goDialogProgress();
+            }
+        }
+
+
+    }
+
+    private void hidePopup(){
+        btnBlocked = false;
+        if (popupWindow != null && popupWindow.isShowing()){
+            popupWindow.dismiss();
+        }
+    }
+
     @Override
     public void onCheckedChanged(CompoundButton tglTimerOn, boolean isChecked) {
         if (isChecked) {
@@ -783,7 +885,7 @@ public class TrainingFragment extends Fragment implements
     }
 
     private void playSound(Context context, Uri sound) {
-        mMediaPlayer = new MediaPlayer();
+        MediaPlayer mMediaPlayer = new MediaPlayer();
         try {
             mMediaPlayer.setDataSource(context, sound);
             final AudioManager audioManager = (AudioManager) context
@@ -862,6 +964,17 @@ public class TrainingFragment extends Fragment implements
         protected CharSequence getItemText(int index) {
             return weights.get(index);
         }
+    }
+
+
+    private int dpFromPx(float px)
+    {
+        return (int) (px / getActivity().getResources().getDisplayMetrics().density);
+    }
+
+    private int pxFromDp(float dp)
+    {
+        return (int) (dp * getActivity().getResources().getDisplayMetrics().density);
     }
 
 }

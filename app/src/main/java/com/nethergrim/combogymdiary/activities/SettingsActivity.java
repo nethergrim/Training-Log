@@ -182,7 +182,7 @@ public class SettingsActivity extends PreferenceActivity implements MyInterface 
                 });
 
         btnRemoveAds = (Preference) findPreference("ads");
-        if (AdChecker.IsPaid()) {
+        if (AdChecker.isPaid()) {
             btnRemoveAds.setEnabled(false);
         }
         btnRemoveAds
