@@ -45,32 +45,11 @@ import java.util.Random;
 public class SettingsActivity extends PreferenceActivity implements MyInterface {
 
     private final static int REQUEST_CODE_GET_FILE_FOR_RESTORE = 133;
-    private static final char[] symbols = new char[36];
-    static {
-        for (int idx = 0; idx < 10; ++idx)
-            symbols[idx] = (char) ('0' + idx);
-        for (int idx = 10; idx < 36; ++idx)
-            symbols[idx] = (char) ('a' + idx - 10);
-    }
-    public final String LOG_TAG = "myLogs";
     public String RINGTONE = "ringtone";
     private DialogFragment dlg2;
     private DB db;
     private SharedPreferences sp;
-    private IInAppBillingService mService;
-    ServiceConnection mServiceConn = new ServiceConnection() {
-        @Override
-        public void onServiceDisconnected(ComponentName name) {
-            mService = null;
-        }
 
-        @Override
-        public void onServiceConnected(ComponentName name, IBinder service) {
-            mService = IInAppBillingService.Stub.asInterface(service);
-
-        }
-    };
-    private Preference btnRemoveAds;
 
     @SuppressWarnings("deprecation")
     @Override
@@ -80,10 +59,6 @@ public class SettingsActivity extends PreferenceActivity implements MyInterface 
         ActionBar bar = getActionBar();
         db = new DB(this);
         db.open();
-        bindService(new Intent(
-                        "com.android.vending.billing.InAppBillingService.BIND"),
-                mServiceConn, Context.BIND_AUTO_CREATE
-        );
         sp = PreferenceManager.getDefaultSharedPreferences(this);
         getActionBar().setDisplayShowHomeEnabled(false);
         bar.setDisplayHomeAsUpEnabled(true);
@@ -181,49 +156,8 @@ public class SettingsActivity extends PreferenceActivity implements MyInterface 
                     }
                 });
 
-        btnRemoveAds = (Preference) findPreference("ads");
-        if (AdChecker.isPaid()) {
-            btnRemoveAds.setEnabled(false);
-        }
-        btnRemoveAds
-                .setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                    @Override
-                    public boolean onPreferenceClick(Preference arg0) {
-                        removeAds();
-                        return true;
-                    }
-                });
     }
 
-    protected void removeAds() {
-        RandomString randomString = new RandomString(36);
-        String payload = randomString.nextString();
-        try {
-            Bundle buyIntentBundle = mService.getBuyIntent(3, getPackageName(),
-                    "remove_ad", "inapp", payload);
-            int response = buyIntentBundle.getInt("BILLING_RESPONSE_RESULT_OK");
-            if (response == 0) {
-                Log.d(LOG_TAG, "buyIntent response OK");
-
-                PendingIntent pendingIntent = buyIntentBundle
-                        .getParcelable("BUY_INTENT");
-                try {
-                    startIntentSenderForResult(pendingIntent.getIntentSender(),
-                            1001, new Intent(), Integer.valueOf(0),
-                            Integer.valueOf(0), Integer.valueOf(0));
-
-                } catch (SendIntentException e) {
-                    Counter.sharedInstance().reportError("", e);
-                    Log.d(LOG_TAG, e.getMessage());
-                }
-            }
-
-        } catch (RemoteException e) {
-            Counter.sharedInstance().reportError("", e);
-            Log.d(LOG_TAG, e.getMessage());
-        }
-
-    }
 
     protected void gotoSelectSound() {
         Intent intent = new Intent(RingtoneManager.ACTION_RINGTONE_PICKER);
@@ -287,25 +221,6 @@ public class SettingsActivity extends PreferenceActivity implements MyInterface 
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-        if (requestCode == 1001) {
-            String purchaseData = data.getStringExtra("INAPP_PURCHASE_DATA");
-            if (resultCode == RESULT_OK) {
-                try {
-                    JSONObject jo = new JSONObject(purchaseData);
-                    String sku = jo.getString("productId");
-                    Counter.sharedInstance().reportEvent(
-                            "bought the " + sku + ".");
-                    AdChecker.setPaid(true);
-                    PreferenceManager.getDefaultSharedPreferences(this).edit()
-                            .putBoolean("ad", true).apply();
-
-                } catch (JSONException e) {
-                    Counter.sharedInstance().reportError("", e);
-                }
-            }
-        }
-
         if (data == null) {
             return;
         }
@@ -331,7 +246,6 @@ public class SettingsActivity extends PreferenceActivity implements MyInterface 
                     .getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI);
 
             if (uri != null) {
-                Log.d(LOG_TAG, "putting uri to alarm: " + uri.toString());
                 sp.edit().putString(RINGTONE, uri.toString()).apply();
             } else {
             }
@@ -362,39 +276,6 @@ public class SettingsActivity extends PreferenceActivity implements MyInterface 
     public void onDestroy() {
         super.onDestroy();
         db.close();
-        if (mService != null) {
-            unbindService(mServiceConn);
-        }
-    }
-
-    public class RandomString {
-
-        private final Random random = new Random();
-
-        private final char[] buf;
-
-        public RandomString(int length) {
-            if (length < 1)
-                throw new IllegalArgumentException("length < 1: " + length);
-            buf = new char[length];
-        }
-
-        public String nextString() {
-            for (int idx = 0; idx < buf.length; ++idx)
-                buf[idx] = symbols[random.nextInt(symbols.length)];
-            return new String(buf);
-        }
-
-    }
-
-    public final class SessionIdentifierGenerator {
-
-        private SecureRandom random = new SecureRandom();
-
-        public String nextSessionId() {
-            return new BigInteger(130, random).toString(32);
-        }
-
     }
 
 }

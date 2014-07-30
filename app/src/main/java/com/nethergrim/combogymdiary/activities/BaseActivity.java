@@ -68,7 +68,7 @@ import java.util.Random;
 
 public class BaseActivity extends AnalyticsActivity implements
         OnSelectedListener, MyInterface, OnStartTrainingAccept, OnExerciseEdit,
-        OnEditExerciseAccept {
+        OnEditExerciseAccept, AdapterView.OnItemClickListener {
     public final static String TOTAL_WEIGHT = "total_weight";
     public final static String TRAINING_AT_PROGRESS = "training_at_progress";
     public final static String COMMENT_TO_TRAINING = "comment_to_training";
@@ -85,8 +85,8 @@ public class BaseActivity extends AnalyticsActivity implements
     public final static String ID = "id";
     public final static String POSITION = "position";
     private final static String FRAGMENT_ID = "fragment_id";
-    private static final char[] symbols = new char[36];
-    private static boolean IF_TRAINING_STARTED = false;
+    private static final char[] SYMBOLS = new char[36];
+    private static boolean startedTraining = false;
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
@@ -98,18 +98,6 @@ public class BaseActivity extends AnalyticsActivity implements
     private DB db;
     private boolean doubleBackToExitPressedOnce = false;
     private IInAppBillingService mService;
-    ServiceConnection mServiceConn = new ServiceConnection() {
-        @Override
-        public void onServiceDisconnected(ComponentName name) {
-            mService = null;
-        }
-
-        @Override
-        public void onServiceConnected(ComponentName name,
-                                       IBinder service) {
-            mService = IInAppBillingService.Stub.asInterface(service);
-        }
-    };
     private CatalogFragment catalogFragment = new CatalogFragment();
     private ExerciseListFragment exerciseListFragment = new ExerciseListFragment();
     private HistoryFragment historyFragment = new HistoryFragment();
@@ -119,13 +107,21 @@ public class BaseActivity extends AnalyticsActivity implements
     private Fragment currentFragment;
     private AdView adView;
     private InterstitialAd interstitialAd;
+    private ServiceConnection mServiceConn;
 
-    public static boolean get_TRAINING_STARTED() {
-        return IF_TRAINING_STARTED;
+    static {
+        for (int idx = 0; idx < 10; ++idx)
+            SYMBOLS[idx] = (char) ('0' + idx);
+        for (int idx = 10; idx < 36; ++idx)
+            SYMBOLS[idx] = (char) ('a' + idx - 10);
     }
 
-    public static void set_TRAINING_STARTED(boolean iF_TRAINING_STARTED) {
-        IF_TRAINING_STARTED = iF_TRAINING_STARTED;
+    public static boolean isTrainingAlreadyStarted() {
+        return startedTraining;
+    }
+
+    public static void setTrainingAlreadyStarted(boolean started) {
+        startedTraining = started;
     }
 
     @Override
@@ -139,10 +135,22 @@ public class BaseActivity extends AnalyticsActivity implements
         super.onCreate(savedInstanceState);
         db = new DB(this);
         db.open();
-        bindService(new Intent(
-                        "com.android.vending.billing.InAppBillingService.BIND"),
-                mServiceConn, Context.BIND_AUTO_CREATE
-        );
+
+
+        mServiceConn = new ServiceConnection() {
+            @Override
+            public void onServiceDisconnected(ComponentName name) {
+                mService = null;
+            }
+
+            @Override
+            public void onServiceConnected(ComponentName name,
+                                           IBinder service) {
+                mService = IInAppBillingService.Stub.asInterface(service);
+                checkAd();
+            }
+        };
+        bindService(new Intent("com.android.vending.billing.InAppBillingService.BIND"), mServiceConn, Context.BIND_AUTO_CREATE );
         setContentView(R.layout.menu);
         initStrings();
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -152,7 +160,7 @@ public class BaseActivity extends AnalyticsActivity implements
         adapter = new ArrayAdapter<String>(this, R.layout.menu_list_item,
                 listButtons);
         mDrawerList.setAdapter(adapter);
-        mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
+        mDrawerList.setOnItemClickListener(this);
         getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setDisplayShowHomeEnabled(false);
         getActionBar().setHomeButtonEnabled(true);
@@ -180,7 +188,7 @@ public class BaseActivity extends AnalyticsActivity implements
             listButtons[0] = getResources().getString(
                     R.string.continue_training);
             adapter.notifyDataSetChanged();
-            set_TRAINING_STARTED(true);
+            setTrainingAlreadyStarted(true);
         } else {
             currentFragment = startTrainingFragment;
         }
@@ -189,7 +197,7 @@ public class BaseActivity extends AnalyticsActivity implements
                     .add(R.id.content, currentFragment).commit();
         mDrawerList.setItemChecked(0, true);
         if (savedInstanceState == null) {
-            selectItem(0);
+            drawerSelectItem(0);
         }
         if (sp.getBoolean("ad", false)) {
             AdChecker.setPaid(true);
@@ -264,28 +272,20 @@ public class BaseActivity extends AnalyticsActivity implements
     }
 
     private void removeAds() {
-        RandomString randomString = new RandomString(36);
-        String payload = randomString.nextString();
         try {
+            RandomString randomString = new RandomString(36);
+            String payload = randomString.nextString();
             Bundle buyIntentBundle = mService.getBuyIntent(3, getPackageName(),
                     "remove_ad", "inapp", payload);
             int response = buyIntentBundle.getInt("BILLING_RESPONSE_RESULT_OK");
             if (response == 0) {
-
-                PendingIntent pendingIntent = buyIntentBundle
-                        .getParcelable("BUY_INTENT");
-                try {
-                    startIntentSenderForResult(pendingIntent.getIntentSender(),
-                            1001, new Intent(), Integer.valueOf(0),
-                            Integer.valueOf(0), Integer.valueOf(0));
-
-                } catch (IntentSender.SendIntentException e) {
-                    Counter.sharedInstance().reportError("", e);
-                    e.printStackTrace();
-                }
+                PendingIntent pendingIntent = buyIntentBundle.getParcelable("BUY_INTENT");
+                startIntentSenderForResult(pendingIntent.getIntentSender(), 1001, new Intent(), 0, 0, 0);
             }
-
         } catch (RemoteException e) {
+            Counter.sharedInstance().reportError("", e);
+            e.printStackTrace();
+        } catch (IntentSender.SendIntentException e) {
             Counter.sharedInstance().reportError("", e);
             e.printStackTrace();
         }
@@ -306,7 +306,6 @@ public class BaseActivity extends AnalyticsActivity implements
                 adapter.notifyDataSetChanged();
                 PreferenceManager.getDefaultSharedPreferences(this).edit()
                         .putBoolean("ad", true).apply();
-
             } catch (JSONException e) {
                 Counter.sharedInstance().reportError("", e);
             }
@@ -342,7 +341,7 @@ public class BaseActivity extends AnalyticsActivity implements
         listButtons[7] = getResources().getString(R.string.faq);
     }
 
-    public void selectItem(int position) {
+    public void drawerSelectItem(int position) {
         mDrawerLayout.closeDrawer(mDrawerList);
         if (position == 8) {
             removeAds();
@@ -356,7 +355,7 @@ public class BaseActivity extends AnalyticsActivity implements
         switch (position) {
             case 0:
                 FRAGMENT_NUMBER = 0;
-                if (get_TRAINING_STARTED()) {
+                if (isTrainingAlreadyStarted()) {
                     currentFragment = trainingFragment;
                     Bundle args = new Bundle();
                     if (!currentFragment.isVisible())
@@ -461,7 +460,7 @@ public class BaseActivity extends AnalyticsActivity implements
     }
 
     public void onRestoreInstanceState(Bundle restore) {
-        selectItem(restore.getInt(FRAGMENT_ID));
+        drawerSelectItem(restore.getInt(FRAGMENT_ID));
         super.onRestoreInstanceState(restore);
     }
 
@@ -531,7 +530,7 @@ public class BaseActivity extends AnalyticsActivity implements
         } else {
             sp.edit().putInt(TRAININGS_DONE_NUM, 1).apply();
         }
-        set_TRAINING_STARTED(false);
+        setTrainingAlreadyStarted(false);
         getFragmentManager().beginTransaction()
                 .replace(R.id.content, new StartTrainingFragment()).commit();
         getActionBar().setSubtitle("");
@@ -549,7 +548,7 @@ public class BaseActivity extends AnalyticsActivity implements
         newFragment.setArguments(args);
         getFragmentManager().beginTransaction()
                 .replace(R.id.content, newFragment).commit();
-        set_TRAINING_STARTED(true);
+        setTrainingAlreadyStarted(true);
         listButtons[0] = getResources().getString(R.string.continue_training);
         adapter.notifyDataSetChanged();
 
@@ -625,15 +624,10 @@ public class BaseActivity extends AnalyticsActivity implements
         super.onDestroy();
     }
 
-    private class DrawerItemClickListener implements
-            ListView.OnItemClickListener {
-        @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position,
-                                long id) {
-            selectItem(position);
-        }
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        drawerSelectItem(position);
     }
-
 
     public class RandomString {
 
@@ -649,7 +643,7 @@ public class BaseActivity extends AnalyticsActivity implements
 
         public String nextString() {
             for (int idx = 0; idx < buf.length; ++idx)
-                buf[idx] = symbols[random.nextInt(symbols.length)];
+                buf[idx] = SYMBOLS[random.nextInt(SYMBOLS.length)];
             return new String(buf);
         }
 

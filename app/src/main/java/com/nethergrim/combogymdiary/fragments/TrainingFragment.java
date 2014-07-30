@@ -754,17 +754,11 @@ public class TrainingFragment extends Fragment implements
 
             LayoutInflater inflater = (LayoutInflater)getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View v = inflater.inflate(R.layout.popup_training_layout, null);
-//            Typeface face = Typeface.createFromAsset(getActivity().getAssets(),"fonts/Roboto-Light.ttf");
 
             TextView textViewWeightDelta = (TextView) v.findViewById(R.id.text_weight_delta);
             TextView text1 = (TextView)v.findViewById(R.id.text1);
             TextView textViewRepsDelta = (TextView)v.findViewById(R.id.text_reps_delta);
             TextView text2 = (TextView)v.findViewById(R.id.text2);
-
-//            textViewWeightDelta.setTypeface(face);
-//            text1.setTypeface(face);
-//            textViewRepsDelta.setTypeface(face);
-//            text2.setTypeface(face);
 
             if (weightDelta > 0){
                 textViewWeightDelta.setTextColor(getActivity().getResources().getColor(R.color.holo_green_light));
@@ -896,7 +890,6 @@ public class TrainingFragment extends Fragment implements
                 mMediaPlayer.start();
             }
         } catch (Exception e) {
-            System.out.println("OOPS");
             System.out.println(e.getMessage());
         }
     }
@@ -922,8 +915,7 @@ public class TrainingFragment extends Fragment implements
 
         @Override
         public View getItem(int index, View cachedView, ViewGroup parent) {
-            View view = super.getItem(index, cachedView, parent);
-            return view;
+            return super.getItem(index, cachedView, parent);
         }
 
         @Override
@@ -951,8 +943,7 @@ public class TrainingFragment extends Fragment implements
 
         @Override
         public View getItem(int index, View cachedView, ViewGroup parent) {
-            View view = super.getItem(index, cachedView, parent);
-            return view;
+            return super.getItem(index, cachedView, parent);
         }
 
         @Override

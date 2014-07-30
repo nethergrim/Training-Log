@@ -26,7 +26,6 @@ public class EditingProgramAtTrainingActivity extends AnalyticsActivity
     private DB db;
     private long traID = 0;
     private SimpleCursorAdapter scAdapter;
-    private String traName;
     private String[] exercisesOld;
     private boolean ifAddingExe = false;
     private EditText etName;
@@ -46,7 +45,7 @@ public class EditingProgramAtTrainingActivity extends AnalyticsActivity
         db.open();
         etName = (EditText) findViewById(R.id.etNewNameOfProgram);
         ifAddingExe = in.getBooleanExtra("ifAddingExe", false);
-        traName = in.getStringExtra("trName");
+        String traName = in.getStringExtra("trName");
         traID = in.getLongExtra("trID", 0);
         getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setDisplayShowHomeEnabled(false);
@@ -119,12 +118,11 @@ public class EditingProgramAtTrainingActivity extends AnalyticsActivity
 
         if (c.moveToFirst()) {
             int i = 0;
-            do {
-                for (int j = 0; j < exercisesOld.length; j++) {
 
-                    if (c.getString(2).equals(exercisesOld[j])) {
-                        Log.d("myLogs", " c.getString(2) == " + c.getString(2)
-                                + " == exercisesOld[j] == " + exercisesOld[j]);
+            if (exercisesOld != null)
+            do {
+                for (String anExercisesOld : exercisesOld) {
+                    if (c.getString(2).equals(anExercisesOld)) {
                         lvMain.setItemChecked(i, true);
                     }
                 }
@@ -172,8 +170,8 @@ public class EditingProgramAtTrainingActivity extends AnalyticsActivity
         if (cur.moveToFirst()) {
             int i = 0;
             do {
-                for (int j = 0; j < arrIDs.length; j++) {
-                    if (cur.getInt(0) == arrIDs[j]) {
+                for (long arrID : arrIDs) {
+                    if (cur.getInt(0) == arrID) {
                         args[i] = cur.getString(2);
                         i++;
                     }
@@ -191,7 +189,7 @@ public class EditingProgramAtTrainingActivity extends AnalyticsActivity
 
     @Override
     public void onBackPressed() {
-        if (ifAddingExe == false) {
+        if (!ifAddingExe) {
             editProgram();
         } else {
             addExe();
