@@ -13,23 +13,19 @@
 
         <FrameLayout
             android:id="@+id/content"
-            android:layout_above="@+id/adView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_alignParentLeft="true"
+            android:layout_above="@+id/startAppBanner"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true" />
 
-        <com.google.android.gms.ads.AdView
-            android:id="@+id/adView"
-            android:visibility="gone"
+        <com.startapp.android.publish.banner.Banner
+            android:id="@+id/startAppBanner"
             android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            xmlns:ads="http://schemas.android.com/apk/res-auto"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            ads:adUnitId="ca-app-pub-6482129418049695/6329844961"
-            ads:adSize="BANNER"/>
+            android:layout_centerHorizontal="true"/>
 
     </RelativeLayout>
 

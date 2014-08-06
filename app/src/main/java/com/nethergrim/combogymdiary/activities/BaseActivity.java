@@ -30,11 +30,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.android.vending.billing.IInAppBillingService;
-import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.InterstitialAd;
-import com.google.android.gms.plus.model.people.Person;
 import com.nethergrim.combogymdiary.DB;
 import com.nethergrim.combogymdiary.R;
 import com.nethergrim.combogymdiary.dialogs.DialogAddExercise;
@@ -56,6 +52,8 @@ import com.nethergrim.combogymdiary.googledrive.DriveBackupActivity;
 import com.nethergrim.combogymdiary.service.TrainingService;
 import com.nethergrim.combogymdiary.tools.AdChecker;
 import com.nethergrim.combogymdiary.tools.Backuper;
+import com.startapp.android.publish.StartAppAd;
+import com.startapp.android.publish.banner.Banner;
 import com.yandex.metrica.Counter;
 
 import org.json.JSONException;
@@ -105,9 +103,10 @@ public class BaseActivity extends AnalyticsActivity implements
     private StartTrainingFragment startTrainingFragment = new StartTrainingFragment();
     private TrainingFragment trainingFragment = new TrainingFragment();
     private Fragment currentFragment;
-    private AdView adView;
-    private InterstitialAd interstitialAd;
+    private Banner banner;
+    private StartAppAd startAppAd = new StartAppAd(this);
     private ServiceConnection mServiceConn;
+    private int adCounter = 0, adLimitCounter = 3;
 
     static {
         for (int idx = 0; idx < 10; ++idx)
@@ -135,8 +134,6 @@ public class BaseActivity extends AnalyticsActivity implements
         super.onCreate(savedInstanceState);
         db = new DB(this);
         db.open();
-
-
         mServiceConn = new ServiceConnection() {
             @Override
             public void onServiceDisconnected(ComponentName name) {
@@ -144,21 +141,18 @@ public class BaseActivity extends AnalyticsActivity implements
             }
 
             @Override
-            public void onServiceConnected(ComponentName name,
-                                           IBinder service) {
+            public void onServiceConnected(ComponentName name,IBinder service) {
                 mService = IInAppBillingService.Stub.asInterface(service);
                 checkAd();
             }
         };
         bindService(new Intent("com.android.vending.billing.InAppBillingService.BIND"), mServiceConn, Context.BIND_AUTO_CREATE );
-        setContentView(R.layout.menu);
+        setContentView(R.layout.activity_base);
         initStrings();
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
-        mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow,
-                GravityCompat.START);
-        adapter = new ArrayAdapter<String>(this, R.layout.menu_list_item,
-                listButtons);
+        mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
+        adapter = new ArrayAdapter<String>(this, R.layout.menu_list_item, listButtons);
         mDrawerList.setAdapter(adapter);
         mDrawerList.setOnItemClickListener(this);
         getActionBar().setDisplayHomeAsUpEnabled(true);
@@ -197,32 +191,14 @@ public class BaseActivity extends AnalyticsActivity implements
                     .add(R.id.content, currentFragment).commit();
         mDrawerList.setItemChecked(0, true);
         if (savedInstanceState == null) {
-            drawerSelectItem(0);
+            onItemSelected(0);
         }
         if (sp.getBoolean("ad", false)) {
             AdChecker.setPaid(true);
         }
 
-        adView = (AdView) findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder().setGender(Person.Gender.MALE).build();
-        adView.loadAd(adRequest);
-        adView.setAdListener(new AdListener() {
-            @Override
-            public void onAdLoaded() {
-                super.onAdLoaded();
-                if (!AdChecker.isPaid()) {
-                    adView.setVisibility(View.VISIBLE);
-                }
-            }
-
-            @Override
-            public void onAdFailedToLoad(int errorCode) {
-                super.onAdFailedToLoad(errorCode);
-                adView.setVisibility(View.GONE);
-            }
-        });
-        interstitialAd = new InterstitialAd(this);
-        interstitialAd.setAdUnitId("ca-app-pub-6482129418049695/5278587361");
+        banner = (Banner)findViewById(R.id.startAppBanner);
+        banner.hideBanner();
 
     }
 
@@ -341,8 +317,17 @@ public class BaseActivity extends AnalyticsActivity implements
         listButtons[7] = getResources().getString(R.string.faq);
     }
 
-    public void drawerSelectItem(int position) {
+    public void onItemSelected(int position) {
         mDrawerLayout.closeDrawer(mDrawerList);
+        if (!AdChecker.isPaid()){
+            adCounter++;
+            if (adCounter >= adLimitCounter){
+                adCounter = 0;
+                startAppAd.showAd();
+                startAppAd.loadAd();
+            }
+        }
+
         if (position == 8) {
             removeAds();
             mDrawerList.setItemChecked(previouslyChecked, true);
@@ -434,11 +419,18 @@ public class BaseActivity extends AnalyticsActivity implements
     @Override
     protected void onResume() {
         super.onResume();
+        startAppAd.onResume();
         AdChecker.setPaid(PreferenceManager.getDefaultSharedPreferences(this)
                 .getBoolean("ad", false));
         Counter.sharedInstance().onResumeActivity(this);
-        if (adView != null) {
-            adView.resume();
+        if (banner != null) {
+            if (AdChecker.isPaid()){
+                banner.setVisibility(View.GONE);
+                banner.hideBanner();
+            } else {
+                banner.setVisibility(View.VISIBLE);
+                banner.showBanner();
+            }
         }
         initStrings();
         adapter.notifyDataSetChanged();
@@ -446,10 +438,8 @@ public class BaseActivity extends AnalyticsActivity implements
 
     @Override
     protected void onPause() {
-        if (adView != null) {
-            adView.pause();
-        }
         super.onPause();
+        startAppAd.onPause();
         Counter.sharedInstance().onPauseActivity(this);
     }
 
@@ -460,7 +450,7 @@ public class BaseActivity extends AnalyticsActivity implements
     }
 
     public void onRestoreInstanceState(Bundle restore) {
-        drawerSelectItem(restore.getInt(FRAGMENT_ID));
+        onItemSelected(restore.getInt(FRAGMENT_ID));
         super.onRestoreInstanceState(restore);
     }
 
@@ -473,16 +463,17 @@ public class BaseActivity extends AnalyticsActivity implements
         approve.setArguments(args);
         approve.show(getFragmentManager(), "");
         AdRequest adRequest = new AdRequest.Builder().build();
-        interstitialAd.loadAd(adRequest);
     }
 
     @Override
     public void onChoose() {
+        if (!AdChecker.isPaid()){
+            startAppAd.showAd();
+            startAppAd.loadAd();
+        }
+
         DB db = new DB(this);
         db.open();
-        if (!AdChecker.isPaid() && interstitialAd != null && interstitialAd.isLoaded()) {
-            interstitialAd.show();
-        }
         Cursor tmpCursor = db.getDataMain(null, null, null, null, null, null);
         if (tmpCursor.getCount() > 10) {
             Backuper backUP = new Backuper();
@@ -596,6 +587,7 @@ public class BaseActivity extends AnalyticsActivity implements
     @Override
     public void onBackPressed() {
         if (doubleBackToExitPressedOnce) {
+            startAppAd.onBackPressed();
             super.onBackPressed();
             return;
         }
@@ -618,15 +610,12 @@ public class BaseActivity extends AnalyticsActivity implements
         if (mService != null) {
             unbindService(mServiceConn);
         }
-        if (adView != null) {
-            adView.destroy();
-        }
         super.onDestroy();
     }
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        drawerSelectItem(position);
+        onItemSelected(position);
     }
 
     public class RandomString {
