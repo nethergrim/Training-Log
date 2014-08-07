@@ -569,7 +569,6 @@ public class TrainingFragment extends Fragment implements
     @Override
     public void onStop() {
         super.onStop();
-        isResumed = false;
         fabRight.hide();
         fabLeft.hide();
         fabCenter.hide();
@@ -967,7 +966,6 @@ public class TrainingFragment extends Fragment implements
                 e.printStackTrace();
             }
         }
-
     }
 
     private class RepsAdapter extends AbstractWheelTextAdapter {

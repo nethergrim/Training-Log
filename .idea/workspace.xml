@@ -30,9 +30,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1ae25ada-db98-44c3-aaa8-db4b3954c501" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/activities/BaseActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/activities/BaseActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/fragments/TrainingFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/fragments/TrainingFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_base.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_base.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="GymDiary.iws" />
@@ -56,10 +55,10 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="BaseActivity.java" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="BaseActivity.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/activities/BaseActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.5991649" vertical-offset="3659" max-vertical-offset="4794">
+            <state vertical-scroll-proportion="0.0" vertical-offset="3659" max-vertical-offset="4794">
               <caret line="513" column="9" selection-start-line="513" selection-start-column="9" selection-end-line="513" selection-end-column="9" />
               <folding>
                 <element signature="initializer##0;class#BaseActivity#0" expanded="false" />
@@ -106,11 +105,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="TrainingFragment.java" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="TrainingFragment.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/fragments/TrainingFragment.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="743" max-vertical-offset="3009">
-              <caret line="572" column="24" selection-start-line="572" selection-start-column="24" selection-end-line="572" selection-end-column="24" />
+            <state vertical-scroll-proportion="0.80480164" vertical-offset="2799" max-vertical-offset="4012">
+              <caret line="965" column="36" selection-start-line="965" selection-start-column="36" selection-end-line="965" selection-end-column="36" />
               <folding>
                 <element signature="class#5351:8414" expanded="false" />
                 <element signature="method#onCreateActionMode#0;class#5351:8414" expanded="false" />
@@ -127,11 +126,9 @@
                 <element signature="class#13632:14131" expanded="false" />
                 <element signature="method#onTextChanged#0;class#13632:14131" expanded="false" />
                 <element signature="method#beforeTextChanged#0;class#13632:14131" expanded="false" />
-                <element signature="method#initSetButtons#0;class#TrainingFragment#0" expanded="false" />
-                <element signature="method#onSelected#0;class#TrainingFragment#0" expanded="false" />
                 <element signature="method#onResume#0;class#TrainingFragment#0" expanded="false" />
                 <element signature="method#goDialogProgress#0;class#TrainingFragment#0" expanded="false" />
-                <element signature="method#saveExercicesToDatabase#0;class#TrainingFragment#0" expanded="false" />
+                <element signature="method#onPause#0;class#TrainingFragment#0" expanded="false" />
                 <element signature="method#onCreateOptionsMenu#0;class#TrainingFragment#0" expanded="false" />
                 <element signature="method#onOptionsItemSelected#0;class#TrainingFragment#0" expanded="false" />
                 <element signature="method#onActivityResult#0;class#TrainingFragment#0" expanded="false" />
@@ -145,14 +142,12 @@
                 <element signature="method#playSound#0;class#TrainingFragment#0" expanded="false" />
                 <element signature="method#updateAdapter#0;class#TrainingFragment#0" expanded="false" />
                 <element signature="method#dpFromPx#0;class#TrainingFragment#0" expanded="false" />
-                <element signature="method#pxFromDp#0;class#TrainingFragment#0" expanded="false" />
                 <element signature="class#RepsAdapter#0;class#TrainingFragment#0" expanded="false" />
                 <element signature="method#RepsAdapter#0;class#RepsAdapter#0;class#TrainingFragment#0" expanded="false" />
                 <element signature="method#getItem#0;class#RepsAdapter#0;class#TrainingFragment#0" expanded="false" />
                 <element signature="class#WeightsAdapter#0;class#TrainingFragment#0" expanded="false" />
                 <element signature="method#WeightsAdapter#0;class#WeightsAdapter#0;class#TrainingFragment#0" expanded="false" />
                 <element signature="method#getItem#0;class#WeightsAdapter#0;class#TrainingFragment#0" expanded="false" />
-                <element signature="method#generateViewId#0;class#TrainingFragment#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -941,7 +936,6 @@
         <option value="$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/view/FloatingActionButton.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/activities/AddingMeasurementActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/Constants.java" />
-        <option value="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/popup_training_layout.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/training_at_progress_new_wheel_new_list.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/drawable/rounded_with_shadow.xml" />
@@ -951,9 +945,10 @@
         <option value="$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/fragments/MeasurementsFragment.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/fragments/CatalogFragment.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/fragments/ExerciseListFragment.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/fragments/TrainingFragment.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_base.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/activities/BaseActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/fragments/TrainingFragment.java" />
       </list>
     </option>
   </component>
@@ -1433,7 +1428,7 @@
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.22135417" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="true" weight="0.326572" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.326572" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Thumbnails" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32982087" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
@@ -1786,14 +1781,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3077">
-          <caret line="6" column="30" selection-start-line="6" selection-start-column="30" selection-end-line="6" selection-end-column="30" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/drawable/rounded.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="306">
@@ -1902,56 +1889,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/fragments/TrainingFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="743" max-vertical-offset="3009">
-          <caret line="572" column="24" selection-start-line="572" selection-start-column="24" selection-end-line="572" selection-end-column="24" />
-          <folding>
-            <element signature="class#5351:8414" expanded="false" />
-            <element signature="method#onCreateActionMode#0;class#5351:8414" expanded="false" />
-            <element signature="method#onPrepareActionMode#0;class#5351:8414" expanded="false" />
-            <element signature="method#onActionItemClicked#0;class#5351:8414" expanded="false" />
-            <element signature="method#onDestroyActionMode#0;class#5351:8414" expanded="false" />
-            <element signature="e#8512#8541#0" expanded="false" />
-            <element signature="e#8512#8541#0" expanded="false" />
-            <element signature="method#onSwapped#0;class#TrainingFragment#0" expanded="false" />
-            <element signature="method#swapElements#0;class#TrainingFragment#0" expanded="false" />
-            <element signature="method#loadExercisesFromDbAndUpdateList#0;class#TrainingFragment#0" expanded="false" />
-            <element signature="method#onCreate#0;class#TrainingFragment#0" expanded="false" />
-            <element signature="method#onCreateView#0;class#TrainingFragment#0" expanded="false" />
-            <element signature="class#13632:14131" expanded="false" />
-            <element signature="method#onTextChanged#0;class#13632:14131" expanded="false" />
-            <element signature="method#beforeTextChanged#0;class#13632:14131" expanded="false" />
-            <element signature="method#initSetButtons#0;class#TrainingFragment#0" expanded="false" />
-            <element signature="method#onSelected#0;class#TrainingFragment#0" expanded="false" />
-            <element signature="method#onResume#0;class#TrainingFragment#0" expanded="false" />
-            <element signature="method#goDialogProgress#0;class#TrainingFragment#0" expanded="false" />
-            <element signature="method#saveExercicesToDatabase#0;class#TrainingFragment#0" expanded="false" />
-            <element signature="method#onCreateOptionsMenu#0;class#TrainingFragment#0" expanded="false" />
-            <element signature="method#onOptionsItemSelected#0;class#TrainingFragment#0" expanded="false" />
-            <element signature="method#onActivityResult#0;class#TrainingFragment#0" expanded="false" />
-            <element signature="method#updateTimer#0;class#TrainingFragment#0" expanded="false" />
-            <element signature="method#onClick#0;class#TrainingFragment#0" expanded="false" />
-            <element signature="method#showPopup#0;class#TrainingFragment#0" expanded="false" />
-            <element signature="method#hidePopup#0;class#TrainingFragment#0" expanded="false" />
-            <element signature="method#onCheckedChanged#0;class#TrainingFragment#0" expanded="false" />
-            <element signature="method#saveSetsToPreferences#0;class#TrainingFragment#0" expanded="false" />
-            <element signature="method#restoreSetsFromPreferences#0;class#TrainingFragment#0" expanded="false" />
-            <element signature="method#playSound#0;class#TrainingFragment#0" expanded="false" />
-            <element signature="method#updateAdapter#0;class#TrainingFragment#0" expanded="false" />
-            <element signature="method#dpFromPx#0;class#TrainingFragment#0" expanded="false" />
-            <element signature="method#pxFromDp#0;class#TrainingFragment#0" expanded="false" />
-            <element signature="class#RepsAdapter#0;class#TrainingFragment#0" expanded="false" />
-            <element signature="method#RepsAdapter#0;class#RepsAdapter#0;class#TrainingFragment#0" expanded="false" />
-            <element signature="method#getItem#0;class#RepsAdapter#0;class#TrainingFragment#0" expanded="false" />
-            <element signature="class#WeightsAdapter#0;class#TrainingFragment#0" expanded="false" />
-            <element signature="method#WeightsAdapter#0;class#WeightsAdapter#0;class#TrainingFragment#0" expanded="false" />
-            <element signature="method#getItem#0;class#WeightsAdapter#0;class#TrainingFragment#0" expanded="false" />
-            <element signature="method#generateViewId#0;class#TrainingFragment#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_base.xml">
       <provider editor-type-id="android-designer">
         <state />
@@ -1965,7 +1902,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/activities/BaseActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5991649" vertical-offset="3659" max-vertical-offset="4794">
+        <state vertical-scroll-proportion="0.0" vertical-offset="3659" max-vertical-offset="4794">
           <caret line="513" column="9" selection-start-line="513" selection-start-column="9" selection-end-line="513" selection-end-column="9" />
           <folding>
             <element signature="initializer##0;class#BaseActivity#0" expanded="false" />
@@ -1994,6 +1931,60 @@
             <element signature="class#RandomString#0;class#BaseActivity#0" expanded="false" />
             <element signature="method#RandomString#0;class#RandomString#0;class#BaseActivity#0" expanded="false" />
             <element signature="method#nextString#0;class#RandomString#0;class#BaseActivity#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.14196242" vertical-offset="68" max-vertical-offset="3077">
+          <caret line="12" column="62" selection-start-line="12" selection-start-column="62" selection-end-line="12" selection-end-column="62" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/fragments/TrainingFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.80480164" vertical-offset="2799" max-vertical-offset="4012">
+          <caret line="965" column="36" selection-start-line="965" selection-start-column="36" selection-end-line="965" selection-end-column="36" />
+          <folding>
+            <element signature="class#5351:8414" expanded="false" />
+            <element signature="method#onCreateActionMode#0;class#5351:8414" expanded="false" />
+            <element signature="method#onPrepareActionMode#0;class#5351:8414" expanded="false" />
+            <element signature="method#onActionItemClicked#0;class#5351:8414" expanded="false" />
+            <element signature="method#onDestroyActionMode#0;class#5351:8414" expanded="false" />
+            <element signature="e#8512#8541#0" expanded="false" />
+            <element signature="e#8512#8541#0" expanded="false" />
+            <element signature="method#onSwapped#0;class#TrainingFragment#0" expanded="false" />
+            <element signature="method#swapElements#0;class#TrainingFragment#0" expanded="false" />
+            <element signature="method#loadExercisesFromDbAndUpdateList#0;class#TrainingFragment#0" expanded="false" />
+            <element signature="method#onCreate#0;class#TrainingFragment#0" expanded="false" />
+            <element signature="method#onCreateView#0;class#TrainingFragment#0" expanded="false" />
+            <element signature="class#13632:14131" expanded="false" />
+            <element signature="method#onTextChanged#0;class#13632:14131" expanded="false" />
+            <element signature="method#beforeTextChanged#0;class#13632:14131" expanded="false" />
+            <element signature="method#onResume#0;class#TrainingFragment#0" expanded="false" />
+            <element signature="method#goDialogProgress#0;class#TrainingFragment#0" expanded="false" />
+            <element signature="method#onPause#0;class#TrainingFragment#0" expanded="false" />
+            <element signature="method#onCreateOptionsMenu#0;class#TrainingFragment#0" expanded="false" />
+            <element signature="method#onOptionsItemSelected#0;class#TrainingFragment#0" expanded="false" />
+            <element signature="method#onActivityResult#0;class#TrainingFragment#0" expanded="false" />
+            <element signature="method#updateTimer#0;class#TrainingFragment#0" expanded="false" />
+            <element signature="method#onClick#0;class#TrainingFragment#0" expanded="false" />
+            <element signature="method#showPopup#0;class#TrainingFragment#0" expanded="false" />
+            <element signature="method#hidePopup#0;class#TrainingFragment#0" expanded="false" />
+            <element signature="method#onCheckedChanged#0;class#TrainingFragment#0" expanded="false" />
+            <element signature="method#saveSetsToPreferences#0;class#TrainingFragment#0" expanded="false" />
+            <element signature="method#restoreSetsFromPreferences#0;class#TrainingFragment#0" expanded="false" />
+            <element signature="method#playSound#0;class#TrainingFragment#0" expanded="false" />
+            <element signature="method#updateAdapter#0;class#TrainingFragment#0" expanded="false" />
+            <element signature="method#dpFromPx#0;class#TrainingFragment#0" expanded="false" />
+            <element signature="class#RepsAdapter#0;class#TrainingFragment#0" expanded="false" />
+            <element signature="method#RepsAdapter#0;class#RepsAdapter#0;class#TrainingFragment#0" expanded="false" />
+            <element signature="method#getItem#0;class#RepsAdapter#0;class#TrainingFragment#0" expanded="false" />
+            <element signature="class#WeightsAdapter#0;class#TrainingFragment#0" expanded="false" />
+            <element signature="method#WeightsAdapter#0;class#WeightsAdapter#0;class#TrainingFragment#0" expanded="false" />
+            <element signature="method#getItem#0;class#WeightsAdapter#0;class#TrainingFragment#0" expanded="false" />
           </folding>
         </state>
       </provider>
