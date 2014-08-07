@@ -30,6 +30,7 @@ import android.widget.Toast;
 
 import com.nethergrim.combogymdiary.DB;
 import com.nethergrim.combogymdiary.R;
+import com.nethergrim.combogymdiary.activities.BaseActivity;
 import com.nethergrim.combogymdiary.dialogs.DialogAddExercise;
 import com.nethergrim.combogymdiary.view.FloatingActionButton;
 
@@ -192,6 +193,7 @@ public class ExerciseListFragment extends Fragment implements
         }
         return super.onContextItemSelected(item);
     }
+
 
     public static interface OnExerciseEdit {
         public void onExerciseEdit(int pos, long id);

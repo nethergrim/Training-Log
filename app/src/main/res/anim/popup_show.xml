@@ -4,14 +4,14 @@
 
     <alpha android:fromAlpha="0.3"
         android:toAlpha="1.0"
-        android:interpolator="@android:anim/accelerate_decelerate_interpolator"
+        android:interpolator="@android:anim/overshoot_interpolator"
         android:duration="300"
         android:repeatCount="0"/>
 
-    <translate android:fromYDelta="-600"
+    <translate android:fromYDelta="-700"
         android:toYDelta="0"
         android:duration="300"
-        android:interpolator="@android:anim/accelerate_decelerate_interpolator"
+        android:interpolator="@android:anim/overshoot_interpolator"
         android:repeatCount="0"
         />
 

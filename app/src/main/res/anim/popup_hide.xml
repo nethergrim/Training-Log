@@ -9,7 +9,7 @@
         android:repeatCount="0"/>
 
     <translate android:fromYDelta="0"
-        android:toYDelta="200"
+        android:toYDelta="700"
         android:duration="300"
         android:interpolator="@android:anim/accelerate_decelerate_interpolator"
         android:repeatCount="0"

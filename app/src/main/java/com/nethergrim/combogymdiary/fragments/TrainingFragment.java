@@ -9,7 +9,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
-import android.graphics.Typeface;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.RingtoneManager;
@@ -24,6 +23,7 @@ import android.text.TextWatcher;
 import android.util.SparseBooleanArray;
 import android.view.ActionMode;
 import android.view.Display;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -38,39 +38,38 @@ import android.widget.AdapterView;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.nethergrim.combogymdiary.DB;
-import com.nethergrim.combogymdiary.activities.BaseActivity;
-import com.nethergrim.combogymdiary.view.DynamicListView;
-import com.nethergrim.combogymdiary.view.DynamicListView.onElementsSwapped;
 import com.nethergrim.combogymdiary.R;
-import com.nethergrim.combogymdiary.tools.StableArrayAdapter;
-import com.nethergrim.combogymdiary.service.TrainingService;
+import com.nethergrim.combogymdiary.activities.BaseActivity;
 import com.nethergrim.combogymdiary.activities.EditingProgramAtTrainingActivity;
 import com.nethergrim.combogymdiary.activities.HistoryDetailedActivity;
 import com.nethergrim.combogymdiary.dialogs.DialogAddCommentToTraining;
 import com.nethergrim.combogymdiary.dialogs.DialogExitFromTraining;
+import com.nethergrim.combogymdiary.service.TrainingService;
+import com.nethergrim.combogymdiary.tools.StableArrayAdapter;
+import com.nethergrim.combogymdiary.view.DynamicListView;
+import com.nethergrim.combogymdiary.view.DynamicListView.onElementsSwapped;
+import com.nethergrim.combogymdiary.view.FloatingActionButton;
 import com.yandex.metrica.Counter;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.StringTokenizer;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import kankan.wheel.widget.WheelView;
 import kankan.wheel.widget.adapters.AbstractWheelTextAdapter;
-import kankan.wheel.widget.adapters.WheelViewAdapter;
 
 public class TrainingFragment extends Fragment implements
-        OnCheckedChangeListener, OnClickListener, onElementsSwapped {
+        OnCheckedChangeListener, OnClickListener, onElementsSwapped, BaseActivity.OnDrawerEvent {
 
     public final static String TRAINING_AT_PROGRESS = "training_at_progress";
     public final static String TRA_ID = "tra_id";
@@ -82,6 +81,7 @@ public class TrainingFragment extends Fragment implements
     private final static String TIMER_IS_ON = "timerIsOn";
     public String RINGTONE = "ringtone";
     private ActionBar bar;
+    private static final AtomicInteger sNextGeneratedId = new AtomicInteger(1);
     private Boolean tglChecked = true, vibrate = false;
     private EditText etTimer;
     private DB db;
@@ -115,11 +115,7 @@ public class TrainingFragment extends Fragment implements
         }
     };
     private Handler timerHandler = new Handler();
-    private LinearLayout llBack;
-    private LinearLayout llSave;
-    private LinearLayout llForward;
     private LinearLayout llBottom;
-    private ImageView ivBack, ivForward;
     private Animation anim = null;
     private boolean isTrainingAtProgress = false, toPlaySound = false;
     private ProgressDialog pd;
@@ -127,12 +123,16 @@ public class TrainingFragment extends Fragment implements
             blockedSelection = false;
     private DynamicListView listView;
     private StableArrayAdapter adapter;
+    private FloatingActionButton fabLeft, fabRight, fabCenter;
     private ActionMode.Callback mActionModeCallback = new ActionMode.Callback() {
 
         @Override
         public boolean onCreateActionMode(ActionMode mode, Menu menu) {
             MenuInflater inflater = mode.getMenuInflater();
             inflater.inflate(R.menu.cab_training, menu);
+            fabLeft.hide();
+            fabRight.hide();
+            fabCenter.hide();
             return true;
         }
 
@@ -151,6 +151,7 @@ public class TrainingFragment extends Fragment implements
         @Override
         public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
             if (item.getItemId() == R.id.cab_delete) {
+
                 long[] itemsChecked = listView.getCheckedItemIds();
                 SparseBooleanArray deletingPositions = listView
                         .getCheckedItemPositions();
@@ -170,8 +171,6 @@ public class TrainingFragment extends Fragment implements
                             alSetList.remove(i - 1);
                         }
                     }
-
-                    // adapter.notifyDataSetChanged();
                     updateAdapter();
                 }
 
@@ -207,9 +206,11 @@ public class TrainingFragment extends Fragment implements
                 listView.setItemChecked(0, true);
                 llBottom.setVisibility(View.VISIBLE);
             }
-
+            fabCenter.show();
+            initSetButtons();
         }
     };
+    private int btnSaveId, btnBackId, btnForwardId;
 
     @SuppressWarnings("rawtypes")
     @Override
@@ -271,6 +272,24 @@ public class TrainingFragment extends Fragment implements
                 new Intent(getActivity(), TrainingService.class));
         startTime = System.currentTimeMillis();
         sp.edit().putLong(START_TIME, startTime);
+        fabLeft = new FloatingActionButton.Builder(getActivity())
+                .withDrawable(getResources().getDrawable(R.drawable.ic_action_back))
+                .withButtonColor(getResources().getColor(R.color.holo_blue_light))
+                .withGravity(Gravity.BOTTOM | Gravity.LEFT)
+                .withMargins(16, 0, 0, 16)
+                .create();
+        fabCenter = new FloatingActionButton.Builder(getActivity())
+                .withDrawable(getResources().getDrawable(R.drawable.ic_action_save))
+                .withButtonColor(getResources().getColor(R.color.holo_blue_light))
+                .withGravity(Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL)
+                .withMargins(0, 0, 0, 16)
+                .create();
+        fabRight = new FloatingActionButton.Builder(getActivity())
+                .withDrawable(getResources().getDrawable(R.drawable.ic_action_forward))
+                .withButtonColor(getResources().getColor(R.color.holo_blue_light))
+                .withGravity(Gravity.BOTTOM | Gravity.RIGHT)
+                .withMargins(0, 0, 16, 16)
+                .create();
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -279,35 +298,23 @@ public class TrainingFragment extends Fragment implements
                 R.layout.training_at_progress_new_wheel_new_list, null);
         LinearLayout llTimerProgress = (LinearLayout) v.findViewById(R.id.llProgressShow);
 
+
         llTimerProgress.setVisibility(View.GONE);
         llBottom = (LinearLayout) v.findViewById(R.id.LLBottom);
-        anim = AnimationUtils.loadAnimation(getActivity(),
-                R.anim.setfortraining);
-        llBack = (LinearLayout) v.findViewById(R.id.llBtnBack);
-        llSave = (LinearLayout) v.findViewById(R.id.llBtnSave);
-        llForward = (LinearLayout) v.findViewById(R.id.llBtnForward);
-        llBack.setOnClickListener(this);
-        llSave.setOnClickListener(this);
-        llForward.setOnClickListener(this);
-        llBack.setEnabled(false);
-        llForward.setEnabled(false);
+        anim = AnimationUtils.loadAnimation(getActivity(),   R.anim.setfortraining);
         tvWeight = (TextView) v.findViewById(R.id.textView4__);
-        ivBack = (ImageView) v.findViewById(R.id.imageView2);
-        ivForward = (ImageView) v.findViewById(R.id.imageView3);
         repsWheel = (WheelView) v.findViewById(R.id.wheelReps);
         repsWheel.setVisibleItems(7);
         repsWheel.setWheelBackground(R.drawable.wheel_bg_holo);
         repsWheel.setWheelForeground(R.drawable.wheel_val_holo);
         repsWheel.setShadowColor(0xFFFFFF, 0xFFFFFF, 0xFFFFFF);
-        repsWheel.setViewAdapter((WheelViewAdapter) new RepsAdapter(
-                getActivity()));
+        repsWheel.setViewAdapter(new RepsAdapter(getActivity()));
         weightWheel = (WheelView) v.findViewById(R.id.wheelWeight);
         weightWheel.setVisibleItems(7);
         weightWheel.setWheelBackground(R.drawable.wheel_bg_holo);
         weightWheel.setWheelForeground(R.drawable.wheel_val_holo);
         weightWheel.setShadowColor(0xFFFFFF, 0xFFFFFF, 0xFFFFFF);
-        weightWheel.setViewAdapter((WheelViewAdapter) new WeightsAdapter(
-                getActivity()));
+        weightWheel.setViewAdapter(new WeightsAdapter(getActivity()));
         ToggleButton tglTimerOn = (ToggleButton) v.findViewById(R.id.tglTurnOff);
         tglTimerOn.setOnCheckedChangeListener(this);
         etTimer = (EditText) v.findViewById(R.id.etTimerValueAtTraining);
@@ -351,9 +358,7 @@ public class TrainingFragment extends Fragment implements
         onSelected(sp.getInt(CHECKED_POSITION, 0));
         SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
         date = sdf.format(new Date(System.currentTimeMillis()));
-
-        tvInfoText.setTextColor(getResources().getColor(
-                R.color.holo_orange_dark));
+        tvInfoText.setTextColor(getResources().getColor(R.color.holo_orange_dark));
         boolean isTimerOn = sp.getBoolean(TIMER_IS_ON, false);
         if (isTimerOn) {
             tglTimerOn.setChecked(true);
@@ -364,23 +369,37 @@ public class TrainingFragment extends Fragment implements
             tglChecked = false;
             etTimer.setEnabled(false);
         }
+
+        fabCenter.hide();
+        fabRight.hide();
+        fabLeft.hide();
+        fabRight.setOnClickListener(this);
+        fabLeft.setOnClickListener(this);
+        fabCenter.setOnClickListener(this);
+        fabCenter.setId(generateViewId());
+        fabLeft.setId(generateViewId());
+        fabRight.setId(generateViewId());
+        btnSaveId = fabCenter.getId();
+        btnBackId = fabLeft.getId();
+        btnForwardId = fabRight.getId();
+
         return v;
     }
 
     private void initSetButtons() {
-        if (set > 0 && currentSet > 0) {
-            llBack.setEnabled(true);
-            ivBack.setAlpha(1.0F);
-        } else {
-            llBack.setEnabled(false);
-            ivBack.setAlpha(0.35F);
-        }
-        if (currentSet < set) {
-            llForward.setEnabled(true);
-            ivForward.setAlpha(1.0F);
-        } else {
-            llForward.setEnabled(false);
-            ivForward.setAlpha(0.35F);
+        try {
+            if (set > 0 && currentSet > 0) {
+                fabLeft.show();
+            } else {
+                fabLeft.hide();
+            }
+            if (currentSet < set) {
+                fabRight.show();
+            } else {
+                fabRight.hide();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -464,6 +483,7 @@ public class TrainingFragment extends Fragment implements
             }
         }
         timerHandler.postDelayed(timerRunnable, 0);
+        fabCenter.show();
 
         h = new Handler() {
             public void handleMessage(Message msg) {
@@ -538,6 +558,9 @@ public class TrainingFragment extends Fragment implements
         sp.edit().putInt(TOTAL_WEIGHT, total).apply();
         isTrainingAtProgress = true;
         saveExercicesToDatabase();
+        fabRight.hide();
+        fabLeft.hide();
+        fabCenter.hide();
     }
 
     private void saveExercicesToDatabase() {
@@ -661,7 +684,7 @@ public class TrainingFragment extends Fragment implements
                     Toast.LENGTH_LONG).show();
             return;
         }
-        if (id == R.id.llBtnSave && currentSet == set && !btnBlocked) {
+        if (id == btnSaveId && currentSet == set && !btnBlocked) {
             int wei = (weightWheel.getCurrentItem() + 1);
             int rep_s = (repsWheel.getCurrentItem() + 1);
             int tmp = alSetList.get(checkedPosition);
@@ -692,7 +715,7 @@ public class TrainingFragment extends Fragment implements
                 tvInfoText.setText(getResources().getString(R.string.new_set)
                         + " (" + (set + 1) + ")");
             }
-        } else if (id == R.id.llBtnSave && currentSet < set) {
+        } else if (id == btnSaveId && currentSet < set) {
             int wei = (weightWheel.getCurrentItem() + 1);
             int rep_s = (repsWheel.getCurrentItem() + 1);
             db.updateRec_Main(currentId, 4, null, wei);
@@ -701,7 +724,7 @@ public class TrainingFragment extends Fragment implements
                     .show();
             currentSet = set;
             onSelected(checkedPosition);
-        } else if (id == R.id.llBtnBack) {
+        } else if (id == btnBackId) {
             if (currentSet > 0) {
                 llBottom.startAnimation(anim);
                 currentSet--;
@@ -720,7 +743,7 @@ public class TrainingFragment extends Fragment implements
                         + (currentSet + 1) + ")");
             }
 
-        } else if (id == R.id.llBtnForward) {
+        } else if (id == btnForwardId) {
             if (currentSet < set - 1) {
                 llBottom.startAnimation(anim);
                 currentSet++;
@@ -745,22 +768,22 @@ public class TrainingFragment extends Fragment implements
     }
 
     private void showPopup() {
-        if (oldReps > 0 && oldWeight > 0){
+        if (oldReps > 0 && oldWeight > 0) {
             int wei = (weightWheel.getCurrentItem() + 1);
             int rep_s = (repsWheel.getCurrentItem() + 1);
 
             int weightDelta = wei - oldWeight;
             int repsDelta = rep_s - oldReps;
 
-            LayoutInflater inflater = (LayoutInflater)getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View v = inflater.inflate(R.layout.popup_training_layout, null);
 
             TextView textViewWeightDelta = (TextView) v.findViewById(R.id.text_weight_delta);
-            TextView text1 = (TextView)v.findViewById(R.id.text1);
-            TextView textViewRepsDelta = (TextView)v.findViewById(R.id.text_reps_delta);
-            TextView text2 = (TextView)v.findViewById(R.id.text2);
+            TextView text1 = (TextView) v.findViewById(R.id.text1);
+            TextView textViewRepsDelta = (TextView) v.findViewById(R.id.text_reps_delta);
+            TextView text2 = (TextView) v.findViewById(R.id.text2);
 
-            if (weightDelta > 0){
+            if (weightDelta > 0) {
                 textViewWeightDelta.setTextColor(getActivity().getResources().getColor(R.color.holo_green_light));
                 text1.setTextColor(getActivity().getResources().getColor(R.color.holo_green_light));
                 textViewWeightDelta.setText("+" + String.valueOf(weightDelta));
@@ -770,11 +793,11 @@ public class TrainingFragment extends Fragment implements
                 textViewWeightDelta.setText(String.valueOf(weightDelta));
             }
 
-            if(repsDelta > 0){
+            if (repsDelta > 0) {
                 textViewRepsDelta.setTextColor(getActivity().getResources().getColor(R.color.holo_green_light));
                 text2.setTextColor(getActivity().getResources().getColor(R.color.holo_green_light));
                 textViewRepsDelta.setText("+" + String.valueOf(weightDelta));
-            }else {
+            } else {
                 textViewRepsDelta.setText(String.valueOf(repsDelta));
                 textViewRepsDelta.setTextColor(getActivity().getResources().getColor(R.color.holo_red_light));
                 text2.setTextColor(getActivity().getResources().getColor(R.color.holo_red_light));
@@ -784,7 +807,7 @@ public class TrainingFragment extends Fragment implements
             Display display = wm.getDefaultDisplay();
             int widthDp = dpFromPx(display.getWidth());
 
-            popupWindow = new PopupWindow(v, pxFromDp(widthDp-24),  pxFromDp(120));
+            popupWindow = new PopupWindow(v, pxFromDp(widthDp - 24), pxFromDp(120));
             popupWindow.setAnimationStyle(R.style.PopupAnimation);
             popupWindow.showAsDropDown(listView, pxFromDp(8), pxFromDp(20));
             btnBlocked = true;
@@ -792,9 +815,9 @@ public class TrainingFragment extends Fragment implements
             Thread thread = new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    try{
+                    try {
                         Thread.sleep(2500);
-                    } catch (Exception e){
+                    } catch (Exception e) {
 
                     }
                     getActivity().runOnUiThread(new Runnable() {
@@ -804,9 +827,9 @@ public class TrainingFragment extends Fragment implements
                         }
                     });
 
-                    try{
+                    try {
                         Thread.sleep(100);
-                    } catch (Exception e){
+                    } catch (Exception e) {
 
                     }
 
@@ -832,9 +855,9 @@ public class TrainingFragment extends Fragment implements
 
     }
 
-    private void hidePopup(){
+    private void hidePopup() {
         btnBlocked = false;
-        if (popupWindow != null && popupWindow.isShowing()){
+        if (popupWindow != null && popupWindow.isShowing()) {
             popupWindow.dismiss();
         }
     }
@@ -900,6 +923,35 @@ public class TrainingFragment extends Fragment implements
         listView.setAdapter(adapter);
     }
 
+    private int dpFromPx(float px) {
+        return (int) (px / getActivity().getResources().getDisplayMetrics().density);
+    }
+
+    private int pxFromDp(float dp) {
+        return (int) (dp * getActivity().getResources().getDisplayMetrics().density);
+    }
+
+    @Override
+    public void onDrawerClosed() {
+        try {
+            fabCenter.show();
+            initSetButtons();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onDrawerOpened() {
+        try {
+            fabCenter.hide();
+            fabRight.hide();
+            fabLeft.hide();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     private class RepsAdapter extends AbstractWheelTextAdapter {
         ArrayList<String> reps = new ArrayList<String>();
 
@@ -957,15 +1009,15 @@ public class TrainingFragment extends Fragment implements
         }
     }
 
-
-    private int dpFromPx(float px)
-    {
-        return (int) (px / getActivity().getResources().getDisplayMetrics().density);
+    public static int generateViewId() {
+        for (; ; ) {
+            final int result = sNextGeneratedId.get();
+            // aapt-generated IDs have the high byte nonzero; clamp to the range under that.
+            int newValue = result + 1;
+            if (newValue > 0x00FFFFFF) newValue = 1; // Roll over to 1, not 0.
+            if (sNextGeneratedId.compareAndSet(result, newValue)) {
+                return result;
+            }
+        }
     }
-
-    private int pxFromDp(float dp)
-    {
-        return (int) (dp * getActivity().getResources().getDisplayMetrics().density);
-    }
-
 }

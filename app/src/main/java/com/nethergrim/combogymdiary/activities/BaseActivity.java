@@ -107,6 +107,7 @@ public class BaseActivity extends AnalyticsActivity implements
     private StartAppAd startAppAd = new StartAppAd(this);
     private ServiceConnection mServiceConn;
     private int adCounter = 0, adLimitCounter = 4;
+    private OnDrawerEvent onDrawerEventListener;
 
     static {
         for (int idx = 0; idx < 10; ++idx)
@@ -158,6 +159,7 @@ public class BaseActivity extends AnalyticsActivity implements
         getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setDisplayShowHomeEnabled(false);
         getActionBar().setHomeButtonEnabled(true);
+        onDrawerEventListener = trainingFragment;
         mDrawerToggle = new ActionBarDrawerToggle(this, /* host Activity */
                 mDrawerLayout, /* DrawerLayout object */
                 R.drawable.ic_drawer, /* nav drawer image to replace 'Up' caret */
@@ -165,14 +167,17 @@ public class BaseActivity extends AnalyticsActivity implements
                 R.string.drawer_close /* "close drawer" description for accessibility */
         ) {
             public void onDrawerClosed(View view) {
+                onDrawerEventListener.onDrawerClosed();
                 invalidateOptionsMenu();
             }
 
             public void onDrawerOpened(View drawerView) {
+                onDrawerEventListener.onDrawerOpened();
                 invalidateOptionsMenu();
             }
         };
         mDrawerLayout.setDrawerListener(mDrawerToggle);
+        onDrawerEventListener = trainingFragment;
         sp = PreferenceManager.getDefaultSharedPreferences(this);
         if (sp.getBoolean(TRAINING_AT_PROGRESS, false)) {
             currentFragment = trainingFragment;
@@ -614,5 +619,10 @@ public class BaseActivity extends AnalyticsActivity implements
             return new String(buf);
         }
 
+    }
+
+    public interface OnDrawerEvent{
+        public void onDrawerClosed();
+        public void onDrawerOpened();
     }
 }
