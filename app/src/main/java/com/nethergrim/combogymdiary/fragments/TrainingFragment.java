@@ -211,6 +211,7 @@ public class TrainingFragment extends Fragment implements
         }
     };
     private int btnSaveId, btnBackId, btnForwardId;
+    private boolean isResumed = false;
 
     @SuppressWarnings("rawtypes")
     @Override
@@ -448,6 +449,7 @@ public class TrainingFragment extends Fragment implements
 
     public void onResume() {
         super.onResume();
+        isResumed = true;
         listView.setKeepScreenOn(!(sp.getBoolean("toTurnOff", false)));
         vibrate = sp.getBoolean("vibrateOn", true);
         String vl = sp.getString("vibtateLenght", "2");
@@ -558,6 +560,16 @@ public class TrainingFragment extends Fragment implements
         sp.edit().putInt(TOTAL_WEIGHT, total).apply();
         isTrainingAtProgress = true;
         saveExercicesToDatabase();
+        fabRight.hide();
+        fabLeft.hide();
+        fabCenter.hide();
+        isResumed = false;
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        isResumed = false;
         fabRight.hide();
         fabLeft.hide();
         fabCenter.hide();
@@ -933,23 +945,29 @@ public class TrainingFragment extends Fragment implements
 
     @Override
     public void onDrawerClosed() {
-        try {
-            fabCenter.show();
-            initSetButtons();
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (isResumed){
+            try {
+                fabCenter.show();
+                initSetButtons();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
+
     }
 
     @Override
     public void onDrawerOpened() {
-        try {
-            fabCenter.hide();
-            fabRight.hide();
-            fabLeft.hide();
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (isResumed){
+            try {
+                fabCenter.hide();
+                fabRight.hide();
+                fabLeft.hide();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
+
     }
 
     private class RepsAdapter extends AbstractWheelTextAdapter {

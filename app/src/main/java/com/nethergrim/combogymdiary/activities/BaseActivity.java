@@ -103,7 +103,7 @@ public class BaseActivity extends AnalyticsActivity implements
     private StartTrainingFragment startTrainingFragment = new StartTrainingFragment();
     private TrainingFragment trainingFragment = new TrainingFragment();
     private Fragment currentFragment;
-    private Banner banner;
+//    private Banner banner;
     private StartAppAd startAppAd = new StartAppAd(this);
     private ServiceConnection mServiceConn;
     private int adCounter = 0, adLimitCounter = 4;
@@ -193,13 +193,13 @@ public class BaseActivity extends AnalyticsActivity implements
         }
         if (currentFragment != null)
             getFragmentManager().beginTransaction()
-                    .add(R.id.content, currentFragment).commit();
+                    .replace(R.id.content, currentFragment).commit();
         mDrawerList.setItemChecked(0, true);
         if (savedInstanceState == null) {
             onItemSelected(0);
         }
-        banner = (Banner) findViewById(R.id.startAppBanner);
-        banner.hideBanner();
+//        banner = (Banner) findViewById(R.id.startAppBanner);
+//        banner.hideBanner();
     }
 
     private boolean checkAd() {
@@ -260,10 +260,10 @@ public class BaseActivity extends AnalyticsActivity implements
                 Counter.sharedInstance().reportEvent(
                         "bought the " + sku + ".");
                 Prefs.getPreferences().setAdsRemoved(true);
-                if (banner != null) {
-                    banner.hideBanner();
-                    banner.setVisibility(View.GONE);
-                }
+//                if (banner != null) {
+//                    banner.hideBanner();
+//                    banner.setVisibility(View.GONE);
+//                }
                 initStrings();
                 adapter.notifyDataSetChanged();
             } catch (JSONException e) {
@@ -405,15 +405,15 @@ public class BaseActivity extends AnalyticsActivity implements
         super.onResume();
         startAppAd.onResume();
         Counter.sharedInstance().onResumeActivity(this);
-        if (banner != null) {
-            if (Prefs.getPreferences().getAdsRemoved()) {
-                banner.setVisibility(View.GONE);
-                banner.hideBanner();
-            } else {
-                banner.setVisibility(View.VISIBLE);
-                banner.showBanner();
-            }
-        }
+//        if (banner != null) {
+//            if (Prefs.getPreferences().getAdsRemoved()) {
+//                banner.setVisibility(View.GONE);
+//                banner.hideBanner();
+//            } else {
+//                banner.setVisibility(View.VISIBLE);
+//                banner.showBanner();
+//            }
+//        }
         initStrings();
         adapter.notifyDataSetChanged();
     }
@@ -449,10 +449,7 @@ public class BaseActivity extends AnalyticsActivity implements
 
     @Override
     public void onChoose() {
-        if (!Prefs.getPreferences().getAdsRemoved()) {
-            startAppAd.showAd();
-            startAppAd.loadAd();
-        }
+
 
         DB db = new DB(this);
         db.open();
@@ -511,6 +508,10 @@ public class BaseActivity extends AnalyticsActivity implements
                 R.string.startTrainingButtonString);
         adapter.notifyDataSetChanged();
         db.close();
+        if (!Prefs.getPreferences().getAdsRemoved()) {
+            startAppAd.showAd();
+            startAppAd.loadAd();
+        }
     }
 
     @Override
