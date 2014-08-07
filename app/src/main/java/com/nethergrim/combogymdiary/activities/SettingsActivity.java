@@ -3,29 +3,18 @@ package com.nethergrim.combogymdiary.activities;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.DialogFragment;
-import android.app.PendingIntent;
-import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentSender.SendIntentException;
-import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.IBinder;
-import android.os.RemoteException;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.android.vending.billing.IInAppBillingService;
-import com.nethergrim.combogymdiary.tools.AdChecker;
-import com.nethergrim.combogymdiary.tools.Backuper;
 import com.nethergrim.combogymdiary.DB;
 import com.nethergrim.combogymdiary.R;
 import com.nethergrim.combogymdiary.dialogs.DialogRestoreFromBackup;
@@ -33,14 +22,7 @@ import com.nethergrim.combogymdiary.dialogs.DialogRestoreFromBackup.MyInterface;
 import com.nethergrim.combogymdiary.googledrive.BaseDriveActivity;
 import com.nethergrim.combogymdiary.googledrive.DriveBackupActivity;
 import com.nethergrim.combogymdiary.googledrive.DriveRestoreActivity;
-import com.yandex.metrica.Counter;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.math.BigInteger;
-import java.security.SecureRandom;
-import java.util.Random;
+import com.nethergrim.combogymdiary.tools.Backuper;
 
 public class SettingsActivity extends PreferenceActivity implements MyInterface {
 

@@ -50,8 +50,8 @@ import com.nethergrim.combogymdiary.fragments.TrainingFragment;
 import com.nethergrim.combogymdiary.googledrive.BaseDriveActivity;
 import com.nethergrim.combogymdiary.googledrive.DriveBackupActivity;
 import com.nethergrim.combogymdiary.service.TrainingService;
-import com.nethergrim.combogymdiary.tools.AdChecker;
 import com.nethergrim.combogymdiary.tools.Backuper;
+import com.nethergrim.combogymdiary.tools.Prefs;
 import com.startapp.android.publish.StartAppAd;
 import com.startapp.android.publish.banner.Banner;
 import com.yandex.metrica.Counter;
@@ -106,7 +106,7 @@ public class BaseActivity extends AnalyticsActivity implements
     private Banner banner;
     private StartAppAd startAppAd = new StartAppAd(this);
     private ServiceConnection mServiceConn;
-    private int adCounter = 0, adLimitCounter = 3;
+    private int adCounter = 0, adLimitCounter = 4;
 
     static {
         for (int idx = 0; idx < 10; ++idx)
@@ -141,12 +141,12 @@ public class BaseActivity extends AnalyticsActivity implements
             }
 
             @Override
-            public void onServiceConnected(ComponentName name,IBinder service) {
+            public void onServiceConnected(ComponentName name, IBinder service) {
                 mService = IInAppBillingService.Stub.asInterface(service);
                 checkAd();
             }
         };
-        bindService(new Intent("com.android.vending.billing.InAppBillingService.BIND"), mServiceConn, Context.BIND_AUTO_CREATE );
+        bindService(new Intent("com.android.vending.billing.InAppBillingService.BIND"), mServiceConn, Context.BIND_AUTO_CREATE);
         setContentView(R.layout.activity_base);
         initStrings();
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -193,56 +193,34 @@ public class BaseActivity extends AnalyticsActivity implements
         if (savedInstanceState == null) {
             onItemSelected(0);
         }
-        if (sp.getBoolean("ad", false)) {
-            AdChecker.setPaid(true);
-        }
-
-        banner = (Banner)findViewById(R.id.startAppBanner);
+        banner = (Banner) findViewById(R.id.startAppBanner);
         banner.hideBanner();
-
     }
 
     private boolean checkAd() {
         try {
-            Bundle ownedItems = mService.getPurchases(3, getPackageName(),
-                    "inapp", null);
-
+            Bundle ownedItems = mService.getPurchases(3, getPackageName(), "inapp", null);
             int response = ownedItems.getInt("RESPONSE_CODE");
             if (response == 0) {
-                ArrayList<String> purchaseDataList = ownedItems
-                        .getStringArrayList("INAPP_PURCHASE_DATA_LIST");
-                Log.d("myLogs", "purchaseDataList.size() == "
-                        + purchaseDataList.size());
+                ArrayList<String> purchaseDataList = ownedItems.getStringArrayList("INAPP_PURCHASE_DATA_LIST");
+                Log.e("myLogs", "purchaseDataList.size() == " + purchaseDataList.size());
 
                 if (purchaseDataList.size() > 0) {
-                    AdChecker.setPaid(true);
-                    PreferenceManager.getDefaultSharedPreferences(this).edit()
-                            .putBoolean("ad", true).apply();
-                    Counter.sharedInstance()
-                            .reportEvent("checkAd() true, paid");
+                    Prefs.getPreferences().setAdsRemoved(true);
+                    Counter.sharedInstance().reportEvent("checkAd() true, paid");
                     return true;
                 } else if (purchaseDataList.size() == 0) {
-                    AdChecker.setPaid(false);
-
-                    PreferenceManager.getDefaultSharedPreferences(this).edit()
-                            .putBoolean("ad", false).apply();
-                    Counter.sharedInstance().reportEvent(
-                            "checkAd() false, not paid");
+                    Prefs.getPreferences().setAdsRemoved(false);
                     return false;
                 }
 
-                if (AdChecker.isPaid()
-                        && !PreferenceManager.getDefaultSharedPreferences(this)
-                        .getBoolean("ad", false)) {
-                    Counter.sharedInstance()
-                            .reportEvent(
-                                    "AdChecker.getIsPaid() && !PreferenceManager.getDefaultSharedPreferences(this).getBoolean(\"ad\", false)");
-                }
-
+            } else {
+                Prefs.getPreferences().setAdsRemoved(false);
             }
 
         } catch (RemoteException e) {
             Counter.sharedInstance().reportError("", e);
+            Prefs.getPreferences().setAdsRemoved(false);
         }
         return false;
     }
@@ -251,8 +229,7 @@ public class BaseActivity extends AnalyticsActivity implements
         try {
             RandomString randomString = new RandomString(36);
             String payload = randomString.nextString();
-            Bundle buyIntentBundle = mService.getBuyIntent(3, getPackageName(),
-                    "remove_ad", "inapp", payload);
+            Bundle buyIntentBundle = mService.getBuyIntent(3, getPackageName(), "remove_ad", "inapp", payload);
             int response = buyIntentBundle.getInt("BILLING_RESPONSE_RESULT_OK");
             if (response == 0) {
                 PendingIntent pendingIntent = buyIntentBundle.getParcelable("BUY_INTENT");
@@ -277,11 +254,13 @@ public class BaseActivity extends AnalyticsActivity implements
                 String sku = jo.getString("productId");
                 Counter.sharedInstance().reportEvent(
                         "bought the " + sku + ".");
-                AdChecker.setPaid(true);
+                Prefs.getPreferences().setAdsRemoved(true);
+                if (banner != null) {
+                    banner.hideBanner();
+                    banner.setVisibility(View.GONE);
+                }
                 initStrings();
                 adapter.notifyDataSetChanged();
-                PreferenceManager.getDefaultSharedPreferences(this).edit()
-                        .putBoolean("ad", true).apply();
             } catch (JSONException e) {
                 Counter.sharedInstance().reportError("", e);
             }
@@ -298,7 +277,7 @@ public class BaseActivity extends AnalyticsActivity implements
     }
 
     private void initStrings() {
-        if (!AdChecker.isPaid()) {
+        if (!Prefs.getPreferences().getAdsRemoved()) {
             listButtons = new String[9];
             listButtons[8] = getString(R.string.remove_ads);
         } else {
@@ -319,9 +298,9 @@ public class BaseActivity extends AnalyticsActivity implements
 
     public void onItemSelected(int position) {
         mDrawerLayout.closeDrawer(mDrawerList);
-        if (!AdChecker.isPaid()){
+        if (!Prefs.getPreferences().getAdsRemoved()) {
             adCounter++;
-            if (adCounter >= adLimitCounter){
+            if (adCounter >= adLimitCounter) {
                 adCounter = 0;
                 startAppAd.showAd();
                 startAppAd.loadAd();
@@ -420,11 +399,9 @@ public class BaseActivity extends AnalyticsActivity implements
     protected void onResume() {
         super.onResume();
         startAppAd.onResume();
-        AdChecker.setPaid(PreferenceManager.getDefaultSharedPreferences(this)
-                .getBoolean("ad", false));
         Counter.sharedInstance().onResumeActivity(this);
         if (banner != null) {
-            if (AdChecker.isPaid()){
+            if (Prefs.getPreferences().getAdsRemoved()) {
                 banner.setVisibility(View.GONE);
                 banner.hideBanner();
             } else {
@@ -467,7 +444,7 @@ public class BaseActivity extends AnalyticsActivity implements
 
     @Override
     public void onChoose() {
-        if (!AdChecker.isPaid()){
+        if (!Prefs.getPreferences().getAdsRemoved()) {
             startAppAd.showAd();
             startAppAd.loadAd();
         }
@@ -502,7 +479,7 @@ public class BaseActivity extends AnalyticsActivity implements
         sp.edit().putLong(START_TIME, 0);
 
         stopService(new Intent(this, TrainingService.class));
-
+        getActionBar().setSubtitle(null);
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.cancelAll();
 
@@ -524,7 +501,7 @@ public class BaseActivity extends AnalyticsActivity implements
         setTrainingAlreadyStarted(false);
         getFragmentManager().beginTransaction()
                 .replace(R.id.content, new StartTrainingFragment()).commit();
-        getActionBar().setSubtitle("");
+
         listButtons[0] = getResources().getString(
                 R.string.startTrainingButtonString);
         adapter.notifyDataSetChanged();
@@ -587,7 +564,8 @@ public class BaseActivity extends AnalyticsActivity implements
     @Override
     public void onBackPressed() {
         if (doubleBackToExitPressedOnce) {
-            startAppAd.onBackPressed();
+            if (!Prefs.getPreferences().getAdsRemoved())
+                startAppAd.onBackPressed();
             super.onBackPressed();
             return;
         }

@@ -12,6 +12,7 @@ import android.support.v4.content.Loader;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -29,15 +30,16 @@ import com.nethergrim.combogymdiary.DB;
 import com.nethergrim.combogymdiary.R;
 import com.nethergrim.combogymdiary.activities.AddingMeasurementActivity;
 import com.nethergrim.combogymdiary.activities.MeasurementsDetailedActivity;
+import com.nethergrim.combogymdiary.view.FloatingActionButton;
 
 public class MeasurementsFragment extends Fragment implements
         LoaderCallbacks<Cursor> {
 
     private static final int CM_DELETE_ID = 8;
     private static final int LOADER_ID = 4;
-    private ListView listview;
     private DB db;
     private SimpleCursorAdapter scAdapter;
+    private FloatingActionButton fab;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,9 +52,8 @@ public class MeasurementsFragment extends Fragment implements
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.activity_measurements, null);
-        getActivity().getActionBar().setTitle(
-                getResources().getString(R.string.measurements));
-        listview = (ListView) v.findViewById(R.id.lvMeasurements);
+        getActivity().getActionBar().setTitle(getResources().getString(R.string.measurements));
+        ListView listview = (ListView) v.findViewById(R.id.lvMeasurements);
 
         String[] from = new String[]{DB.DATE};
         int[] to = new int[]{R.id.tvCatName};
@@ -74,6 +75,21 @@ public class MeasurementsFragment extends Fragment implements
             }
         });
         registerForContextMenu(listview);
+        fab = new FloatingActionButton.Builder(getActivity())
+                .withDrawable(getResources().getDrawable(R.drawable.ic_action_new))
+                .withButtonColor(getResources().getColor(R.color.holo_blue_light))
+                .withGravity(Gravity.BOTTOM | Gravity.RIGHT)
+                .withMargins(0, 0, 16, 16)
+                .create();
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(),
+                        AddingMeasurementActivity.class);
+                startActivity(intent);
+            }
+        });
+        fab.hide();
         return v;
     }
 
@@ -87,8 +103,15 @@ public class MeasurementsFragment extends Fragment implements
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+        fab.hide();
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
+        fab.show();
         ((FragmentActivity) getActivity()).getSupportLoaderManager()
                 .getLoader(LOADER_ID).forceLoad();
     }
@@ -136,22 +159,8 @@ public class MeasurementsFragment extends Fragment implements
     }
 
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-
         menu.clear();
-        inflater.inflate(R.menu.measurements, menu);
         super.onCreateOptionsMenu(menu, inflater);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.action_add_measurements) {
-            Intent intent = new Intent(getActivity(),
-                    AddingMeasurementActivity.class);
-            startActivity(intent);
-            return true;
-        } else {
-            return false;
-        }
     }
 
     static class MyCursorLoader extends CursorLoader {

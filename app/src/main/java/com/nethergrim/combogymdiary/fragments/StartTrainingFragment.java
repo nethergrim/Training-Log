@@ -16,6 +16,7 @@ import android.support.v4.content.Loader;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -37,6 +38,7 @@ import com.nethergrim.combogymdiary.activities.AddingProgramActivity;
 import com.nethergrim.combogymdiary.activities.BaseActivity;
 import com.nethergrim.combogymdiary.activities.EditingProgramAtTrainingActivity;
 import com.nethergrim.combogymdiary.dialogs.DialogGoToMarket;
+import com.nethergrim.combogymdiary.view.FloatingActionButton;
 
 public class StartTrainingFragment extends Fragment implements
         LoaderCallbacks<Cursor> {
@@ -48,6 +50,7 @@ public class StartTrainingFragment extends Fragment implements
     private Cursor cursor;
     private SimpleCursorAdapter scAdapter;
     private OnSelectedListener mCallback;
+    private FloatingActionButton fab;
     private int LOADER_ID = 0;
 
     @Override
@@ -83,8 +86,7 @@ public class StartTrainingFragment extends Fragment implements
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.start_training, null);
         lvMain = (ListView) v.findViewById(R.id.lvStartTraining);
-        getActivity().getActionBar().setTitle(
-                R.string.startTrainingButtonString);
+        getActivity().getActionBar().setTitle(R.string.startTrainingButtonString);
 
         FrameLayout fl = (FrameLayout) v.findViewById(R.id.frameAd);
         fl.setVisibility(View.GONE);
@@ -97,17 +99,28 @@ public class StartTrainingFragment extends Fragment implements
         });
         ((FragmentActivity) getActivity()).getSupportLoaderManager()
                 .initLoader(LOADER_ID, null, this);
+        fab = new FloatingActionButton.Builder(getActivity())
+                .withDrawable(getResources().getDrawable(R.drawable.ic_action_new))
+                .withButtonColor(getResources().getColor(R.color.holo_blue_light))
+                .withGravity(Gravity.BOTTOM | Gravity.RIGHT)
+                .withMargins(0, 0, 16, 16)
+                .create();
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent gotoAddingProgramActivity = new Intent(getActivity(),
+                        AddingProgramActivity.class);
+                startActivity(gotoAddingProgramActivity);
+            }
+        });
+        fab.hide();
         return v;
     }
 
     public void onPause() {
         super.onPause();
+        fab.hide();
         unregisterForContextMenu(lvMain);
-    }
-
-    public void onStart() {
-        super.onStart();
-
     }
 
     public void onResume() {
@@ -124,25 +137,12 @@ public class StartTrainingFragment extends Fragment implements
                     "dialog_goto_market");
             dialog.setCancelable(false);
         }
+        fab.show();
     }
 
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         menu.clear();
-        inflater.inflate(R.menu.start_training_activity, menu);
         super.onCreateOptionsMenu(menu, inflater);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.itemAddNewProgramm) {
-            Intent gotoAddingProgramActivity = new Intent(getActivity(),
-                    AddingProgramActivity.class);
-            startActivity(gotoAddingProgramActivity);
-
-            return true;
-        }
-        return false;
     }
 
     public void onCreateContextMenu(ContextMenu menu, View v,

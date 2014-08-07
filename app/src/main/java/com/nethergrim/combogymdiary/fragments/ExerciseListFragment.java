@@ -14,6 +14,7 @@ import android.support.v4.content.Loader;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -30,6 +31,7 @@ import android.widget.Toast;
 import com.nethergrim.combogymdiary.DB;
 import com.nethergrim.combogymdiary.R;
 import com.nethergrim.combogymdiary.dialogs.DialogAddExercise;
+import com.nethergrim.combogymdiary.view.FloatingActionButton;
 
 public class ExerciseListFragment extends Fragment implements
         LoaderCallbacks<Cursor> {
@@ -43,6 +45,7 @@ public class ExerciseListFragment extends Fragment implements
     private SharedPreferences sp;
     private int LOADER_ID = 1;
     private OnExerciseEdit mListener;
+    private FloatingActionButton fab;
 
     @Override
     public void onAttach(Activity activity) {
@@ -82,6 +85,20 @@ public class ExerciseListFragment extends Fragment implements
         });
         ((FragmentActivity) getActivity()).getSupportLoaderManager()
                 .initLoader(LOADER_ID, null, this);
+        fab = new FloatingActionButton.Builder(getActivity())
+                .withDrawable(getResources().getDrawable(R.drawable.ic_action_new))
+                .withButtonColor(getResources().getColor(R.color.holo_blue_light))
+                .withGravity(Gravity.BOTTOM | Gravity.RIGHT)
+                .withMargins(0, 0, 16, 16)
+                .create();
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DialogAddExercise dialog = new DialogAddExercise();
+                dialog.show(getFragmentManager(), "tag");
+            }
+        });
+        fab.hide();
         return v;
     }
 
@@ -100,29 +117,18 @@ public class ExerciseListFragment extends Fragment implements
         sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
         ((FragmentActivity) getActivity()).getSupportLoaderManager()
                 .getLoader(LOADER_ID).forceLoad();
+        fab.show();
     }
 
     public void onPause() {
         super.onPause();
+        fab.hide();
         unregisterForContextMenu(listview);
     }
 
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-
         menu.clear();
-        inflater.inflate(R.menu.exercise_list, menu);
         super.onCreateOptionsMenu(menu, inflater);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.itemAddNewExe) {
-            DialogAddExercise dialog = new DialogAddExercise();
-            dialog.show(getFragmentManager(), "tag");
-            return true;
-        }
-        return false;
     }
 
     @Override

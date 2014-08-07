@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.nethergrim.combogymdiary"
     android:installLocation="auto"
-    android:versionCode="113"
-    android:versionName="1.4.35" >
+    android:versionCode="114"
+    android:versionName="1.4.36" >
 
     <uses-sdk
         android:minSdkVersion="15"
@@ -152,7 +152,7 @@
         <receiver
             android:name="WidgetStatistics"
             android:icon="@drawable/ic_launcher"
-            android:label="Example Widget of Training Diary" >
+            android:label="Widget for Training Log" >
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>

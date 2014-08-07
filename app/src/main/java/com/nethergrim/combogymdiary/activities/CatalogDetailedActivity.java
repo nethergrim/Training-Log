@@ -12,7 +12,6 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.plus.model.people.Person;
 import com.nethergrim.combogymdiary.R;
-import com.nethergrim.combogymdiary.tools.AdChecker;
 
 public class CatalogDetailedActivity extends AnalyticsActivity {
 
@@ -26,7 +25,6 @@ public class CatalogDetailedActivity extends AnalyticsActivity {
     private String[] biceps = null;
     private String[] triceps = null;
     private String[] abs = null;
-    private AdView adView;
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -59,24 +57,6 @@ public class CatalogDetailedActivity extends AnalyticsActivity {
         abs = getResources().getStringArray(R.array.exercisesArrayAbs);
         initInfo();
 
-        adView = (AdView) findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder().setGender(Person.Gender.MALE).build();
-        adView.loadAd(adRequest);
-        adView.setAdListener(new AdListener() {
-            @Override
-            public void onAdLoaded() {
-                super.onAdLoaded();
-                if (!AdChecker.isPaid()) {
-                    adView.setVisibility(View.VISIBLE);
-                }
-            }
-
-            @Override
-            public void onAdFailedToLoad(int errorCode) {
-                super.onAdFailedToLoad(errorCode);
-                adView.setVisibility(View.GONE);
-            }
-        });
 
     }
 
