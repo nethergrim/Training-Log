@@ -106,7 +106,7 @@ public class BaseActivity extends AnalyticsActivity implements
     private StartAppAd startAppAd = new StartAppAd(this);
     private ServiceConnection mServiceConn;
     private int adCounter = 0, adLimitCounter = 4;
-    private OnDrawerEvent onDrawerEventListener;
+    private OnDrawerEvent onDrawerEventListener = trainingFragment;
 
     static {
         for (int idx = 0; idx < 10; ++idx)
@@ -172,6 +172,7 @@ public class BaseActivity extends AnalyticsActivity implements
 
             public void onDrawerOpened(View drawerView) {
                 onDrawerEventListener.onDrawerOpened();
+                Log.e("log", "onDrawerOpened");
                 invalidateOptionsMenu();
             }
         };
@@ -433,8 +434,6 @@ public class BaseActivity extends AnalyticsActivity implements
 
     @Override
     public void onChoose() {
-
-
         DB db = new DB(this);
         db.open();
         Cursor tmpCursor = db.getDataMain(null, null, null, null, null, null);

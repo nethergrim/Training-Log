@@ -119,8 +119,7 @@ public class TrainingFragment extends Fragment implements
     private Animation anim = null;
     private boolean isTrainingAtProgress = false, toPlaySound = false;
     private ProgressDialog pd;
-    private boolean isActiveDialog = false, blocked = false,
-            blockedSelection = false;
+    private boolean isActiveDialog = false, blocked = false, blockedSelection = false;
     private DynamicListView listView;
     private StableArrayAdapter adapter;
     private FloatingActionButton fabLeft, fabRight, fabCenter;
@@ -273,6 +272,10 @@ public class TrainingFragment extends Fragment implements
                 new Intent(getActivity(), TrainingService.class));
         startTime = System.currentTimeMillis();
         sp.edit().putLong(START_TIME, startTime);
+        createButtons();
+    }
+
+    private void createButtons() {
         fabLeft = new FloatingActionButton.Builder(getActivity())
                 .withDrawable(getResources().getDrawable(R.drawable.ic_action_back))
                 .withButtonColor(getResources().getColor(R.color.holo_blue_light))
@@ -291,10 +294,22 @@ public class TrainingFragment extends Fragment implements
                 .withGravity(Gravity.BOTTOM | Gravity.RIGHT)
                 .withMargins(0, 0, 16, 16)
                 .create();
+
+        fabCenter.hide();
+        fabRight.hide();
+        fabLeft.hide();
+        fabRight.setOnClickListener(this);
+        fabLeft.setOnClickListener(this);
+        fabCenter.setOnClickListener(this);
+        fabCenter.setId(generateViewId());
+        fabLeft.setId(generateViewId());
+        fabRight.setId(generateViewId());
+        btnSaveId = fabCenter.getId();
+        btnBackId = fabLeft.getId();
+        btnForwardId = fabRight.getId();
     }
 
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(
                 R.layout.training_at_progress_new_wheel_new_list, null);
         LinearLayout llTimerProgress = (LinearLayout) v.findViewById(R.id.llProgressShow);
@@ -370,20 +385,6 @@ public class TrainingFragment extends Fragment implements
             tglChecked = false;
             etTimer.setEnabled(false);
         }
-
-        fabCenter.hide();
-        fabRight.hide();
-        fabLeft.hide();
-        fabRight.setOnClickListener(this);
-        fabLeft.setOnClickListener(this);
-        fabCenter.setOnClickListener(this);
-        fabCenter.setId(generateViewId());
-        fabLeft.setId(generateViewId());
-        fabRight.setId(generateViewId());
-        btnSaveId = fabCenter.getId();
-        btnBackId = fabLeft.getId();
-        btnForwardId = fabRight.getId();
-
         return v;
     }
 
@@ -957,7 +958,6 @@ public class TrainingFragment extends Fragment implements
 
     @Override
     public void onDrawerOpened() {
-        if (isResumed){
             try {
                 fabCenter.hide();
                 fabRight.hide();
@@ -965,7 +965,6 @@ public class TrainingFragment extends Fragment implements
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        }
     }
 
     private class RepsAdapter extends AbstractWheelTextAdapter {
