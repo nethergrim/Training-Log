@@ -5,8 +5,8 @@
     <string name="none">Empty</string>
     <string name="ads">Advertisement</string>
     <string name="weight_for_30_days">Weight within 30 days</string>
-	<string name="remove_ads">Remove ads</string>
-	<string name="remove_ads_detailed">Remove ads forever!</string>
+    <string name="remove_ads">Remove ads</string>
+    <string name="remove_ads_detailed">Remove ads forever!</string>
     <string name="parsing_error">Error in timer value! It will be set to 60 sec.</string>
     <string name="cannot_delete_all_exe">You can\`t remove all of the exercises</string>
     <string name="select_sound_to_play">Select the notification sound</string>
@@ -35,7 +35,6 @@
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
     <string name="faq">About</string>
-
     <string name="info">Info</string>
     <string name="why_do_i_need_this">Why do i need this app?</string>
     <string name="leave_feedback_market">Please leave your feedback and 5 stars on Google Play Market </string>
@@ -165,8 +164,7 @@
     <string name="previous_result_was">New set! Last time: </string>
     <string name="backup_database_to_sd">Backup database to SD card</string>
     <string name="replace_from_backup">Replase database from SD card</string>
-
-
-
+    <string name="title_activity_new_creating_training_day">NewCreatingTrainingDayActivity</string>
+    <string name="hello_world">Hello world!</string>
 
 </resources>

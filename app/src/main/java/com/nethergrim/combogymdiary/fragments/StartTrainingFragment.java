@@ -37,6 +37,7 @@ import com.nethergrim.combogymdiary.R;
 import com.nethergrim.combogymdiary.activities.AddingProgramActivity;
 import com.nethergrim.combogymdiary.activities.BaseActivity;
 import com.nethergrim.combogymdiary.activities.EditingProgramAtTrainingActivity;
+import com.nethergrim.combogymdiary.activities.NewCreatingTrainingDayActivity;
 import com.nethergrim.combogymdiary.dialogs.DialogGoToMarket;
 import com.nethergrim.combogymdiary.view.FloatingActionButton;
 
@@ -108,8 +109,7 @@ public class StartTrainingFragment extends Fragment implements
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent gotoAddingProgramActivity = new Intent(getActivity(),
-                        AddingProgramActivity.class);
+                Intent gotoAddingProgramActivity = new Intent(getActivity(), NewCreatingTrainingDayActivity.class);
                 startActivity(gotoAddingProgramActivity);
             }
         });

@@ -103,7 +103,6 @@ public class BaseActivity extends AnalyticsActivity implements
     private StartTrainingFragment startTrainingFragment = new StartTrainingFragment();
     private TrainingFragment trainingFragment = new TrainingFragment();
     private Fragment currentFragment;
-//    private Banner banner;
     private StartAppAd startAppAd = new StartAppAd(this);
     private ServiceConnection mServiceConn;
     private int adCounter = 0, adLimitCounter = 4;
@@ -198,8 +197,6 @@ public class BaseActivity extends AnalyticsActivity implements
         if (savedInstanceState == null) {
             onItemSelected(0);
         }
-//        banner = (Banner) findViewById(R.id.startAppBanner);
-//        banner.hideBanner();
     }
 
     private boolean checkAd() {
@@ -260,10 +257,6 @@ public class BaseActivity extends AnalyticsActivity implements
                 Counter.sharedInstance().reportEvent(
                         "bought the " + sku + ".");
                 Prefs.getPreferences().setAdsRemoved(true);
-//                if (banner != null) {
-//                    banner.hideBanner();
-//                    banner.setVisibility(View.GONE);
-//                }
                 initStrings();
                 adapter.notifyDataSetChanged();
             } catch (JSONException e) {
@@ -405,15 +398,6 @@ public class BaseActivity extends AnalyticsActivity implements
         super.onResume();
         startAppAd.onResume();
         Counter.sharedInstance().onResumeActivity(this);
-//        if (banner != null) {
-//            if (Prefs.getPreferences().getAdsRemoved()) {
-//                banner.setVisibility(View.GONE);
-//                banner.hideBanner();
-//            } else {
-//                banner.setVisibility(View.VISIBLE);
-//                banner.showBanner();
-//            }
-//        }
         initStrings();
         adapter.notifyDataSetChanged();
     }

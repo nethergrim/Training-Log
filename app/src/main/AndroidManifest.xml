@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.nethergrim.combogymdiary"
     android:installLocation="auto"
-    android:versionCode="116"
-    android:versionName="1.4.36" >
+    android:versionCode="117"
+    android:versionName="1.4.37" >
 
     <uses-sdk
         android:minSdkVersion="15"
@@ -16,12 +16,11 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
-
     <application
-        android:name="com.nethergrim.combogymdiary.MyApp"
+        android:name=".MyApp"
         android:allowBackup="false"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
@@ -32,7 +31,7 @@
             android:value="@integer/google_play_services_version" />
 
         <activity
-            android:name="com.nethergrim.combogymdiary.activities.StartActivity"
+            android:name=".activities.StartActivity"
             android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -41,34 +40,34 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.nethergrim.combogymdiary.activities.SettingsActivity"
+            android:name=".activities.SettingsActivity"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="com.nethergrim.combogymdiary.activities.AddingProgramActivity"
+            android:name=".activities.AddingProgramActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" >
         </activity>
         <activity
-            android:name="com.nethergrim.combogymdiary.activities.HistoryDetailedActivity"
+            android:name=".activities.HistoryDetailedActivity"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="com.nethergrim.combogymdiary.activities.CatalogDetailedActivity"
+            android:name=".activities.CatalogDetailedActivity"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="com.nethergrim.combogymdiary.activities.AddingMeasurementActivity"
+            android:name=".activities.AddingMeasurementActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" >
         </activity>
         <activity
-            android:name="com.nethergrim.combogymdiary.activities.MeasurementsDetailedActivity"
+            android:name=".activities.MeasurementsDetailedActivity"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="com.nethergrim.combogymdiary.activities.EditingProgramAtTrainingActivity"
+            android:name=".activities.EditingProgramAtTrainingActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" >
@@ -86,7 +85,7 @@
         <service
             android:name="com.yandex.metrica.MetricaService"
             android:process=":Metrica"
-            tools:ignore="ExportedService" >
+            tools:ignore="ExportedService">
             <intent-filter>
                 <category android:name="android.intent.category.DEFAULT" />
 
@@ -123,7 +122,7 @@
         </receiver>
 
         <provider
-            android:name="com.nethergrim.combogymdiary.provider.MetricaContentProvider"
+            android:name=".provider.MetricaContentProvider"
             android:authorities="com.nethergrim.combogymdiary.MetricaContentProvider"
             android:exported="true"
             tools:ignore="ExportedContentProvider" />
@@ -132,25 +131,24 @@
             android:name=".activities.BaseActivity"
             android:screenOrientation="portrait" >
         </activity>
-        <activity
-            android:name="com.nethergrim.combogymdiary.activities.StatisticsActivity" >
+        <activity android:name=".activities.StatisticsActivity" >
         </activity>
         <activity
             android:name="com.google.android.gms.ads.AdActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize" />
         <activity
-            android:name="com.nethergrim.combogymdiary.googledrive.DriveBackupActivity"
+            android:name=".googledrive.DriveBackupActivity"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.DeviceDefault.Light.NoActionBar" >
         </activity>
         <activity
-            android:name="com.nethergrim.combogymdiary.googledrive.DriveRestoreActivity"
+            android:name=".googledrive.DriveRestoreActivity"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.DeviceDefault.Light.NoActionBar" >
         </activity>
 
         <receiver
-            android:name="WidgetStatistics"
+            android:name=".WidgetStatistics"
             android:icon="@drawable/ic_launcher"
             android:label="Widget for Training Log" >
             <intent-filter>
@@ -162,15 +160,18 @@
                 android:resource="@xml/widget_info" />
         </receiver>
 
-        <activity android:name="com.startapp.android.publish.list3d.List3DActivity"
+        <activity
+            android:name="com.startapp.android.publish.list3d.List3DActivity"
             android:theme="@android:style/Theme" />
-
-        <activity android:name="com.startapp.android.publish.AppWallActivity"
-            android:theme="@android:style/Theme.Translucent"
-            android:configChanges="orientation|keyboardHidden|screenSize" />
-
-
-
+        <activity
+            android:name="com.startapp.android.publish.AppWallActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:theme="@android:style/Theme.Translucent" />
+        <activity
+            android:name=".activities.NewCreatingTrainingDayActivity"
+            android:windowSoftInputMode="stateHidden"
+            android:screenOrientation="portrait" >
+        </activity>
     </application>
 
 </manifest>
