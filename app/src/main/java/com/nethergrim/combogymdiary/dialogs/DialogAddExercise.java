@@ -110,9 +110,7 @@ public class DialogAddExercise extends DialogFragment implements OnClickListener
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
+            public void onNothingSelected(AdapterView<?> parent) { }
         });
         TextView textView = (TextView) v.findViewById(R.id.tvWidget2);
         textView.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), Constants.TYPEFACE_LIGHT));
@@ -139,7 +137,7 @@ public class DialogAddExercise extends DialogFragment implements OnClickListener
             if (partOfBody.equals(Constants.PART_OF_BODY_BACK)) spinner.setSelection(5);
             if (partOfBody.equals(Constants.PART_OF_BODY_ABS)) spinner.setSelection(6);
             if (partOfBody.equals(Constants.PART_OF_BODY_LEGS)) spinner.setSelection(7);
-
+            if (partOfBody.equals(Constants.PART_OF_BODY_NONE)) spinner.setSelection(0);
         }
         return v;
     }
