@@ -10,7 +10,7 @@
         android:id="@+id/text_info_superset"
         android:gravity="center"
         android:layout_alignParentTop="true"
-        android:textSize="16sp"
+        android:textSize="18sp"
         android:text="@string/superset_info"
         android:textColor="@color/gray_dark"
         android:layout_width="wrap_content"

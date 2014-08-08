@@ -96,7 +96,6 @@ public class TrainingFragment extends Fragment implements
     private ArrayList<String> alExersicesList = new ArrayList<String>();
     private ArrayList<Integer> alSetList = new ArrayList<Integer>();
     private int trainingId = 0;
-    private int total = 0;
     private boolean btnBlocked = false;
     private PopupWindow popupWindow;
     Runnable timerRunnable = new Runnable() {
@@ -107,7 +106,7 @@ public class TrainingFragment extends Fragment implements
             int minutes = (seconds / 60);
             seconds = (seconds % 60);
             bar.setSubtitle((String.format("%d:%02d", minutes, seconds)) + " "
-                    + total + " " + measureItem + " " + " ["
+                    + " " + " ["
                     + ((set == currentSet ? set : currentSet) + 1) + " "
                     + getResources().getString(R.string.set) + "] ");
             timerHandler.postDelayed(this, 500);
@@ -474,7 +473,6 @@ public class TrainingFragment extends Fragment implements
         vibrateLenght *= 1000;
         toPlaySound = sp.getBoolean("toNotifyWithSound", true);
         if (isTrainingAtProgress) {
-            total = sp.getInt(TOTAL_WEIGHT, 0);
             startTime = sp.getLong(START_TIME, 0);
             restoreSetsFromPreferences();
             try {
@@ -558,7 +556,6 @@ public class TrainingFragment extends Fragment implements
         sp.edit().putLong(START_TIME, startTime).apply();
         timerHandler.removeCallbacks(timerRunnable);
         saveSetsToPreferences();
-        sp.edit().putInt(TOTAL_WEIGHT, total).apply();
         isTrainingAtProgress = true;
         saveExercicesToDatabase();
         fabRight.hide();
@@ -703,9 +700,6 @@ public class TrainingFragment extends Fragment implements
             tmp++;
             alSetList.set(checkedPosition, tmp);
             set = alSetList.get(checkedPosition);
-            total = wei * rep_s;
-            total += sp.getInt(BaseActivity.TOTAL_WEIGHT, 0);
-            sp.edit().putInt(BaseActivity.TOTAL_WEIGHT, total).apply();
             db.addRecMainTable(traName, exeName, date, wei, rep_s, set);
             currentSet = set;
             initSetButtons();

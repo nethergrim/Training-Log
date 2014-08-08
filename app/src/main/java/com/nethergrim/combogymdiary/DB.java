@@ -489,8 +489,7 @@ public class DB {
         mDB.insert(DB_COMMENT_TABLE, null, cv);
     }
 
-    public Cursor getDataComment(String[] cols, String selection,
-                                 String[] args, String groupby, String having, String orderBy) {
+    public Cursor getDataComment(String[] cols, String selection, String[] args, String groupby, String having, String orderBy) {
         return mDB.query(DB_COMMENT_TABLE, cols, selection, args, groupby,
                 having, orderBy);
     }

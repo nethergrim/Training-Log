@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.google.analytics.tracking.android.EasyTracker;
+import com.nethergrim.combogymdiary.Constants;
 import com.startapp.android.publish.SDKAdPreferences;
 import com.startapp.android.publish.StartAppSDK;
 
@@ -32,12 +33,17 @@ public abstract class AnalyticsActivity extends FragmentActivity {
     }
 
     public TextView setTypeFaceLight(TextView v){
-        v.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/Roboto-Light.ttf"));
+        v.setTypeface(Typeface.createFromAsset(getAssets(), Constants.TYPEFACE_LIGHT));
         return  v;
     }
 
     public TextView setTypeFaceThin(TextView v){
-        v.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/Roboto-Thin.ttf"));
+        v.setTypeface(Typeface.createFromAsset(getAssets(), Constants.TYPEFACE_THIN));
+        return v;
+    }
+
+    public TextView setTypeFace(TextView v, String font){
+        v.setTypeface(Typeface.createFromAsset(getAssets(), font));
         return v;
     }
 

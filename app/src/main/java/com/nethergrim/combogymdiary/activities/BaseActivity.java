@@ -452,7 +452,6 @@ public class BaseActivity extends AnalyticsActivity implements
         sp.edit().putBoolean(TRAINING_AT_PROGRESS, false).apply();
         sp.edit().putInt(USER_CLICKED_POSITION, 0).apply();
         sp.edit().putInt(TrainingFragment.CHECKED_POSITION, 0).apply();
-        int total = sp.getInt(TOTAL_WEIGHT, 0);
         SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
         String date = sdf.format(new Date(System.currentTimeMillis()));
         int tmpSec = sp.getInt(SECONDS, 0);
@@ -460,10 +459,9 @@ public class BaseActivity extends AnalyticsActivity implements
         tmpSec = tmpSec - (tmpMin * 60);
         String time = tmpMin + ":" + tmpSec;
         if (!sp.getString(COMMENT_TO_TRAINING, "").equals("")) {
-            db.addRecComment(date, sp.getString(COMMENT_TO_TRAINING, ""),
-                    total, time);
+            db.addRecComment(date, sp.getString(COMMENT_TO_TRAINING, ""), 0, time);
         } else {
-            db.addRecComment(date, null, total, time);
+            db.addRecComment(date, null, 0, time);
         }
         sp.edit().putString(COMMENT_TO_TRAINING, "").apply();
         sp.edit().putInt(TOTAL_WEIGHT, 0).apply();
