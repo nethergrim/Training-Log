@@ -31,6 +31,7 @@ public class DB {
     public static final String WEIGHT = "Weight";
     public static final String REPS = "Reps";
     public static final String SET = "SetsN";
+    public static final String PART_OF_BODY = "part_of_body";
     private static final String DB_MAIN_CREATE = "create table "
             + DB_MAIN_TABLE + "(" + COLUMN_ID
             + " integer primary key autoincrement, " + TRA_NAME + " text, "
@@ -39,6 +40,7 @@ public class DB {
     public static final String TOTAL_TIME_OF_TRAINING = "time_of_training";
     public static final String DB_COMMENT_TABLE = "comment_table";
     public static final String TOTAL_WEIGHT_OF_TRAINING = "total_weight";
+
     private static final String DB_COMMENT_CREATE = "create table "
             + DB_COMMENT_TABLE + "(" + COLUMN_ID
             + " integer primary key autoincrement, " + DATE + " text, "
@@ -59,12 +61,15 @@ public class DB {
             + EXE_NAME + " text" + ");";
     public static final String strSeparator = "__,__";
     public static final String SIMPLE_DATE_FORMAT = "dd.MM.yyyy";
-    private static final int DB_VERSION = 4;
+    private static final int DB_VERSION = 5;
     private static final String DB_EXE_TABLE = "exe_tab";
     private static final String DB_EXE_CREATE = "create table " + DB_EXE_TABLE
             + "(" + COLUMN_ID + " integer primary key autoincrement, "
-            + TRA_NAME + " text, " + EXE_NAME + " text, " + TIMER_VALUE
-            + " text" + ");";
+            + TRA_NAME + " text, "
+            + EXE_NAME + " text, "
+            + TIMER_VALUE  + " text, "
+            + PART_OF_BODY + " text"
+            + ");";
     private Context mCtx;
     private DBHelper mDBHelper;
     private SQLiteDatabase mDB;
@@ -579,6 +584,10 @@ public class DB {
             }
             if (oldVersion == 3 && newVersion == 4) {
                 db.execSQL(DB_COMMENT_CREATE);
+            }
+            if (oldVersion == 4 && newVersion == 5){
+                db.execSQL("ALTER TABLE " + DB_EXE_TABLE +" ADD COLUMN " + PART_OF_BODY + " TEXT");
+                Log.e("log", "db updated to v5");
             }
         }
     }

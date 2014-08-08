@@ -465,7 +465,7 @@ public class BaseActivity extends AnalyticsActivity implements
         }
         sp.edit().putString(COMMENT_TO_TRAINING, "").apply();
         sp.edit().putInt(TOTAL_WEIGHT, 0).apply();
-        sp.edit().putLong(START_TIME, 0);
+        sp.edit().putLong(START_TIME, 0).apply();
 
         stopService(new Intent(this, TrainingService.class));
         getActionBar().setSubtitle(null);

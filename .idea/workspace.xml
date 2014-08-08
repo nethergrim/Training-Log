@@ -35,13 +35,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1ae25ada-db98-44c3-aaa8-db4b3954c501" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/activities/AnalyticsActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/activities/AnalyticsActivity.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/activities/BaseActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/activities/BaseActivity.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/Constants.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/Constants.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/DB.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/DB.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/dialogs/DialogInfo.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/dialogs/DialogInfo.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/fragments/TrainingFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/fragments/TrainingFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/dialog_info_superset.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/dialog_info_superset.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="GymDiary.iws" />
@@ -65,11 +61,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="BaseActivity.java" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="BaseActivity.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/activities/BaseActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.4195279" vertical-offset="6409" max-vertical-offset="9231">
-              <caret line="473" column="0" selection-start-line="473" selection-start-column="0" selection-end-line="473" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="7633" max-vertical-offset="9231">
+              <caret line="547" column="28" selection-start-line="547" selection-start-column="28" selection-end-line="547" selection-end-column="28" />
               <folding />
             </state>
           </provider>
@@ -85,11 +81,63 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="DB.java" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="DB.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/DB.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="8347" max-vertical-offset="10047">
-              <caret line="491" column="65" selection-start-line="491" selection-start-column="65" selection-end-line="491" selection-end-column="65" />
+            <state vertical-scroll-proportion="0.76287556" vertical-offset="2570" max-vertical-offset="3502">
+              <caret line="587" column="52" selection-start-line="587" selection-start-column="52" selection-end-line="587" selection-end-column="52" />
+              <folding>
+                <element signature="method#convertDateToString#0;class#DB#0" expanded="false" />
+                <element signature="method#getWeightMeasureType#0;class#DB#0" expanded="false" />
+                <element signature="method#convertStringToDate#0;class#DB#0" expanded="false" />
+                <element signature="method#convertArrayToString#0;class#DB#0" expanded="false" />
+                <element signature="method#convertStringToArray#0;class#DB#0" expanded="false" />
+                <element signature="method#open#0;class#DB#0" expanded="false" />
+                <element signature="method#getExerciseByID#0;class#DB#0" expanded="false" />
+                <element signature="method#close#0;class#DB#0" expanded="false" />
+                <element signature="method#getAllData_Exe#0;class#DB#0" expanded="false" />
+                <element signature="method#getDataExercises#0;class#DB#0" expanded="false" />
+                <element signature="method#getExeIdByName#0;class#DB#0" expanded="false" />
+                <element signature="method#getDataMain#0;class#DB#0" expanded="false" />
+                <element signature="method#delRecordMeasurement#0;class#DB#0" expanded="false" />
+                <element signature="method#getTrainingList#0;class#DB#0" expanded="false" />
+                <element signature="method#deleteExersice#0;class#DB#0" expanded="false" />
+                <element signature="method#deleteExersice#1;class#DB#0" expanded="false" />
+                <element signature="method#deleteComment#0;class#DB#0" expanded="false" />
+                <element signature="method#getLastWeightOrReps#0;class#DB#0" expanded="false" />
+                <element signature="method#getTimerValueByExerciseName#0;class#DB#0" expanded="false" />
+                <element signature="method#getIdValueByExerciseName#0;class#DB#0" expanded="false" />
+                <element signature="method#getThisWeight#0;class#DB#0" expanded="false" />
+                <element signature="method#getThisReps#0;class#DB#0" expanded="false" />
+                <element signature="method#getThisId#0;class#DB#0" expanded="false" />
+                <element signature="method#getAllData_Main#0;class#DB#0" expanded="false" />
+                <element signature="method#getDataMain#1;class#DB#0" expanded="false" />
+                <element signature="method#getDataExe#0;class#DB#0" expanded="false" />
+                <element signature="method#getDataTrainings#0;class#DB#0" expanded="false" />
+                <element signature="method#getCommentData#0;class#DB#0" expanded="false" />
+                <element signature="method#getDataMeasures#0;class#DB#0" expanded="false" />
+                <element signature="method#addRecExe#0;class#DB#0" expanded="false" />
+                <element signature="method#getTrainingName#0;class#DB#0" expanded="false" />
+                <element signature="method#addRecTrainings#0;class#DB#0" expanded="false" />
+                <element signature="method#addRecMeasure#0;class#DB#0" expanded="false" />
+                <element signature="method#addRecMainTable#0;class#DB#0" expanded="false" />
+                <element signature="method#addRecComment#0;class#DB#0" expanded="false" />
+                <element signature="method#getDataComment#0;class#DB#0" expanded="false" />
+                <element signature="method#updateRec_Exe#0;class#DB#0" expanded="false" />
+                <element signature="method#updateRec_Main#0;class#DB#0" expanded="false" />
+                <element signature="method#updateRec_Training#0;class#DB#0" expanded="false" />
+                <element signature="method#delRec_Trainings#0;class#DB#0" expanded="false" />
+                <element signature="method#onCreate#0;class#DBHelper#0;class#DB#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Constants.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/Constants.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="391">
+              <caret line="14" column="0" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -872,13 +920,13 @@
         <option value="$PROJECT_DIR$/app/src/main/res/values-ru/strings.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/values/strings.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/values/styles.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/Constants.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/dialogs/DialogInfo.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/dialog_info_superset.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/activities/AnalyticsActivity.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/DB.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/fragments/TrainingFragment.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/activities/BaseActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/Constants.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/DB.java" />
       </list>
     </option>
   </component>
@@ -1554,7 +1602,7 @@
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.22135417" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="true" weight="0.32604167" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.32604167" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Thumbnails" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32982087" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
@@ -1618,20 +1666,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/src/main/aidl/com/android/vending/billing/IInAppBillingService.aidl">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-3.262295" vertical-offset="2985" max-vertical-offset="3900">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/activities/StatisticsActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.2557377" vertical-offset="312" max-vertical-offset="3536">
-          <caret line="35" column="0" selection-start-line="35" selection-start-column="0" selection-end-line="35" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/xml/pref.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0852459" vertical-offset="0" max-vertical-offset="2730">
@@ -1955,13 +1989,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/Constants.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.10944206" vertical-offset="0" max-vertical-offset="932">
-          <caret line="6" column="71" selection-start-line="6" selection-start-column="71" selection-end-line="6" selection-end-column="71" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/dialog_info_superset.xml">
       <provider editor-type-id="android-designer">
         <state />
@@ -1970,7 +1997,7 @@
         <state vertical-scroll-proportion="0.3005525" vertical-offset="0" max-vertical-offset="905">
           <caret line="16" column="40" selection-start-line="16" selection-start-column="40" selection-end-line="16" selection-end-column="40" />
           <folding>
-            <element signature="e#467#490#0" expanded="true" />
+            <element signature="e#467#490#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1999,14 +2026,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/DB.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="2043" max-vertical-offset="2975">
-          <caret line="491" column="65" selection-start-line="491" selection-start-column="65" selection-end-line="491" selection-end-column="65" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/fragments/TrainingFragment.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="10247" max-vertical-offset="15912">
@@ -2019,9 +2038,83 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/activities/BaseActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.4195279" vertical-offset="6409" max-vertical-offset="9231">
-          <caret line="473" column="0" selection-start-line="473" selection-start-column="0" selection-end-line="473" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="7633" max-vertical-offset="9231">
+          <caret line="547" column="28" selection-start-line="547" selection-start-column="28" selection-end-line="547" selection-end-column="28" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/values-ru/strings_exercises.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="25925">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/values/strings_exercises.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-1.6463547" vertical-offset="1632" max-vertical-offset="10727">
+          <caret line="7" column="0" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/Constants.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="391">
+          <caret line="14" column="0" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/DB.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.76287556" vertical-offset="2570" max-vertical-offset="3502">
+          <caret line="587" column="52" selection-start-line="587" selection-start-column="52" selection-end-line="587" selection-end-column="52" />
+          <folding>
+            <element signature="method#convertDateToString#0;class#DB#0" expanded="false" />
+            <element signature="method#getWeightMeasureType#0;class#DB#0" expanded="false" />
+            <element signature="method#convertStringToDate#0;class#DB#0" expanded="false" />
+            <element signature="method#convertArrayToString#0;class#DB#0" expanded="false" />
+            <element signature="method#convertStringToArray#0;class#DB#0" expanded="false" />
+            <element signature="method#open#0;class#DB#0" expanded="false" />
+            <element signature="method#getExerciseByID#0;class#DB#0" expanded="false" />
+            <element signature="method#close#0;class#DB#0" expanded="false" />
+            <element signature="method#getAllData_Exe#0;class#DB#0" expanded="false" />
+            <element signature="method#getDataExercises#0;class#DB#0" expanded="false" />
+            <element signature="method#getExeIdByName#0;class#DB#0" expanded="false" />
+            <element signature="method#getDataMain#0;class#DB#0" expanded="false" />
+            <element signature="method#delRecordMeasurement#0;class#DB#0" expanded="false" />
+            <element signature="method#getTrainingList#0;class#DB#0" expanded="false" />
+            <element signature="method#deleteExersice#0;class#DB#0" expanded="false" />
+            <element signature="method#deleteExersice#1;class#DB#0" expanded="false" />
+            <element signature="method#deleteComment#0;class#DB#0" expanded="false" />
+            <element signature="method#getLastWeightOrReps#0;class#DB#0" expanded="false" />
+            <element signature="method#getTimerValueByExerciseName#0;class#DB#0" expanded="false" />
+            <element signature="method#getIdValueByExerciseName#0;class#DB#0" expanded="false" />
+            <element signature="method#getThisWeight#0;class#DB#0" expanded="false" />
+            <element signature="method#getThisReps#0;class#DB#0" expanded="false" />
+            <element signature="method#getThisId#0;class#DB#0" expanded="false" />
+            <element signature="method#getAllData_Main#0;class#DB#0" expanded="false" />
+            <element signature="method#getDataMain#1;class#DB#0" expanded="false" />
+            <element signature="method#getDataExe#0;class#DB#0" expanded="false" />
+            <element signature="method#getDataTrainings#0;class#DB#0" expanded="false" />
+            <element signature="method#getCommentData#0;class#DB#0" expanded="false" />
+            <element signature="method#getDataMeasures#0;class#DB#0" expanded="false" />
+            <element signature="method#addRecExe#0;class#DB#0" expanded="false" />
+            <element signature="method#getTrainingName#0;class#DB#0" expanded="false" />
+            <element signature="method#addRecTrainings#0;class#DB#0" expanded="false" />
+            <element signature="method#addRecMeasure#0;class#DB#0" expanded="false" />
+            <element signature="method#addRecMainTable#0;class#DB#0" expanded="false" />
+            <element signature="method#addRecComment#0;class#DB#0" expanded="false" />
+            <element signature="method#getDataComment#0;class#DB#0" expanded="false" />
+            <element signature="method#updateRec_Exe#0;class#DB#0" expanded="false" />
+            <element signature="method#updateRec_Main#0;class#DB#0" expanded="false" />
+            <element signature="method#updateRec_Training#0;class#DB#0" expanded="false" />
+            <element signature="method#delRec_Trainings#0;class#DB#0" expanded="false" />
+            <element signature="method#onCreate#0;class#DBHelper#0;class#DB#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
