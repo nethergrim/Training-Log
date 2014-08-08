@@ -1,6 +1,5 @@
 package com.nethergrim.combogymdiary.activities;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -8,6 +7,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 
+import com.nethergrim.combogymdiary.Constants;
 import com.nethergrim.combogymdiary.DB;
 import com.nethergrim.combogymdiary.R;
 import com.yandex.metrica.Counter;
@@ -100,19 +100,19 @@ public class StartActivity extends AnalyticsActivity {
                 db.convertArrayToString(exeAbs));
 
         for (int i = 0; i < exeLegs.length; i++)
-            db.addRecExe(exeLegs[i], "90");
+            db.addExercise(exeLegs[i], "90", Constants.PART_OF_BODY_LEGS);
         for (int i = 0; i < exeChest.length; i++)
-            db.addRecExe(exeChest[i], "60");
+            db.addExercise(exeChest[i], "60", Constants.PART_OF_BODY_CHEST);
         for (int i = 0; i < exeBiceps.length; i++)
-            db.addRecExe(exeBiceps[i], "60");
+            db.addExercise(exeBiceps[i], "60", Constants.PART_OF_BODY_BICEPS);
         for (int i = 0; i < exeTriceps.length; i++)
-            db.addRecExe(exeTriceps[i], "60");
+            db.addExercise(exeTriceps[i], "60", Constants.PART_OF_BODY_TRICEPS);
         for (int i = 0; i < exeBack.length; i++)
-            db.addRecExe(exeBack[i], "60");
+            db.addExercise(exeBack[i], "60", Constants.PART_OF_BODY_BACK);
         for (int i = 0; i < exeShoulders.length; i++)
-            db.addRecExe(exeShoulders[i], "60");
+            db.addExercise(exeShoulders[i], "60", Constants.PART_OF_BODY_SHOULDERS);
         for (int i = 0; i < exeAbs.length; i++)
-            db.addRecExe(exeAbs[i], "60");
+            db.addExercise(exeAbs[i], "60", Constants.PART_OF_BODY_ABS);
     }
 
     protected void onDestroy() {

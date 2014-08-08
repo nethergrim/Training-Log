@@ -674,7 +674,7 @@ public class TrainingFragment extends Fragment implements
 
         if (tmpStr != null && timerv != null && !tmpStr.equals(timerv)) {
             int exe_id = db.getExeIdByName(exeName);
-            db.updateRec_Exe(exe_id, DB.TIMER_VALUE, timerv);
+            db.updateExercise(exe_id, DB.TIMER_VALUE, timerv);
         }
         try {
             timerValue = Integer.parseInt(timerv);

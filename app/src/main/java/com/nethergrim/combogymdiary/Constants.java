@@ -12,6 +12,7 @@ public class Constants {
     public static final String PART_OF_BODY_BICEPS = "biceps";
     public static final String PART_OF_BODY_TRICEPS = "triceps";
     public static final String PART_OF_BODY_ABS = "abs";
+    public static final String PART_OF_BODY_NONE = "without_category";
 
 
 }

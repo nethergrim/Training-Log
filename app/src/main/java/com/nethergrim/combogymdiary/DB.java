@@ -436,10 +436,11 @@ public class DB {
                 groupBy, having, orderedBy);
     }
 
-    public void addRecExe(String exeName, String timer) {
+    public void addExercise(String exeName, String timer, String partOfBody) {
         ContentValues cv = new ContentValues();
         cv.put(EXE_NAME, exeName);
         cv.put(TIMER_VALUE, timer);
+        cv.put(PART_OF_BODY, partOfBody);
         mDB.insert(DB_EXE_TABLE, null, cv);
     }
 
@@ -499,11 +500,9 @@ public class DB {
                 having, orderBy);
     }
 
-    public void updateRec_Exe(int Id, String column, String data) {
+    public void updateExercise(int Id, String column, String data) {
         ContentValues cv1 = new ContentValues();
         cv1.put(column, data);
-        Log.d(LOG_TAG, "===DB_exe  Editing column " + column + " at ID = " + Id
-                + " with data: " + data);
         mDB.update(DB_EXE_TABLE, cv1, "_id = " + Id, null);
     }
 
@@ -552,6 +551,12 @@ public class DB {
 
     public void delRec_Main(long id) {
         mDB.delete(DB_MAIN_TABLE, COLUMN_ID + " = " + id, null);
+    }
+
+    public void addPartOfBodyToExercise(int exerciseId, String partOfBody){
+        ContentValues cv = new ContentValues();
+        cv.put(PART_OF_BODY, partOfBody);
+        mDB.update(DB_EXE_TABLE, cv, COLUMN_ID + " = " + exerciseId, null);
     }
 
     private class DBHelper extends SQLiteOpenHelper {

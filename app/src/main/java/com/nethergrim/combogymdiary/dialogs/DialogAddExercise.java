@@ -65,17 +65,18 @@ public class DialogAddExercise extends DialogFragment implements
         String timer = etTimer.getText().toString();
 
         int id = v.getId();
-        if (id == R.id.btnSave && editOrNot == false) {
+        if (id == R.id.btnSave && !editOrNot) {  // creating
             if (!name.isEmpty() && !timer.isEmpty()) {
-                db.addRecExe(name, timer);
+                db.addExercise(name, timer,);
                 Toast.makeText(getActivity(), R.string.saved,
                         Toast.LENGTH_SHORT).show();
                 dismiss();
             }
-        } else if (id == R.id.btnSave && editOrNot == true) {
+        } else if (id == R.id.btnSave && editOrNot) {  // editing
             if (!name.isEmpty() && !timer.isEmpty()) {
-                db.updateRec_Exe((int) exeID, DB.EXE_NAME, name);
-                db.updateRec_Exe((int) exeID, DB.TIMER_VALUE, timer);
+                db.updateExercise((int) exeID, DB.EXE_NAME, name);
+                db.updateExercise((int) exeID, DB.TIMER_VALUE, timer);
+                // TODO add change of partOfBody
                 Toast.makeText(getActivity(), R.string.saved,
                         Toast.LENGTH_SHORT).show();
                 dismiss();
