@@ -158,6 +158,7 @@ public class SettingsActivity extends PreferenceActivity implements MyInterface 
 
             Intent intent = new Intent(this, DriveRestoreActivity.class);
             startActivity(intent);
+            finish();
         } else {
             Toast.makeText(getApplicationContext(),
                     getResources().getString(R.string.error_restoring),
@@ -222,6 +223,9 @@ public class SettingsActivity extends PreferenceActivity implements MyInterface 
             DB db = new DB(getApplicationContext());
             db.open();
             db.close();
+            Intent intent = new Intent(this, StartActivity.class);
+            startActivity(intent);
+            finish();
         }
         if (resultCode == Activity.RESULT_OK && requestCode == 5) {
             Uri uri = data

@@ -14,6 +14,7 @@ import com.google.android.gms.drive.DriveFile;
 import com.google.android.gms.drive.DriveId;
 import com.google.android.gms.drive.OpenFileActivityBuilder;
 import com.nethergrim.combogymdiary.R;
+import com.nethergrim.combogymdiary.activities.StartActivity;
 import com.yandex.metrica.Counter;
 
 import java.io.BufferedOutputStream;
@@ -140,6 +141,8 @@ public class DriveRestoreActivity extends BaseDriveActivity {
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
             showMessage(getResources().getString(R.string.restored));
+            Intent intent = new Intent(DriveRestoreActivity.this, StartActivity.class);
+            startActivity(intent);
             finish();
 
         }
