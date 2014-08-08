@@ -63,9 +63,9 @@ public class DB {
     public static final String SIMPLE_DATE_FORMAT = "dd.MM.yyyy";
     private static final int DB_VERSION = 5;
     private static final String DB_EXE_TABLE = "exe_tab";
-    private static final String DB_EXE_CREATE = "create table " + DB_EXE_TABLE
-            + "(" + COLUMN_ID + " integer primary key autoincrement, "
-            + TRA_NAME + " text, "
+    private static final String DB_EXE_CREATE = "create table " + DB_EXE_TABLE     + "("
+            + COLUMN_ID + " integer primary key autoincrement, "
+            + TRA_NAME + " text, "   // unUsed!!
             + EXE_NAME + " text, "
             + TIMER_VALUE  + " text, "
             + PART_OF_BODY + " text"

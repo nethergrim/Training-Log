@@ -11,33 +11,34 @@
 
     <TextView
         android:id="@+id/tvWidget2"
+        android:textColor="@color/gray_dark"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="16dp"
         android:contentDescription="@string/timer_between_sets"
-        android:gravity="center_horizontal"
+        android:gravity="center_vertical|left"
         android:text="@string/timer_between_sets"
-        android:textSize="18sp" />
+        android:textSize="15sp" />
 
     <EditText
         android:id="@+id/editText2"
         android:layout_width="96dp"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
-        android:layout_marginBottom="8dp"
-        android:ems="5"
         android:gravity="center_vertical|center_horizontal"
         android:inputType="number"
         android:singleLine="false"
-        android:textSize="18sp"
-        android:textStyle="italic" />
+        android:textSize="15sp"
+        android:textStyle="italic"
+        android:layout_toRightOf="@+id/tvWidget2"
+        android:layout_toEndOf="@+id/tvWidget2" />
 
     <EditText
         android:id="@+id/etTimerValue"
+        android:layout_marginTop="8dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
         android:layout_alignLeft="@+id/btnSave"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/editText2"
@@ -53,14 +54,21 @@
         <requestFocus />
     </EditText>
 
+    <Spinner
+        android:id="@+id/spinnerPartOfBody"
+        android:layout_width="match_parent"
+        android:layout_below="@+id/etTimerValue"
+        android:layout_height="48dp"/>
+
     <Button
         android:id="@+id/btnSave"
         style="@style/HabraThemeButton"
         android:layout_width="wrap_content"
+        android:layout_marginTop="8dp"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
-        android:layout_below="@+id/etTimerValue"
+        android:layout_below="@+id/spinnerPartOfBody"
         android:text="@string/save"
         android:textColor="@android:color/white" />
 

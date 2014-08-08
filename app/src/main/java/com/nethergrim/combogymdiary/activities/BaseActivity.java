@@ -533,24 +533,21 @@ public class BaseActivity extends AnalyticsActivity implements
             Toast.makeText(this, R.string.error_editing_exe, Toast.LENGTH_SHORT)
                     .show();
         } else {
-            String[] cols = {DB.COLUMN_ID, DB.EXE_NAME, DB.TIMER_VALUE};
-            Cursor cursor_exe = db.getDataExe(cols, null, null, null, null,
-                    DB.EXE_NAME);
+            Cursor cursor_exe = db.getDataExe(null, null, null, null, null, DB.EXE_NAME);
             cursor_exe.moveToFirst();
             while (cursor_exe.getPosition() < pos) {
                 cursor_exe.moveToNext();
             }
-            String name = cursor_exe.getString(1);
-            String timV = cursor_exe.getString(2);
-            cursor_exe.close();
             Bundle args = new Bundle();
-            args.putString("exeName", name);
-            args.putString("timerValue", timV);
+            args.putString("exeName", cursor_exe.getString(2));
+            args.putString("timerValue", cursor_exe.getString(3));
             args.putInt("exePosition", pos);
+            args.putString(DialogAddExercise.KEY_PART_OF_BODY, cursor_exe.getString(4));
             args.putLong("exeID", id);
             DialogAddExercise dialog = new DialogAddExercise();
             dialog.setArguments(args);
             dialog.show(getFragmentManager(), "tag");
+            cursor_exe.close();
         }
     }
 
