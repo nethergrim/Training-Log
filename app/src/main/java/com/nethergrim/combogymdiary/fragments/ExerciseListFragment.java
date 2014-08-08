@@ -29,6 +29,7 @@ import com.nethergrim.combogymdiary.view.FloatingActionButton;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class ExerciseListFragment extends Fragment {
 
@@ -144,7 +145,7 @@ public class ExerciseListFragment extends Fragment {
         private Context context;
         private ArrayList<Exercise> data;
         private int groupsCount = 0;
-        private HashSet<String> groups;
+        private String[] groupsArray;
 
         public ExercisesAdapter(Context context, List<Exercise> data){
             this.context = context;
@@ -153,10 +154,11 @@ public class ExerciseListFragment extends Fragment {
         }
 
         private int getGroupsCount(ArrayList<Exercise> list){
-            groups = new HashSet<String>();
+            Set<String> groups = new HashSet<String>();
             for (Exercise aData : list) {
                 groups.add(aData.getPartOfBody());
             }
+            groupsArray = groups.toArray(groupsArray);
             return groups.size();
         }
 
@@ -177,22 +179,45 @@ public class ExerciseListFragment extends Fragment {
         }
 
         @Override
-        public Object getGroup(int groupPosition) {
-            return null;
+        public String getGroup(int groupPosition) {
+            return groupsArray[groupPosition];
         }
 
         @Override
-        public Object getChild(int groupPosition, int childPosition) {
+        public Exercise getChild(int groupPosition, int childPosition) {
+            int childCounter = 0;
+
+            for (Exercise aData : data) {
+                if (aData.getPartOfBody().equals(groupsArray[groupPosition])) {
+                    if (childPosition > childCounter) {
+                        childCounter++;
+                    } else {
+                        return aData;
+                    }
+                }
+            } // FIXME test me!!
+
             return null;
         }
 
         @Override
         public long getGroupId(int groupPosition) {
-            return 0;
+            return groupPosition;
         }
 
         @Override
         public long getChildId(int groupPosition, int childPosition) {
+
+            int childCounter = 0;
+            for (Exercise aData : data) {
+                if (aData.getPartOfBody().equals(groupsArray[groupPosition])) {
+                    if (childPosition > childCounter) {
+                        childCounter++;
+                    } else {
+                        return aData.getId();
+                    }
+                }
+            } // FIXME test me!!
             return 0;
         }
 
@@ -203,17 +228,38 @@ public class ExerciseListFragment extends Fragment {
 
         @Override
         public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
-            return null;
+            View v = convertView;
+
+            if (v == null) {
+
+                LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+//                v = inflater.inflate(R.layout.item_layout, parent, false);
+
+            }
+            return v;
         }
 
         @Override
         public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
-            return null;
+            View v = convertView;
+
+            if (v == null) {
+
+                LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+//                v = inflater.inflate(R.layout.item_layout, parent, false);
+
+            }
+
+
+
+            return v;
         }
 
         @Override
         public boolean isChildSelectable(int groupPosition, int childPosition) {
-            return false;
+            return true;
         }
     }
 }
