@@ -352,6 +352,9 @@ public class BaseActivity extends AnalyticsActivity implements
             case 7:
                 currentFragment = null;
                 DialogInfo dialog = new DialogInfo();
+                Bundle args = new Bundle();
+                args.putBoolean(DialogInfo.KEY_INFO_ABOUT_APP,true);
+                dialog.setArguments(args);
                 dialog.show(getFragmentManager(), "info");
                 mDrawerList.setItemChecked(previouslyChecked, true);
                 break;

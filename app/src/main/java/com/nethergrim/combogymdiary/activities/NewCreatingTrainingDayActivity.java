@@ -9,6 +9,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.nethergrim.combogymdiary.R;
+import com.nethergrim.combogymdiary.dialogs.DialogInfo;
+import com.nethergrim.combogymdiary.tools.Prefs;
 import com.nethergrim.combogymdiary.view.FloatingActionButton;
 
 public class NewCreatingTrainingDayActivity extends AnalyticsActivity {
@@ -59,9 +61,32 @@ public class NewCreatingTrainingDayActivity extends AnalyticsActivity {
                 .withMargins(0, 0, 16, 16)
                 .create();
 
-        fabAdd.hide();
-        fabSave.hide();
-        fabSuperSet.hide();
+        fabAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        fabSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        fabSuperSet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        showSuperSetDialog();
     }
 
     @Override
@@ -77,9 +102,20 @@ public class NewCreatingTrainingDayActivity extends AnalyticsActivity {
         }
     }
 
+    private void showSuperSetDialog() {
+        if (Prefs.getPreferences().getSuperSetInfoShowed() <= 3){
+            DialogInfo dialogInfo = new DialogInfo();
+            Bundle args = new Bundle();
+            args.putBoolean(DialogInfo.KEY_INFO_ABOUT_SUPERSET, true);
+            dialogInfo.setArguments(args);
+            dialogInfo.show(getFragmentManager(), DialogInfo.class.getName());
+            Prefs.getPreferences().setSuperSetInfoShowed(Prefs.getPreferences().getSuperSetInfoShowed() + 1);
+        }
+    }
+
     @Override
-    protected void onPause() {
-        super.onPause();
+    public void onStop() {
+        super.onStop();
         fabAdd.hide();
         fabSave.hide();
         fabSuperSet.hide();

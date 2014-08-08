@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="fav_exercise">Улюблена вправа</string>
+    <string name="superset_info">Для того щоб об\'єднати кілька вправ в <b>суперсет</b> натисніть кнопку (Ss) і виберіть ті вправи які хочете.</string>
     <string name="to_add_exercise_press_plus">Поки що у вашій програмі тренувань немає вправ.\nЩоб додати вправу натисніть (+) кнопку.</string>
     <string name="none">Пусто</string>
     <string name="ads">Реклама</string>

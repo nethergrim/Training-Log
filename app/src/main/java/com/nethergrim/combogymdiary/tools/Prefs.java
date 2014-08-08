@@ -7,6 +7,7 @@ import android.preference.PreferenceManager;
 
 public class Prefs {
     private static final String KEY_ADS_REMOVED = "ads_removed";
+    private static final String KEY_SUPERSET_INFO_SHOWED = "superset_info_showed";
 
     private static SharedPreferences prefs;
     private static Prefs pref;
@@ -34,6 +35,13 @@ public class Prefs {
         return prefs.getBoolean(KEY_ADS_REMOVED, false);
     }
 
+    public void setSuperSetInfoShowed(int times){
+        prefs.edit().putInt(KEY_SUPERSET_INFO_SHOWED, times).apply();
+    }
+
+    public int getSuperSetInfoShowed(){
+        return prefs.getInt(KEY_SUPERSET_INFO_SHOWED, 0);
+    }
 
 
 }

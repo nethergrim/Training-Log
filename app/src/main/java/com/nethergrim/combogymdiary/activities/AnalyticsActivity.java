@@ -36,4 +36,9 @@ public abstract class AnalyticsActivity extends FragmentActivity {
         return  v;
     }
 
+    public TextView setTypeFaceThin(TextView v){
+        v.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/Roboto-Thin.ttf"));
+        return v;
+    }
+
 }
