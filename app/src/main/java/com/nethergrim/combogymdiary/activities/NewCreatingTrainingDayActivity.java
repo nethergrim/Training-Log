@@ -1,17 +1,21 @@
 package com.nethergrim.combogymdiary.activities;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.nethergrim.combogymdiary.R;
 import com.nethergrim.combogymdiary.view.FloatingActionButton;
 
-public class NewCreatingTrainingDayActivity extends Activity {
+public class NewCreatingTrainingDayActivity extends AnalyticsActivity {
 
-    private ListView listView;
+    private ListView list;
+    private TextView textNoExe;
+    private EditText etName;
     private FloatingActionButton fabAdd, fabSave, fabSuperSet;
 
     @Override
@@ -23,11 +27,14 @@ public class NewCreatingTrainingDayActivity extends Activity {
         getActionBar().setDisplayShowHomeEnabled(false);
         initButtons();
         initList();
-
+        textNoExe = (TextView)findViewById(R.id.text_add_exersices);
+        setTypeFaceLight(textNoExe);
+        etName = (EditText)findViewById(R.id.etTrainingName);
+        setTypeFaceLight(etName);
     }
 
     private void initList() {
-        listView = (ListView)findViewById(R.id.listView);
+        list = (ListView)findViewById(R.id.listView);
     }
 
     private void initButtons() {
@@ -52,25 +59,22 @@ public class NewCreatingTrainingDayActivity extends Activity {
                 .withMargins(0, 0, 16, 16)
                 .create();
 
-
-
-
-
-
-
         fabAdd.hide();
         fabSave.hide();
         fabSuperSet.hide();
-
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-
         fabSuperSet.show();
         fabSave.show();
         fabAdd.show();
+        if (list.getCount() > 0){
+            textNoExe.setVisibility(View.GONE);
+        } else {
+            textNoExe.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override

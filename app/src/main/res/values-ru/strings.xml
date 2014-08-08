@@ -4,6 +4,7 @@
 
 
     <string name="fav_exercise">Любимое упражнение</string>
+    <string name="to_add_exercise_press_plus">Пока что в вашей программе тренировок нет упражнений.\nЧтобы добавить упражнение нажмите (+) кнопку.</string>
     <string name="none">Пусто</string>
     <string name="ads">Реклама</string>
     <string name="weight_for_30_days">Вес за 30 дней</string>

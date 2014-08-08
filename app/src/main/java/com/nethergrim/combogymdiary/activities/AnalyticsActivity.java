@@ -1,7 +1,10 @@
 package com.nethergrim.combogymdiary.activities;
 
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.view.View;
+import android.widget.TextView;
 
 import com.google.analytics.tracking.android.EasyTracker;
 import com.startapp.android.publish.SDKAdPreferences;
@@ -26,6 +29,11 @@ public abstract class AnalyticsActivity extends FragmentActivity {
     public void onStop() {
         super.onStop();
         EasyTracker.getInstance(this).activityStop(this);
+    }
+
+    public TextView setTypeFaceLight(TextView v){
+        v.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/Roboto-Light.ttf"));
+        return  v;
     }
 
 }

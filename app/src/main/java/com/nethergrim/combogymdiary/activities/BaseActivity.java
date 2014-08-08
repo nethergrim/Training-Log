@@ -105,7 +105,7 @@ public class BaseActivity extends AnalyticsActivity implements
     private Fragment currentFragment;
     private StartAppAd startAppAd = new StartAppAd(this);
     private ServiceConnection mServiceConn;
-    private int adCounter = 0, adLimitCounter = 4;
+    private int adCounter = 0;
     private OnDrawerEvent onDrawerEventListener = trainingFragment;
 
     static {
@@ -148,10 +148,10 @@ public class BaseActivity extends AnalyticsActivity implements
         };
         bindService(new Intent("com.android.vending.billing.InAppBillingService.BIND"), mServiceConn, Context.BIND_AUTO_CREATE);
         setContentView(R.layout.activity_base);
-        initStrings();
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
         mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
+        initStrings();
         adapter = new ArrayAdapter<String>(this, R.layout.menu_list_item, listButtons);
         mDrawerList.setAdapter(adapter);
         mDrawerList.setOnItemClickListener(this);
@@ -172,7 +172,6 @@ public class BaseActivity extends AnalyticsActivity implements
 
             public void onDrawerOpened(View drawerView) {
                 onDrawerEventListener.onDrawerOpened();
-                Log.e("log", "onDrawerOpened");
                 invalidateOptionsMenu();
             }
         };
@@ -293,13 +292,18 @@ public class BaseActivity extends AnalyticsActivity implements
         listButtons[6] = getResources()
                 .getString(R.string.settingsButtonString);
         listButtons[7] = getResources().getString(R.string.faq);
+        try {
+            adapter.notifyDataSetChanged();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void onItemSelected(int position) {
         mDrawerLayout.closeDrawer(mDrawerList);
         if (!Prefs.getPreferences().getAdsRemoved()) {
             adCounter++;
-            if (adCounter >= adLimitCounter) {
+            if (adCounter >= 4) {
                 adCounter = 0;
                 startAppAd.showAd();
                 startAppAd.loadAd();
@@ -400,7 +404,6 @@ public class BaseActivity extends AnalyticsActivity implements
         startAppAd.onResume();
         Counter.sharedInstance().onResumeActivity(this);
         initStrings();
-        adapter.notifyDataSetChanged();
     }
 
     @Override
