@@ -77,7 +77,6 @@ public class TrainingFragment extends Fragment implements
     private final static String START_TIME = "start_time";
     private final static String LIST_OF_SETS = "list_of_sets";
     private final static String PROGRESS = "progress";
-    private static final String TOTAL_WEIGHT = "total_weight";
     private final static String TIMER_IS_ON = "timerIsOn";
     public String RINGTONE = "ringtone";
     private ActionBar bar;
@@ -85,7 +84,7 @@ public class TrainingFragment extends Fragment implements
     private Boolean tglChecked = true, vibrate = false;
     private EditText etTimer;
     private DB db;
-    private String traName = "", exeName = "", date = "", measureItem = "";
+    private String traName = "", exeName = "", date = "";
     private SharedPreferences sp;
     private int checkedPosition = 0, set = 0, currentSet = 0, oldReps = 0,
             oldWeight = 0, timerValue = 0, vibrateLenght = 0, currentId = 0;
@@ -458,18 +457,6 @@ public class TrainingFragment extends Fragment implements
         } catch (Exception e) {
             vibrateLenght = 2;
         }
-        if (sp.getString(BaseActivity.MEASURE_ITEM, "1").equals("1")) {
-            tvWeight.setText(getResources().getString(R.string.Weight) + " ("
-                    + getResources().getStringArray(R.array.measure_items)[0]
-                    + ")");
-            measureItem = getResources().getStringArray(R.array.measure_items)[0];
-        } else if (sp.getString(BaseActivity.MEASURE_ITEM, "1").equals(
-                "2")) {
-            tvWeight.setText(getResources().getString(R.string.Weight) + " ("
-                    + getResources().getStringArray(R.array.measure_items)[1]
-                    + ")");
-            measureItem = getResources().getStringArray(R.array.measure_items)[1];
-        }
         vibrateLenght *= 1000;
         toPlaySound = sp.getBoolean("toNotifyWithSound", true);
         if (isTrainingAtProgress) {
@@ -517,8 +504,7 @@ public class TrainingFragment extends Fragment implements
                                                 Context.VIBRATOR_SERVICE);
                                 v.vibrate(vibrateLenght);
                             } catch (Exception e) {
-                                Counter.sharedInstance().reportError(
-                                        "error vibrating", e);
+                                Counter.sharedInstance().reportError("error vibrating", e);
                             }
                         }
                         pd.dismiss();

@@ -96,7 +96,6 @@ public class StartActivity extends AnalyticsActivity {
             do {
                 if (c.getString(4) == null || c.getString(4).equals("")){
                     boolean fixed = false;
-
                     for (String exe : exeAbs) {
                         if (c.getString(2).equals(exe)) {
                             db.updateExercise(c.getInt(0), DB.PART_OF_BODY, Constants.PART_OF_BODY_ABS);
@@ -104,7 +103,6 @@ public class StartActivity extends AnalyticsActivity {
                             break;
                         }
                     }
-
                     if (!fixed)
                     for (String exe : exeShoulders) {
                         if (c.getString(2).equals(exe)) {
@@ -113,7 +111,6 @@ public class StartActivity extends AnalyticsActivity {
                             break;
                         }
                     }
-
                     if (!fixed)
                     for (String exe : exeBack) {
                         if (c.getString(2).equals(exe)) {
@@ -122,7 +119,6 @@ public class StartActivity extends AnalyticsActivity {
                             break;
                         }
                     }
-
                     if (!fixed)
                     for (String exe : exeTriceps) {
                         if (c.getString(2).equals(exe)) {
@@ -131,7 +127,6 @@ public class StartActivity extends AnalyticsActivity {
                             break;
                         }
                     }
-
                     if (!fixed)
                     for (String exe : exeBiceps) {
                         if (c.getString(2).equals(exe)) {
@@ -140,7 +135,6 @@ public class StartActivity extends AnalyticsActivity {
                             break;
                         }
                     }
-
                     if (!fixed)
                     for (String exe : exeChest) {
                         if (c.getString(2).equals(exe)) {
@@ -149,7 +143,6 @@ public class StartActivity extends AnalyticsActivity {
                             break;
                         }
                     }
-
                     if (!fixed)
                     for (String exe : exeLegs) {
                         if (c.getString(2).equals(exe)) {
@@ -158,7 +151,6 @@ public class StartActivity extends AnalyticsActivity {
                             break;
                         }
                     }
-
                     if (!fixed){
                         db.updateExercise(c.getInt(0), DB.PART_OF_BODY, Constants.PART_OF_BODY_NONE);
                     }

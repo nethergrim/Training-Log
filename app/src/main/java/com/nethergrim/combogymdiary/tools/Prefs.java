@@ -8,6 +8,7 @@ import android.preference.PreferenceManager;
 public class Prefs {
     private static final String KEY_ADS_REMOVED = "ads_removed";
     private static final String KEY_SUPERSET_INFO_SHOWED = "superset_info_showed";
+    public final static String KEY_TRAINING_AT_PROGRESS = "training_at_progress";
 
     private static SharedPreferences prefs;
     private static Prefs pref;
@@ -41,6 +42,14 @@ public class Prefs {
 
     public int getSuperSetInfoShowed(){
         return prefs.getInt(KEY_SUPERSET_INFO_SHOWED, 0);
+    }
+
+    public void setTrainingAtProgress(boolean atProgress){
+        prefs.edit().putBoolean(KEY_TRAINING_AT_PROGRESS, atProgress).apply();
+    }
+
+    public boolean getTrainingAtProgress(){
+        return prefs.getBoolean(KEY_TRAINING_AT_PROGRESS, false);
     }
 
 

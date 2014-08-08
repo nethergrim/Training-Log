@@ -41,7 +41,6 @@ import com.nethergrim.combogymdiary.dialogs.DialogUniversalApprove.OnEditExercis
 import com.nethergrim.combogymdiary.dialogs.DialogUniversalApprove.OnStartTrainingAccept;
 import com.nethergrim.combogymdiary.fragments.CatalogFragment;
 import com.nethergrim.combogymdiary.fragments.ExerciseListFragment;
-import com.nethergrim.combogymdiary.fragments.ExerciseListFragment.OnExerciseEdit;
 import com.nethergrim.combogymdiary.fragments.HistoryFragment;
 import com.nethergrim.combogymdiary.fragments.MeasurementsFragment;
 import com.nethergrim.combogymdiary.fragments.StartTrainingFragment;
@@ -53,7 +52,6 @@ import com.nethergrim.combogymdiary.service.TrainingService;
 import com.nethergrim.combogymdiary.tools.Backuper;
 import com.nethergrim.combogymdiary.tools.Prefs;
 import com.startapp.android.publish.StartAppAd;
-import com.startapp.android.publish.banner.Banner;
 import com.yandex.metrica.Counter;
 
 import org.json.JSONException;
@@ -65,7 +63,7 @@ import java.util.Date;
 import java.util.Random;
 
 public class BaseActivity extends AnalyticsActivity implements
-        OnSelectedListener, MyInterface, OnStartTrainingAccept, OnExerciseEdit,
+        OnSelectedListener, MyInterface, OnStartTrainingAccept, ExerciseListFragment.OnExerciseEditPressed,
         OnEditExerciseAccept, AdapterView.OnItemClickListener {
     public final static String TOTAL_WEIGHT = "total_weight";
     public final static String TRAINING_AT_PROGRESS = "training_at_progress";
@@ -516,12 +514,12 @@ public class BaseActivity extends AnalyticsActivity implements
     }
 
     @Override
-    public void onExerciseEdit(int pos, long id) {
+    public void onExerciseEdit(long id) {
         DialogUniversalApprove approve = new DialogUniversalApprove();
         Bundle args = new Bundle();
         args.putInt(TYPE_OF_DIALOG, 1);
         args.putLong(ID, id);
-        args.putInt(POSITION, pos);
+//        args.putInt(POSITION, pos); // FIXME
         approve.setArguments(args);
         approve.show(getFragmentManager(), "");
     }

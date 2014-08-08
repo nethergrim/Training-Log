@@ -3,15 +3,7 @@ package com.nethergrim.combogymdiary.fragments;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.database.Cursor;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.LoaderManager.LoaderCallbacks;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
-import android.support.v4.widget.SimpleCursorAdapter;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Gravity;
@@ -21,41 +13,44 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ListView;
+import android.widget.BaseExpandableListAdapter;
+import android.widget.ExpandableListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.nethergrim.combogymdiary.DB;
 import com.nethergrim.combogymdiary.R;
-import com.nethergrim.combogymdiary.activities.BaseActivity;
 import com.nethergrim.combogymdiary.dialogs.DialogAddExercise;
+import com.nethergrim.combogymdiary.model.Exercise;
+import com.nethergrim.combogymdiary.tools.Prefs;
 import com.nethergrim.combogymdiary.view.FloatingActionButton;
 
-public class ExerciseListFragment extends Fragment implements
-        LoaderCallbacks<Cursor> {
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 
-    public final static String TRAINING_AT_PROGRESS = "training_at_progress";
+public class ExerciseListFragment extends Fragment {
+
     private static final int CM_DELETE_ID = 1;
-    private static final int CM_EDIT_ID = 2;
-    private ListView listview;
     private DB db;
-    private SimpleCursorAdapter scAdapter;
-    private SharedPreferences sp;
-    private int LOADER_ID = 1;
-    private OnExerciseEdit mListener;
+//    private int LOADER_ID = 1;
+    private OnExerciseEditPressed mListener;
     private FloatingActionButton fab;
+    private ExpandableListView elv;
+    private ExercisesAdapter adapter;
+
+    public static interface OnExerciseEditPressed {
+        public void onExerciseEdit(long id);
+    }
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
-            mListener = (OnExerciseEdit) activity;
+            mListener = (OnExerciseEditPressed) activity;
         } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement OnHeadlineSelectedListener");
+            throw new ClassCastException(activity.toString() + " must implement OnHeadlineSelectedListener");
         }
     }
 
@@ -65,27 +60,14 @@ public class ExerciseListFragment extends Fragment implements
         setRetainInstance(true);
         db = new DB(getActivity());
         db.open();
-        String[] from = new String[]{DB.EXE_NAME};
-        int[] to = new int[]{R.id.tvText,};
-        scAdapter = new SimpleCursorAdapter(getActivity(),
-                R.layout.my_list_item2, null, from, to, 0);
     }
 
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.exersises_list, null);
-        getActivity().getActionBar().setTitle(
-                R.string.excersisiesListButtonString);
-        listview = (ListView) v.findViewById(R.id.listView11);
-        listview.setAdapter(scAdapter);
-        listview.setOnItemClickListener(new OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
-                goToEditExe(position, id);
-            }
-        });
-        ((FragmentActivity) getActivity()).getSupportLoaderManager()
-                .initLoader(LOADER_ID, null, this);
+        getActivity().getActionBar().setTitle(R.string.excersisiesListButtonString);
+        elv = (ExpandableListView) v.findViewById(R.id.elvExercises);
+        adapter = new ExercisesAdapter(getActivity(), db.getExercises());
+
         fab = new FloatingActionButton.Builder(getActivity())
                 .withDrawable(getResources().getDrawable(R.drawable.ic_action_new))
                 .withButtonColor(getResources().getColor(R.color.holo_blue_light))
@@ -103,28 +85,25 @@ public class ExerciseListFragment extends Fragment implements
         return v;
     }
 
-    private void goToEditExe(int position, long ID) {
-        mListener.onExerciseEdit(position, ID);
+    private void goToEditExe(long ID) {
+        mListener.onExerciseEdit(ID);
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        registerForContextMenu(listview);
+        registerForContextMenu(elv);
     }
 
     public void onResume() {
         super.onResume();
-        sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        ((FragmentActivity) getActivity()).getSupportLoaderManager()
-                .getLoader(LOADER_ID).forceLoad();
         fab.show();
     }
 
     public void onPause() {
         super.onPause();
         fab.hide();
-        unregisterForContextMenu(listview);
+        unregisterForContextMenu(elv);
     }
 
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -132,31 +111,9 @@ public class ExerciseListFragment extends Fragment implements
         super.onCreateOptionsMenu(menu, inflater);
     }
 
-    @Override
-    public Loader<Cursor> onCreateLoader(int id, Bundle bndl) {
-        if (id == LOADER_ID)
-            return new MyCursorLoader(getActivity(), db);
-        else
-            return null;
-    }
-
-    @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
-        if (!cursor.isClosed()) {
-            scAdapter.swapCursor(cursor);
-        }
-    }
-
-    @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
-        scAdapter.swapCursor(null);
-    }
-
-    public void onCreateContextMenu(ContextMenu menu, View v,
-                                    ContextMenuInfo menuInfo) {
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
         menu.add(0, CM_DELETE_ID, 0, R.string.delete_record);
-        menu.add(0, CM_EDIT_ID, 0, R.string.edit);
     }
 
     public boolean onContextItemSelected(MenuItem item) {
@@ -167,50 +124,96 @@ public class ExerciseListFragment extends Fragment implements
             TextView tvTmp = (TextView) acmi.targetView;
             String exeName = tvTmp.getText().toString();
 
-            if (sp.getBoolean(TRAINING_AT_PROGRESS, false)) {
-                Toast.makeText(getActivity(), R.string.error_deleting_exe,
-                        Toast.LENGTH_SHORT).show();
+            if (Prefs.getPreferences().getTrainingAtProgress()) {
+                Toast.makeText(getActivity(), R.string.error_deleting_exe, Toast.LENGTH_SHORT).show();
             } else {
                 db.delRec_Exe(acmi.id);
                 db.deleteExersice(exeName);
-                Toast.makeText(getActivity(), R.string.deleted,
-                        Toast.LENGTH_SHORT).show();
-                ((FragmentActivity) getActivity()).getSupportLoaderManager()
-                        .getLoader(LOADER_ID).forceLoad();
+                Toast.makeText(getActivity(), R.string.deleted, Toast.LENGTH_SHORT).show();
+                // FIXME update fragment
+//                ((FragmentActivity) getActivity()).getSupportLoaderManager().getLoader(LOADER_ID).forceLoad();
             }
 
-            return true;
-        } else if (item.getItemId() == CM_EDIT_ID) {
-            if (sp.getBoolean(TRAINING_AT_PROGRESS, false)) {
-                Toast.makeText(getActivity(), R.string.error_editing_exe,
-                        Toast.LENGTH_SHORT).show();
-            } else {
-                goToEditExe(acmi.position, acmi.id);
-            }
-            ((FragmentActivity) getActivity()).getSupportLoaderManager()
-                    .getLoader(LOADER_ID).forceLoad();
             return true;
         }
         return super.onContextItemSelected(item);
     }
 
+    private class ExercisesAdapter extends BaseExpandableListAdapter{
 
-    public static interface OnExerciseEdit {
-        public void onExerciseEdit(int pos, long id);
-    }
+        private Context context;
+        private ArrayList<Exercise> data;
+        private int groupsCount = 0;
+        private HashSet<String> groups;
 
-    static class MyCursorLoader extends CursorLoader {
-        DB db;
-        Cursor cursor;
+        public ExercisesAdapter(Context context, List<Exercise> data){
+            this.context = context;
+            this.data = (ArrayList<Exercise>) data;
+            groupsCount = getGroupsCount(this.data);
+        }
 
-        public MyCursorLoader(Context context, DB db) {
-            super(context);
-            this.db = db;
+        private int getGroupsCount(ArrayList<Exercise> list){
+            groups = new HashSet<String>();
+            for (Exercise aData : list) {
+                groups.add(aData.getPartOfBody());
+            }
+            return groups.size();
+        }
+
+        public void update(ArrayList<Exercise> data){
+            this.data = data;
+            groupsCount = getGroupsCount(this.data);
+            notifyDataSetChanged();
         }
 
         @Override
-        public Cursor loadInBackground() {
-            return db.getDataExe(null, null, null, null, null, DB.EXE_NAME);
+        public int getGroupCount() {
+            return groupsCount;
+        }
+
+        @Override
+        public int getChildrenCount(int groupPosition) {
+            return data.size();
+        }
+
+        @Override
+        public Object getGroup(int groupPosition) {
+            return null;
+        }
+
+        @Override
+        public Object getChild(int groupPosition, int childPosition) {
+            return null;
+        }
+
+        @Override
+        public long getGroupId(int groupPosition) {
+            return 0;
+        }
+
+        @Override
+        public long getChildId(int groupPosition, int childPosition) {
+            return 0;
+        }
+
+        @Override
+        public boolean hasStableIds() {
+            return false;
+        }
+
+        @Override
+        public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
+            return null;
+        }
+
+        @Override
+        public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
+            return null;
+        }
+
+        @Override
+        public boolean isChildSelectable(int groupPosition, int childPosition) {
+            return false;
         }
     }
 }

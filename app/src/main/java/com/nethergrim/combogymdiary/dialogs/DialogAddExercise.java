@@ -162,7 +162,11 @@ public class DialogAddExercise extends DialogFragment implements OnClickListener
                 Toast.makeText(getActivity(), R.string.saved, Toast.LENGTH_SHORT).show();
             }
         }
-        ((FragmentActivity) getActivity()).getSupportLoaderManager().getLoader(1).forceLoad();
+
+        // FIXME update ExerciseListFragment
+//        ((FragmentActivity) getActivity()).getSupportLoaderManager().getLoader(1).forceLoad();
+
+
     }
 
     public void onResume() {

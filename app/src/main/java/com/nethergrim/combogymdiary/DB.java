@@ -11,10 +11,13 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.nethergrim.combogymdiary.activities.BaseActivity;
+import com.nethergrim.combogymdiary.model.Exercise;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 
 public class DB {
@@ -445,10 +448,29 @@ public class DB {
         mDB.insert(DB_EXE_TABLE, null, cv);
     }
 
+    public List<Exercise> getExercises(){
+        Cursor c = mDB.query(DB_EXE_TABLE, null, null, null, null, null, null);
+        ArrayList<Exercise> exercises = new ArrayList<Exercise>();
+        if (c.moveToFirst()){
+            do {
+                exercises.add(new Exercise(c.getInt(0), c.getString(2), c.getString(3), c.getString(4)));
+            } while (c.moveToNext());
+        }
+        return exercises;
+    }
+
+    public Exercise getExercise(long id){
+        String[] args = {id + ""};
+        Cursor c = mDB.query(DB_EXE_TABLE, null, COLUMN_ID + "=?", args, null, null, null);
+        if (c.moveToFirst()){
+            return new Exercise(c.getInt(0), c.getString(2), c.getString(3), c.getString(4));
+        }
+        return null;
+    }
+
     public String getTrainingName(int _id) {
         String[] args = {_id + ""};
-        Cursor c = mDB.query(DB_TRAININGS_TABLE, null, COLUMN_ID + "=?", args,
-                null, null, null);
+        Cursor c = mDB.query(DB_TRAININGS_TABLE, null, COLUMN_ID + "=?", args,  null, null, null);
         if (c.moveToFirst()) {
             return c.getString(1);
         } else
