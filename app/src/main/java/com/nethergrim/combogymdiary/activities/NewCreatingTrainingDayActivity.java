@@ -1,6 +1,7 @@
 package com.nethergrim.combogymdiary.activities;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
@@ -8,23 +9,31 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.nethergrim.combogymdiary.DB;
 import com.nethergrim.combogymdiary.R;
+import com.nethergrim.combogymdiary.dialogs.DialogAddExercises;
 import com.nethergrim.combogymdiary.dialogs.DialogInfo;
+import com.nethergrim.combogymdiary.model.ExerciseGroup;
 import com.nethergrim.combogymdiary.tools.Prefs;
 import com.nethergrim.combogymdiary.view.FloatingActionButton;
 
-public class NewCreatingTrainingDayActivity extends AnalyticsActivity {
+import java.util.ArrayList;
+import java.util.List;
+
+public class NewCreatingTrainingDayActivity extends AnalyticsActivity implements DialogAddExercises.OnExerciseAddCallback {
 
     private ListView list;
     private TextView textNoExe;
     private EditText etName;
     private FloatingActionButton fabAdd, fabSave, fabSuperSet;
+    private ArrayList<ExerciseGroup> data;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_creating_training_day);
         setTitle(R.string.creating_program);
+        initExericesData();
         getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setDisplayShowHomeEnabled(false);
         initButtons();
@@ -33,6 +42,13 @@ public class NewCreatingTrainingDayActivity extends AnalyticsActivity {
         setTypeFaceLight(textNoExe);
         etName = (EditText)findViewById(R.id.etTrainingName);
         setTypeFaceLight(etName);
+    }
+
+    private void initExericesData() {
+        DB db = new DB(this);
+        db.open();
+        data = (ArrayList<ExerciseGroup>) db.getExerciseGroups();
+        db.close();
     }
 
     private void initList() {
@@ -64,7 +80,14 @@ public class NewCreatingTrainingDayActivity extends AnalyticsActivity {
         fabAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                DialogAddExercises dialogAddExercises = new DialogAddExercises();
+                Bundle args = new Bundle();
+                if (data == null){
+                    initExericesData();
+                }
+                args.putSerializable(DialogAddExercises.BUNDLE_KEY_DATA, data);
+                dialogAddExercises.setArguments(args);
+                dialogAddExercises.show(getFragmentManager(), DialogAddExercises.class.getName());
             }
         });
 
@@ -129,5 +152,11 @@ public class NewCreatingTrainingDayActivity extends AnalyticsActivity {
                 return true;
         }
         return false;
+    }
+
+    @Override
+    public void onExerciseAddedCallback(List<Integer> idList) {
+
+        // TODO
     }
 }

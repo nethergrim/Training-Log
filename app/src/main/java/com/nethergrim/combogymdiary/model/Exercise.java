@@ -9,6 +9,15 @@ public class Exercise implements Serializable {
     private String name;
     private String timer;
     private String partOfBody;
+    private boolean checked;
+
+    public boolean isChecked() {
+        return checked;
+    }
+
+    public void setChecked(boolean checked) {
+        this.checked = checked;
+    }
 
     public Exercise(){}
 

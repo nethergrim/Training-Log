@@ -28,7 +28,7 @@ import com.yandex.metrica.Counter;
 
 import java.util.ArrayList;
 
-public class DialogAddExercise extends DialogFragment implements OnClickListener {
+public class DialogEditExercise extends DialogFragment implements OnClickListener {
 
     private EditText etName, etTimer;
     private Boolean editing = false;

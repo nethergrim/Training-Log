@@ -12,15 +12,13 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
-import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.nethergrim.combogymdiary.Constants;
 import com.nethergrim.combogymdiary.DB;
 import com.nethergrim.combogymdiary.R;
-import com.nethergrim.combogymdiary.dialogs.DialogAddExercise;
+import com.nethergrim.combogymdiary.dialogs.DialogEditExercise;
 import com.nethergrim.combogymdiary.dialogs.DialogUniversalApprove;
 import com.nethergrim.combogymdiary.model.Exercise;
 import com.nethergrim.combogymdiary.model.ExerciseGroup;
@@ -55,7 +53,7 @@ public class ExerciseListFragment extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DialogAddExercise dialog = new DialogAddExercise();
+                DialogEditExercise dialog = new DialogEditExercise();
                 dialog.show(getFragmentManager(), "tag");
             }
         });
@@ -168,11 +166,11 @@ public class ExerciseListFragment extends Fragment {
             text1.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    DialogAddExercise dialogAddExercise = new DialogAddExercise();
+                    DialogEditExercise dialogEditExercise = new DialogEditExercise();
                     Bundle args = new Bundle();
                     args.putSerializable(Constants.BUNDLE_EXERCISE, data.get(groupPosition).getExercisesList().get(childPosition));
-                    dialogAddExercise.setArguments(args);
-                    dialogAddExercise.show(getFragmentManager(), DialogAddExercise.class.getName());
+                    dialogEditExercise.setArguments(args);
+                    dialogEditExercise.show(getFragmentManager(), DialogEditExercise.class.getName());
                 }
             });
             v.findViewById(R.id.btn_delete).setOnClickListener(new View.OnClickListener() {

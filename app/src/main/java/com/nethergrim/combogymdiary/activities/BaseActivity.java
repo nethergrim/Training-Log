@@ -75,7 +75,6 @@ public class BaseActivity extends AnalyticsActivity implements
     public final static String TRAININGS_DONE_NUM = "trainings_done_num";
     public final static String USER_CLICKED_POSITION = "user_clicked_position";
     public final static String SECONDS = "seconds";
-    public final static String POSITION = "position";
     private final static String FRAGMENT_ID = "fragment_id";
     private static final char[] SYMBOLS = new char[36];
     private static boolean startedTraining = false;
