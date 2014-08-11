@@ -30,18 +30,14 @@ import java.util.List;
 
 public class ExerciseListFragment extends Fragment {
 
-    private static final int CM_DELETE_ID = 1;
     private FloatingActionButton fab;
     private ExpandableListView elv;
     private ExercisesAdapter adapter;
-    private DB db;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         setRetainInstance(true);
-        db = new DB(getActivity());
-        db.open();
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -79,50 +75,17 @@ public class ExerciseListFragment extends Fragment {
     public void onResume() {
         super.onResume();
         fab.show();
-//        registerForContextMenu(elv);
     }
 
     public void onPause() {
         super.onPause();
         fab.hide();
-//        unregisterForContextMenu(elv);
     }
 
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         menu.clear();
         super.onCreateOptionsMenu(menu, inflater);
     }
-
-//    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
-//        super.onCreateContextMenu(menu, v, menuInfo);
-//        ExpandableListView.ExpandableListContextMenuInfo info = (ExpandableListView.ExpandableListContextMenuInfo) menuInfo;
-//        int type = ExpandableListView.getPackedPositionType(info.packedPosition);
-//        if (type == ExpandableListView.PACKED_POSITION_TYPE_CHILD) {
-//            menu.add(0, CM_DELETE_ID, 0, R.string.delete_record);
-//        }
-//    }
-
-//    public boolean onContextItemSelected(MenuItem item) {
-//        ExpandableListView.ExpandableListContextMenuInfo info = (ExpandableListView.ExpandableListContextMenuInfo) item.getMenuInfo();
-//        int type = ExpandableListView.getPackedPositionType(info.packedPosition);
-//        if (type == ExpandableListView.PACKED_POSITION_TYPE_CHILD) {
-//            int groupPos = ExpandableListView.getPackedPositionGroup(info.packedPosition);
-//            int childPos = ExpandableListView.getPackedPositionChild(info.packedPosition);
-//            if (item.getItemId() == CM_DELETE_ID) {
-//                if (Prefs.getPreferences().getTrainingAtProgress()) {
-//                    Toast.makeText(getActivity(), R.string.error_deleting_exe, Toast.LENGTH_SHORT).show();
-//                    return false;
-//                }
-//                Exercise exercise = db.getExerciseGroups().get(groupPos).getExercisesList().get(childPos);
-//                db.deleteExercise(exercise.getId());
-//                db.deleteExersice(exercise.getName());
-//                Toast.makeText(getActivity(), R.string.deleted, Toast.LENGTH_SHORT).show();
-//                updateList(getActivity());
-//                return true;
-//            }
-//        }
-//        return super.onContextItemSelected(item);
-//    }
 
     private class ExercisesAdapter extends BaseExpandableListAdapter {
 

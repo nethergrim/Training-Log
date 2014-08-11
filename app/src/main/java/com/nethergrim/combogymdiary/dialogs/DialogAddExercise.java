@@ -179,7 +179,11 @@ public class DialogAddExercise extends DialogFragment implements OnClickListener
     public void onResume() {
         super.onResume();
         String defaultTimer = sp.getString("etDefault", "60");
-        etTimer.setText(defaultTimer);
+        if (editing){
+            etTimer.setText(exercise.getTimer());
+        } else {
+            etTimer.setText(defaultTimer);
+        }
     }
 
 }
