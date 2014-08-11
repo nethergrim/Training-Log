@@ -17,6 +17,7 @@ public class Constants {
     public static final String PART_OF_BODY_NONE = "without_category";
     public static final String[] PARTS_OF_BODY  = {PART_OF_BODY_LEGS, PART_OF_BODY_CHEST, PART_OF_BODY_BACK , PART_OF_BODY_SHOULDERS , PART_OF_BODY_BICEPS , PART_OF_BODY_TRICEPS, PART_OF_BODY_ABS, PART_OF_BODY_NONE};
     public static final int[] PARTS_OF_BODY_REAL_NAMES = {R.array.MuscleGroupsArray};
+    public static final String _ID = "_id";
 
 
     public static String[] getPartsOfBodyRealNames(Context context){

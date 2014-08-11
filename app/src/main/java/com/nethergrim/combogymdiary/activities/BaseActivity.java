@@ -95,6 +95,11 @@ public class BaseActivity extends AnalyticsActivity implements
     private boolean doubleBackToExitPressedOnce = false;
     private IInAppBillingService mService;
     private CatalogFragment catalogFragment = new CatalogFragment();
+
+    public ExerciseListFragment getExerciseListFragment() {
+        return exerciseListFragment;
+    }
+
     private ExerciseListFragment exerciseListFragment = new ExerciseListFragment();
     private HistoryFragment historyFragment = new HistoryFragment();
     private MeasurementsFragment measurementsFragment = new MeasurementsFragment();

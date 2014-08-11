@@ -201,8 +201,7 @@ public class DB {
     }
 
     public void deleteExersice(String name) {
-        Cursor c = mDB.query(DB_TRAININGS_TABLE, null, null, null, null, null,
-                null);
+        Cursor c = mDB.query(DB_TRAININGS_TABLE, null, null, null, null, null, null);
         if (c.moveToFirst()) {
             do {
                 int delta = 0;
@@ -467,15 +466,16 @@ public class DB {
             exerciseGroup.setPositionInGlobalArray(i);
             exerciseGroup.setName(Constants.PARTS_OF_BODY[i]);
             String[] args = {Constants.PARTS_OF_BODY[i]};
-            Cursor c = mDB.query(DB_EXE_TABLE, null, PART_OF_BODY + "=?", args, null, null, null);
+            Cursor c = mDB.query(DB_EXE_TABLE, null, PART_OF_BODY + "=?", args, null, null, EXE_NAME);
             List<Exercise> exercises = new ArrayList<Exercise>();
             if (c.moveToFirst()){
                 do {
                     exercises.add(new Exercise(c.getInt(0), c.getString(2), c.getString(3), c.getString(4)));
                 } while (c.moveToNext());
+                exerciseGroup.setList(exercises);
+                result.add(exerciseGroup);
             }
-            exerciseGroup.setList(exercises);
-            result.add(exerciseGroup);
+
         }
         return result;
     }
@@ -584,7 +584,7 @@ public class DB {
         mDB.update(DB_TRAININGS_TABLE, cv, "_id = " + Id, null);
     }
 
-    public void delRec_Exe(long id) {
+    public void deleteExercise(long id) {
         mDB.delete(DB_EXE_TABLE, COLUMN_ID + " = " + id, null);
     }
 

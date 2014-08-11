@@ -5,6 +5,7 @@ import android.app.Fragment;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
@@ -15,7 +16,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
@@ -30,7 +30,6 @@ import com.nethergrim.combogymdiary.model.ExerciseGroup;
 import com.nethergrim.combogymdiary.tools.Prefs;
 import com.nethergrim.combogymdiary.view.FloatingActionButton;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ExerciseListFragment extends Fragment {
@@ -41,10 +40,6 @@ public class ExerciseListFragment extends Fragment {
     private ExpandableListView elv;
     private ExercisesAdapter adapter;
     private DB db;
-
-    public static interface OnExerciseEditPressed {
-        public void onExerciseEdit(long id);
-    }
 
     @Override
     public void onAttach(Activity activity) {
@@ -87,8 +82,8 @@ public class ExerciseListFragment extends Fragment {
         return v;
     }
 
-    public void updateList(Context context){
-        if (adapter != null){
+    public void updateList(Context context) {
+        if (adapter != null) {
             adapter.update(context);
         }
     }
@@ -97,15 +92,10 @@ public class ExerciseListFragment extends Fragment {
         mListener.onExerciseEdit(ID);
     }
 
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        registerForContextMenu(elv);
-    }
-
     public void onResume() {
         super.onResume();
         fab.show();
+        registerForContextMenu(elv);
     }
 
     public void onPause() {
@@ -121,39 +111,57 @@ public class ExerciseListFragment extends Fragment {
 
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
-        menu.add(0, CM_DELETE_ID, 0, R.string.delete_record);
+
+        ExpandableListView.ExpandableListContextMenuInfo info =
+                (ExpandableListView.ExpandableListContextMenuInfo) menuInfo;
+
+        int type = ExpandableListView.getPackedPositionType(info.packedPosition);
+
+        int group = ExpandableListView.getPackedPositionGroup(info.packedPosition);
+
+        int child = ExpandableListView.getPackedPositionChild(info.packedPosition);
+
+        // Only create a context menu for child items
+        if (type == ExpandableListView.PACKED_POSITION_TYPE_CHILD) {
+            menu.add(0, CM_DELETE_ID, 0, R.string.delete_record);
+
+        }
+
     }
 
     public boolean onContextItemSelected(MenuItem item) {
-        AdapterContextMenuInfo acmi = (AdapterContextMenuInfo) item
-                .getMenuInfo();
-        if (item.getItemId() == CM_DELETE_ID) {
-
-            TextView tvTmp = (TextView) acmi.targetView;
-            String exeName = tvTmp.getText().toString();
-
-            if (Prefs.getPreferences().getTrainingAtProgress()) {
-                Toast.makeText(getActivity(), R.string.error_deleting_exe, Toast.LENGTH_SHORT).show();
-            } else {
-                db.delRec_Exe(acmi.id);
-                db.deleteExersice(exeName);
+        ExpandableListView.ExpandableListContextMenuInfo info = (ExpandableListView.ExpandableListContextMenuInfo) item.getMenuInfo();
+        int groupPos = 0, childPos = 0;
+        int type = ExpandableListView.getPackedPositionType(info.packedPosition);
+        if (type == ExpandableListView.PACKED_POSITION_TYPE_CHILD) {
+            groupPos = ExpandableListView.getPackedPositionGroup(info.packedPosition);
+            childPos = ExpandableListView.getPackedPositionChild(info.packedPosition);
+            if (item.getItemId() == CM_DELETE_ID) {
+                if (Prefs.getPreferences().getTrainingAtProgress()) {
+                    Toast.makeText(getActivity(), R.string.error_deleting_exe, Toast.LENGTH_SHORT).show();
+                    return false;
+                }
+                Exercise exercise = db.getExerciseGroups().get(groupPos).getExercisesList().get(childPos);
+                db.deleteExercise(exercise.getId());
+                db.deleteExersice(exercise.getName());
                 Toast.makeText(getActivity(), R.string.deleted, Toast.LENGTH_SHORT).show();
-                // FIXME update fragment
                 updateList(getActivity());
+                return true;
             }
-
-            return true;
         }
         return super.onContextItemSelected(item);
     }
 
-    private class ExercisesAdapter extends BaseExpandableListAdapter{
+    public static interface OnExerciseEditPressed {
+        public void onExerciseEdit(long id);
+    }
+
+    private class ExercisesAdapter extends BaseExpandableListAdapter {
 
         private Context context;
         private List<ExerciseGroup> data;
 
-
-        public ExercisesAdapter(Context context){
+        public ExercisesAdapter(Context context) {
             this.context = context;
             DB db = new DB(context);
             db.open();
@@ -161,7 +169,7 @@ public class ExerciseListFragment extends Fragment {
             db.close();
         }
 
-        public void update(Context context){
+        public void update(Context context) {
             this.context = context;
             DB db = new DB(context);
             db.open();
@@ -197,7 +205,7 @@ public class ExerciseListFragment extends Fragment {
 
         @Override
         public long getChildId(int groupPosition, int childPosition) {
-            return groupPosition * 10 + childPosition;
+            return data.get(groupPosition).getExercisesList().get(childPosition).getId();
         }
 
         @Override
@@ -207,9 +215,9 @@ public class ExerciseListFragment extends Fragment {
 
         @Override
         public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
-            LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View v = inflater.inflate(android.R.layout.simple_expandable_list_item_1, parent, false);
-            TextView text1 = (TextView)v.findViewById(android.R.id.text1);
+            TextView text1 = (TextView) v.findViewById(android.R.id.text1);
             String realNames[] = Constants.getPartsOfBodyRealNames(getActivity());
             text1.setText(realNames[groupPosition]);
             text1.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), Constants.TYPEFACE_LIGHT));
@@ -220,10 +228,10 @@ public class ExerciseListFragment extends Fragment {
 
         @Override
         public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
-            LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View v = inflater.inflate(android.R.layout.simple_list_item_1, parent, false);
             v.setTag(data.get(groupPosition).getExercisesList().get(childPosition));
-            TextView text1 = (TextView)v.findViewById(android.R.id.text1);
+            TextView text1 = (TextView) v.findViewById(android.R.id.text1);
             text1.setText(data.get(groupPosition).getExercisesList().get(childPosition).getName());
             text1.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), Constants.TYPEFACE_LIGHT));
             text1.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);

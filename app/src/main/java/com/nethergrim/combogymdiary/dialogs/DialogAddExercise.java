@@ -22,6 +22,8 @@ import android.widget.Toast;
 import com.nethergrim.combogymdiary.Constants;
 import com.nethergrim.combogymdiary.DB;
 import com.nethergrim.combogymdiary.R;
+import com.nethergrim.combogymdiary.activities.BaseActivity;
+import com.yandex.metrica.Counter;
 
 import java.util.ArrayList;
 
@@ -162,11 +164,15 @@ public class DialogAddExercise extends DialogFragment implements OnClickListener
                 Toast.makeText(getActivity(), R.string.saved, Toast.LENGTH_SHORT).show();
             }
         }
-
-        // FIXME update ExerciseListFragment
-//        ((FragmentActivity) getActivity()).getSupportLoaderManager().getLoader(1).forceLoad();
-
-
+        try {
+            if (getActivity() instanceof BaseActivity){
+                BaseActivity baseActivity = (BaseActivity) getActivity();
+                baseActivity.getExerciseListFragment().updateList(getActivity());
+            }
+        } catch (Exception e) {
+            Counter.sharedInstance().reportError("", e);
+            e.printStackTrace();
+        }
     }
 
     public void onResume() {
