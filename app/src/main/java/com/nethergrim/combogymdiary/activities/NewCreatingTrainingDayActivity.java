@@ -1,7 +1,6 @@
 package com.nethergrim.combogymdiary.activities;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
@@ -33,7 +32,7 @@ public class NewCreatingTrainingDayActivity extends AnalyticsActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_creating_training_day);
         setTitle(R.string.creating_program);
-        initExericesData();
+        initExercisesData();
         getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setDisplayShowHomeEnabled(false);
         initButtons();
@@ -44,7 +43,7 @@ public class NewCreatingTrainingDayActivity extends AnalyticsActivity implements
         setTypeFaceLight(etName);
     }
 
-    private void initExericesData() {
+    private void initExercisesData() {
         DB db = new DB(this);
         db.open();
         data = (ArrayList<ExerciseGroup>) db.getExerciseGroups();
@@ -83,7 +82,7 @@ public class NewCreatingTrainingDayActivity extends AnalyticsActivity implements
                 DialogAddExercises dialogAddExercises = new DialogAddExercises();
                 Bundle args = new Bundle();
                 if (data == null){
-                    initExericesData();
+                    initExercisesData();
                 }
                 args.putSerializable(DialogAddExercises.BUNDLE_KEY_DATA, data);
                 dialogAddExercises.setArguments(args);
@@ -94,14 +93,14 @@ public class NewCreatingTrainingDayActivity extends AnalyticsActivity implements
         fabSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                // TODO save
             }
         });
 
         fabSuperSet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                // TODO create superset
             }
         });
     }
@@ -157,6 +156,6 @@ public class NewCreatingTrainingDayActivity extends AnalyticsActivity implements
     @Override
     public void onExerciseAddedCallback(List<Integer> idList) {
 
-        // TODO
+        // TODO adding exercises to list by there id`s (only unique)
     }
 }

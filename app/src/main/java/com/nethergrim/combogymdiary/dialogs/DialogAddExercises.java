@@ -93,10 +93,12 @@ public class DialogAddExercises extends DialogFragment implements DialogInterfac
 
         private Context context;
         private List<ExerciseGroup> data;
+        private String realNames[];
 
         public ExercisesAdapter(Context context, List<ExerciseGroup> data) {
             this.context = context;
             this.data = data;
+            realNames = Constants.getPartsOfBodyRealNames(context);
         }
 
         @Override
@@ -142,7 +144,6 @@ public class DialogAddExercises extends DialogFragment implements DialogInterfac
                 v = inflater.inflate(android.R.layout.simple_expandable_list_item_1, parent, false);
             }
             TextView text1 = (TextView) v.findViewById(android.R.id.text1);
-            String realNames[] = Constants.getPartsOfBodyRealNames(getActivity());
             text1.setText(realNames[groupPosition]);
             text1.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), Constants.TYPEFACE_LIGHT));
             text1.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
@@ -169,13 +170,16 @@ public class DialogAddExercises extends DialogFragment implements DialogInterfac
                     Log.e("log", exercise.getName() + " become checked: " + text1.isChecked());
                     exercise.setChecked(text1.isChecked());
                     if (text1.isChecked()) {
-                        checkedIds.add((int) exercise.getId());
+                        if (!checkedIds.contains(Integer.valueOf((int) exercise.getId())))
+                            checkedIds.add((int) exercise.getId());
                     } else {
                         checkedIds.remove(Integer.valueOf((int) exercise.getId()));
                     }
                     data.get(groupPosition).getExercisesList().set(childPosition, exercise);
+                    v.setTag(exercise);
                 }
             });
+            v.setTag(exercise);
             return v;
         }
 

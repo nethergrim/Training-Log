@@ -6,7 +6,7 @@
     <string name="fav_exercise">Любимое упражнение</string>
     <string name="choose_muscle_part">Выберите мышечную группу</string>
     <string name="superset_info">Для того чтобы объединить несколько упражнений в <b>суперсет</b> нажмите кнопку (Ss), и выберите те упражнения которые хотите.</string>
-    <string name="to_add_exercise_press_plus">Пока что в вашей программе тренировок нет упражнений.\nЧтобы добавить упражнение нажмите (+) кнопку.</string>
+    <string name="to_add_exercise_press_plus">Пока что в вашей программе тренировок нет упражнений.\nЧтобы добавить упражнения нажмите (+) кнопку.</string>
     <string name="none">Пусто</string>
     <string name="without_category">Без категории</string>
     <string name="ads">Реклама</string>

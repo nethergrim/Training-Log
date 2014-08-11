@@ -4,7 +4,7 @@
     <string name="fav_exercise">Favorite exercise</string>
     <string name="choose_muscle_part">Choose muscle group</string>
     <string name="superset_info">In order to combine several exercises in <b>superset</b> click (Ss) and select those exercises that you want.</string>
-    <string name="to_add_exercise_press_plus">So far in your training program is no exercise.\nTo add an exercise press (+) button.</string>
+    <string name="to_add_exercise_press_plus">So far in your training program is no exercise.\nTo add exercises press (+) button.</string>
     <string name="none">Empty</string>
     <string name="without_category">Without Category</string>
     <string name="ads">Advertisement</string>
