@@ -23,6 +23,7 @@ import com.nethergrim.combogymdiary.Constants;
 import com.nethergrim.combogymdiary.DB;
 import com.nethergrim.combogymdiary.R;
 import com.nethergrim.combogymdiary.activities.BaseActivity;
+import com.nethergrim.combogymdiary.model.Exercise;
 import com.yandex.metrica.Counter;
 
 import java.util.ArrayList;
@@ -30,17 +31,13 @@ import java.util.ArrayList;
 public class DialogAddExercise extends DialogFragment implements OnClickListener {
 
     private EditText etName, etTimer;
-    private String exeName = "", timerV = "";
-    private long exeID = 0;
     private Boolean editing = false;
     private DB db;
     private SharedPreferences sp;
-    private String partOfBody = "";
     private ArrayList<String> partsOfBody = new ArrayList<String>();
     private ArrayAdapter<String> adapter;
     private boolean partOfBodySelected = false;
-    private String[] muscleGroups;
-    public static final String KEY_PART_OF_BODY  = "part_of_body";
+    private Exercise exercise;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -49,17 +46,17 @@ public class DialogAddExercise extends DialogFragment implements OnClickListener
         initList();
         if (args != null) {
             editing = true;
-            exeName = args.getString("exeName");
-            timerV = args.getString("timerValue");
-            exeID = args.getLong("exeID");
-            partOfBody = args.getString(KEY_PART_OF_BODY);
+            exercise = (Exercise) args.getSerializable(Constants.BUNDLE_EXERCISE);
+        } else {
+            exercise = new Exercise();
+            exercise.setPartOfBody("");
+            exercise.setName("");
         }
-        Log.e("log", "partofbody: " + partOfBody);
     }
 
     private void initList() {
         partsOfBody.add(getString(R.string.choose_muscle_part));
-        muscleGroups =  getResources().getStringArray(R.array.MuscleGroupsArray);
+        String[] muscleGroups = getResources().getStringArray(R.array.MuscleGroupsArray);
         partsOfBody.add(muscleGroups[0]);
         partsOfBody.add(muscleGroups[3]);
         partsOfBody.add(muscleGroups[4]);
@@ -73,7 +70,11 @@ public class DialogAddExercise extends DialogFragment implements OnClickListener
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        getDialog().setTitle(R.string.add_an_exercise);
+        if (editing){
+            getDialog().setTitle(R.string.create_new_exercise);
+        } else {
+            getDialog().setTitle(R.string.add_an_exercise);
+        }
         View v = inflater.inflate(R.layout.adding_exersise, null);
         Button btnCreate = (Button) v.findViewById(R.id.btnSave);
         btnCreate.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), Constants.TYPEFACE_LIGHT));
@@ -87,25 +88,25 @@ public class DialogAddExercise extends DialogFragment implements OnClickListener
                 if (partOfBodySelected) {
                     switch (position) {
                         case 1:
-                            partOfBody = Constants.PART_OF_BODY_CHEST;
+                            exercise.setPartOfBody(Constants.PART_OF_BODY_CHEST);
                             break;
                         case 2:
-                            partOfBody = Constants.PART_OF_BODY_SHOULDERS;
+                            exercise.setPartOfBody(Constants.PART_OF_BODY_SHOULDERS);
                             break;
                         case 3:
-                            partOfBody = Constants.PART_OF_BODY_BICEPS;
+                            exercise.setPartOfBody(Constants.PART_OF_BODY_BICEPS);
                             break;
                         case 4:
-                            partOfBody = Constants.PART_OF_BODY_TRICEPS;
+                            exercise.setPartOfBody(Constants.PART_OF_BODY_TRICEPS);
                             break;
                         case 5:
-                            partOfBody = Constants.PART_OF_BODY_BACK;
+                            exercise.setPartOfBody(Constants.PART_OF_BODY_BACK);
                             break;
                         case 6:
-                            partOfBody = Constants.PART_OF_BODY_ABS;
+                            exercise.setPartOfBody(Constants.PART_OF_BODY_ABS);
                             break;
                         case 7:
-                            partOfBody = Constants.PART_OF_BODY_LEGS;
+                            exercise.setPartOfBody(Constants.PART_OF_BODY_LEGS);
                             break;
                     }
                 }
@@ -123,23 +124,23 @@ public class DialogAddExercise extends DialogFragment implements OnClickListener
         db = new DB(getActivity());
         db.open();
         if (editing) {
-            etName.setText(exeName);
-            etTimer.setText(timerV);
+            etName.setText(exercise.getName());
+            etTimer.setText(exercise.getTimer());
         }
         sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        if (editing && partOfBody == null || partOfBody.equals("")){
+        if (exercise.getPartOfBody() == null || exercise.getPartOfBody().equals("")){
             spinner.setSelection(0);
         }
 
-        if (partOfBody != null && !partOfBody.equals("")){
-            if (partOfBody.equals(Constants.PART_OF_BODY_CHEST)) spinner.setSelection(1);
-            if (partOfBody.equals(Constants.PART_OF_BODY_SHOULDERS)) spinner.setSelection(2);
-            if (partOfBody.equals(Constants.PART_OF_BODY_BICEPS)) spinner.setSelection(3);
-            if (partOfBody.equals(Constants.PART_OF_BODY_TRICEPS)) spinner.setSelection(4);
-            if (partOfBody.equals(Constants.PART_OF_BODY_BACK)) spinner.setSelection(5);
-            if (partOfBody.equals(Constants.PART_OF_BODY_ABS)) spinner.setSelection(6);
-            if (partOfBody.equals(Constants.PART_OF_BODY_LEGS)) spinner.setSelection(7);
-            if (partOfBody.equals(Constants.PART_OF_BODY_NONE)) spinner.setSelection(0);
+        if (exercise.getPartOfBody() != null && !exercise.getPartOfBody().equals("")){
+            if (exercise.getPartOfBody().equals(Constants.PART_OF_BODY_CHEST)) spinner.setSelection(1);
+            if (exercise.getPartOfBody().equals(Constants.PART_OF_BODY_SHOULDERS)) spinner.setSelection(2);
+            if (exercise.getPartOfBody().equals(Constants.PART_OF_BODY_BICEPS)) spinner.setSelection(3);
+            if (exercise.getPartOfBody().equals(Constants.PART_OF_BODY_TRICEPS)) spinner.setSelection(4);
+            if (exercise.getPartOfBody().equals(Constants.PART_OF_BODY_BACK)) spinner.setSelection(5);
+            if (exercise.getPartOfBody().equals(Constants.PART_OF_BODY_ABS)) spinner.setSelection(6);
+            if (exercise.getPartOfBody().equals(Constants.PART_OF_BODY_LEGS)) spinner.setSelection(7);
+            if (exercise.getPartOfBody().equals(Constants.PART_OF_BODY_NONE)) spinner.setSelection(0);
         }
         return v;
     }
@@ -152,15 +153,15 @@ public class DialogAddExercise extends DialogFragment implements OnClickListener
         if (v.getId() == R.id.btnSave && !editing) {  // creating
             if (!etName.getText().toString().isEmpty() && !etTimer.getText().toString().isEmpty()) {
                 dismiss();
-                db.addExercise(etName.getText().toString(), etTimer.getText().toString(), partOfBody);
+                db.addExercise(etName.getText().toString(), etTimer.getText().toString(), exercise.getPartOfBody());
                 Toast.makeText(getActivity(), R.string.saved, Toast.LENGTH_SHORT).show();
             }
         } else if (v.getId() == R.id.btnSave && editing) {  // editing
             if (!etName.getText().toString().isEmpty() && !etTimer.getText().toString().isEmpty()) {
                 dismiss();
-                db.updateExercise((int) exeID, DB.EXE_NAME, etName.getText().toString());
-                db.updateExercise((int) exeID, DB.TIMER_VALUE, etTimer.getText().toString());
-                db.updateExercise((int) exeID, DB.PART_OF_BODY, partOfBody);
+                db.updateExercise((int) exercise.getId(), DB.EXE_NAME, etName.getText().toString());
+                db.updateExercise((int) exercise.getId(), DB.TIMER_VALUE, etTimer.getText().toString());
+                db.updateExercise((int) exercise.getId(), DB.PART_OF_BODY, exercise.getPartOfBody());
                 Toast.makeText(getActivity(), R.string.saved, Toast.LENGTH_SHORT).show();
             }
         }

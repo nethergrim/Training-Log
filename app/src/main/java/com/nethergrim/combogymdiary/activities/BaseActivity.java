@@ -30,14 +30,12 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.android.vending.billing.IInAppBillingService;
-import com.google.android.gms.ads.AdRequest;
+import com.nethergrim.combogymdiary.Constants;
 import com.nethergrim.combogymdiary.DB;
 import com.nethergrim.combogymdiary.R;
-import com.nethergrim.combogymdiary.dialogs.DialogAddExercise;
 import com.nethergrim.combogymdiary.dialogs.DialogExitFromTraining.MyInterface;
 import com.nethergrim.combogymdiary.dialogs.DialogInfo;
 import com.nethergrim.combogymdiary.dialogs.DialogUniversalApprove;
-import com.nethergrim.combogymdiary.dialogs.DialogUniversalApprove.OnEditExerciseAccept;
 import com.nethergrim.combogymdiary.dialogs.DialogUniversalApprove.OnStartTrainingAccept;
 import com.nethergrim.combogymdiary.fragments.CatalogFragment;
 import com.nethergrim.combogymdiary.fragments.ExerciseListFragment;
@@ -48,6 +46,7 @@ import com.nethergrim.combogymdiary.fragments.StartTrainingFragment.OnSelectedLi
 import com.nethergrim.combogymdiary.fragments.TrainingFragment;
 import com.nethergrim.combogymdiary.googledrive.BaseDriveActivity;
 import com.nethergrim.combogymdiary.googledrive.DriveBackupActivity;
+import com.nethergrim.combogymdiary.model.Exercise;
 import com.nethergrim.combogymdiary.service.TrainingService;
 import com.nethergrim.combogymdiary.tools.Backuper;
 import com.nethergrim.combogymdiary.tools.Prefs;
@@ -63,8 +62,7 @@ import java.util.Date;
 import java.util.Random;
 
 public class BaseActivity extends AnalyticsActivity implements
-        OnSelectedListener, MyInterface, OnStartTrainingAccept, ExerciseListFragment.OnExerciseEditPressed,
-        OnEditExerciseAccept, AdapterView.OnItemClickListener {
+        OnSelectedListener, MyInterface, OnStartTrainingAccept, DialogUniversalApprove.OnDeleteExerciseCallback, AdapterView.OnItemClickListener {
     public final static String TOTAL_WEIGHT = "total_weight";
     public final static String TRAINING_AT_PROGRESS = "training_at_progress";
     public final static String COMMENT_TO_TRAINING = "comment_to_training";
@@ -77,8 +75,6 @@ public class BaseActivity extends AnalyticsActivity implements
     public final static String TRAININGS_DONE_NUM = "trainings_done_num";
     public final static String USER_CLICKED_POSITION = "user_clicked_position";
     public final static String SECONDS = "seconds";
-    public final static String TYPE_OF_DIALOG = "type_of_dialog";
-    public final static String ID = "id";
     public final static String POSITION = "position";
     private final static String FRAGMENT_ID = "fragment_id";
     private static final char[] SYMBOLS = new char[36];
@@ -434,11 +430,10 @@ public class BaseActivity extends AnalyticsActivity implements
     public void onTrainingSelected(int id) {
         DialogUniversalApprove approve = new DialogUniversalApprove();
         Bundle args = new Bundle();
-        args.putInt(TYPE_OF_DIALOG, 0);
-        args.putInt(ID, id);
+        args.putInt(Constants.TYPE_OF_DIALOG, DialogUniversalApprove.TYPE_START_WORKOUT);
+        args.putInt(Constants._ID, id);
         approve.setArguments(args);
         approve.show(getFragmentManager(), "");
-        AdRequest adRequest = new AdRequest.Builder().build();
     }
 
     @Override
@@ -519,42 +514,6 @@ public class BaseActivity extends AnalyticsActivity implements
     }
 
     @Override
-    public void onExerciseEdit(long id) {
-        DialogUniversalApprove approve = new DialogUniversalApprove();
-        Bundle args = new Bundle();
-        args.putInt(TYPE_OF_DIALOG, 1);
-        args.putLong(ID, id);
-//        args.putInt(POSITION, pos); // FIXME
-        approve.setArguments(args);
-        approve.show(getFragmentManager(), "");
-    }
-
-    @Override
-    public void onAcceptEditExercise(long id, int pos) {
-
-        if (sp.getBoolean(TRAINING_AT_PROGRESS, false)) {
-            Toast.makeText(this, R.string.error_editing_exe, Toast.LENGTH_SHORT)
-                    .show();
-        } else {
-            Cursor cursor_exe = db.getDataExe(null, null, null, null, null, DB.EXE_NAME);
-            cursor_exe.moveToFirst();
-            while (cursor_exe.getPosition() < pos) {
-                cursor_exe.moveToNext();
-            }
-            Bundle args = new Bundle();
-            args.putString("exeName", cursor_exe.getString(2));
-            args.putString("timerValue", cursor_exe.getString(3));
-            args.putInt("exePosition", pos);
-            args.putString(DialogAddExercise.KEY_PART_OF_BODY, cursor_exe.getString(4));
-            args.putLong("exeID", id);
-            DialogAddExercise dialog = new DialogAddExercise();
-            dialog.setArguments(args);
-            dialog.show(getFragmentManager(), "tag");
-            cursor_exe.close();
-        }
-    }
-
-    @Override
     public void onBackPressed() {
         if (doubleBackToExitPressedOnce) {
             if (!Prefs.getPreferences().getAdsRemoved())
@@ -587,6 +546,14 @@ public class BaseActivity extends AnalyticsActivity implements
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         onItemSelected(position);
+    }
+
+    @Override
+    public void onExerciseDeleteAccepted(Exercise exercise) {
+        db.deleteExercise(exercise.getId());
+        db.deleteExersice(exercise.getName());
+        exerciseListFragment.updateList(this);
+        Toast.makeText(this, R.string.deleted, Toast.LENGTH_SHORT).show();
     }
 
     public class RandomString {

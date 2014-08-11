@@ -10,6 +10,8 @@ public class Exercise implements Serializable {
     private String timer;
     private String partOfBody;
 
+    public Exercise(){}
+
     public Exercise(long id, String name, String timer, String partOfBody){
         this.id = id;
         this.name = name;

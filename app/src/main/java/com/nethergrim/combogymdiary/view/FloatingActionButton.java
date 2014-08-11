@@ -76,28 +76,36 @@ public class FloatingActionButton extends View {
     }
 
     public void hide() {
-        if (!mHidden) {
-            ObjectAnimator scaleX = ObjectAnimator.ofFloat(this, "scaleX", 1, 0);
-            ObjectAnimator scaleY = ObjectAnimator.ofFloat(this, "scaleY", 1, 0);
-            AnimatorSet animSetXY = new AnimatorSet();
-            animSetXY.playTogether(scaleX, scaleY);
-            animSetXY.setInterpolator(accelerateInterpolator);
-            animSetXY.setDuration(100);
-            animSetXY.start();
-            mHidden = true;
+        try {
+            if (!mHidden) {
+                ObjectAnimator scaleX = ObjectAnimator.ofFloat(this, "scaleX", 1, 0);
+                ObjectAnimator scaleY = ObjectAnimator.ofFloat(this, "scaleY", 1, 0);
+                AnimatorSet animSetXY = new AnimatorSet();
+                animSetXY.playTogether(scaleX, scaleY);
+                animSetXY.setInterpolator(accelerateInterpolator);
+                animSetXY.setDuration(100);
+                animSetXY.start();
+                mHidden = true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
     public void show() {
-        if (mHidden) {
-            ObjectAnimator scaleX = ObjectAnimator.ofFloat(this, "scaleX", 0, 1);
-            ObjectAnimator scaleY = ObjectAnimator.ofFloat(this, "scaleY", 0, 1);
-            AnimatorSet animSetXY = new AnimatorSet();
-            animSetXY.playTogether(scaleX, scaleY);
-            animSetXY.setInterpolator(overshootInterpolator);
-            animSetXY.setDuration(200);
-            animSetXY.start();
-            mHidden = false;
+        try {
+            if (mHidden) {
+                ObjectAnimator scaleX = ObjectAnimator.ofFloat(this, "scaleX", 0, 1);
+                ObjectAnimator scaleY = ObjectAnimator.ofFloat(this, "scaleY", 0, 1);
+                AnimatorSet animSetXY = new AnimatorSet();
+                animSetXY.playTogether(scaleX, scaleY);
+                animSetXY.setInterpolator(overshootInterpolator);
+                animSetXY.setDuration(200);
+                animSetXY.start();
+                mHidden = false;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
