@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
@@ -689,8 +690,11 @@ public class TrainingFragment extends Fragment implements
             db.addRecMainTable(traName, exeName, date, wei, rep_s, set);
             currentSet = set;
             initSetButtons();
-            Toast.makeText(getActivity(), R.string.saved, Toast.LENGTH_SHORT)
-                    .show();
+            try {
+                Toast.makeText(getActivity(), R.string.saved, Toast.LENGTH_SHORT).show();
+            } catch (Resources.NotFoundException e) {
+                e.printStackTrace();
+            }
             if (isActiveDialog) {
                 h.sendEmptyMessage(0);
             }

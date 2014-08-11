@@ -12,6 +12,7 @@ import android.util.Log;
 
 import com.nethergrim.combogymdiary.activities.BaseActivity;
 import com.nethergrim.combogymdiary.model.Exercise;
+import com.nethergrim.combogymdiary.model.ExerciseGroup;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -457,6 +458,26 @@ public class DB {
             } while (c.moveToNext());
         }
         return exercises;
+    }
+
+    public List<ExerciseGroup> getExerciseGroups(){  // returns groups of exercises, sorted by part_of_body
+        List<ExerciseGroup> result = new ArrayList<ExerciseGroup>();
+        for (int i = 0; i < Constants.PARTS_OF_BODY.length; i++){
+            ExerciseGroup exerciseGroup = new ExerciseGroup();
+            exerciseGroup.setPositionInGlobalArray(i);
+            exerciseGroup.setName(Constants.PARTS_OF_BODY[i]);
+            String[] args = {Constants.PARTS_OF_BODY[i]};
+            Cursor c = mDB.query(DB_EXE_TABLE, null, PART_OF_BODY + "=?", args, null, null, null);
+            List<Exercise> exercises = new ArrayList<Exercise>();
+            if (c.moveToFirst()){
+                do {
+                    exercises.add(new Exercise(c.getInt(0), c.getString(2), c.getString(3), c.getString(4)));
+                } while (c.moveToNext());
+            }
+            exerciseGroup.setList(exercises);
+            result.add(exerciseGroup);
+        }
+        return result;
     }
 
     public Exercise getExercise(long id){

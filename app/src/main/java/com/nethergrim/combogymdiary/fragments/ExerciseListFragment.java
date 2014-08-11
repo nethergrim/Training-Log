@@ -3,7 +3,9 @@ package com.nethergrim.combogymdiary.fragments;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
+import android.graphics.Typeface;
 import android.os.Bundle;
+import android.util.TypedValue;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Gravity;
@@ -19,27 +21,26 @@ import android.widget.ExpandableListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.nethergrim.combogymdiary.Constants;
 import com.nethergrim.combogymdiary.DB;
 import com.nethergrim.combogymdiary.R;
 import com.nethergrim.combogymdiary.dialogs.DialogAddExercise;
 import com.nethergrim.combogymdiary.model.Exercise;
+import com.nethergrim.combogymdiary.model.ExerciseGroup;
 import com.nethergrim.combogymdiary.tools.Prefs;
 import com.nethergrim.combogymdiary.view.FloatingActionButton;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 public class ExerciseListFragment extends Fragment {
 
     private static final int CM_DELETE_ID = 1;
-    private DB db;
-//    private int LOADER_ID = 1;
     private OnExerciseEditPressed mListener;
     private FloatingActionButton fab;
     private ExpandableListView elv;
     private ExercisesAdapter adapter;
+    private DB db;
 
     public static interface OnExerciseEditPressed {
         public void onExerciseEdit(long id);
@@ -67,8 +68,8 @@ public class ExerciseListFragment extends Fragment {
         View v = inflater.inflate(R.layout.exersises_list, null);
         getActivity().getActionBar().setTitle(R.string.excersisiesListButtonString);
         elv = (ExpandableListView) v.findViewById(R.id.elvExercises);
-        adapter = new ExercisesAdapter(getActivity(), db.getExercises());
-
+        adapter = new ExercisesAdapter(getActivity());
+        elv.setAdapter(adapter);
         fab = new FloatingActionButton.Builder(getActivity())
                 .withDrawable(getResources().getDrawable(R.drawable.ic_action_new))
                 .withButtonColor(getResources().getColor(R.color.holo_blue_light))
@@ -84,6 +85,12 @@ public class ExerciseListFragment extends Fragment {
         });
         fab.hide();
         return v;
+    }
+
+    public void updateList(Context context){
+        if (adapter != null){
+            adapter.update(context);
+        }
     }
 
     private void goToEditExe(long ID) {
@@ -132,7 +139,7 @@ public class ExerciseListFragment extends Fragment {
                 db.deleteExersice(exeName);
                 Toast.makeText(getActivity(), R.string.deleted, Toast.LENGTH_SHORT).show();
                 // FIXME update fragment
-//                ((FragmentActivity) getActivity()).getSupportLoaderManager().getLoader(LOADER_ID).forceLoad();
+                updateList(getActivity());
             }
 
             return true;
@@ -143,61 +150,44 @@ public class ExerciseListFragment extends Fragment {
     private class ExercisesAdapter extends BaseExpandableListAdapter{
 
         private Context context;
-        private ArrayList<Exercise> data;
-        private int groupsCount = 0;
-        private String[] groupsArray;
+        private List<ExerciseGroup> data;
 
-        public ExercisesAdapter(Context context, List<Exercise> data){
+
+        public ExercisesAdapter(Context context){
             this.context = context;
-            this.data = (ArrayList<Exercise>) data;
-            groupsCount = getGroupsCount(this.data);
+            DB db = new DB(context);
+            db.open();
+            this.data = db.getExerciseGroups();
+            db.close();
         }
 
-        private int getGroupsCount(ArrayList<Exercise> list){
-            Set<String> groups = new HashSet<String>();
-            for (Exercise aData : list) {
-                groups.add(aData.getPartOfBody());
-            }
-            groupsArray = groups.toArray(groupsArray);
-            return groups.size();
-        }
-
-        public void update(ArrayList<Exercise> data){
-            this.data = data;
-            groupsCount = getGroupsCount(this.data);
+        public void update(Context context){
+            this.context = context;
+            DB db = new DB(context);
+            db.open();
+            this.data = db.getExerciseGroups();
+            db.close();
             notifyDataSetChanged();
         }
 
         @Override
         public int getGroupCount() {
-            return groupsCount;
-        }
-
-        @Override
-        public int getChildrenCount(int groupPosition) {
             return data.size();
         }
 
         @Override
-        public String getGroup(int groupPosition) {
-            return groupsArray[groupPosition];
+        public int getChildrenCount(int groupPosition) {
+            return data.get(groupPosition).getExercisesList().size();
+        }
+
+        @Override
+        public ExerciseGroup getGroup(int groupPosition) {
+            return data.get(groupPosition);
         }
 
         @Override
         public Exercise getChild(int groupPosition, int childPosition) {
-            int childCounter = 0;
-
-            for (Exercise aData : data) {
-                if (aData.getPartOfBody().equals(groupsArray[groupPosition])) {
-                    if (childPosition > childCounter) {
-                        childCounter++;
-                    } else {
-                        return aData;
-                    }
-                }
-            } // FIXME test me!!
-
-            return null;
+            return data.get(groupPosition).getExercisesList().get(childPosition);
         }
 
         @Override
@@ -207,18 +197,7 @@ public class ExerciseListFragment extends Fragment {
 
         @Override
         public long getChildId(int groupPosition, int childPosition) {
-
-            int childCounter = 0;
-            for (Exercise aData : data) {
-                if (aData.getPartOfBody().equals(groupsArray[groupPosition])) {
-                    if (childPosition > childCounter) {
-                        childCounter++;
-                    } else {
-                        return aData.getId();
-                    }
-                }
-            } // FIXME test me!!
-            return 0;
+            return groupPosition * 10 + childPosition;
         }
 
         @Override
@@ -228,32 +207,26 @@ public class ExerciseListFragment extends Fragment {
 
         @Override
         public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
-            View v = convertView;
-
-            if (v == null) {
-
-                LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-//                v = inflater.inflate(R.layout.item_layout, parent, false);
-
-            }
+            LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            View v = inflater.inflate(android.R.layout.simple_expandable_list_item_1, parent, false);
+            TextView text1 = (TextView)v.findViewById(android.R.id.text1);
+            String realNames[] = Constants.getPartsOfBodyRealNames(getActivity());
+            text1.setText(realNames[groupPosition]);
+            text1.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), Constants.TYPEFACE_LIGHT));
+            text1.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+            v.setTag(data.get(groupPosition));
             return v;
         }
 
         @Override
         public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
-            View v = convertView;
-
-            if (v == null) {
-
-                LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-//                v = inflater.inflate(R.layout.item_layout, parent, false);
-
-            }
-
-
-
+            LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            View v = inflater.inflate(android.R.layout.simple_list_item_1, parent, false);
+            v.setTag(data.get(groupPosition).getExercisesList().get(childPosition));
+            TextView text1 = (TextView)v.findViewById(android.R.id.text1);
+            text1.setText(data.get(groupPosition).getExercisesList().get(childPosition).getName());
+            text1.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), Constants.TYPEFACE_LIGHT));
+            text1.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
             return v;
         }
 
