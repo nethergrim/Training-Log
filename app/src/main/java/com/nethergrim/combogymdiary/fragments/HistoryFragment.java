@@ -31,7 +31,7 @@ import com.nethergrim.combogymdiary.R;
 import com.nethergrim.combogymdiary.activities.HistoryDetailedActivity;
 import com.yandex.metrica.Counter;
 
-public class HistoryFragment extends Fragment implements
+public class HistoryFragment extends FabFragment implements
         LoaderCallbacks<Cursor> {
 
     private static final int CM_DELETE_ID = 5;

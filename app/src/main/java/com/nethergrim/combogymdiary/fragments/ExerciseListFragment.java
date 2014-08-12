@@ -27,7 +27,7 @@ import com.nethergrim.combogymdiary.view.TextViewLight;
 
 import java.util.List;
 
-public class ExerciseListFragment extends Fragment {
+public class ExerciseListFragment extends FabFragment {
 
     private FloatingActionButton fab;
     private ExpandableListView elv;
@@ -58,6 +58,7 @@ public class ExerciseListFragment extends Fragment {
                 dialog.show(getFragmentManager(), "tag");
             }
         });
+        registerFab(fab);
         fab.hide();
         return v;
     }

@@ -24,14 +24,21 @@
     <color name="gray_light_background">#E3E3E3</color>
 
     <!-- new material colors =) -->
-    <color name="material_cyan_a400">#00e5ff</color>
-    <color name="material_lime_a400">#c6ff00</color>
+
+    <color name="material_grey_200">#eeeeee</color>
+    <color name="material_grey_300">#e0e0e0</color>
+    <color name="material_grey_400">#bdbdbd</color>
+    <color name="material_grey_500">#9e9e9e</color>
     <color name="material_pink_a400">#f50057</color>
-    <color name="material_deep_purple_a400">#651fff</color>
-    <color name="material_blue_a400">#4d73ff</color>
+    <color name="material_cyan_a400">#00e5ff</color>
     <color name="material_light_blue_a400">#00b0ff</color>
-    <color name="material_light_green_a400">#76ff03</color>
-    <color name="material_light_yellow_a400">#ffea00</color>
+    <color name="material_blue_a400">#4d73ff</color>
     <color name="material_indigo_a400">#3d5afe</color>
+    <color name="material_deep_purple_a400">#651fff</color>
+    <color name="material_light_green_a400">#76ff03</color>
+    <color name="material_green_a400">#14e715</color>
+    <color name="material_lime_a400">#c6ff00</color>
+    <color name="material_light_yellow_a400">#ffea00</color>
+
 
 </resources>

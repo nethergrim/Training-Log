@@ -32,7 +32,7 @@ import com.nethergrim.combogymdiary.activities.AddingMeasurementActivity;
 import com.nethergrim.combogymdiary.activities.MeasurementsDetailedActivity;
 import com.nethergrim.combogymdiary.view.FloatingActionButton;
 
-public class MeasurementsFragment extends Fragment implements
+public class MeasurementsFragment extends FabFragment implements
         LoaderCallbacks<Cursor> {
 
     private static final int CM_DELETE_ID = 8;
@@ -90,6 +90,7 @@ public class MeasurementsFragment extends Fragment implements
             }
         });
         fab.hide();
+        registerFab(fab);
         return v;
     }
 

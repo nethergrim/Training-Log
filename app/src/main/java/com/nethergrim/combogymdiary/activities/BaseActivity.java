@@ -39,6 +39,7 @@ import com.nethergrim.combogymdiary.dialogs.DialogUniversalApprove;
 import com.nethergrim.combogymdiary.dialogs.DialogUniversalApprove.OnStartTrainingAccept;
 import com.nethergrim.combogymdiary.fragments.CatalogFragment;
 import com.nethergrim.combogymdiary.fragments.ExerciseListFragment;
+import com.nethergrim.combogymdiary.fragments.FabFragment;
 import com.nethergrim.combogymdiary.fragments.HistoryFragment;
 import com.nethergrim.combogymdiary.fragments.MeasurementsFragment;
 import com.nethergrim.combogymdiary.fragments.StartTrainingFragment;
@@ -100,7 +101,11 @@ public class BaseActivity extends AnalyticsActivity implements
     private MeasurementsFragment measurementsFragment = new MeasurementsFragment();
     private StartTrainingFragment startTrainingFragment = new StartTrainingFragment();
     private TrainingFragment trainingFragment = new TrainingFragment();
-    private Fragment currentFragment;
+
+
+    private FabFragment currentFragment;
+
+
     private StartAppAd startAppAd = new StartAppAd(this);
     private ServiceConnection mServiceConn;
     private int adCounter = 0;
@@ -165,11 +170,13 @@ public class BaseActivity extends AnalyticsActivity implements
         ) {
             public void onDrawerClosed(View view) {
                 onDrawerEventListener.onDrawerClosed();
+                currentFragment.onDrawerEvent(true);
                 invalidateOptionsMenu();
             }
 
             public void onDrawerOpened(View drawerView) {
                 onDrawerEventListener.onDrawerOpened();
+                currentFragment.onDrawerEvent(false);
                 invalidateOptionsMenu();
             }
         };
@@ -437,6 +444,7 @@ public class BaseActivity extends AnalyticsActivity implements
 
     @Override
     public void onChoose() {
+        setTrainingAlreadyStarted(false);
         DB db = new DB(this);
         db.open();
         Cursor tmpCursor = db.getDataMain(null, null, null, null, null, null);
@@ -445,7 +453,6 @@ public class BaseActivity extends AnalyticsActivity implements
             backUP.backupToSd();
         }
         tmpCursor.close();
-
         sp.edit().putBoolean(TRAINING_AT_PROGRESS, false).apply();
         sp.edit().putInt(USER_CLICKED_POSITION, 0).apply();
         sp.edit().putInt(TrainingFragment.CHECKED_POSITION, 0).apply();
@@ -465,7 +472,7 @@ public class BaseActivity extends AnalyticsActivity implements
         sp.edit().putLong(START_TIME, 0).apply();
 
         stopService(new Intent(this, TrainingService.class));
-        getActionBar().setSubtitle(null);
+
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.cancelAll();
 
@@ -484,28 +491,29 @@ public class BaseActivity extends AnalyticsActivity implements
         } else {
             sp.edit().putInt(TRAININGS_DONE_NUM, 1).apply();
         }
-        setTrainingAlreadyStarted(false);
-        getFragmentManager().beginTransaction()
-                .replace(R.id.content, new StartTrainingFragment()).commit();
 
-        listButtons[0] = getResources().getString(
-                R.string.startTrainingButtonString);
-        adapter.notifyDataSetChanged();
+        getFragmentManager().beginTransaction().replace(R.id.content, new StartTrainingFragment()).commit();
+
         db.close();
         if (!Prefs.getPreferences().getAdsRemoved()) {
             startAppAd.showAd();
             startAppAd.loadAd();
         }
+        listButtons[0] = getResources().getString(
+                R.string.startTrainingButtonString);
+        adapter.notifyDataSetChanged();
+        getActionBar().setSubtitle(null);
     }
 
     @Override
-    public void onAccept(int id) {
-        TrainingFragment newFragment = new TrainingFragment();
+    public void onStartTrainingAccepted(int id) {
+        currentFragment.onDrawerEvent(false);
+        trainingFragment = new TrainingFragment();
+        currentFragment = trainingFragment;
         Bundle args = new Bundle();
         args.putInt(TRAINING_ID, id);
-        newFragment.setArguments(args);
-        getFragmentManager().beginTransaction()
-                .replace(R.id.content, newFragment).commit();
+        currentFragment.setArguments(args);
+        getFragmentManager().beginTransaction()    .replace(R.id.content, currentFragment).commit();
         setTrainingAlreadyStarted(true);
         listButtons[0] = getResources().getString(R.string.continue_training);
         adapter.notifyDataSetChanged();

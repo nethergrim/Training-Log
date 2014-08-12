@@ -69,7 +69,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import kankan.wheel.widget.WheelView;
 import kankan.wheel.widget.adapters.AbstractWheelTextAdapter;
 
-public class TrainingFragment extends Fragment implements
+public class TrainingFragment extends FabFragment implements
         OnCheckedChangeListener, OnClickListener, onElementsSwapped, BaseActivity.OnDrawerEvent {
 
     public final static String TRAINING_AT_PROGRESS = "training_at_progress";
@@ -573,6 +573,9 @@ public class TrainingFragment extends Fragment implements
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemId = item.getItemId();
         if (itemId == R.id.itemExit) {
+            if (popupWindow != null && popupWindow.isShowing()){
+                return false;
+            }
             DialogFragment dlg1 = new DialogExitFromTraining();
             dlg1.setCancelable(false);
             if (!dlg1.isAdded())
@@ -770,29 +773,33 @@ public class TrainingFragment extends Fragment implements
             LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View v = inflater.inflate(R.layout.popup_training_layout, null);
 
+
             TextView textViewWeightDelta = (TextView) v.findViewById(R.id.text_weight_delta);
             TextView text1 = (TextView) v.findViewById(R.id.text_1);
             TextView textViewRepsDelta = (TextView) v.findViewById(R.id.text_reps_delta);
             TextView text2 = (TextView) v.findViewById(R.id.text2);
 
-            if (weightDelta > 0) {
-                textViewWeightDelta.setTextColor(getActivity().getResources().getColor(R.color.holo_green_light));
-                text1.setTextColor(getActivity().getResources().getColor(R.color.holo_green_light));
+            int green = getActivity().getResources().getColor(R.color.material_green_a400);
+            int red = getActivity().getResources().getColor(R.color.material_pink_a400);
+
+            if (weightDelta >= 0) {
+                textViewWeightDelta.setTextColor(green);
+                text1.setTextColor(green);
                 textViewWeightDelta.setText("+" + String.valueOf(weightDelta));
             } else {
-                textViewWeightDelta.setTextColor(getActivity().getResources().getColor(R.color.holo_red_light));
-                text1.setTextColor(getActivity().getResources().getColor(R.color.holo_red_light));
+                textViewWeightDelta.setTextColor(red);
+                text1.setTextColor(red);
                 textViewWeightDelta.setText(String.valueOf(weightDelta));
             }
 
-            if (repsDelta > 0) {
-                textViewRepsDelta.setTextColor(getActivity().getResources().getColor(R.color.holo_green_light));
-                text2.setTextColor(getActivity().getResources().getColor(R.color.holo_green_light));
+            if (repsDelta >= 0) {
+                textViewRepsDelta.setTextColor(green);
+                text2.setTextColor(green);
                 textViewRepsDelta.setText("+" + String.valueOf(weightDelta));
             } else {
                 textViewRepsDelta.setText(String.valueOf(repsDelta));
-                textViewRepsDelta.setTextColor(getActivity().getResources().getColor(R.color.holo_red_light));
-                text2.setTextColor(getActivity().getResources().getColor(R.color.holo_red_light));
+                textViewRepsDelta.setTextColor(red);
+                text2.setTextColor(red);
             }
 
             WindowManager wm = (WindowManager) getActivity().getSystemService(Context.WINDOW_SERVICE);

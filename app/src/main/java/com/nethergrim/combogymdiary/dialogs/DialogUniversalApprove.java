@@ -11,7 +11,6 @@ import android.os.Bundle;
 import com.nethergrim.combogymdiary.Constants;
 import com.nethergrim.combogymdiary.DB;
 import com.nethergrim.combogymdiary.R;
-import com.nethergrim.combogymdiary.activities.BaseActivity;
 import com.nethergrim.combogymdiary.model.Exercise;
 
 public class DialogUniversalApprove extends DialogFragment implements
@@ -66,7 +65,7 @@ public class DialogUniversalApprove extends DialogFragment implements
         switch (which) {
             case Dialog.BUTTON_POSITIVE:
                 if (type_of_dialog == TYPE_START_WORKOUT) {
-                    mListener.onAccept(id);
+                    mListener.onStartTrainingAccepted(id);
                 } else if (type_of_dialog == TYPE_DELETE_EXERCISE) {
                     listener.onExerciseDeleteAccepted(exercise);
                 }
@@ -101,7 +100,7 @@ public class DialogUniversalApprove extends DialogFragment implements
     }
 
     public static interface OnStartTrainingAccept {
-        public void onAccept(int trainingId);
+        public void onStartTrainingAccepted(int trainingId);
     }
 
 }

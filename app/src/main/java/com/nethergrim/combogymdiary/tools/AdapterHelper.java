@@ -55,7 +55,7 @@ public class AdapterHelper {
         }
 
         String groupFrom[] = new String[]{ATTR_GROUP_NAME};
-        int groupTo[] = new int[]{android.R.id.text1};
+        int groupTo[] = new int[]{R.id.tvl1};
 
         childData = new ArrayList<ArrayList<Map<String, String>>>();
 
@@ -116,7 +116,7 @@ public class AdapterHelper {
         childData.add(childDataItem);
 
         String childFrom[] = new String[]{ATTR_BODY_NAME};
-        int childTo[] = new int[]{R.id.tvl1};
+        int childTo[] = new int[]{R.id.text1};
 
         adapter = new SimpleExpandableListAdapter(ctx, groupData,
                 R.layout.simple_expandable_list_item_1, groupFrom, groupTo,

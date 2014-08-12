@@ -41,7 +41,7 @@ import com.nethergrim.combogymdiary.activities.NewCreatingTrainingDayActivity;
 import com.nethergrim.combogymdiary.dialogs.DialogGoToMarket;
 import com.nethergrim.combogymdiary.view.FloatingActionButton;
 
-public class StartTrainingFragment extends Fragment implements
+public class StartTrainingFragment extends FabFragment implements
         LoaderCallbacks<Cursor> {
 
     private static final int CM_DELETE_ID = 3;
@@ -110,6 +110,7 @@ public class StartTrainingFragment extends Fragment implements
             }
         });
         fab.hide();
+        registerFab(fab);
         return v;
     }
 
