@@ -16,10 +16,10 @@ import android.view.ViewGroup.LayoutParams;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
-import android.widget.TextView;
 
 import com.nethergrim.combogymdiary.DB;
 import com.nethergrim.combogymdiary.R;
+import com.nethergrim.combogymdiary.view.TextViewLight;
 
 public class HistoryDetailedActivity extends Activity {
 
@@ -27,7 +27,7 @@ public class HistoryDetailedActivity extends Activity {
     private Cursor cursor;
     private String trName = null;
     private String trDate = null;
-    private TextView tvWeight, tvComment;
+    private TextViewLight tvWeight, tvComment;
     private FrameLayout content_frame;
     private String measureItem;
     private int total = 0;
@@ -46,8 +46,8 @@ public class HistoryDetailedActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history_detailed);
-        tvComment = (TextView) findViewById(R.id.tvComment);
-        tvWeight = (TextView) findViewById(R.id.textViewWeightTOtal);
+        tvComment = (TextViewLight) findViewById(R.id.tvComment);
+        tvWeight = (TextViewLight) findViewById(R.id.textViewWeightTOtal);
         content_frame = (FrameLayout) findViewById(R.id.content_frame);
         db = new DB(this);
         db.open();
@@ -107,8 +107,7 @@ public class HistoryDetailedActivity extends Activity {
         LinearLayout llMain = new LinearLayout(this);
 
         llMain.setOrientation(LinearLayout.VERTICAL);
-        LayoutParams linLayoutParam = new LayoutParams(
-                LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+        LayoutParams linLayoutParam = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
 
         content_frame.addView(scrollView, linLayoutParam);
 
@@ -142,8 +141,7 @@ public class HistoryDetailedActivity extends Activity {
                 LayoutInflater inflater = getLayoutInflater();
                 View card = inflater.inflate(R.layout.item_detailed_history,
                         null, false);
-                TextView tvName = (TextView) card
-                        .findViewById(R.id.textViewExerciseName);
+                TextViewLight tvName = (TextViewLight) card.findViewById(R.id.textViewExerciseName);
                 LinearLayout llData = (LinearLayout) card
                         .findViewById(R.id.linearLayoutForConent);
                 llData.setGravity(Gravity.CENTER);
@@ -154,7 +152,7 @@ public class HistoryDetailedActivity extends Activity {
 
                 llMain.addView(card, lpView);
                 do {
-                    TextView tvNewSet = new TextView(this);
+                    TextViewLight tvNewSet = new TextViewLight(this);
                     tvNewSet.setGravity(Gravity.CENTER);
                     tvNewSet.setText("" + cursor.getInt(3) + measureItem + "/"
                             + cursor.getInt(4));

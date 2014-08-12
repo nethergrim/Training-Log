@@ -1,5 +1,4 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:ads="http://schemas.android.com/apk/lib/com.google.ads"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/scrollView1"
     android:layout_width="match_parent"
@@ -10,7 +9,6 @@
     android:layout_below="@+id/adView5"
     android:layout_marginLeft="4dp"
     android:layout_marginRight="4dp"
-    android:background="@drawable/cream_pixels_bitmap"
     tools:context=".CatalogDetailedActivity" >
 
     <LinearLayout

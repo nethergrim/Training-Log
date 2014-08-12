@@ -67,7 +67,7 @@ public class AddingMeasurementActivity extends AnalyticsActivity {
                 + measureItem);
         fab = new FloatingActionButton.Builder(this)
                 .withDrawable(getResources().getDrawable(R.drawable.ic_action_save))
-                .withButtonColor(getResources().getColor(R.color.holo_blue_light))
+                .withButtonColor(getResources().getColor(R.color.material_cyan_a400))
                 .withGravity(Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL)
                 .withMargins(0, 0, 0, 16)
                 .create();

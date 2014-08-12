@@ -9,7 +9,7 @@
     android:paddingRight="8dp"
     android:paddingTop="4dp" >
 
-    <TextView
+    <com.nethergrim.combogymdiary.view.TextViewLight
         android:id="@+id/textViewExerciseName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

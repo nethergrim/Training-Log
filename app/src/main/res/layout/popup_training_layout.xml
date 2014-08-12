@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_margin="16dp"
     android:padding="16dp"
-    android:background="@drawable/rounded_with_shadow"
+    android:background="@drawable/white_background"
     android:layout_height="100dp">
 
     <View
@@ -20,7 +20,7 @@
         android:layout_height="0dp"/>
 
     <TextView
-        android:id="@+id/text1"
+        android:id="@+id/text_1"
         android:layout_toLeftOf="@id/center_view"
         android:text="@string/Weight"
         android:layout_marginRight="4dp"

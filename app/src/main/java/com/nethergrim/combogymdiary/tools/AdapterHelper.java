@@ -116,11 +116,11 @@ public class AdapterHelper {
         childData.add(childDataItem);
 
         String childFrom[] = new String[]{ATTR_BODY_NAME};
-        int childTo[] = new int[]{android.R.id.text1};
+        int childTo[] = new int[]{R.id.tvl1};
 
         adapter = new SimpleExpandableListAdapter(ctx, groupData,
                 R.layout.simple_expandable_list_item_1, groupFrom, groupTo,
-                childData, android.R.layout.simple_list_item_1, childFrom,
+                childData, R.layout.list_item_left, childFrom,
                 childTo);
 
         return adapter;

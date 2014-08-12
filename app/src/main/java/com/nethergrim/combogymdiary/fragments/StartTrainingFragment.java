@@ -73,8 +73,7 @@ public class StartTrainingFragment extends Fragment implements
         db.open();
         String[] from = new String[]{DB.TRA_NAME};
         int[] to = new int[]{R.id.tvText,};
-        scAdapter = new SimpleCursorAdapter(getActivity(),
-                R.layout.my_list_item, null, from, to, 0);
+        scAdapter = new SimpleCursorAdapter(getActivity(), R.layout.my_list_item, null, from, to, 0);
     }
 
     @Override
@@ -88,9 +87,6 @@ public class StartTrainingFragment extends Fragment implements
         View v = inflater.inflate(R.layout.start_training, null);
         lvMain = (ListView) v.findViewById(R.id.lvStartTraining);
         getActivity().getActionBar().setTitle(R.string.startTrainingButtonString);
-
-        FrameLayout fl = (FrameLayout) v.findViewById(R.id.frameAd);
-        fl.setVisibility(View.GONE);
         lvMain.setAdapter(scAdapter);
         lvMain.setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view,
@@ -101,8 +97,8 @@ public class StartTrainingFragment extends Fragment implements
         ((FragmentActivity) getActivity()).getSupportLoaderManager()
                 .initLoader(LOADER_ID, null, this);
         fab = new FloatingActionButton.Builder(getActivity())
-                .withDrawable(getResources().getDrawable(R.drawable.ic_action_new))
-                .withButtonColor(getResources().getColor(R.color.holo_blue_light))
+                .withDrawable(getResources().getDrawable(R.drawable.ic_plus_small))
+                .withButtonColor(getResources().getColor(R.color.material_cyan_a400))
                 .withGravity(Gravity.BOTTOM | Gravity.RIGHT)
                 .withMargins(0, 0, 16, 16)
                 .create();

@@ -277,19 +277,19 @@ public class TrainingFragment extends Fragment implements
     private void createButtons() {
         fabLeft = new FloatingActionButton.Builder(getActivity())
                 .withDrawable(getResources().getDrawable(R.drawable.ic_action_back))
-                .withButtonColor(getResources().getColor(R.color.holo_blue_light))
+                .withButtonColor(getResources().getColor(R.color.material_cyan_a400))
                 .withGravity(Gravity.BOTTOM | Gravity.LEFT)
                 .withMargins(16, 0, 0, 16)
                 .create();
         fabCenter = new FloatingActionButton.Builder(getActivity())
                 .withDrawable(getResources().getDrawable(R.drawable.ic_action_save))
-                .withButtonColor(getResources().getColor(R.color.holo_blue_light))
+                .withButtonColor(getResources().getColor(R.color.material_cyan_a400))
                 .withGravity(Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL)
                 .withMargins(0, 0, 0, 16)
                 .create();
         fabRight = new FloatingActionButton.Builder(getActivity())
                 .withDrawable(getResources().getDrawable(R.drawable.ic_action_forward))
-                .withButtonColor(getResources().getColor(R.color.holo_blue_light))
+                .withButtonColor(getResources().getColor(R.color.material_cyan_a400))
                 .withGravity(Gravity.BOTTOM | Gravity.RIGHT)
                 .withMargins(0, 0, 16, 16)
                 .create();
@@ -311,23 +311,20 @@ public class TrainingFragment extends Fragment implements
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(
                 R.layout.training_at_progress_new_wheel_new_list, null);
-        LinearLayout llTimerProgress = (LinearLayout) v.findViewById(R.id.llProgressShow);
 
-
-        llTimerProgress.setVisibility(View.GONE);
         llBottom = (LinearLayout) v.findViewById(R.id.LLBottom);
         anim = AnimationUtils.loadAnimation(getActivity(),   R.anim.setfortraining);
         tvWeight = (TextView) v.findViewById(R.id.textView4__);
         repsWheel = (WheelView) v.findViewById(R.id.wheelReps);
         repsWheel.setVisibleItems(7);
-        repsWheel.setWheelBackground(R.drawable.wheel_bg_holo);
-        repsWheel.setWheelForeground(R.drawable.wheel_val_holo);
+        repsWheel.setWheelBackground(R.drawable.card);
+        repsWheel.setWheelForeground(R.drawable.wheel_foreground);
         repsWheel.setShadowColor(0xFFFFFF, 0xFFFFFF, 0xFFFFFF);
         repsWheel.setViewAdapter(new RepsAdapter(getActivity()));
         weightWheel = (WheelView) v.findViewById(R.id.wheelWeight);
         weightWheel.setVisibleItems(7);
-        weightWheel.setWheelBackground(R.drawable.wheel_bg_holo);
-        weightWheel.setWheelForeground(R.drawable.wheel_val_holo);
+        weightWheel.setWheelBackground(R.drawable.card);
+        weightWheel.setWheelForeground(R.drawable.wheel_foreground);
         weightWheel.setShadowColor(0xFFFFFF, 0xFFFFFF, 0xFFFFFF);
         weightWheel.setViewAdapter(new WeightsAdapter(getActivity()));
         ToggleButton tglTimerOn = (ToggleButton) v.findViewById(R.id.tglTurnOff);
@@ -373,7 +370,6 @@ public class TrainingFragment extends Fragment implements
         onSelected(sp.getInt(CHECKED_POSITION, 0));
         SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
         date = sdf.format(new Date(System.currentTimeMillis()));
-        tvInfoText.setTextColor(getResources().getColor(R.color.holo_orange_dark));
         boolean isTimerOn = sp.getBoolean(TIMER_IS_ON, false);
         if (isTimerOn) {
             tglTimerOn.setChecked(true);
@@ -775,7 +771,7 @@ public class TrainingFragment extends Fragment implements
             View v = inflater.inflate(R.layout.popup_training_layout, null);
 
             TextView textViewWeightDelta = (TextView) v.findViewById(R.id.text_weight_delta);
-            TextView text1 = (TextView) v.findViewById(R.id.text1);
+            TextView text1 = (TextView) v.findViewById(R.id.text_1);
             TextView textViewRepsDelta = (TextView) v.findViewById(R.id.text_reps_delta);
             TextView text2 = (TextView) v.findViewById(R.id.text2);
 

@@ -23,6 +23,7 @@ import com.nethergrim.combogymdiary.dialogs.DialogUniversalApprove;
 import com.nethergrim.combogymdiary.model.Exercise;
 import com.nethergrim.combogymdiary.model.ExerciseGroup;
 import com.nethergrim.combogymdiary.view.FloatingActionButton;
+import com.nethergrim.combogymdiary.view.TextViewLight;
 
 import java.util.List;
 
@@ -45,8 +46,8 @@ public class ExerciseListFragment extends Fragment {
         adapter = new ExercisesAdapter(getActivity());
         elv.setAdapter(adapter);
         fab = new FloatingActionButton.Builder(getActivity())
-                .withDrawable(getResources().getDrawable(R.drawable.ic_action_new))
-                .withButtonColor(getResources().getColor(R.color.holo_blue_light))
+                .withDrawable(getResources().getDrawable(R.drawable.ic_plus_small))
+                .withButtonColor(getResources().getColor(R.color.material_cyan_a400))
                 .withGravity(Gravity.BOTTOM | Gravity.RIGHT)
                 .withMargins(0, 0, 16, 16)
                 .create();
@@ -145,8 +146,8 @@ public class ExerciseListFragment extends Fragment {
         @Override
         public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            View v = inflater.inflate(android.R.layout.simple_expandable_list_item_1, parent, false);
-            TextView text1 = (TextView) v.findViewById(android.R.id.text1);
+            View v = inflater.inflate(R.layout.simple_expandable_list_item_1, parent, false);
+            TextViewLight text1 = (TextViewLight) v.findViewById(R.id.tvl1);
             String realNames[] = Constants.getPartsOfBodyRealNames(getActivity());
             text1.setText(realNames[groupPosition]);
             text1.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), Constants.TYPEFACE_LIGHT));

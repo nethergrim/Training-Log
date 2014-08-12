@@ -76,8 +76,8 @@ public class MeasurementsFragment extends Fragment implements
         });
         registerForContextMenu(listview);
         fab = new FloatingActionButton.Builder(getActivity())
-                .withDrawable(getResources().getDrawable(R.drawable.ic_action_new))
-                .withButtonColor(getResources().getColor(R.color.holo_blue_light))
+                .withDrawable(getResources().getDrawable(R.drawable.ic_plus_small))
+                .withButtonColor(getResources().getColor(R.color.material_cyan_a400))
                 .withGravity(Gravity.BOTTOM | Gravity.RIGHT)
                 .withMargins(0, 0, 16, 16)
                 .create();

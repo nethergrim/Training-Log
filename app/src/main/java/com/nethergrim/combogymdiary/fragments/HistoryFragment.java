@@ -23,6 +23,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.nethergrim.combogymdiary.DB;
@@ -35,7 +36,6 @@ public class HistoryFragment extends Fragment implements
 
     private static final int CM_DELETE_ID = 5;
     private static final int LOADER_ID = 3;
-    private ListView lvMain;
     private DB db;
     private SimpleCursorAdapter adapter;
 
@@ -56,12 +56,11 @@ public class HistoryFragment extends Fragment implements
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.activity_history, null);
         getActivity().getActionBar().setTitle(R.string.training_history);
-        lvMain = (ListView) v.findViewById(R.id.lvMainHistory);
+        ListView lvMain = (ListView) v.findViewById(R.id.lvMainHistory);
         registerForContextMenu(lvMain);
         String[] from = new String[]{DB.DATE, DB.TRA_NAME};
         int[] to = new int[]{R.id.tvDouble1, R.id.tvDouble2};
-        adapter = new SimpleCursorAdapter(getActivity(),
-                R.layout.list_with_arrow_double_textview, null, from, to, 0);
+        adapter = new SimpleCursorAdapter(getActivity(),   R.layout.list_with_arrow_double_textview, null, from, to, 0);
         lvMain.setAdapter(adapter);
         ((FragmentActivity) getActivity()).getSupportLoaderManager()
                 .initLoader(LOADER_ID, null, this);
@@ -69,7 +68,7 @@ public class HistoryFragment extends Fragment implements
             @Override
             public void onItemClick(AdapterView<?> parent, View itemClicked,
                                     int position, long id) {
-                LinearLayout par = (LinearLayout) itemClicked;
+                RelativeLayout par = (RelativeLayout) itemClicked;
                 TextView t = (TextView) par.findViewById(R.id.tvDouble1);
                 String date = (String) t.getText();
                 TextView tra = (TextView) par.findViewById(R.id.tvDouble2);

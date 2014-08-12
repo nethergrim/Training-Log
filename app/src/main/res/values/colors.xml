@@ -4,12 +4,11 @@
 
     <color name="black_overlay">#66000000</color>
     <color name="full_alpha">#0033B5E5</color>
-    <color name="pressed_mybarstyle">#CC33B5E5</color>
     <color name="holo_green_light">#99CC00</color>
     <color name="holo_green_dark">#669900</color>
-    <color name="holo_blue_light_half_alpha">#CC33B5E5</color>
-    <color name="holo_blue_light">#33B5E5</color>
-    <color name="holo_blue_dark">#0099CC</color>
+    <!--<color name="holo_blue_light_half_alpha">#CC33B5E5</color>-->
+    <!--<color name="holo_blue_light">#33B5E5</color>-->
+    <!--<color name="holo_blue_dark">#0099CC</color>-->
     <color name="holo_purple_light">#AA66CC</color>
     <color name="holo_purple_dark">#9933CC</color>
     <color name="holo_orange_light">#FFBB33</color>
@@ -23,5 +22,16 @@
     <color name="white_alpha_30">#CCFFFFFF</color>
     <color name="gray_dark">#575757</color>
     <color name="gray_light_background">#E3E3E3</color>
+
+    <!-- new material colors =) -->
+    <color name="material_cyan_a400">#00e5ff</color>
+    <color name="material_lime_a400">#c6ff00</color>
+    <color name="material_pink_a400">#f50057</color>
+    <color name="material_deep_purple_a400">#651fff</color>
+    <color name="material_blue_a400">#4d73ff</color>
+    <color name="material_light_blue_a400">#00b0ff</color>
+    <color name="material_light_green_a400">#76ff03</color>
+    <color name="material_light_yellow_a400">#ffea00</color>
+    <color name="material_indigo_a400">#3d5afe</color>
 
 </resources>

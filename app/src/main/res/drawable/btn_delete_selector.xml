@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:drawable="@drawable/ic_delete" android:state_focused="true"></item>
-    <item android:drawable="@drawable/ic_delete" android:state_pressed="true"></item>
-    <item android:drawable="@drawable/ic_delete_half_alpha"></item>
+    <item android:drawable="@drawable/ic_trash_pressed" android:state_focused="true"></item>
+    <item android:drawable="@drawable/ic_trash_pressed" android:state_pressed="true"></item>
+    <item android:drawable="@drawable/ic_trash"></item>
 </selector>

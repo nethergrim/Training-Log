@@ -2,12 +2,10 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
 
-    <style name="AppBaseTheme" parent="android:Theme.Light">
-
+    <style name="textColor">
+        <item name="android:textColor">@drawable/text_color_selector</item>
     </style>
 
-    <style name="AppTheme" parent="AppBaseTheme">
-    </style>
 
 
     <style name="HabraThemeButton" parent="@android:style/Widget.Button">

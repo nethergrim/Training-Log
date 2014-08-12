@@ -3,7 +3,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
 	android:padding="8dp"
-	android:background="@drawable/cream_pixels_bitmap"
     tools:context=".MeasurementsDetailedActivity" >
 
     <ScrollView
@@ -21,17 +20,15 @@
             android:layout_height="wrap_content"
             android:orientation="vertical" >
 
-            <TextView
+            <com.nethergrim.combogymdiary.view.TextViewLight
                 android:id="@+id/textView1_"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="16sp"
                 android:layout_marginTop="18dp"
                 android:text="" />
-
-
             
-            <TextView
+            <com.nethergrim.combogymdiary.view.TextViewLight
                 android:id="@+id/textView2_"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -39,7 +36,7 @@
                 android:layout_marginTop="18dp"
                 android:text="" />
 
-            <TextView
+            <com.nethergrim.combogymdiary.view.TextViewLight
                 android:id="@+id/textView3_"
                 android:layout_width="wrap_content"
                 android:textSize="16sp"
@@ -47,7 +44,7 @@
                 android:layout_height="wrap_content"
                 android:text="" />
 
-            <TextView
+            <com.nethergrim.combogymdiary.view.TextViewLight
                 android:id="@+id/textView4_"
                 android:layout_width="wrap_content"
                 android:textSize="16sp"
@@ -55,7 +52,7 @@
                 android:layout_height="wrap_content"
                 android:text="" />
 
-            <TextView
+            <com.nethergrim.combogymdiary.view.TextViewLight
                 android:id="@+id/textView5_"
                 android:layout_width="wrap_content"
                 android:layout_marginTop="18dp"
@@ -63,7 +60,7 @@
                 android:layout_height="wrap_content"
                 android:text="" />
 
-            <TextView
+            <com.nethergrim.combogymdiary.view.TextViewLight
                 android:id="@+id/textView6_"
                 android:layout_width="wrap_content"
                 android:layout_marginTop="18dp"
@@ -71,7 +68,7 @@
                 android:layout_height="wrap_content"
                 android:text="" />
 
-            <TextView
+            <com.nethergrim.combogymdiary.view.TextViewLight
                 android:id="@+id/textView7_"
                 android:layout_width="wrap_content"
                 android:layout_marginTop="18dp"
@@ -79,7 +76,7 @@
                 android:layout_height="wrap_content"
                 android:text="" />
 
-            <TextView
+            <com.nethergrim.combogymdiary.view.TextViewLight
                 android:id="@+id/textView8_"
                 android:layout_width="wrap_content"
                 android:layout_marginTop="18dp"

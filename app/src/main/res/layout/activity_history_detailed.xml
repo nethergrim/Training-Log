@@ -5,7 +5,7 @@
     android:background="@color/gray_light_background"
     android:padding="8dp" >
 
-    <TextView
+    <com.nethergrim.combogymdiary.view.TextViewLight
         android:id="@+id/textViewWeightTOtal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -17,7 +17,7 @@
         android:textColor="@color/gray_dark"
         android:textSize="17sp" />
 
-    <TextView
+    <com.nethergrim.combogymdiary.view.TextViewLight
         android:id="@+id/tvComment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

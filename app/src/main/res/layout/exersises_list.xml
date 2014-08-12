@@ -2,13 +2,11 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:padding="8dp"
-    android:background="@drawable/cream_pixels_bitmap"
     android:layout_height="match_parent">
 
 
     <ExpandableListView
         android:id="@+id/elvExercises"
-        android:background="@drawable/rounded"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 

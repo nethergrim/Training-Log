@@ -21,10 +21,6 @@ import com.nethergrim.combogymdiary.activities.CatalogDetailedActivity;
 
 public class CatalogFragment extends Fragment {
 
-    private ExpandableListView elvMain;
-    private AdapterHelper ah;
-    private SimpleExpandableListAdapter adapter;
-
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
@@ -34,12 +30,11 @@ public class CatalogFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.activity_catalog, null);
-        elvMain = (ExpandableListView) v.findViewById(R.id.elvMain);
-        ah = new AdapterHelper(getActivity());
-        adapter = ah.getAdapter();
+        ExpandableListView elvMain = (ExpandableListView) v.findViewById(R.id.elvMain);
+        AdapterHelper ah = new AdapterHelper(getActivity());
+        SimpleExpandableListAdapter adapter = ah.getAdapter();
         elvMain.setAdapter(adapter);
-        getActivity().getActionBar().setTitle(
-                getResources().getString(R.string.exe_catalog));
+        getActivity().getActionBar().setTitle(getResources().getString(R.string.exe_catalog));
         elvMain.setOnChildClickListener(new OnChildClickListener() {
             public boolean onChildClick(ExpandableListView parent, View v,
                                         int groupPosition, int childPosition, long id) {

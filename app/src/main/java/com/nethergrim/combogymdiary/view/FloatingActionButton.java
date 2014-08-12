@@ -18,6 +18,8 @@ import android.view.animation.AccelerateInterpolator;
 import android.view.animation.OvershootInterpolator;
 import android.widget.FrameLayout;
 
+import com.nethergrim.combogymdiary.R;
+
 public class FloatingActionButton extends View {
 
     final static OvershootInterpolator overshootInterpolator = new OvershootInterpolator();
@@ -68,9 +70,11 @@ public class FloatingActionButton extends View {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_UP) {
-            setAlpha(1.0f);
+//            setAlpha(1.0f);
+            init(context.getResources().getColor(R.color.material_cyan_a400));
         } else if (event.getAction() == MotionEvent.ACTION_DOWN) {
-            setAlpha(0.6f);
+            init(context.getResources().getColor(R.color.material_light_green_a400));
+//            setAlpha(0.6f);
         }
         return super.onTouchEvent(event);
     }

@@ -56,22 +56,22 @@ public class NewCreatingTrainingDayActivity extends AnalyticsActivity implements
 
     private void initButtons() {
         fabAdd = new FloatingActionButton.Builder(this)
-                .withDrawable(getResources().getDrawable(R.drawable.ic_action_new))
-                .withButtonColor(getResources().getColor(R.color.holo_blue_light))
+                .withDrawable(getResources().getDrawable(R.drawable.ic_plus_small))
+                .withButtonColor(getResources().getColor(R.color.material_cyan_a400))
                 .withGravity(Gravity.BOTTOM | Gravity.LEFT)
                 .withMargins(16, 0, 0, 16)
                 .create();
 
         fabSave = new FloatingActionButton.Builder(this)
                 .withDrawable(getResources().getDrawable(R.drawable.ic_action_save))
-                .withButtonColor(getResources().getColor(R.color.holo_blue_light))
+                .withButtonColor(getResources().getColor(R.color.material_cyan_a400))
                 .withGravity(Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL)
                 .withMargins(0, 0, 0, 16)
                 .create();
 
         fabSuperSet = new FloatingActionButton.Builder(this)
                 .withDrawable(getResources().getDrawable(R.drawable.ic_action_ss))
-                .withButtonColor(getResources().getColor(R.color.holo_blue_light))
+                .withButtonColor(getResources().getColor(R.color.material_cyan_a400))
                 .withGravity(Gravity.BOTTOM | Gravity.RIGHT)
                 .withMargins(0, 0, 16, 16)
                 .create();

@@ -11,13 +11,14 @@ import android.widget.TextView;
 
 import com.nethergrim.combogymdiary.DB;
 import com.nethergrim.combogymdiary.R;
+import com.nethergrim.combogymdiary.view.TextViewLight;
 
 public class MeasurementsDetailedActivity extends AnalyticsActivity {
 
     private String date;
     private DB db;
     private Cursor cursor;
-    private TextView tv1, tv2, tv3, tv4, tv5, tv6, tv7, tv8;
+    private TextViewLight tv1, tv2, tv3, tv4, tv5, tv6, tv7, tv8;
     private String longValue;
 
     @Override
@@ -90,14 +91,14 @@ public class MeasurementsDetailedActivity extends AnalyticsActivity {
     }
 
     private void initTv() {
-        tv1 = (TextView) findViewById(R.id.textView1_);
-        tv2 = (TextView) findViewById(R.id.textView2_);
-        tv3 = (TextView) findViewById(R.id.textView3_);
-        tv4 = (TextView) findViewById(R.id.textView4_);
-        tv5 = (TextView) findViewById(R.id.textView5_);
-        tv6 = (TextView) findViewById(R.id.textView6_);
-        tv7 = (TextView) findViewById(R.id.textView7_);
-        tv8 = (TextView) findViewById(R.id.textView8_);
+        tv1 = (TextViewLight) findViewById(R.id.textView1_);
+        tv2 = (TextViewLight) findViewById(R.id.textView2_);
+        tv3 = (TextViewLight) findViewById(R.id.textView3_);
+        tv4 = (TextViewLight) findViewById(R.id.textView4_);
+        tv5 = (TextViewLight) findViewById(R.id.textView5_);
+        tv6 = (TextViewLight) findViewById(R.id.textView6_);
+        tv7 = (TextViewLight) findViewById(R.id.textView7_);
+        tv8 = (TextViewLight) findViewById(R.id.textView8_);
     }
 
     @Override
