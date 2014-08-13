@@ -3,14 +3,9 @@ package com.nethergrim.combogymdiary.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.android.gms.ads.AdListener;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
-import com.google.android.gms.plus.model.people.Person;
 import com.nethergrim.combogymdiary.R;
 
 public class CatalogDetailedActivity extends AnalyticsActivity {

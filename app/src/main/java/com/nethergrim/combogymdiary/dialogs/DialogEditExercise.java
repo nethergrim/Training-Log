@@ -5,8 +5,6 @@ import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.app.FragmentActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -70,7 +68,7 @@ public class DialogEditExercise extends DialogFragment implements OnClickListene
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        if (editing){
+        if (editing) {
             getDialog().setTitle(R.string.create_new_exercise);
         } else {
             getDialog().setTitle(R.string.add_an_exercise);
@@ -113,7 +111,8 @@ public class DialogEditExercise extends DialogFragment implements OnClickListene
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> parent) { }
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
         });
         TextView textView = (TextView) v.findViewById(R.id.tvWidget2);
         textView.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), Constants.TYPEFACE_LIGHT));
@@ -128,26 +127,34 @@ public class DialogEditExercise extends DialogFragment implements OnClickListene
             etTimer.setText(exercise.getTimer());
         }
         sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        if (exercise.getPartOfBody() == null || exercise.getPartOfBody().equals("")){
+        if (exercise.getPartOfBody() == null || exercise.getPartOfBody().equals("")) {
             spinner.setSelection(0);
         }
 
-        if (exercise.getPartOfBody() != null && !exercise.getPartOfBody().equals("")){
-            if (exercise.getPartOfBody().equals(Constants.PART_OF_BODY_CHEST)) spinner.setSelection(1);
-            if (exercise.getPartOfBody().equals(Constants.PART_OF_BODY_SHOULDERS)) spinner.setSelection(2);
-            if (exercise.getPartOfBody().equals(Constants.PART_OF_BODY_BICEPS)) spinner.setSelection(3);
-            if (exercise.getPartOfBody().equals(Constants.PART_OF_BODY_TRICEPS)) spinner.setSelection(4);
-            if (exercise.getPartOfBody().equals(Constants.PART_OF_BODY_BACK)) spinner.setSelection(5);
-            if (exercise.getPartOfBody().equals(Constants.PART_OF_BODY_ABS)) spinner.setSelection(6);
-            if (exercise.getPartOfBody().equals(Constants.PART_OF_BODY_LEGS)) spinner.setSelection(7);
-            if (exercise.getPartOfBody().equals(Constants.PART_OF_BODY_NONE)) spinner.setSelection(0);
+        if (exercise.getPartOfBody() != null && !exercise.getPartOfBody().equals("")) {
+            if (exercise.getPartOfBody().equals(Constants.PART_OF_BODY_CHEST))
+                spinner.setSelection(1);
+            if (exercise.getPartOfBody().equals(Constants.PART_OF_BODY_SHOULDERS))
+                spinner.setSelection(2);
+            if (exercise.getPartOfBody().equals(Constants.PART_OF_BODY_BICEPS))
+                spinner.setSelection(3);
+            if (exercise.getPartOfBody().equals(Constants.PART_OF_BODY_TRICEPS))
+                spinner.setSelection(4);
+            if (exercise.getPartOfBody().equals(Constants.PART_OF_BODY_BACK))
+                spinner.setSelection(5);
+            if (exercise.getPartOfBody().equals(Constants.PART_OF_BODY_ABS))
+                spinner.setSelection(6);
+            if (exercise.getPartOfBody().equals(Constants.PART_OF_BODY_LEGS))
+                spinner.setSelection(7);
+            if (exercise.getPartOfBody().equals(Constants.PART_OF_BODY_NONE))
+                spinner.setSelection(0);
         }
         return v;
     }
 
     public void onClick(View v) {
-        if (!partOfBodySelected){
-            Toast.makeText(getActivity(),R.string.choose_muscle_part, Toast.LENGTH_SHORT).show();
+        if (!partOfBodySelected) {
+            Toast.makeText(getActivity(), R.string.choose_muscle_part, Toast.LENGTH_SHORT).show();
             return;
         }
         if (v.getId() == R.id.btnSave && !editing) {  // creating
@@ -166,7 +173,7 @@ public class DialogEditExercise extends DialogFragment implements OnClickListene
             }
         }
         try {
-            if (getActivity() instanceof BaseActivity){
+            if (getActivity() instanceof BaseActivity) {
                 BaseActivity baseActivity = (BaseActivity) getActivity();
                 baseActivity.getExerciseListFragment().updateList(getActivity());
             }
@@ -179,7 +186,7 @@ public class DialogEditExercise extends DialogFragment implements OnClickListene
     public void onResume() {
         super.onResume();
         String defaultTimer = sp.getString("etDefault", "60");
-        if (editing){
+        if (editing) {
             etTimer.setText(exercise.getTimer());
         } else {
             etTimer.setText(defaultTimer);

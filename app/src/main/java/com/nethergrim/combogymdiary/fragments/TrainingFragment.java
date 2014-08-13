@@ -2,7 +2,6 @@ package com.nethergrim.combogymdiary.fragments;
 
 import android.app.ActionBar;
 import android.app.DialogFragment;
-import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -313,7 +312,7 @@ public class TrainingFragment extends FabFragment implements
                 R.layout.training_at_progress_new_wheel_new_list, null);
 
         llBottom = (LinearLayout) v.findViewById(R.id.LLBottom);
-        anim = AnimationUtils.loadAnimation(getActivity(),   R.anim.setfortraining);
+        anim = AnimationUtils.loadAnimation(getActivity(), R.anim.setfortraining);
         tvWeight = (TextView) v.findViewById(R.id.textView4__);
         repsWheel = (WheelView) v.findViewById(R.id.wheelReps);
         repsWheel.setVisibleItems(7);
@@ -573,7 +572,7 @@ public class TrainingFragment extends FabFragment implements
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemId = item.getItemId();
         if (itemId == R.id.itemExit) {
-            if (popupWindow != null && popupWindow.isShowing()){
+            if (popupWindow != null && popupWindow.isShowing()) {
                 return false;
             }
             DialogFragment dlg1 = new DialogExitFromTraining();
@@ -932,7 +931,7 @@ public class TrainingFragment extends FabFragment implements
 
     @Override
     public void onDrawerClosed() {
-        if (isResumed){
+        if (isResumed) {
             try {
                 fabCenter.show();
                 initSetButtons();
@@ -945,13 +944,13 @@ public class TrainingFragment extends FabFragment implements
 
     @Override
     public void onDrawerOpened() {
-            try {
-                fabCenter.hide();
-                fabRight.hide();
-                fabLeft.hide();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+        try {
+            fabCenter.hide();
+            fabRight.hide();
+            fabLeft.hide();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private class RepsAdapter extends AbstractWheelTextAdapter {

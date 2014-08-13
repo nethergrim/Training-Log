@@ -19,9 +19,10 @@ public class Exercise implements Serializable {
         this.checked = checked;
     }
 
-    public Exercise(){}
+    public Exercise() {
+    }
 
-    public Exercise(long id, String name, String timer, String partOfBody){
+    public Exercise(long id, String name, String timer, String partOfBody) {
         this.id = id;
         this.name = name;
         this.timer = timer;
@@ -59,7 +60,6 @@ public class Exercise implements Serializable {
     public void setPartOfBody(String partOfBody) {
         this.partOfBody = partOfBody;
     }
-
 
 
 }

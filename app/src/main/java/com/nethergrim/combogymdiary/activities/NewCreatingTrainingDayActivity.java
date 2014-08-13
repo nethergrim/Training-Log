@@ -37,9 +37,9 @@ public class NewCreatingTrainingDayActivity extends AnalyticsActivity implements
         getActionBar().setDisplayShowHomeEnabled(false);
         initButtons();
         initList();
-        textNoExe = (TextView)findViewById(R.id.text_add_exersices);
+        textNoExe = (TextView) findViewById(R.id.text_add_exersices);
         setTypeFaceLight(textNoExe);
-        etName = (EditText)findViewById(R.id.etTrainingName);
+        etName = (EditText) findViewById(R.id.etTrainingName);
         setTypeFaceLight(etName);
     }
 
@@ -51,7 +51,7 @@ public class NewCreatingTrainingDayActivity extends AnalyticsActivity implements
     }
 
     private void initList() {
-        list = (ListView)findViewById(R.id.listView);
+        list = (ListView) findViewById(R.id.listView);
     }
 
     private void initButtons() {
@@ -81,7 +81,7 @@ public class NewCreatingTrainingDayActivity extends AnalyticsActivity implements
             public void onClick(View v) {
                 DialogAddExercises dialogAddExercises = new DialogAddExercises();
                 Bundle args = new Bundle();
-                if (data == null){
+                if (data == null) {
                     initExercisesData();
                 }
                 args.putSerializable(DialogAddExercises.BUNDLE_KEY_DATA, data);
@@ -117,7 +117,7 @@ public class NewCreatingTrainingDayActivity extends AnalyticsActivity implements
         fabSuperSet.show();
         fabSave.show();
         fabAdd.show();
-        if (list.getCount() > 0){
+        if (list.getCount() > 0) {
             textNoExe.setVisibility(View.GONE);
         } else {
             textNoExe.setVisibility(View.VISIBLE);
@@ -125,7 +125,7 @@ public class NewCreatingTrainingDayActivity extends AnalyticsActivity implements
     }
 
     private void showSuperSetDialog() {
-        if (Prefs.getPreferences().getSuperSetInfoShowed() <= 3){
+        if (Prefs.getPreferences().getSuperSetInfoShowed() <= 3) {
             DialogInfo dialogInfo = new DialogInfo();
             Bundle args = new Bundle();
             args.putBoolean(DialogInfo.KEY_INFO_ABOUT_SUPERSET, true);

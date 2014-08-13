@@ -68,11 +68,11 @@ public class DB {
     private static final int DB_VERSION = 5;
     private static final String DB_EXE_TABLE = "exe_tab";
 
-    private static final String DB_EXE_CREATE = "create table " + DB_EXE_TABLE     + "("
+    private static final String DB_EXE_CREATE = "create table " + DB_EXE_TABLE + "("
             + COLUMN_ID + " integer primary key autoincrement, "
             + TRA_NAME + " text, "   // unUsed!!
             + EXE_NAME + " text, "
-            + TIMER_VALUE  + " text, "
+            + TIMER_VALUE + " text, "
             + PART_OF_BODY + " text"
             + ");";
     private Context mCtx;
@@ -93,7 +93,7 @@ public class DB {
         return "";
     }
 
-    public String getWeightMeasureType(Context context){
+    public String getWeightMeasureType(Context context) {
         SharedPreferences sp = PreferenceManager
                 .getDefaultSharedPreferences(context);
         String item = sp.getString(BaseActivity.MEASURE_ITEM, "1");
@@ -448,10 +448,10 @@ public class DB {
         mDB.insert(DB_EXE_TABLE, null, cv);
     }
 
-    public List<Exercise> getExercises(){
+    public List<Exercise> getExercises() {
         Cursor c = mDB.query(DB_EXE_TABLE, null, null, null, null, null, null);
         ArrayList<Exercise> exercises = new ArrayList<Exercise>();
-        if (c.moveToFirst()){
+        if (c.moveToFirst()) {
             do {
                 exercises.add(new Exercise(c.getInt(0), c.getString(2), c.getString(3), c.getString(4)));
             } while (c.moveToNext());
@@ -459,16 +459,16 @@ public class DB {
         return exercises;
     }
 
-    public List<ExerciseGroup> getExerciseGroups(){  // returns groups of exercises, sorted by part_of_body
+    public List<ExerciseGroup> getExerciseGroups() {  // returns groups of exercises, sorted by part_of_body
         List<ExerciseGroup> result = new ArrayList<ExerciseGroup>();
-        for (int i = 0; i < Constants.PARTS_OF_BODY.length; i++){
+        for (int i = 0; i < Constants.PARTS_OF_BODY.length; i++) {
             ExerciseGroup exerciseGroup = new ExerciseGroup();
             exerciseGroup.setPositionInGlobalArray(i);
             exerciseGroup.setName(Constants.PARTS_OF_BODY[i]);
             String[] args = {Constants.PARTS_OF_BODY[i]};
             Cursor c = mDB.query(DB_EXE_TABLE, null, PART_OF_BODY + "=?", args, null, null, EXE_NAME);
             List<Exercise> exercises = new ArrayList<Exercise>();
-            if (c.moveToFirst()){
+            if (c.moveToFirst()) {
                 do {
                     exercises.add(new Exercise(c.getInt(0), c.getString(2), c.getString(3), c.getString(4)));
                 } while (c.moveToNext());
@@ -480,10 +480,10 @@ public class DB {
         return result;
     }
 
-    public Exercise getExercise(long id){
+    public Exercise getExercise(long id) {
         String[] args = {id + ""};
         Cursor c = mDB.query(DB_EXE_TABLE, null, COLUMN_ID + "=?", args, null, null, null);
-        if (c.moveToFirst()){
+        if (c.moveToFirst()) {
             return new Exercise(c.getInt(0), c.getString(2), c.getString(3), c.getString(4));
         }
         return null;
@@ -491,7 +491,7 @@ public class DB {
 
     public String getTrainingName(int _id) {
         String[] args = {_id + ""};
-        Cursor c = mDB.query(DB_TRAININGS_TABLE, null, COLUMN_ID + "=?", args,  null, null, null);
+        Cursor c = mDB.query(DB_TRAININGS_TABLE, null, COLUMN_ID + "=?", args, null, null, null);
         if (c.moveToFirst()) {
             return c.getString(1);
         } else
@@ -597,7 +597,7 @@ public class DB {
         mDB.delete(DB_MAIN_TABLE, COLUMN_ID + " = " + id, null);
     }
 
-    public void addPartOfBodyToExercise(int exerciseId, String partOfBody){
+    public void addPartOfBodyToExercise(int exerciseId, String partOfBody) {
         ContentValues cv = new ContentValues();
         cv.put(PART_OF_BODY, partOfBody);
         mDB.update(DB_EXE_TABLE, cv, COLUMN_ID + " = " + exerciseId, null);
@@ -634,8 +634,8 @@ public class DB {
             if (oldVersion == 3 && newVersion == 4) {
                 db.execSQL(DB_COMMENT_CREATE);
             }
-            if (oldVersion == 4 && newVersion == 5){
-                db.execSQL("ALTER TABLE " + DB_EXE_TABLE +" ADD COLUMN " + PART_OF_BODY + " TEXT");
+            if (oldVersion == 4 && newVersion == 5) {
+                db.execSQL("ALTER TABLE " + DB_EXE_TABLE + " ADD COLUMN " + PART_OF_BODY + " TEXT");
                 Log.e("log", "db updated to v5");
             }
         }

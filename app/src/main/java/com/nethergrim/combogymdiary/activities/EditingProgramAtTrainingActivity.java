@@ -5,12 +5,10 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SimpleCursorAdapter;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
@@ -120,14 +118,14 @@ public class EditingProgramAtTrainingActivity extends AnalyticsActivity
             int i = 0;
 
             if (exercisesOld != null)
-            do {
-                for (String anExercisesOld : exercisesOld) {
-                    if (c.getString(2).equals(anExercisesOld)) {
-                        lvMain.setItemChecked(i, true);
+                do {
+                    for (String anExercisesOld : exercisesOld) {
+                        if (c.getString(2).equals(anExercisesOld)) {
+                            lvMain.setItemChecked(i, true);
+                        }
                     }
-                }
-                i++;
-            } while (c.moveToNext());
+                    i++;
+                } while (c.moveToNext());
         }
 
     }

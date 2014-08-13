@@ -6,7 +6,6 @@ import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.Log;
 
 import com.nethergrim.combogymdiary.Constants;
 import com.nethergrim.combogymdiary.DB;
@@ -19,8 +18,8 @@ public class StartActivity extends AnalyticsActivity {
     private SharedPreferences sp;
     private DB db;
     String[] exeLegs;
-    String[] exeChest ;
-    String[] exeBack ;
+    String[] exeChest;
+    String[] exeBack;
     String[] exeShoulders;
     String[] exeBiceps;
     String[] exeTriceps;
@@ -73,28 +72,33 @@ public class StartActivity extends AnalyticsActivity {
     }
 
     private void initTableForFirstTime() {
-        db.addRecTrainings(getString(R.string.traLegs),     db.convertArrayToString(exeLegs));
+        db.addRecTrainings(getString(R.string.traLegs), db.convertArrayToString(exeLegs));
         db.addRecTrainings(getString(R.string.traChest), db.convertArrayToString(exeChest));
-        db.addRecTrainings(getString(R.string.traBack),     db.convertArrayToString(exeBack));
-        db.addRecTrainings(getString(R.string.traShoulders),    db.convertArrayToString(exeShoulders));
-        db.addRecTrainings(getString(R.string.traBiceps),   db.convertArrayToString(exeBiceps));
-        db.addRecTrainings(getString(R.string.traTriceps),  db.convertArrayToString(exeTriceps));
-        db.addRecTrainings(getString(R.string.traAbs),      db.convertArrayToString(exeAbs));
+        db.addRecTrainings(getString(R.string.traBack), db.convertArrayToString(exeBack));
+        db.addRecTrainings(getString(R.string.traShoulders), db.convertArrayToString(exeShoulders));
+        db.addRecTrainings(getString(R.string.traBiceps), db.convertArrayToString(exeBiceps));
+        db.addRecTrainings(getString(R.string.traTriceps), db.convertArrayToString(exeTriceps));
+        db.addRecTrainings(getString(R.string.traAbs), db.convertArrayToString(exeAbs));
 
-        for (String exeLeg : exeLegs)           db.addExercise(exeLeg, "90", Constants.PART_OF_BODY_LEGS);
-        for (String anExeChest : exeChest)      db.addExercise(anExeChest, "60", Constants.PART_OF_BODY_CHEST);
-        for (String exeBicep : exeBiceps)       db.addExercise(exeBicep, "60", Constants.PART_OF_BODY_BICEPS);
-        for (String exeTricep : exeTriceps)     db.addExercise(exeTricep, "60", Constants.PART_OF_BODY_TRICEPS);
-        for (String anExeBack : exeBack)        db.addExercise(anExeBack, "60", Constants.PART_OF_BODY_BACK);
-        for (String exeShoulder : exeShoulders) db.addExercise(exeShoulder, "60", Constants.PART_OF_BODY_SHOULDERS);
-        for (String exeAb : exeAbs)             db.addExercise(exeAb, "60", Constants.PART_OF_BODY_ABS);
+        for (String exeLeg : exeLegs) db.addExercise(exeLeg, "90", Constants.PART_OF_BODY_LEGS);
+        for (String anExeChest : exeChest)
+            db.addExercise(anExeChest, "60", Constants.PART_OF_BODY_CHEST);
+        for (String exeBicep : exeBiceps)
+            db.addExercise(exeBicep, "60", Constants.PART_OF_BODY_BICEPS);
+        for (String exeTricep : exeTriceps)
+            db.addExercise(exeTricep, "60", Constants.PART_OF_BODY_TRICEPS);
+        for (String anExeBack : exeBack)
+            db.addExercise(anExeBack, "60", Constants.PART_OF_BODY_BACK);
+        for (String exeShoulder : exeShoulders)
+            db.addExercise(exeShoulder, "60", Constants.PART_OF_BODY_SHOULDERS);
+        for (String exeAb : exeAbs) db.addExercise(exeAb, "60", Constants.PART_OF_BODY_ABS);
     }
 
-    private void updateTableForVersion5(){
-        Cursor c = db.getDataExe(null, null,null ,null,null,DB.COLUMN_ID);
-        if (c.moveToFirst()){
+    private void updateTableForVersion5() {
+        Cursor c = db.getDataExe(null, null, null, null, null, DB.COLUMN_ID);
+        if (c.moveToFirst()) {
             do {
-                if (c.getString(4) == null || c.getString(4).equals("")){
+                if (c.getString(4) == null || c.getString(4).equals("")) {
                     boolean fixed = false;
                     for (String exe : exeAbs) {
                         if (c.getString(2).equals(exe)) {
@@ -104,54 +108,54 @@ public class StartActivity extends AnalyticsActivity {
                         }
                     }
                     if (!fixed)
-                    for (String exe : exeShoulders) {
-                        if (c.getString(2).equals(exe)) {
-                            db.updateExercise(c.getInt(0), DB.PART_OF_BODY, Constants.PART_OF_BODY_SHOULDERS);
-                            fixed = true;
-                            break;
+                        for (String exe : exeShoulders) {
+                            if (c.getString(2).equals(exe)) {
+                                db.updateExercise(c.getInt(0), DB.PART_OF_BODY, Constants.PART_OF_BODY_SHOULDERS);
+                                fixed = true;
+                                break;
+                            }
                         }
-                    }
                     if (!fixed)
-                    for (String exe : exeBack) {
-                        if (c.getString(2).equals(exe)) {
-                            db.updateExercise(c.getInt(0), DB.PART_OF_BODY, Constants.PART_OF_BODY_BACK);
-                            fixed = true;
-                            break;
+                        for (String exe : exeBack) {
+                            if (c.getString(2).equals(exe)) {
+                                db.updateExercise(c.getInt(0), DB.PART_OF_BODY, Constants.PART_OF_BODY_BACK);
+                                fixed = true;
+                                break;
+                            }
                         }
-                    }
                     if (!fixed)
-                    for (String exe : exeTriceps) {
-                        if (c.getString(2).equals(exe)) {
-                            db.updateExercise(c.getInt(0), DB.PART_OF_BODY, Constants.PART_OF_BODY_TRICEPS);
-                            fixed = true;
-                            break;
+                        for (String exe : exeTriceps) {
+                            if (c.getString(2).equals(exe)) {
+                                db.updateExercise(c.getInt(0), DB.PART_OF_BODY, Constants.PART_OF_BODY_TRICEPS);
+                                fixed = true;
+                                break;
+                            }
                         }
-                    }
                     if (!fixed)
-                    for (String exe : exeBiceps) {
-                        if (c.getString(2).equals(exe)) {
-                            db.updateExercise(c.getInt(0), DB.PART_OF_BODY, Constants.PART_OF_BODY_BICEPS);
-                            fixed = true;
-                            break;
+                        for (String exe : exeBiceps) {
+                            if (c.getString(2).equals(exe)) {
+                                db.updateExercise(c.getInt(0), DB.PART_OF_BODY, Constants.PART_OF_BODY_BICEPS);
+                                fixed = true;
+                                break;
+                            }
                         }
-                    }
                     if (!fixed)
-                    for (String exe : exeChest) {
-                        if (c.getString(2).equals(exe)) {
-                            db.updateExercise(c.getInt(0), DB.PART_OF_BODY, Constants.PART_OF_BODY_CHEST);
-                            fixed = true;
-                            break;
+                        for (String exe : exeChest) {
+                            if (c.getString(2).equals(exe)) {
+                                db.updateExercise(c.getInt(0), DB.PART_OF_BODY, Constants.PART_OF_BODY_CHEST);
+                                fixed = true;
+                                break;
+                            }
                         }
-                    }
                     if (!fixed)
-                    for (String exe : exeLegs) {
-                        if (c.getString(2).equals(exe)) {
-                            db.updateExercise(c.getInt(0), DB.PART_OF_BODY, Constants.PART_OF_BODY_LEGS);
-                            fixed = true;
-                            break;
+                        for (String exe : exeLegs) {
+                            if (c.getString(2).equals(exe)) {
+                                db.updateExercise(c.getInt(0), DB.PART_OF_BODY, Constants.PART_OF_BODY_LEGS);
+                                fixed = true;
+                                break;
+                            }
                         }
-                    }
-                    if (!fixed){
+                    if (!fixed) {
                         db.updateExercise(c.getInt(0), DB.PART_OF_BODY, Constants.PART_OF_BODY_NONE);
                     }
                 }

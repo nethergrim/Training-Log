@@ -13,42 +13,42 @@ public class Prefs {
     private static SharedPreferences prefs;
     private static Prefs pref;
 
-    private Prefs(Context context){
+    private Prefs(Context context) {
         prefs = PreferenceManager.getDefaultSharedPreferences(context);
     }
 
-    public static Prefs init(Context context){
-        if (pref == null){
+    public static Prefs init(Context context) {
+        if (pref == null) {
             pref = new Prefs(context);
         }
         return pref;
     }
 
-    public static Prefs getPreferences(){
+    public static Prefs getPreferences() {
         return pref;
     }
 
-    public void setAdsRemoved(boolean removed){
+    public void setAdsRemoved(boolean removed) {
         prefs.edit().putBoolean(KEY_ADS_REMOVED, removed).apply();
     }
 
-    public boolean getAdsRemoved(){
+    public boolean getAdsRemoved() {
         return prefs.getBoolean(KEY_ADS_REMOVED, false);
     }
 
-    public void setSuperSetInfoShowed(int times){
+    public void setSuperSetInfoShowed(int times) {
         prefs.edit().putInt(KEY_SUPERSET_INFO_SHOWED, times).apply();
     }
 
-    public int getSuperSetInfoShowed(){
+    public int getSuperSetInfoShowed() {
         return prefs.getInt(KEY_SUPERSET_INFO_SHOWED, 0);
     }
 
-    public void setTrainingAtProgress(boolean atProgress){
+    public void setTrainingAtProgress(boolean atProgress) {
         prefs.edit().putBoolean(KEY_TRAINING_AT_PROGRESS, atProgress).apply();
     }
 
-    public boolean getTrainingAtProgress(){
+    public boolean getTrainingAtProgress() {
         return prefs.getBoolean(KEY_TRAINING_AT_PROGRESS, false);
     }
 

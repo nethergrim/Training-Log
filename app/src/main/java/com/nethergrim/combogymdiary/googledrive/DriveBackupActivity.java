@@ -18,8 +18,8 @@ import com.google.android.gms.drive.MetadataChangeSet;
 import com.google.android.gms.drive.query.Filters;
 import com.google.android.gms.drive.query.Query;
 import com.google.android.gms.drive.query.SearchableField;
-import com.nethergrim.combogymdiary.tools.Backuper;
 import com.nethergrim.combogymdiary.R;
+import com.nethergrim.combogymdiary.tools.Backuper;
 import com.yandex.metrica.Counter;
 
 import java.io.File;

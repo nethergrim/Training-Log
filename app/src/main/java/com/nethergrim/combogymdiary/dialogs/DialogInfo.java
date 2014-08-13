@@ -22,12 +22,12 @@ public class DialogInfo extends DialogFragment {
                              Bundle savedInstanceState) {
         View v = null;
         getDialog().setTitle(R.string.info);
-        if (getArguments() != null){
-            if (getArguments().getBoolean(KEY_INFO_ABOUT_APP)){
+        if (getArguments() != null) {
+            if (getArguments().getBoolean(KEY_INFO_ABOUT_APP)) {
                 v = inflater.inflate(R.layout.dialog_info, null);
-            } else if (getArguments().getBoolean(KEY_INFO_ABOUT_SUPERSET)){
+            } else if (getArguments().getBoolean(KEY_INFO_ABOUT_SUPERSET)) {
                 v = inflater.inflate(R.layout.dialog_info_superset, null);
-                TextView textView = (TextView)v.findViewById(R.id.text_info_superset);
+                TextView textView = (TextView) v.findViewById(R.id.text_info_superset);
                 textView.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), Constants.TYPEFACE_THIN));
                 getDialog().setCancelable(true);
                 getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);

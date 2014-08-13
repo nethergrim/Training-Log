@@ -3,7 +3,6 @@ package com.nethergrim.combogymdiary.activities;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.view.View;
 import android.widget.TextView;
 
 import com.google.analytics.tracking.android.EasyTracker;
@@ -32,17 +31,17 @@ public abstract class AnalyticsActivity extends FragmentActivity {
         EasyTracker.getInstance(this).activityStop(this);
     }
 
-    public TextView setTypeFaceLight(TextView v){
+    public TextView setTypeFaceLight(TextView v) {
         v.setTypeface(Typeface.createFromAsset(getAssets(), Constants.TYPEFACE_LIGHT));
-        return  v;
+        return v;
     }
 
-    public TextView setTypeFaceThin(TextView v){
+    public TextView setTypeFaceThin(TextView v) {
         v.setTypeface(Typeface.createFromAsset(getAssets(), Constants.TYPEFACE_THIN));
         return v;
     }
 
-    public TextView setTypeFace(TextView v, String font){
+    public TextView setTypeFace(TextView v, String font) {
         v.setTypeface(Typeface.createFromAsset(getAssets(), font));
         return v;
     }

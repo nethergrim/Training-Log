@@ -1,11 +1,9 @@
 package com.nethergrim.combogymdiary.activities;
 
-import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.Gravity;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
@@ -27,7 +25,6 @@ public class AddingMeasurementActivity extends AnalyticsActivity {
     private String date;
     private DB db;
     private FloatingActionButton fab;
-
 
 
     @Override
@@ -149,14 +146,14 @@ public class AddingMeasurementActivity extends AnalyticsActivity {
     }
 
 
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         /*if (id == R.id.itemSaveMeasure) {
             saveResults();
             return true;
-        } else*/ if (id == android.R.id.home) {
+        } else*/
+        if (id == android.R.id.home) {
             finish();
             return true;
         }

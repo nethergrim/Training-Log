@@ -1,6 +1,5 @@
 package com.nethergrim.combogymdiary.fragments;
 
-import android.app.Fragment;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.os.Bundle;

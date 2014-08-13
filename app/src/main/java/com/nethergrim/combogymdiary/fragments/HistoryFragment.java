@@ -1,7 +1,6 @@
 package com.nethergrim.combogymdiary.fragments;
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -21,7 +20,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -60,7 +58,7 @@ public class HistoryFragment extends FabFragment implements
         registerForContextMenu(lvMain);
         String[] from = new String[]{DB.DATE, DB.TRA_NAME};
         int[] to = new int[]{R.id.tvDouble1, R.id.tvDouble2};
-        adapter = new SimpleCursorAdapter(getActivity(),   R.layout.list_with_arrow_double_textview, null, from, to, 0);
+        adapter = new SimpleCursorAdapter(getActivity(), R.layout.list_with_arrow_double_textview, null, from, to, 0);
         lvMain.setAdapter(adapter);
         ((FragmentActivity) getActivity()).getSupportLoaderManager()
                 .initLoader(LOADER_ID, null, this);

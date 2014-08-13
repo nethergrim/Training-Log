@@ -2,7 +2,6 @@ package com.nethergrim.combogymdiary;
 
 import android.app.Application;
 
-import com.google.analytics.tracking.android.EasyTracker;
 import com.nethergrim.combogymdiary.tools.Prefs;
 import com.yandex.metrica.Counter;
 

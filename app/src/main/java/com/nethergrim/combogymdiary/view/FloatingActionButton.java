@@ -193,8 +193,8 @@ public class FloatingActionButton extends View {
         // The calculation (value * scale + 0.5f) is a widely used to convert to dps to pixel units
         // based on density scale
         // see developer.android.com (Supporting Multiple Screen Sizes)
-        private int convertToPixels(int dp, float scale){
-            return (int) (dp * scale + 0.5f) ;
+        private int convertToPixels(int dp, float scale) {
+            return (int) (dp * scale + 0.5f);
         }
     }
 }

@@ -11,18 +11,18 @@ public abstract class FabFragment extends Fragment {
 
     private ArrayList<FloatingActionButton> fabs = new ArrayList<FloatingActionButton>();
 
-    public void onDrawerEvent(boolean closed){
+    public void onDrawerEvent(boolean closed) {
         try {
             for (FloatingActionButton fab : fabs) {
-                    if (closed) fab.show();
-                    else fab.hide();
+                if (closed) fab.show();
+                else fab.hide();
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public void registerFab(FloatingActionButton fab){
+    public void registerFab(FloatingActionButton fab) {
         fabs.add(fab);
     }
 }

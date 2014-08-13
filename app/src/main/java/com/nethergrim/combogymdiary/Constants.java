@@ -15,13 +15,13 @@ public class Constants {
     public static final String PART_OF_BODY_TRICEPS = "triceps";
     public static final String PART_OF_BODY_ABS = "abs";
     public static final String PART_OF_BODY_NONE = "without_category";
-    public static final String[] PARTS_OF_BODY  = {PART_OF_BODY_LEGS, PART_OF_BODY_CHEST, PART_OF_BODY_BACK , PART_OF_BODY_SHOULDERS , PART_OF_BODY_BICEPS , PART_OF_BODY_TRICEPS, PART_OF_BODY_ABS, PART_OF_BODY_NONE};
+    public static final String[] PARTS_OF_BODY = {PART_OF_BODY_LEGS, PART_OF_BODY_CHEST, PART_OF_BODY_BACK, PART_OF_BODY_SHOULDERS, PART_OF_BODY_BICEPS, PART_OF_BODY_TRICEPS, PART_OF_BODY_ABS, PART_OF_BODY_NONE};
     public static final String _ID = "_id";
     public static final String BUNDLE_EXERCISE = "exercise";
     public final static String TYPE_OF_DIALOG = "type_of_dialog";
 
 
-    public static String[] getPartsOfBodyRealNames(Context context){
+    public static String[] getPartsOfBodyRealNames(Context context) {
         String[] array = context.getResources().getStringArray(R.array.MuscleGroupsArray);
         String[] result = new String[array.length + 1];
         result[0] = array[1];

@@ -1,6 +1,5 @@
 package com.nethergrim.combogymdiary.activities;
 
-import android.app.Fragment;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.ComponentName;
@@ -11,7 +10,6 @@ import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.database.Cursor;
-import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -366,7 +364,7 @@ public class BaseActivity extends AnalyticsActivity implements
                 currentFragment = null;
                 DialogInfo dialog = new DialogInfo();
                 Bundle args = new Bundle();
-                args.putBoolean(DialogInfo.KEY_INFO_ABOUT_APP,true);
+                args.putBoolean(DialogInfo.KEY_INFO_ABOUT_APP, true);
                 dialog.setArguments(args);
                 dialog.show(getFragmentManager(), "info");
                 mDrawerList.setItemChecked(previouslyChecked, true);
@@ -521,7 +519,7 @@ public class BaseActivity extends AnalyticsActivity implements
         Bundle args = new Bundle();
         args.putInt(TRAINING_ID, id);
         currentFragment.setArguments(args);
-        getFragmentManager().beginTransaction()    .replace(R.id.content, currentFragment).commit();
+        getFragmentManager().beginTransaction().replace(R.id.content, currentFragment).commit();
         setTrainingAlreadyStarted(true);
         listButtons[0] = getResources().getString(R.string.continue_training);
         adapter.notifyDataSetChanged();
@@ -591,8 +589,9 @@ public class BaseActivity extends AnalyticsActivity implements
 
     }
 
-    public interface OnDrawerEvent{
+    public interface OnDrawerEvent {
         public void onDrawerClosed();
+
         public void onDrawerOpened();
     }
 }
