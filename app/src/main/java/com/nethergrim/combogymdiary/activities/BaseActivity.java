@@ -11,6 +11,7 @@ import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -158,9 +159,6 @@ public class BaseActivity extends AnalyticsActivity implements
         adapter = new ArrayAdapter<String>(this, R.layout.menu_list_item, listButtons);
         mDrawerList.setAdapter(adapter);
         mDrawerList.setOnItemClickListener(this);
-        getActionBar().setDisplayHomeAsUpEnabled(true);
-        getActionBar().setDisplayShowHomeEnabled(false);
-        getActionBar().setHomeButtonEnabled(true);
         onDrawerEventListener = trainingFragment;
         mDrawerToggle = new ActionBarDrawerToggle(this, /* host Activity */
                 mDrawerLayout, /* DrawerLayout object */
@@ -169,18 +167,28 @@ public class BaseActivity extends AnalyticsActivity implements
                 R.string.drawer_close /* "close drawer" description for accessibility */
         ) {
             public void onDrawerClosed(View view) {
-                onDrawerEventListener.onDrawerClosed();
-                currentFragment.onDrawerEvent(true);
+                try {
+                    onDrawerEventListener.onDrawerClosed();
+                    currentFragment.onDrawerEvent(true);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 invalidateOptionsMenu();
             }
 
             public void onDrawerOpened(View drawerView) {
-                onDrawerEventListener.onDrawerOpened();
-                currentFragment.onDrawerEvent(false);
+                try {
+                    onDrawerEventListener.onDrawerOpened();
+                    currentFragment.onDrawerEvent(false);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 invalidateOptionsMenu();
             }
         };
         mDrawerLayout.setDrawerListener(mDrawerToggle);
+        getActionBar().setDisplayHomeAsUpEnabled(true);
+        getActionBar().setHomeButtonEnabled(true);
         onDrawerEventListener = trainingFragment;
         sp = PreferenceManager.getDefaultSharedPreferences(this);
         if (sp.getBoolean(TRAINING_AT_PROGRESS, false)) {

@@ -4,6 +4,9 @@ import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
@@ -68,7 +71,6 @@ public class MeasurementsFragment extends FabFragment implements
                                     int position, long id) {
                 LinearLayout par = (LinearLayout) itemClicked;
                 TextView t = (TextView) par.findViewById(R.id.tvCatName);
-
                 String date = (String) t.getText();
                 gotoDetailed(position, id, date);
 

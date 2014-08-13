@@ -12,13 +12,13 @@ public abstract class FabFragment extends Fragment {
     private ArrayList<FloatingActionButton> fabs = new ArrayList<FloatingActionButton>();
 
     public void onDrawerEvent(boolean closed){
-        for (FloatingActionButton fab : fabs) {
-            try {
-                if (closed) fab.show();
-                else fab.hide();
-            } catch (Exception e) {
-                e.printStackTrace();
+        try {
+            for (FloatingActionButton fab : fabs) {
+                    if (closed) fab.show();
+                    else fab.hide();
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
