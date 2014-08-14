@@ -3,10 +3,10 @@
     android:id="@+id/tvText"
     style="@style/textColor"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="36dp"
     android:background="@drawable/list_training_selector"
     android:duplicateParentState="false"
-    android:gravity="center_horizontal"
+    android:gravity="center"
     android:padding="5dp"
     android:textSize="14sp" >
 

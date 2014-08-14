@@ -352,16 +352,13 @@ public class TrainingFragment extends FabFragment implements
 
         tvInfoText = (TextView) v.findViewById(R.id.infoText);
         listView = (DynamicListView) v.findViewById(R.id.listViewExerciseList);
-
         listView.setList(alExersicesList);
         listView.setFragment(this);
-        adapter = new StableArrayAdapter(getActivity(),
-                R.layout.my_training_list_item, alExersicesList);
+        adapter = new StableArrayAdapter(getActivity(), R.layout.my_training_list_item, alExersicesList);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View itemClicked,
-                                    int position, long id) {
+            public void onItemClick(AdapterView<?> parent, View itemClicked, int position, long id) {
                 onSelected(position);
             }
         });
@@ -419,8 +416,7 @@ public class TrainingFragment extends FabFragment implements
             timerValue = Integer.parseInt(db
                     .getTimerValueByExerciseName(exeName));
         } catch (NumberFormatException e) {
-            Toast.makeText(getActivity(), R.string.parsing_error,
-                    Toast.LENGTH_LONG).show();
+            Toast.makeText(getActivity(), R.string.parsing_error, Toast.LENGTH_LONG).show();
             timerValue = 60;
             Counter.sharedInstance().reportError("", e);
         }

@@ -9,7 +9,7 @@ public class Exercise implements Serializable {
     private String name;
     private String timer;
     private String partOfBody;
-    private boolean checked;
+    private boolean checked = false;
 
     public boolean isChecked() {
         return checked;

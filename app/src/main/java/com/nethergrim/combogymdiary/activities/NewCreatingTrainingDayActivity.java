@@ -1,6 +1,7 @@
 package com.nethergrim.combogymdiary.activities;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,14 +26,12 @@ public class NewCreatingTrainingDayActivity extends AnalyticsActivity implements
     private TextView textNoExe;
     private EditText etName;
     private FloatingActionButton fabAdd, fabSave, fabSuperSet;
-    private ArrayList<ExerciseGroup> data;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_creating_training_day);
         setTitle(R.string.creating_program);
-        initExercisesData();
         getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setDisplayShowHomeEnabled(false);
         initButtons();
@@ -43,12 +42,6 @@ public class NewCreatingTrainingDayActivity extends AnalyticsActivity implements
         setTypeFaceLight(etName);
     }
 
-    private void initExercisesData() {
-        DB db = new DB(this);
-        db.open();
-        data = (ArrayList<ExerciseGroup>) db.getExerciseGroups();
-        db.close();
-    }
 
     private void initList() {
         list = (ListView) findViewById(R.id.listView);
@@ -80,12 +73,6 @@ public class NewCreatingTrainingDayActivity extends AnalyticsActivity implements
             @Override
             public void onClick(View v) {
                 DialogAddExercises dialogAddExercises = new DialogAddExercises();
-                Bundle args = new Bundle();
-                if (data == null) {
-                    initExercisesData();
-                }
-                args.putSerializable(DialogAddExercises.BUNDLE_KEY_DATA, data);
-                dialogAddExercises.setArguments(args);
                 dialogAddExercises.show(getFragmentManager(), DialogAddExercises.class.getName());
             }
         });
@@ -155,7 +142,7 @@ public class NewCreatingTrainingDayActivity extends AnalyticsActivity implements
 
     @Override
     public void onExerciseAddedCallback(List<Integer> idList) {
-
+        Log.e("log", "added size: " + idList.size());
         // TODO adding exercises to list by there id`s (only unique)
     }
 }

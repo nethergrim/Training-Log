@@ -5,7 +5,7 @@
     android:layout_height="match_parent">
 
     <ExpandableListView
-        android:id="@+id/elvExercises"
+        android:id="@+id/elvExercisesToAdd"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 

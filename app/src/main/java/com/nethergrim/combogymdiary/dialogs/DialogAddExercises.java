@@ -14,34 +14,32 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.CheckBox;
 import android.widget.CheckedTextView;
+import android.widget.CompoundButton;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
 
 import com.nethergrim.combogymdiary.Constants;
+import com.nethergrim.combogymdiary.DB;
 import com.nethergrim.combogymdiary.R;
 import com.nethergrim.combogymdiary.model.Exercise;
 import com.nethergrim.combogymdiary.model.ExerciseGroup;
+import com.nethergrim.combogymdiary.view.TextViewLight;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class DialogAddExercises extends DialogFragment implements DialogInterface.OnClickListener {
 
-    public static final String BUNDLE_KEY_DATA = "data";
-
     private OnExerciseAddCallback listener;
-    private Context context;
-    private List<Integer> checkedIds = new ArrayList<Integer>();
-    private ExpandableListView elv;
     private ExercisesAdapter adapter;
-    private ArrayList<ExerciseGroup> data;
 
     @Override
     public void onClick(DialogInterface dialog, int which) {
         switch (which) {
             case Dialog.BUTTON_POSITIVE:
-                listener.onExerciseAddedCallback(checkedIds);
+                listener.onExerciseAddedCallback(adapter.getChecked());
                 dismiss();
                 break;
             case Dialog.BUTTON_NEGATIVE:
@@ -53,24 +51,16 @@ public class DialogAddExercises extends DialogFragment implements DialogInterfac
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        listener = (OnExerciseAddCallback) activity;
-        this.context = activity;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            this.data = (ArrayList<ExerciseGroup>) getArguments().getSerializable(BUNDLE_KEY_DATA);
-        }
+        this.listener = (OnExerciseAddCallback) activity;
     }
 
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View v = inflater.inflate(R.layout.dialog_add_exercise, null, false);
-        elv = (ExpandableListView) v.findViewById(R.id.elvExercises);
+        ExpandableListView elv = (ExpandableListView) v.findViewById(R.id.elvExercisesToAdd);
+        adapter = new ExercisesAdapter(getActivity());
+        elv.setAdapter(adapter);
         elv.setChoiceMode(ExpandableListView.CHOICE_MODE_MULTIPLE);
-        adapter = new ExercisesAdapter(context, data);
         AlertDialog.Builder adb = new AlertDialog.Builder(getActivity())
                 .setTitle(R.string.add_an_exercise)
                 .setPositiveButton(R.string.yes, this)
@@ -79,11 +69,6 @@ public class DialogAddExercises extends DialogFragment implements DialogInterfac
         return adb.create();
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        elv.setAdapter(adapter);
-    }
 
     public interface OnExerciseAddCallback {
         public void onExerciseAddedCallback(List<Integer> idList);
@@ -91,14 +76,29 @@ public class DialogAddExercises extends DialogFragment implements DialogInterfac
 
     private class ExercisesAdapter extends BaseExpandableListAdapter {
 
-        private Context context;
-        private List<ExerciseGroup> data;
         private String realNames[];
+        private LayoutInflater inflater;
+        private List<ExerciseGroup> data;
 
-        public ExercisesAdapter(Context context, List<ExerciseGroup> data) {
-            this.context = context;
-            this.data = data;
-            realNames = Constants.getPartsOfBodyRealNames(context);
+        public ExercisesAdapter(Context context) {
+            this.realNames = Constants.getPartsOfBodyRealNames(context);
+            this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            DB db = new DB(context);
+            db.open();
+            this.data = db.getExerciseGroups();
+            db.close();
+        }
+
+        public List<Integer> getChecked(){
+            List<Integer> result = new ArrayList<Integer>();
+            for (ExerciseGroup aData : data) {
+                for (int j = 0; j < aData.getExercisesList().size(); j++) {
+                    if (aData.getExercisesList().get(j).isChecked()) {
+                        result.add((int) aData.getExercisesList().get(j).getId());
+                    }
+                }
+            }
+            return result;
         }
 
         @Override
@@ -128,58 +128,57 @@ public class DialogAddExercises extends DialogFragment implements DialogInterfac
 
         @Override
         public long getChildId(int groupPosition, int childPosition) {
-            return data.get(groupPosition).getExercisesList().get(childPosition).getId();
+            return getChild(groupPosition,childPosition).getId();
         }
 
         @Override
         public boolean hasStableIds() {
-            return false;
+            return true;
         }
 
         @Override
         public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
             View v = convertView;
             if (v == null) {
-                LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 v = inflater.inflate(android.R.layout.simple_expandable_list_item_1, parent, false);
             }
             TextView text1 = (TextView) v.findViewById(android.R.id.text1);
             text1.setText(realNames[groupPosition]);
             text1.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), Constants.TYPEFACE_LIGHT));
             text1.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
-
             return v;
         }
 
         @Override
         public View getChildView(final int groupPosition, final int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
             View v = convertView;
-            if (v == null) {
-                LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                v = inflater.inflate(android.R.layout.simple_list_item_multiple_choice, parent, false);
+            if (v == null){
+                v = inflater.inflate(R.layout.list_item_checkbox, parent, false);
             }
-            final Exercise exercise = data.get(groupPosition).getExercisesList().get(childPosition);
-            final CheckedTextView text1 = (CheckedTextView) v.findViewById(android.R.id.text1);
-            text1.setText(exercise.getName());
-            text1.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), Constants.TYPEFACE_LIGHT));
-            text1.setChecked(exercise.isChecked());
-            text1.setOnClickListener(new View.OnClickListener() {
+            TextViewLight textView = (TextViewLight)v.findViewById(R.id.label);
+            textView.setText(data.get(groupPosition).getExercisesList().get(childPosition).getName());
+            final CheckBox checkBox = (CheckBox)v.findViewById(R.id.check);
+            checkBox.setChecked(data.get(groupPosition).getExercisesList().get(childPosition).isChecked());
+            if (checkBox.isChecked()){
+                Log.e("log","* exe is checked: " + getChild(groupPosition, childPosition).getId());
+            }
+            checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
-                public void onClick(View v) {
-                    text1.toggle();
-                    Log.e("log", exercise.getName() + " become checked: " + text1.isChecked());
-                    exercise.setChecked(text1.isChecked());
-                    if (text1.isChecked()) {
-                        if (!checkedIds.contains(Integer.valueOf((int) exercise.getId())))
-                            checkedIds.add((int) exercise.getId());
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    data.get(groupPosition).getExercisesList().get(childPosition).setChecked(isChecked);
+                    if (isChecked){
+                        Log.e("log","exe checked: " + getChild(groupPosition, childPosition).getId());
                     } else {
-                        checkedIds.remove(Integer.valueOf((int) exercise.getId()));
+                        Log.e("log","exe unchecked: " + getChild(groupPosition, childPosition).getId());
                     }
-                    data.get(groupPosition).getExercisesList().set(childPosition, exercise);
-                    v.setTag(exercise);
                 }
             });
-            v.setTag(exercise);
+            textView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    checkBox.setChecked(!checkBox.isChecked());
+                }
+            });
             return v;
         }
 

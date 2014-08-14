@@ -4,9 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by andrey_drobyazko on 11.08.14.
- */
+
 public class ExerciseGroup implements Serializable {
 
     private String name;
