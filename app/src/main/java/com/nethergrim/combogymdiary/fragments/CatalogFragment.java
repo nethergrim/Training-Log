@@ -1,5 +1,6 @@
 package com.nethergrim.combogymdiary.fragments;
 
+import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -18,7 +19,7 @@ import com.nethergrim.combogymdiary.R;
 import com.nethergrim.combogymdiary.activities.CatalogDetailedActivity;
 import com.nethergrim.combogymdiary.tools.AdapterHelper;
 
-public class CatalogFragment extends FabFragment {
+public class CatalogFragment extends Fragment {
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

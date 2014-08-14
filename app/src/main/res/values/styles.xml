@@ -7,6 +7,10 @@
     </style>
 
 
+    <style name="AppTheme.Fab" parent="FloatingActionButton">
+        <item name="floatingActionButtonColor">@color/material_cyan_a400</item>
+    </style>
+
 
     <style name="HabraThemeButton" parent="@android:style/Widget.Button">
         <item name="android:background">@drawable/button</item>

@@ -22,6 +22,7 @@
     <style name="Theme.Material_blue" parent="@android:style/Theme.Holo.Light.DarkActionBar">
         <item name="android:actionBarItemBackground">@drawable/selectable_background_material_blue</item>
         <item name="android:popupMenuStyle">@style/PopupMenu.Material_blue</item>
+        <item name="floatingActionButtonStyle">@style/AppTheme.Fab</item>
         <item name="android:dropDownListViewStyle">@style/DropDownListView.Material_blue</item>
         <item name="android:actionBarTabStyle">@style/ActionBarTabStyle.Material_blue</item>
         <item name="android:actionDropDownStyle">@style/DropDownNav.Material_blue</item>

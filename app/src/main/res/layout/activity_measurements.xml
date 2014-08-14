@@ -13,6 +13,16 @@
         android:layout_alignParentTop="true"
         android:layout_margin="8dp" >
     </ListView>
+
+    <com.nethergrim.combogymdiary.view.FAB
+        android:id="@+id/fabAddMeasurements"
+        android:layout_width="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="16dp"
+        android:src="@drawable/ic_action_new"
+        android:layout_height="wrap_content" />
     
 
 </RelativeLayout>

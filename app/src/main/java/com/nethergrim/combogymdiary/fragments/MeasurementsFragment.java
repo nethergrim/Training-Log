@@ -1,5 +1,6 @@
 package com.nethergrim.combogymdiary.fragments;
 
+import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -29,16 +30,17 @@ import com.nethergrim.combogymdiary.DB;
 import com.nethergrim.combogymdiary.R;
 import com.nethergrim.combogymdiary.activities.AddingMeasurementActivity;
 import com.nethergrim.combogymdiary.activities.MeasurementsDetailedActivity;
+import com.nethergrim.combogymdiary.view.FAB;
 import com.nethergrim.combogymdiary.view.FloatingActionButton;
+import com.shamanland.fab.ShowHideOnScroll;
 
-public class MeasurementsFragment extends FabFragment implements
+public class MeasurementsFragment extends Fragment implements
         LoaderCallbacks<Cursor> {
 
     private static final int CM_DELETE_ID = 8;
     private static final int LOADER_ID = 4;
     private DB db;
     private SimpleCursorAdapter scAdapter;
-    private FloatingActionButton fab;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,22 +75,15 @@ public class MeasurementsFragment extends FabFragment implements
             }
         });
         registerForContextMenu(listview);
-        fab = new FloatingActionButton.Builder(getActivity())
-                .withDrawable(getResources().getDrawable(R.drawable.ic_plus_small))
-                .withButtonColor(getResources().getColor(R.color.material_cyan_a400))
-                .withGravity(Gravity.BOTTOM | Gravity.RIGHT)
-                .withMargins(0, 0, 16, 16)
-                .create();
+        FAB fab = (FAB) v.findViewById(R.id.fabAddMeasurements);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(),
-                        AddingMeasurementActivity.class);
+                Intent intent = new Intent(getActivity(), AddingMeasurementActivity.class);
                 startActivity(intent);
             }
         });
-        fab.hide();
-        registerFab(fab);
+        listview.setOnTouchListener(new ShowHideOnScroll(fab));
         return v;
     }
 
@@ -102,15 +97,8 @@ public class MeasurementsFragment extends FabFragment implements
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
-        fab.hide();
-    }
-
-    @Override
     public void onResume() {
         super.onResume();
-        fab.show();
         ((FragmentActivity) getActivity()).getSupportLoaderManager()
                 .getLoader(LOADER_ID).forceLoad();
     }

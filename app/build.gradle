@@ -23,6 +23,7 @@ dependencies {
     compile 'com.android.support:support-v4:19.1.0'
     compile 'com.google.http-client:google-http-client-gson:1.17.0-rc'
     compile 'com.google.code.gson:gson:2.1'
+    compile 'com.shamanland:fab:0.0.3' // FAB
     compile files('libs/google-api-client-android-1.16.0-rc.jar')
     compile files('libs/google-api-services-drive-v2-rev126-1.16.0-rc.jar')
     compile files('libs/google-http-client-jackson-1.16.0-rc.jar')

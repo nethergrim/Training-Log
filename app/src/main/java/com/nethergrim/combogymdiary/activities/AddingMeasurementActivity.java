@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.nethergrim.combogymdiary.DB;
 import com.nethergrim.combogymdiary.R;
+import com.nethergrim.combogymdiary.view.FAB;
 import com.nethergrim.combogymdiary.view.FloatingActionButton;
 
 import java.text.SimpleDateFormat;
@@ -20,12 +21,9 @@ import java.util.Date;
 
 public class AddingMeasurementActivity extends AnalyticsActivity {
 
-    private EditText etWeight, etTall, etChest, etWaist, etHip, etLeg, etCalf,
-            etArm;
+    private EditText etWeight, etTall, etChest, etWaist, etHip, etLeg, etCalf, etArm;
     private String date;
     private DB db;
-    private FloatingActionButton fab;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,14 +58,8 @@ public class AddingMeasurementActivity extends AnalyticsActivity {
                     + getResources().getStringArray(R.array.measure_items)[1]
                     + ") ";
         }
-        tvTmp.setText(getResources().getString(R.string.weight)
-                + measureItem);
-        fab = new FloatingActionButton.Builder(this)
-                .withDrawable(getResources().getDrawable(R.drawable.ic_action_save))
-                .withButtonColor(getResources().getColor(R.color.material_cyan_a400))
-                .withGravity(Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL)
-                .withMargins(0, 0, 0, 16)
-                .create();
+        tvTmp.setText(getResources().getString(R.string.weight) + measureItem);
+        FAB fab = (FAB) findViewById(R.id.fabSaveMeasurements);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -80,12 +72,6 @@ public class AddingMeasurementActivity extends AnalyticsActivity {
         super.onDestroy();
         db.close();
     }
-
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        getMenuInflater().inflate(R.menu.adding_measurement, menu);
-//        return true;
-//    }
 
     private void saveResults() {
         String weight_m = etWeight.getText().toString();
@@ -149,10 +135,6 @@ public class AddingMeasurementActivity extends AnalyticsActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        /*if (id == R.id.itemSaveMeasure) {
-            saveResults();
-            return true;
-        } else*/
         if (id == android.R.id.home) {
             finish();
             return true;

@@ -13,21 +13,18 @@ import com.nethergrim.combogymdiary.view.TextViewLight;
 
 public class MeasurementsDetailedActivity extends AnalyticsActivity {
 
-    private String date;
     private DB db;
-    private Cursor cursor;
     private TextViewLight tv1, tv2, tv3, tv4, tv5, tv6, tv7, tv8;
-    private String longValue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_measurements_detailed);
         Intent intent = getIntent();
-        date = intent.getStringExtra("date");
+        String date = intent.getStringExtra("date");
         db = new DB(this);
         db.open();
-        longValue = getResources().getString(R.string.sm);
+        String longValue = getResources().getString(R.string.sm);
 
         getActionBar().setTitle(
                 getResources().getString(R.string.measurements) + " - " + date);
@@ -46,7 +43,7 @@ public class MeasurementsDetailedActivity extends AnalyticsActivity {
         String[] cols = {DB.DATE, DB.PART_OF_BODY_FOR_MEASURING,
                 DB.MEASURE_VALUE};
         String[] args = {date};
-        cursor = db.getDataMeasures(cols, DB.DATE + "=?", args, null, null, DB.DATE);
+        Cursor cursor = db.getDataMeasures(cols, DB.DATE + "=?", args, null, null, DB.DATE);
 
         SharedPreferences sp = PreferenceManager
                 .getDefaultSharedPreferences(this);

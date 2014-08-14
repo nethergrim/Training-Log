@@ -1,5 +1,6 @@
 package com.nethergrim.combogymdiary.fragments;
 
+import android.app.Fragment;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -21,14 +22,16 @@ import com.nethergrim.combogymdiary.dialogs.DialogEditExercise;
 import com.nethergrim.combogymdiary.dialogs.DialogUniversalApprove;
 import com.nethergrim.combogymdiary.model.Exercise;
 import com.nethergrim.combogymdiary.model.ExerciseGroup;
+import com.nethergrim.combogymdiary.view.FAB;
 import com.nethergrim.combogymdiary.view.FloatingActionButton;
 import com.nethergrim.combogymdiary.view.TextViewLight;
+import com.shamanland.fab.ShowHideOnScroll;
 
 import java.util.List;
 
-public class ExerciseListFragment extends FabFragment {
+public class ExerciseListFragment extends Fragment {
 
-    private FloatingActionButton fab;
+
     private ExpandableListView elv;
     private ExercisesAdapter adapter;
 
@@ -44,12 +47,7 @@ public class ExerciseListFragment extends FabFragment {
         elv = (ExpandableListView) v.findViewById(R.id.elvExercises);
         adapter = new ExercisesAdapter(getActivity());
         elv.setAdapter(adapter);
-        fab = new FloatingActionButton.Builder(getActivity())
-                .withDrawable(getResources().getDrawable(R.drawable.ic_plus_small))
-                .withButtonColor(getResources().getColor(R.color.material_cyan_a400))
-                .withGravity(Gravity.BOTTOM | Gravity.RIGHT)
-                .withMargins(0, 0, 16, 16)
-                .create();
+        FAB fab = (FAB) v.findViewById(R.id.fabAddExercises);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -57,8 +55,7 @@ public class ExerciseListFragment extends FabFragment {
                 dialog.show(getFragmentManager(), "tag");
             }
         });
-        registerFab(fab);
-        fab.hide();
+        elv.setOnTouchListener(new ShowHideOnScroll(fab));
         return v;
     }
 
@@ -69,16 +66,6 @@ public class ExerciseListFragment extends FabFragment {
             adapter = new ExercisesAdapter(getActivity());
             elv.setAdapter(adapter);
         }
-    }
-
-    public void onResume() {
-        super.onResume();
-        fab.show();
-    }
-
-    public void onPause() {
-        super.onPause();
-        fab.hide();
     }
 
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {

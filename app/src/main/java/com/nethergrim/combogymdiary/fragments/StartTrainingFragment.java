@@ -2,6 +2,7 @@ package com.nethergrim.combogymdiary.fragments;
 
 import android.app.Activity;
 import android.app.DialogFragment;
+import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -36,19 +37,19 @@ import com.nethergrim.combogymdiary.activities.BaseActivity;
 import com.nethergrim.combogymdiary.activities.EditingProgramAtTrainingActivity;
 import com.nethergrim.combogymdiary.activities.NewCreatingTrainingDayActivity;
 import com.nethergrim.combogymdiary.dialogs.DialogGoToMarket;
+import com.nethergrim.combogymdiary.view.FAB;
 import com.nethergrim.combogymdiary.view.FloatingActionButton;
+import com.shamanland.fab.ShowHideOnScroll;
 
-public class StartTrainingFragment extends FabFragment implements
+public class StartTrainingFragment extends Fragment implements
         LoaderCallbacks<Cursor> {
 
     private static final int CM_DELETE_ID = 3;
     private static final int CM_EDIT_ID = 4;
     private ListView lvMain;
     private DB db;
-    private Cursor cursor;
     private SimpleCursorAdapter scAdapter;
     private OnSelectedListener mCallback;
-    private FloatingActionButton fab;
     private int LOADER_ID = 0;
 
     @Override
@@ -57,8 +58,7 @@ public class StartTrainingFragment extends FabFragment implements
         try {
             mCallback = (OnSelectedListener) activity;
         } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement OnHeadlineSelectedListener");
+            throw new ClassCastException(activity.toString() + " must implement OnHeadlineSelectedListener");
         }
     }
 
@@ -79,8 +79,7 @@ public class StartTrainingFragment extends FabFragment implements
         registerForContextMenu(lvMain);
     }
 
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.start_training, null);
         lvMain = (ListView) v.findViewById(R.id.lvStartTraining);
         getActivity().getActionBar().setTitle(R.string.startTrainingButtonString);
@@ -91,29 +90,22 @@ public class StartTrainingFragment extends FabFragment implements
                 goToTraining((int) id);
             }
         });
-        ((FragmentActivity) getActivity()).getSupportLoaderManager()
-                .initLoader(LOADER_ID, null, this);
-        fab = new FloatingActionButton.Builder(getActivity())
-                .withDrawable(getResources().getDrawable(R.drawable.ic_plus_small))
-                .withButtonColor(getResources().getColor(R.color.material_cyan_a400))
-                .withGravity(Gravity.BOTTOM | Gravity.RIGHT)
-                .withMargins(0, 0, 16, 16)
-                .create();
-        fab.setOnClickListener(new View.OnClickListener() {
+        ((FragmentActivity) getActivity()).getSupportLoaderManager().initLoader(LOADER_ID, null, this);
+
+        FAB fabAdd = (FAB) v.findViewById(R.id.fabAddTrainings);
+        fabAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent gotoAddingProgramActivity = new Intent(getActivity(), NewCreatingTrainingDayActivity.class);
                 startActivity(gotoAddingProgramActivity);
             }
         });
-        fab.hide();
-        registerFab(fab);
+        lvMain.setOnTouchListener(new ShowHideOnScroll(fabAdd));
         return v;
     }
 
     public void onPause() {
         super.onPause();
-        fab.hide();
         unregisterForContextMenu(lvMain);
     }
 
@@ -131,7 +123,6 @@ public class StartTrainingFragment extends FabFragment implements
                     "dialog_goto_market");
             dialog.setCancelable(false);
         }
-        fab.show();
     }
 
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -139,8 +130,7 @@ public class StartTrainingFragment extends FabFragment implements
         super.onCreateOptionsMenu(menu, inflater);
     }
 
-    public void onCreateContextMenu(ContextMenu menu, View v,
-                                    ContextMenuInfo menuInfo) {
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
         menu.add(0, CM_DELETE_ID, 0, R.string.delete_record);
         menu.add(1, CM_EDIT_ID, 0, R.string.edit);
@@ -150,7 +140,7 @@ public class StartTrainingFragment extends FabFragment implements
         AdapterContextMenuInfo acmi = (AdapterContextMenuInfo) item
                 .getMenuInfo();
         if (item.getItemId() == CM_DELETE_ID) {
-            cursor = db.getDataTrainings(null, null, null, null, null, null);
+            Cursor cursor = db.getDataTrainings(null, null, null, null, null, null);
             LinearLayout llTmp = (LinearLayout) acmi.targetView;
             TextView tvTmp = (TextView) llTmp.findViewById(R.id.tvText);
             String traName = tvTmp.getText().toString();

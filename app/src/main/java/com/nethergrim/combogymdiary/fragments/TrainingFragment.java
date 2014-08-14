@@ -2,6 +2,7 @@ package com.nethergrim.combogymdiary.fragments;
 
 import android.app.ActionBar;
 import android.app.DialogFragment;
+import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -55,6 +56,7 @@ import com.nethergrim.combogymdiary.dialogs.DialogExitFromTraining;
 import com.nethergrim.combogymdiary.service.TrainingService;
 import com.nethergrim.combogymdiary.tools.StableArrayAdapter;
 import com.nethergrim.combogymdiary.view.DynamicListView;
+import com.nethergrim.combogymdiary.view.FAB;
 import com.nethergrim.combogymdiary.view.FloatingActionButton;
 import com.yandex.metrica.Counter;
 
@@ -67,8 +69,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 import kankan.wheel.widget.WheelView;
 import kankan.wheel.widget.adapters.AbstractWheelTextAdapter;
 
-public class TrainingFragment extends FabFragment implements
-        OnCheckedChangeListener, OnClickListener, DynamicListView.OnElementSwapped, BaseActivity.OnDrawerEvent {
+public class TrainingFragment extends Fragment implements
+        OnCheckedChangeListener, OnClickListener, DynamicListView.OnElementSwapped {
 
     public final static String TRAINING_AT_PROGRESS = "training_at_progress";
     public final static String TRA_ID = "tra_id";
@@ -119,16 +121,13 @@ public class TrainingFragment extends FabFragment implements
     private boolean isActiveDialog = false, blocked = false, blockedSelection = false;
     private DynamicListView listView;
     private StableArrayAdapter adapter;
-    private FloatingActionButton fabLeft, fabRight, fabCenter;
+    private FAB fabSave, fabBack, fabForward;
     private ActionMode.Callback mActionModeCallback = new ActionMode.Callback() {
 
         @Override
         public boolean onCreateActionMode(ActionMode mode, Menu menu) {
             MenuInflater inflater = mode.getMenuInflater();
-            inflater.inflate(R.menu.cab_training, menu);
-            fabLeft.hide();
-            fabRight.hide();
-            fabCenter.hide();
+            inflater.inflate(R.menu.cab_training, menu);;
             return true;
         }
 
@@ -202,12 +201,9 @@ public class TrainingFragment extends FabFragment implements
                 listView.setItemChecked(0, true);
                 llBottom.setVisibility(View.VISIBLE);
             }
-            fabCenter.show();
             initSetButtons();
         }
     };
-    private int btnSaveId, btnBackId, btnForwardId;
-    private boolean isResumed = false;
 
     @SuppressWarnings("rawtypes")
     @Override
@@ -269,47 +265,21 @@ public class TrainingFragment extends FabFragment implements
                 new Intent(getActivity(), TrainingService.class));
         startTime = System.currentTimeMillis();
         sp.edit().putLong(START_TIME, startTime);
-        createButtons();
+
     }
 
-    private void createButtons() {
-        fabLeft = new FloatingActionButton.Builder(getActivity())
-                .withDrawable(getResources().getDrawable(R.drawable.ic_action_back))
-                .withButtonColor(getResources().getColor(R.color.material_cyan_a400))
-                .withGravity(Gravity.BOTTOM | Gravity.LEFT)
-                .withMargins(16, 0, 0, 16)
-                .create();
-        fabCenter = new FloatingActionButton.Builder(getActivity())
-                .withDrawable(getResources().getDrawable(R.drawable.ic_action_save))
-                .withButtonColor(getResources().getColor(R.color.material_cyan_a400))
-                .withGravity(Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL)
-                .withMargins(0, 0, 0, 16)
-                .create();
-        fabRight = new FloatingActionButton.Builder(getActivity())
-                .withDrawable(getResources().getDrawable(R.drawable.ic_action_forward))
-                .withButtonColor(getResources().getColor(R.color.material_cyan_a400))
-                .withGravity(Gravity.BOTTOM | Gravity.RIGHT)
-                .withMargins(0, 0, 16, 16)
-                .create();
 
-        fabCenter.hide();
-        fabRight.hide();
-        fabLeft.hide();
-        fabRight.setOnClickListener(this);
-        fabLeft.setOnClickListener(this);
-        fabCenter.setOnClickListener(this);
-        fabCenter.setId(generateViewId());
-        fabLeft.setId(generateViewId());
-        fabRight.setId(generateViewId());
-        btnSaveId = fabCenter.getId();
-        btnBackId = fabLeft.getId();
-        btnForwardId = fabRight.getId();
-    }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(
-                R.layout.training_at_progress_new_wheel_new_list, null);
+        View v = inflater.inflate(R.layout.training_at_progress_new_wheel_new_list, null);
+        fabBack = (FAB) v.findViewById(R.id.fabBack);
+        fabBack.setOnClickListener(this);
 
+        fabSave = (FAB) v.findViewById(R.id.fabSaveSet);
+        fabSave.setOnClickListener(this);
+
+        fabForward = (FAB) v.findViewById(R.id.fabForward);
+        fabForward.setOnClickListener(this);;
         llBottom = (LinearLayout) v.findViewById(R.id.LLBottom);
         anim = AnimationUtils.loadAnimation(getActivity(), R.anim.setfortraining);
         tvWeight = (TextView) v.findViewById(R.id.textView4__);
@@ -330,18 +300,11 @@ public class TrainingFragment extends FabFragment implements
         etTimer = (EditText) v.findViewById(R.id.etTimerValueAtTraining);
         etTimer.setOnClickListener(this);
         etTimer.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before,int count) { }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before,
-                                      int count) {
-
-            }
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count,
-                                          int after) {
-
-            }
+            public void beforeTextChanged(CharSequence s, int start, int count,    int after) { }
 
             @Override
             public void afterTextChanged(Editable s) {
@@ -381,14 +344,14 @@ public class TrainingFragment extends FabFragment implements
     private void initSetButtons() {
         try {
             if (set > 0 && currentSet > 0) {
-                fabLeft.show();
+                fabBack.setVisibility(View.VISIBLE);
             } else {
-                fabLeft.hide();
+                fabBack.setVisibility(View.GONE);
             }
             if (currentSet < set) {
-                fabRight.show();
+                fabForward.setVisibility(View.VISIBLE);
             } else {
-                fabRight.hide();
+                fabForward.setVisibility(View.GONE);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -439,7 +402,6 @@ public class TrainingFragment extends FabFragment implements
 
     public void onResume() {
         super.onResume();
-        isResumed = true;
         listView.setKeepScreenOn(!(sp.getBoolean("toTurnOff", false)));
         vibrate = sp.getBoolean("vibrateOn", true);
         String vl = sp.getString("vibtateLenght", "2");
@@ -462,8 +424,8 @@ public class TrainingFragment extends FabFragment implements
             }
         }
         timerHandler.postDelayed(timerRunnable, 0);
-        fabCenter.show();
-
+        fabSave.setVisibility(View.VISIBLE);
+        initSetButtons();
         h = new Handler() {
             public void handleMessage(Message msg) {
                 if (msg.what == 0) {
@@ -535,19 +497,8 @@ public class TrainingFragment extends FabFragment implements
         saveSetsToPreferences();
         isTrainingAtProgress = true;
         saveExercicesToDatabase();
-        fabRight.hide();
-        fabLeft.hide();
-        fabCenter.hide();
-        isResumed = false;
     }
 
-    @Override
-    public void onStop() {
-        super.onStop();
-        fabRight.hide();
-        fabLeft.hide();
-        fabCenter.hide();
-    }
 
     private void saveExercicesToDatabase() {
         String[] e = new String[alExersicesList.size()];
@@ -673,7 +624,7 @@ public class TrainingFragment extends FabFragment implements
                     Toast.LENGTH_LONG).show();
             return;
         }
-        if (id == btnSaveId && currentSet == set && !btnBlocked) {
+        if (id == R.id.fabSaveSet && currentSet == set && !btnBlocked) {
             int wei = (weightWheel.getCurrentItem() + 1);
             int rep_s = (repsWheel.getCurrentItem() + 1);
             int tmp = alSetList.get(checkedPosition);
@@ -704,7 +655,7 @@ public class TrainingFragment extends FabFragment implements
                 tvInfoText.setText(getResources().getString(R.string.new_set)
                         + " (" + (set + 1) + ")");
             }
-        } else if (id == btnSaveId && currentSet < set) {
+        } else if (id == R.id.fabSaveSet && currentSet < set) {
             int wei = (weightWheel.getCurrentItem() + 1);
             int rep_s = (repsWheel.getCurrentItem() + 1);
             db.updateRec_Main(currentId, 4, null, wei);
@@ -713,7 +664,7 @@ public class TrainingFragment extends FabFragment implements
                     .show();
             currentSet = set;
             onSelected(checkedPosition);
-        } else if (id == btnBackId) {
+        } else if (id == R.id.fabBack) {
             if (currentSet > 0) {
                 llBottom.startAnimation(anim);
                 currentSet--;
@@ -732,7 +683,7 @@ public class TrainingFragment extends FabFragment implements
                         + (currentSet + 1) + ")");
             }
 
-        } else if (id == btnForwardId) {
+        } else if (id == R.id.fabForward) {
             if (currentSet < set - 1) {
                 llBottom.startAnimation(anim);
                 currentSet++;
@@ -922,30 +873,6 @@ public class TrainingFragment extends FabFragment implements
 
     private int pxFromDp(float dp) {
         return (int) (dp * getActivity().getResources().getDisplayMetrics().density);
-    }
-
-    @Override
-    public void onDrawerClosed() {
-        if (isResumed) {
-            try {
-                fabCenter.show();
-                initSetButtons();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-
-    }
-
-    @Override
-    public void onDrawerOpened() {
-        try {
-            fabCenter.hide();
-            fabRight.hide();
-            fabLeft.hide();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     private class RepsAdapter extends AbstractWheelTextAdapter {

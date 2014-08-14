@@ -1,142 +1,181 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
 
-    <LinearLayout
-        android:id="@+id/LLTop"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1.2"
         android:orientation="vertical">
 
-        <com.nethergrim.combogymdiary.view.DynamicListView
-            android:id="@+id/listViewExerciseList"
-            android:background="@drawable/card"
+        <LinearLayout
+            android:id="@+id/LLTop"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="4dp"
-            android:layout_weight="1"
-            android:choiceMode="singleChoice"
-            android:dividerHeight="1px"
-            android:padding="3dp"/>
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/LLBottom"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:orientation="vertical">
-
-        <LinearLayout
-            android:id="@+id/ll2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_weight="1.2"
             android:orientation="vertical">
 
-            <com.nethergrim.combogymdiary.view.TextViewLight
-                android:id="@+id/infoText"
+            <com.nethergrim.combogymdiary.view.DynamicListView
+                android:id="@+id/listViewExerciseList"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:gravity="center_vertical|center_horizontal"
-                android:textSize="17sp" />
-
+                android:layout_height="match_parent"
+                android:layout_margin="4dp"
+                android:layout_weight="1"
+                android:background="@drawable/card"
+                android:choiceMode="singleChoice"
+                android:dividerHeight="1px"
+                android:padding="3dp" />
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/LL3"
+            android:id="@+id/LLBottom"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="5dp"
-            android:gravity="center_horizontal"
-            android:weightSum="5">
-
-            <TextView
-                android:id="@+id/tvWidget2"
-                android:layout_width="0dip"
-                android:layout_height="wrap_content"
-                android:layout_weight="1.2" />
-
-            <com.nethergrim.combogymdiary.view.TextViewLight
-                android:id="@+id/textView4__"
-                android:layout_width="0dip"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:layout_weight="1.9"
-                android:background="@android:color/white"
-                android:gravity="center_horizontal"
-                android:text="@string/Weight"
-                android:textAppearance="?android:attr/textAppearanceSmall" />
-
-            <com.nethergrim.combogymdiary.view.TextViewLight
-                android:id="@+id/textView3__"
-                android:layout_width="0dip"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="5dp"
-                android:layout_weight="1.9"
-                android:background="@android:color/white"
-                android:gravity="center_horizontal"
-                android:text="@string/reps"
-                android:textAppearance="?android:attr/textAppearanceSmall" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/LL1"
-            android:layout_width="match_parent"
-            android:layout_height="0dip"
-            android:layout_weight="2"
-            android:layout_marginBottom="6dp"
-            android:gravity="center_horizontal"
-            android:orientation="horizontal"
-            android:weightSum="5"
-            tools:ignore="UselessParent">
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
 
             <LinearLayout
-                android:layout_width="0dip"
-                android:layout_height="match_parent"
-                android:layout_weight="1.2"
+                android:id="@+id/ll2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <EditText
-                    android:id="@+id/etTimerValueAtTraining"
+                <com.nethergrim.combogymdiary.view.TextViewLight
+                    android:id="@+id/infoText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center_horizontal|center_vertical"
-                    android:hint="@string/timer"
-                    android:inputType="number"
-                    android:textSize="12sp"/>
+                    android:layout_marginBottom="8dp"
+                    android:gravity="center_vertical|center_horizontal"
+                    android:textSize="17sp" />
 
-                <ToggleButton
-                    android:id="@+id/tglTurnOff"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textOff="@string/timer"
-                    android:textOn="@string/timer"
-                    android:textSize="12sp" />
             </LinearLayout>
 
-            <kankan.wheel.widget.WheelView
-                android:id="@+id/wheelWeight"
-                android:layout_width="0dip"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="5dp"
+            <LinearLayout
+                android:id="@+id/LL3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginRight="5dp"
-                android:layout_weight="1.9" />
+                android:gravity="center_horizontal"
+                android:weightSum="5">
 
-            <kankan.wheel.widget.WheelView
-                android:id="@+id/wheelReps"
-                android:layout_width="0dip"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:layout_weight="1.9" />
+                <TextView
+                    android:id="@+id/tvWidget2"
+                    android:layout_width="0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.2" />
+
+                <com.nethergrim.combogymdiary.view.TextViewLight
+                    android:id="@+id/textView4__"
+                    android:layout_width="0dip"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_weight="1.9"
+                    android:background="@android:color/white"
+                    android:gravity="center_horizontal"
+                    android:text="@string/Weight"
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
+
+                <com.nethergrim.combogymdiary.view.TextViewLight
+                    android:id="@+id/textView3__"
+                    android:layout_width="0dip"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="5dp"
+                    android:layout_weight="1.9"
+                    android:background="@android:color/white"
+                    android:gravity="center_horizontal"
+                    android:text="@string/reps"
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/LL1"
+                android:layout_width="match_parent"
+                android:layout_height="0dip"
+                android:layout_marginBottom="6dp"
+                android:layout_weight="2"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal"
+                android:weightSum="5"
+                tools:ignore="UselessParent">
+
+                <LinearLayout
+                    android:layout_width="0dip"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1.2"
+                    android:orientation="vertical">
+
+                    <EditText
+                        android:id="@+id/etTimerValueAtTraining"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal|center_vertical"
+                        android:hint="@string/timer"
+                        android:inputType="number"
+                        android:textSize="12sp" />
+
+                    <ToggleButton
+                        android:id="@+id/tglTurnOff"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textOff="@string/timer"
+                        android:textOn="@string/timer"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <kankan.wheel.widget.WheelView
+                    android:id="@+id/wheelWeight"
+                    android:layout_width="0dip"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_weight="1.9" />
+
+                <kankan.wheel.widget.WheelView
+                    android:id="@+id/wheelReps"
+                    android:layout_width="0dip"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_weight="1.9" />
+            </LinearLayout>
+
         </LinearLayout>
 
     </LinearLayout>
 
-</LinearLayout>
+    <com.nethergrim.combogymdiary.view.FAB
+        android:id="@+id/fabBack"
+        android:layout_width="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="16dp"
+        android:layout_marginBottom="16dp"
+        android:src="@drawable/ic_action_back"
+        android:layout_height="wrap_content" />
+
+    <com.nethergrim.combogymdiary.view.FAB
+        android:id="@+id/fabSaveSet"
+        android:layout_width="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="16dp"
+        android:src="@drawable/ic_action_save"
+        android:layout_height="wrap_content" />
+
+    <com.nethergrim.combogymdiary.view.FAB
+        android:id="@+id/fabForward"
+        android:layout_width="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="16dp"
+        android:src="@drawable/ic_action_forward"
+        android:layout_height="wrap_content" />
+
+</RelativeLayout>

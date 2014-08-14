@@ -1,5 +1,6 @@
 package com.nethergrim.combogymdiary.activities;
 
+import android.app.Fragment;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.ComponentName;
@@ -38,7 +39,6 @@ import com.nethergrim.combogymdiary.dialogs.DialogUniversalApprove;
 import com.nethergrim.combogymdiary.dialogs.DialogUniversalApprove.OnStartTrainingAccept;
 import com.nethergrim.combogymdiary.fragments.CatalogFragment;
 import com.nethergrim.combogymdiary.fragments.ExerciseListFragment;
-import com.nethergrim.combogymdiary.fragments.FabFragment;
 import com.nethergrim.combogymdiary.fragments.HistoryFragment;
 import com.nethergrim.combogymdiary.fragments.MeasurementsFragment;
 import com.nethergrim.combogymdiary.fragments.StartTrainingFragment;
@@ -100,10 +100,9 @@ public class BaseActivity extends AnalyticsActivity implements
     private MeasurementsFragment measurementsFragment = new MeasurementsFragment();
     private StartTrainingFragment startTrainingFragment = new StartTrainingFragment();
     private TrainingFragment trainingFragment = new TrainingFragment();
-    private FabFragment currentFragment;
+    private Fragment currentFragment;
     private ServiceConnection mServiceConn;
     private int adCounter = 0;
-    private OnDrawerEvent onDrawerEventListener = trainingFragment;
 
     static {
         for (int idx = 0; idx < 10; ++idx)
@@ -152,7 +151,6 @@ public class BaseActivity extends AnalyticsActivity implements
         adapter = new ArrayAdapter<String>(this, R.layout.menu_list_item, listButtons);
         mDrawerList.setAdapter(adapter);
         mDrawerList.setOnItemClickListener(this);
-        onDrawerEventListener = trainingFragment;
         mDrawerToggle = new ActionBarDrawerToggle(this, /* host Activity */
                 mDrawerLayout, /* DrawerLayout object */
                 R.drawable.ic_drawer, /* nav drawer image to replace 'Up' caret */
@@ -160,29 +158,16 @@ public class BaseActivity extends AnalyticsActivity implements
                 R.string.drawer_close /* "close drawer" description for accessibility */
         ) {
             public void onDrawerClosed(View view) {
-                try {
-                    onDrawerEventListener.onDrawerClosed();
-                    currentFragment.onDrawerEvent(true);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
                 invalidateOptionsMenu();
             }
 
             public void onDrawerOpened(View drawerView) {
-                try {
-                    onDrawerEventListener.onDrawerOpened();
-                    currentFragment.onDrawerEvent(false);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
                 invalidateOptionsMenu();
             }
         };
         mDrawerLayout.setDrawerListener(mDrawerToggle);
         getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setHomeButtonEnabled(true);
-        onDrawerEventListener = trainingFragment;
         sp = PreferenceManager.getDefaultSharedPreferences(this);
         if (sp.getBoolean(TRAINING_AT_PROGRESS, false)) {
             currentFragment = trainingFragment;
@@ -506,7 +491,6 @@ public class BaseActivity extends AnalyticsActivity implements
 
     @Override
     public void onStartTrainingAccepted(int id) {
-        currentFragment.onDrawerEvent(false);
         trainingFragment = new TrainingFragment();
         currentFragment = trainingFragment;
         Bundle args = new Bundle();
@@ -578,11 +562,5 @@ public class BaseActivity extends AnalyticsActivity implements
             return new String(buf);
         }
 
-    }
-
-    public interface OnDrawerEvent {
-        public void onDrawerClosed();
-
-        public void onDrawerOpened();
     }
 }
