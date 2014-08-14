@@ -143,6 +143,9 @@ public class NewCreatingTrainingDayActivity extends AnalyticsActivity implements
     @Override
     public void onExerciseAddedCallback(List<Integer> idList) {
         Log.e("log", "added size: " + idList.size());
+        for (Integer anIdList : idList) {
+            Log.e("log", "added id: " + anIdList);
+        }
         // TODO adding exercises to list by there id`s (only unique)
     }
 }

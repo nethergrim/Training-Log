@@ -34,6 +34,7 @@ public class DialogAddExercises extends DialogFragment implements DialogInterfac
 
     private OnExerciseAddCallback listener;
     private ExercisesAdapter adapter;
+    private ExpandableListView elv;
 
     @Override
     public void onClick(DialogInterface dialog, int which) {
@@ -57,7 +58,13 @@ public class DialogAddExercises extends DialogFragment implements DialogInterfac
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View v = inflater.inflate(R.layout.dialog_add_exercise, null, false);
-        ExpandableListView elv = (ExpandableListView) v.findViewById(R.id.elvExercisesToAdd);
+        elv = (ExpandableListView) v.findViewById(R.id.elvExercisesToAdd);
+        elv.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
+            @Override
+            public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
+                return true;
+            }
+        });
         adapter = new ExercisesAdapter(getActivity());
         elv.setAdapter(adapter);
         elv.setChoiceMode(ExpandableListView.CHOICE_MODE_MULTIPLE);
@@ -79,6 +86,7 @@ public class DialogAddExercises extends DialogFragment implements DialogInterfac
         private String realNames[];
         private LayoutInflater inflater;
         private List<ExerciseGroup> data;
+        private boolean blocked = false;
 
         public ExercisesAdapter(Context context) {
             this.realNames = Constants.getPartsOfBodyRealNames(context);
@@ -146,6 +154,7 @@ public class DialogAddExercises extends DialogFragment implements DialogInterfac
             text1.setText(realNames[groupPosition]);
             text1.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), Constants.TYPEFACE_LIGHT));
             text1.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+            elv.expandGroup(groupPosition);
             return v;
         }
 
@@ -158,18 +167,14 @@ public class DialogAddExercises extends DialogFragment implements DialogInterfac
             TextViewLight textView = (TextViewLight)v.findViewById(R.id.label);
             textView.setText(data.get(groupPosition).getExercisesList().get(childPosition).getName());
             final CheckBox checkBox = (CheckBox)v.findViewById(R.id.check);
+            blocked = true;
             checkBox.setChecked(data.get(groupPosition).getExercisesList().get(childPosition).isChecked());
-            if (checkBox.isChecked()){
-                Log.e("log","* exe is checked: " + getChild(groupPosition, childPosition).getId());
-            }
+            blocked = false;
             checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    data.get(groupPosition).getExercisesList().get(childPosition).setChecked(isChecked);
-                    if (isChecked){
-                        Log.e("log","exe checked: " + getChild(groupPosition, childPosition).getId());
-                    } else {
-                        Log.e("log","exe unchecked: " + getChild(groupPosition, childPosition).getId());
+                    if (!blocked){
+                        data.get(groupPosition).getExercisesList().get(childPosition).setChecked(isChecked);
                     }
                 }
             });
