@@ -7,15 +7,13 @@ import android.widget.TextView;
 
 import com.google.analytics.tracking.android.EasyTracker;
 import com.nethergrim.combogymdiary.Constants;
-import com.startapp.android.publish.SDKAdPreferences;
-import com.startapp.android.publish.StartAppSDK;
+
 
 public abstract class AnalyticsActivity extends FragmentActivity {
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        StartAppSDK.init(this, " 108133674", "208084744", new SDKAdPreferences().setAge(22).setGender(SDKAdPreferences.Gender.MALE));
         super.onCreate(savedInstanceState);
     }
 

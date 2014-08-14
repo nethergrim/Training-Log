@@ -39,6 +39,7 @@ public class NewCreatingTrainingDayActivity extends AnalyticsActivity implements
     private DB db;
     private TrainingDayAdapter adapter;
     private boolean btnsHiding = false;
+    private int lastPos = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,27 +67,33 @@ public class NewCreatingTrainingDayActivity extends AnalyticsActivity implements
             public void onScrollStateChanged(AbsListView view, int scrollState) {
                 switch (scrollState){
                     case SCROLL_STATE_FLING:
-                        Log.e("log", "SCROLL_STATE_FLING");
                         break;
                     case SCROLL_STATE_IDLE:
-                        Log.e("log", "SCROLL_STATE_IDLE");
                         break;
                     case SCROLL_STATE_TOUCH_SCROLL:
-                        Log.e("log", "SCROLL_STATE_TOUCH_SCROLL");
-                        hideButtons(200, 3000);
+                        if (list.getCount() - 1 == list.getLastVisiblePosition() && list.getCount() > 0){
+                            hideButtons(200, 3000);
+                        }
                         break;
                 }
             }
 
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                Log.e("log", "onScroll first: " + firstVisibleItem + " count visible: " + visibleItemCount + " total item count: " + totalItemCount);
+                if (firstVisibleItem < lastPos){
+                    fabSuperSet.show();
+                    fabSave.show();
+                    fabAdd.show();
+                } else {
+                    hideButtons(50, 5000);
+                }
+                lastPos = firstVisibleItem;
             }
         });
     }
 
     private void hideButtons(final int offset, final int time){
-        if (!btnsHiding){
+        if (!btnsHiding && list != null && list.getCount() > 4){
             Thread thread = new Thread(new Runnable() {
                 @Override
                 public void run() {
@@ -145,14 +152,19 @@ public class NewCreatingTrainingDayActivity extends AnalyticsActivity implements
         fabAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DialogAddExercises dialogAddExercises = new DialogAddExercises();
-                dialogAddExercises.show(getFragmentManager(), DialogAddExercises.class.getName());
+                if (!fabAdd.isHidden()){
+                    DialogAddExercises dialogAddExercises = new DialogAddExercises();
+                    dialogAddExercises.show(getFragmentManager(), DialogAddExercises.class.getName());
+                }
             }
         });
 
         fabSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!fabSave.isHidden()){
+
+                }
                 // TODO save
             }
         });
@@ -160,6 +172,9 @@ public class NewCreatingTrainingDayActivity extends AnalyticsActivity implements
         fabSuperSet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!fabSuperSet.isHidden()){
+
+                }
                 // TODO create superset
             }
         });
@@ -215,14 +230,28 @@ public class NewCreatingTrainingDayActivity extends AnalyticsActivity implements
 
     @Override
     public void onExerciseAddedCallback(List<Integer> idList) {
-        List<Exercise> newExercises = new ArrayList<Exercise>();
+        final List<Exercise> newExercises = new ArrayList<Exercise>();
         if (idList != null && idList.size() > 0){
             textNoExe.setVisibility(View.GONE);
             for (Integer anIdList : idList) {
                 newExercises.add(db.getExercise(anIdList));
             }
+            Thread thread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        Thread.sleep(1500);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    btnsHiding = false;
+                }
+            });
+            thread.start();
+            btnsHiding = true;
+            adapter.addData(newExercises);
+
         }
-        adapter.addData(newExercises);
     }
 
     @Override

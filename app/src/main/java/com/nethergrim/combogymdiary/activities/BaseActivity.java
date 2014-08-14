@@ -50,7 +50,7 @@ import com.nethergrim.combogymdiary.model.Exercise;
 import com.nethergrim.combogymdiary.service.TrainingService;
 import com.nethergrim.combogymdiary.tools.Backuper;
 import com.nethergrim.combogymdiary.tools.Prefs;
-import com.startapp.android.publish.StartAppAd;
+import com.purplebrain.adbuddiz.sdk.AdBuddiz;
 import com.yandex.metrica.Counter;
 
 import org.json.JSONException;
@@ -100,12 +100,7 @@ public class BaseActivity extends AnalyticsActivity implements
     private MeasurementsFragment measurementsFragment = new MeasurementsFragment();
     private StartTrainingFragment startTrainingFragment = new StartTrainingFragment();
     private TrainingFragment trainingFragment = new TrainingFragment();
-
-
     private FabFragment currentFragment;
-
-
-    private StartAppAd startAppAd = new StartAppAd(this);
     private ServiceConnection mServiceConn;
     private int adCounter = 0;
     private OnDrawerEvent onDrawerEventListener = trainingFragment;
@@ -208,6 +203,8 @@ public class BaseActivity extends AnalyticsActivity implements
         if (savedInstanceState == null) {
             onItemSelected(0);
         }
+        AdBuddiz.setPublisherKey("106f6ef1-f60b-4df9-b2f9-058c2c527776");
+        AdBuddiz.cacheAds(this);
     }
 
     private boolean checkAd() {
@@ -316,8 +313,7 @@ public class BaseActivity extends AnalyticsActivity implements
             adCounter++;
             if (adCounter >= 4) {
                 adCounter = 0;
-                startAppAd.showAd();
-                startAppAd.loadAd();
+                AdBuddiz.showAd(this);
             }
         }
 
@@ -415,7 +411,6 @@ public class BaseActivity extends AnalyticsActivity implements
     @Override
     protected void onResume() {
         super.onResume();
-        startAppAd.onResume();
         Counter.sharedInstance().onResumeActivity(this);
         initStrings();
     }
@@ -423,7 +418,6 @@ public class BaseActivity extends AnalyticsActivity implements
     @Override
     protected void onPause() {
         super.onPause();
-        startAppAd.onPause();
         Counter.sharedInstance().onPauseActivity(this);
     }
 
@@ -501,14 +495,13 @@ public class BaseActivity extends AnalyticsActivity implements
         getFragmentManager().beginTransaction().replace(R.id.content, new StartTrainingFragment()).commit();
 
         db.close();
-        if (!Prefs.getPreferences().getAdsRemoved()) {
-            startAppAd.showAd();
-            startAppAd.loadAd();
-        }
         listButtons[0] = getResources().getString(
                 R.string.startTrainingButtonString);
         adapter.notifyDataSetChanged();
         getActionBar().setSubtitle(null);
+        if (!Prefs.getPreferences().getAdsRemoved()){
+            AdBuddiz.showAd(this);
+        }
     }
 
     @Override
@@ -529,8 +522,6 @@ public class BaseActivity extends AnalyticsActivity implements
     @Override
     public void onBackPressed() {
         if (doubleBackToExitPressedOnce) {
-            if (!Prefs.getPreferences().getAdsRemoved())
-                startAppAd.onBackPressed();
             super.onBackPressed();
             return;
         }
