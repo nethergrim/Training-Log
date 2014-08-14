@@ -39,9 +39,11 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 
 import com.nethergrim.combogymdiary.R;
+import com.nethergrim.combogymdiary.model.Exercise;
 import com.nethergrim.combogymdiary.tools.StableArrayAdapter;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The dynamic listview is an extension of listview that supports cell dragging
@@ -222,7 +224,7 @@ public class DynamicListView extends ListView {
             }
         }
     };
-    private onElementsSwapped onElSwapped;
+    private OnElementSwapped onElementSwapped;
 
     public DynamicListView(Context context) {
         super(context);
@@ -255,8 +257,8 @@ public class DynamicListView extends ListView {
             setOnItemLongClickListener(null);
     }
 
-    public void setFragment(Fragment fragment) {
-        onElSwapped = (onElementsSwapped) fragment;
+    public void setListener(OnElementSwapped fragment) {
+        onElementSwapped = fragment;
     }
 
     /**
@@ -504,8 +506,8 @@ public class DynamicListView extends ListView {
     }
 
     @SuppressWarnings({"rawtypes"})
-    private void swapElements(ArrayList arrayList, int indexOne, int indexTwo) { // TODO
-        onElSwapped.onSwapped(arrayList, indexOne, indexTwo);
+    private void swapElements(ArrayList arrayList, int indexOne, int indexTwo) {
+        onElementSwapped.onSwapped(arrayList, indexOne, indexTwo);
     }
 
     /**
@@ -623,7 +625,7 @@ public class DynamicListView extends ListView {
         mList = exerciseList;
     }
 
-    public interface onElementsSwapped {
+    public interface OnElementSwapped {
         @SuppressWarnings("rawtypes")
         public void onSwapped(ArrayList arrayList, int indexOne, int indexTwo);
     }

@@ -1,11 +1,18 @@
 package com.nethergrim.combogymdiary.activities;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AbsListView;
+import android.widget.BaseAdapter;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -13,9 +20,12 @@ import com.nethergrim.combogymdiary.DB;
 import com.nethergrim.combogymdiary.R;
 import com.nethergrim.combogymdiary.dialogs.DialogAddExercises;
 import com.nethergrim.combogymdiary.dialogs.DialogInfo;
+import com.nethergrim.combogymdiary.model.Exercise;
 import com.nethergrim.combogymdiary.model.ExerciseGroup;
 import com.nethergrim.combogymdiary.tools.Prefs;
+import com.nethergrim.combogymdiary.view.DynamicListView;
 import com.nethergrim.combogymdiary.view.FloatingActionButton;
+import com.nethergrim.combogymdiary.view.TextViewLight;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,28 +33,91 @@ import java.util.List;
 public class NewCreatingTrainingDayActivity extends AnalyticsActivity implements DialogAddExercises.OnExerciseAddCallback {
 
     private ListView list;
-    private TextView textNoExe;
+    private TextViewLight textNoExe;
     private EditText etName;
     private FloatingActionButton fabAdd, fabSave, fabSuperSet;
+    private DB db;
+    private TrainingDayAdapter adapter;
+    private boolean btnsHiding = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_creating_training_day);
+        db = new DB(this);
+        db.open();
         setTitle(R.string.creating_program);
         getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setDisplayShowHomeEnabled(false);
         initButtons();
         initList();
-        textNoExe = (TextView) findViewById(R.id.text_add_exersices);
-        setTypeFaceLight(textNoExe);
         etName = (EditText) findViewById(R.id.etTrainingName);
         setTypeFaceLight(etName);
     }
 
 
     private void initList() {
+        textNoExe = (TextViewLight) findViewById(R.id.text_add_exersices);
         list = (ListView) findViewById(R.id.listView);
+        adapter = new TrainingDayAdapter(this);
+        list.setAdapter(adapter);
+        list.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+                switch (scrollState){
+                    case SCROLL_STATE_FLING:
+                        Log.e("log", "SCROLL_STATE_FLING");
+                        break;
+                    case SCROLL_STATE_IDLE:
+                        Log.e("log", "SCROLL_STATE_IDLE");
+                        break;
+                    case SCROLL_STATE_TOUCH_SCROLL:
+                        Log.e("log", "SCROLL_STATE_TOUCH_SCROLL");
+                        hideButtons(200, 3000);
+                        break;
+                }
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                Log.e("log", "onScroll first: " + firstVisibleItem + " count visible: " + visibleItemCount + " total item count: " + totalItemCount);
+            }
+        });
+    }
+
+    private void hideButtons(final int offset, final int time){
+        if (!btnsHiding){
+            Thread thread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        btnsHiding = true;
+                        Thread.sleep(offset);
+                        NewCreatingTrainingDayActivity.this.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                fabSuperSet.hide();
+                                fabSave.hide();
+                                fabAdd.hide();
+                            }
+                        });
+                        Thread.sleep(time);
+                        NewCreatingTrainingDayActivity.this.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                fabAdd.show();
+                                fabSave.show();
+                                fabSuperSet.show();
+                                btnsHiding = false;
+                            }
+                        });
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+            thread.start();
+        }
     }
 
     private void initButtons() {
@@ -142,10 +215,100 @@ public class NewCreatingTrainingDayActivity extends AnalyticsActivity implements
 
     @Override
     public void onExerciseAddedCallback(List<Integer> idList) {
-        Log.e("log", "added size: " + idList.size());
-        for (Integer anIdList : idList) {
-            Log.e("log", "added id: " + anIdList);
+        List<Exercise> newExercises = new ArrayList<Exercise>();
+        if (idList != null && idList.size() > 0){
+            textNoExe.setVisibility(View.GONE);
+            for (Integer anIdList : idList) {
+                newExercises.add(db.getExercise(anIdList));
+            }
         }
-        // TODO adding exercises to list by there id`s (only unique)
+        adapter.addData(newExercises);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        db.close();
+    }
+
+    private class TrainingDayAdapter extends BaseAdapter{
+
+        private List<Exercise> data = new ArrayList<Exercise>();
+        private List<Boolean> supersetBoolean;
+        private List<Integer> supersetPosition;
+        private LayoutInflater inflater;
+
+        public TrainingDayAdapter(Context context){
+            supersetBoolean = new ArrayList<Boolean>();
+            supersetPosition = new ArrayList<Integer>();
+            this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        }
+
+        public void addData(List<Exercise> newData){
+            this.data.addAll(newData);
+            notifyDataSetChanged();
+        }
+
+        @Override
+        public int getCount() {
+            return data.size();
+        }
+
+        @Override
+        public Exercise getItem(int position) {
+            return data.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return data.get(position).getId();
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            View v = convertView;
+            if (v == null){
+                v = inflater.inflate(R.layout.list_item_creating_programm, parent, false);
+                ViewHolder viewHolder = new ViewHolder();
+                viewHolder.textViewLightExerciseName = (TextViewLight) v.findViewById(R.id.text_exercise);
+                viewHolder.textViewLightSupersetNumber = (TextViewLight) v.findViewById(R.id.text_number_of_superset);
+                viewHolder.btnUp = (ImageButton)v.findViewById(R.id.btnUp);
+                viewHolder.btnDown = (ImageButton)v.findViewById(R.id.btnDown);
+                viewHolder.imageViewSuperset = (ImageView)v.findViewById(R.id.imageSuperset);
+                v.setTag(viewHolder);
+            }
+
+            ViewHolder holder = (ViewHolder) v.getTag();
+
+            holder.textViewLightExerciseName.setText(data.get(position).getName());
+            holder.btnUp.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                     // TODO SWAP UP
+                }
+            });
+            holder.btnDown.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // TODO SWAP DOWN
+                }
+            });
+
+            holder.textViewLightSupersetNumber.setVisibility(View.GONE);
+            holder.imageViewSuperset.setVisibility(View.GONE);
+            // TODO SUPERSET
+
+
+
+            return v;
+        }
+
+        private class ViewHolder {
+            TextViewLight textViewLightExerciseName;
+            ImageButton btnUp;
+            ImageButton btnDown;
+            ImageView imageViewSuperset;
+            TextViewLight textViewLightSupersetNumber;
+        }
     }
 }

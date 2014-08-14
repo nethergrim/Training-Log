@@ -20,11 +20,10 @@
     <ListView
         android:id="@+id/listView"
         android:layout_below="@+id/etTrainingName"
-        android:layout_marginBottom="40dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
-    <TextView
+    <com.nethergrim.combogymdiary.view.TextViewLight
         android:layout_centerInParent="true"
         android:textSize="17sp"
         android:textColor="@color/gray_dark"

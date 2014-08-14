@@ -55,7 +55,6 @@ import com.nethergrim.combogymdiary.dialogs.DialogExitFromTraining;
 import com.nethergrim.combogymdiary.service.TrainingService;
 import com.nethergrim.combogymdiary.tools.StableArrayAdapter;
 import com.nethergrim.combogymdiary.view.DynamicListView;
-import com.nethergrim.combogymdiary.view.DynamicListView.onElementsSwapped;
 import com.nethergrim.combogymdiary.view.FloatingActionButton;
 import com.yandex.metrica.Counter;
 
@@ -69,7 +68,7 @@ import kankan.wheel.widget.WheelView;
 import kankan.wheel.widget.adapters.AbstractWheelTextAdapter;
 
 public class TrainingFragment extends FabFragment implements
-        OnCheckedChangeListener, OnClickListener, onElementsSwapped, BaseActivity.OnDrawerEvent {
+        OnCheckedChangeListener, OnClickListener, DynamicListView.OnElementSwapped, BaseActivity.OnDrawerEvent {
 
     public final static String TRAINING_AT_PROGRESS = "training_at_progress";
     public final static String TRA_ID = "tra_id";
@@ -353,7 +352,7 @@ public class TrainingFragment extends FabFragment implements
         tvInfoText = (TextView) v.findViewById(R.id.infoText);
         listView = (DynamicListView) v.findViewById(R.id.listViewExerciseList);
         listView.setList(alExersicesList);
-        listView.setFragment(this);
+        listView.setListener(this);
         adapter = new StableArrayAdapter(getActivity(), R.layout.my_training_list_item, alExersicesList);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
