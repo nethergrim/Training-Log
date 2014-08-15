@@ -127,7 +127,10 @@ public class TrainingFragment extends Fragment implements
         @Override
         public boolean onCreateActionMode(ActionMode mode, Menu menu) {
             MenuInflater inflater = mode.getMenuInflater();
-            inflater.inflate(R.menu.cab_training, menu);;
+            inflater.inflate(R.menu.cab_training, menu);
+            fabSave.setVisibility(View.GONE);
+            fabBack.setVisibility(View.GONE);
+            fabForward.setVisibility(View.GONE);
             return true;
         }
 
@@ -201,6 +204,7 @@ public class TrainingFragment extends Fragment implements
                 listView.setItemChecked(0, true);
                 llBottom.setVisibility(View.VISIBLE);
             }
+            fabSave.setVisibility(View.VISIBLE);
             initSetButtons();
         }
     };
@@ -274,10 +278,8 @@ public class TrainingFragment extends Fragment implements
         View v = inflater.inflate(R.layout.training_at_progress_new_wheel_new_list, null);
         fabBack = (FAB) v.findViewById(R.id.fabBack);
         fabBack.setOnClickListener(this);
-
         fabSave = (FAB) v.findViewById(R.id.fabSaveSet);
         fabSave.setOnClickListener(this);
-
         fabForward = (FAB) v.findViewById(R.id.fabForward);
         fabForward.setOnClickListener(this);;
         llBottom = (LinearLayout) v.findViewById(R.id.LLBottom);

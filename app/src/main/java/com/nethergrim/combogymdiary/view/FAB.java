@@ -1,6 +1,10 @@
 package com.nethergrim.combogymdiary.view;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.LayerDrawable;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 
@@ -32,5 +36,42 @@ public class FAB extends com.shamanland.fab.FloatingActionButton {
             initBackground();
         }
         return super.onTouchEvent(event);
+    }
+
+    @Override
+    public int getSize() {
+        return SIZE_NORMAL;
+    }
+
+    @Override
+    public void initBackground() {
+        final int backgroundId;
+
+        backgroundId = R.drawable.fab_background;
+
+
+        Drawable background = getResources().getDrawable(backgroundId);
+
+        if (background instanceof LayerDrawable) {
+            LayerDrawable layers = (LayerDrawable) background;
+            if (layers.getNumberOfLayers() == 2) {
+                Drawable shadow = layers.getDrawable(0);
+                Drawable circle = layers.getDrawable(1);
+
+                if (shadow instanceof GradientDrawable) {
+                    ((GradientDrawable) shadow.mutate()).setGradientRadius(getShadowRadius(shadow, circle));
+                }
+
+                if (circle instanceof GradientDrawable) {
+                    ((GradientDrawable) circle.mutate()).setColor(getColor());
+                }
+            }
+        }
+
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
+            setBackgroundDrawable(background);
+        } else {
+            setBackground(background);
+        }
     }
 }
