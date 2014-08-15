@@ -46,12 +46,8 @@ public class FAB extends com.shamanland.fab.FloatingActionButton {
     @Override
     public void initBackground() {
         final int backgroundId;
-
         backgroundId = R.drawable.fab_background;
-
-
         Drawable background = getResources().getDrawable(backgroundId);
-
         if (background instanceof LayerDrawable) {
             LayerDrawable layers = (LayerDrawable) background;
             if (layers.getNumberOfLayers() == 2) {

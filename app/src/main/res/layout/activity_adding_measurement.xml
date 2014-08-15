@@ -4,14 +4,7 @@
     android:layout_height="match_parent"
     tools:context=".AddingMeasurementActivity" >
 
-    <com.nethergrim.combogymdiary.view.FAB
-        android:id="@+id/fabSaveMeasurements"
-        android:layout_width="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="16dp"
-        android:layout_centerHorizontal="true"
-        android:src="@drawable/ic_action_save"
-        android:layout_height="wrap_content" />
+
 
     <ScrollView
         android:id="@+id/scrollView1"
@@ -242,5 +235,14 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/scrollView1" />
+
+    <com.nethergrim.combogymdiary.view.FAB
+        android:id="@+id/fabSaveMeasurements"
+        android:layout_width="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="16dp"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/ic_action_save"
+        android:layout_height="wrap_content" />
 
 </RelativeLayout>

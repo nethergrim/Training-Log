@@ -92,13 +92,13 @@ public class NewCreatingTrainingDayActivity extends AnalyticsActivity implements
         fabSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                // TODO save
             }
         });
         fabSs.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                // TODO add supersets
             }
         });
     }
@@ -208,6 +208,7 @@ public class NewCreatingTrainingDayActivity extends AnalyticsActivity implements
             ViewHolder holder = (ViewHolder) v.getTag();
 
             holder.textViewLightExerciseName.setText(data.get(position).getName());
+
             holder.btnUp.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

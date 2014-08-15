@@ -6,6 +6,8 @@
 
     <ImageButton
         android:id="@+id/btnDown"
+        android:src="@drawable/ic_down"
+        android:background="@color/transparent"
         android:layout_alignParentLeft="true"
         android:layout_margin="4dp"
         android:layout_centerVertical="true"
@@ -14,6 +16,8 @@
 
     <ImageButton
         android:id="@+id/btnUp"
+        android:background="@color/transparent"
+        android:src="@drawable/ic_up"
         android:layout_toRightOf="@+id/btnDown"
         android:layout_margin="4dp"
         android:layout_centerVertical="true"

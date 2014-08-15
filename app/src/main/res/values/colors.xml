@@ -2,6 +2,7 @@
 
 <resources>
 
+    <color name="transparent">#00000000</color>
     <color name="black_overlay">#66000000</color>
     <color name="full_alpha">#0033B5E5</color>
     <color name="holo_green_light">#99CC00</color>
