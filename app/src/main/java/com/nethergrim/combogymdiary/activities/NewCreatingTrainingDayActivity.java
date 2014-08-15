@@ -20,6 +20,7 @@ import com.nethergrim.combogymdiary.R;
 import com.nethergrim.combogymdiary.dialogs.DialogAddExercises;
 import com.nethergrim.combogymdiary.dialogs.DialogInfo;
 import com.nethergrim.combogymdiary.model.Exercise;
+import com.nethergrim.combogymdiary.model.ExerciseTrainingObject;
 import com.nethergrim.combogymdiary.tools.Prefs;
 import com.nethergrim.combogymdiary.view.FAB;
 import com.nethergrim.combogymdiary.view.TextViewLight;
@@ -118,7 +119,40 @@ public class NewCreatingTrainingDayActivity extends AnalyticsActivity implements
             return;
         } else {
             List<Row> rows = adapter.getRows();
-            // TODO save
+            int trainingId = (int) db.addRecTrainings(etName.getText().toString());
+            int firstSupersetPosition = 0;
+            boolean lastWasSuperset = false;
+
+            for (int i = 0; i < rows.size(); i++){
+                ExerciseTrainingObject exerciseTrainingObject = new ExerciseTrainingObject();
+                Row row = rows.get(i);
+
+                exerciseTrainingObject.setTrainingProgramId(trainingId);
+                exerciseTrainingObject.setExerciseId((int) row.getExercise().getId());
+                exerciseTrainingObject.setPositionAtTraining(i);
+
+                if (row.isInSuperset()){
+                    exerciseTrainingObject.setSuperset(true);
+                    exerciseTrainingObject.setPositionAtSuperset(row.getSupersetPosition());
+                } else {
+                    exerciseTrainingObject.setSuperset(false);
+                    exerciseTrainingObject.setPositionAtSuperset(0);
+                }
+
+                if (row.isInSuperset() && !lastWasSuperset){
+                    exerciseTrainingObject.setSupersetFirstItemId(-1);
+                    firstSupersetPosition = (int) db.addExerciseTrainingObject(exerciseTrainingObject);
+                } else if (row.isInSuperset() && lastWasSuperset) {
+                    exerciseTrainingObject.setSupersetFirstItemId(firstSupersetPosition);
+                } else {
+                    exerciseTrainingObject.setSupersetFirstItemId(0);
+                }
+
+                lastWasSuperset = row.isInSuperset();
+            }
+            Toast.makeText(this, R.string.saved, Toast.LENGTH_SHORT).show();
+            finish();
+
         }
     }
 

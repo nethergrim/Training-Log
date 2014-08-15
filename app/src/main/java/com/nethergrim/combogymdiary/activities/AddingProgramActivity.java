@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.nethergrim.combogymdiary.DB;
 import com.nethergrim.combogymdiary.R;
 
+@Deprecated
 public class AddingProgramActivity extends AnalyticsActivity implements
         LoaderCallbacks<Cursor>, OnClickListener {
 

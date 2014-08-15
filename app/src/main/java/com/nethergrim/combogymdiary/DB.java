@@ -111,7 +111,7 @@ public class DB {
         mCtx = ctx;
     }
 
-    public void addExerciseTrainingObject(ExerciseTrainingObject object){
+    public long addExerciseTrainingObject(ExerciseTrainingObject object){
         ContentValues cv = new ContentValues();
         cv.put(TRAINING_PROGRAM_ID, object.getTrainingProgramId());
         cv.put(EXERCISE_ID, object.getExerciseId());
@@ -119,7 +119,7 @@ public class DB {
         cv.put(SUPERSET_EXISTS, object.isSuperset());
         cv.put(SUPERSET_POSITION, object.getPositionAtSuperset());
         cv.put(SUPERSET_FIRST_ID, object.getSupersetFirstItemId());
-        mDB.insert(DB_TABLE_TRAINING_EXERCISE, null, cv);
+        return mDB.insert(DB_TABLE_TRAINING_EXERCISE, null, cv);
     }
 
     public String convertDateToString(Date date) {
