@@ -102,7 +102,7 @@ public class AddingProgramActivity extends AnalyticsActivity implements
                     }
                 } while (c.moveToNext() && j < arrIDs.length);
 
-                db.addRecTrainings(prgName, db.convertArrayToString(exersices));
+                db.addRecTrainings(prgName); // FIXME
                 finish();
             } else {
                 Toast.makeText(this, R.string.input_data, Toast.LENGTH_SHORT)

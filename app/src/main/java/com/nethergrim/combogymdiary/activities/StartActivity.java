@@ -47,7 +47,6 @@ public class StartActivity extends AnalyticsActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        getActionBar().hide();
     }
 
     @Override
@@ -57,34 +56,35 @@ public class StartActivity extends AnalyticsActivity {
             Prefs.getPreferences().setDbUpdatedToV5(true);
             InitTask task = new InitTask();
             task.execute();
-        }
-        if (!Prefs.getPreferences().getDbUpdatedToV5()){
+        } else if (!Prefs.getPreferences().getDbUpdatedToV5()){
             UpdateTask task = new UpdateTask();
             task.execute();
+        } else goNext();
+    }
+
+    private void initTableForFirstTime(String partOfBody, String trainingName, String[] exerciseList){
+        int trainingId = (int) db.addRecTrainings(trainingName);
+        for (int i = 0; i < exerciseList.length; i++) {
+            int exeId = (int) db.addExercise(exerciseList[i], "60", partOfBody);
+            ExerciseTrainingObject exerciseTrainingObject = new ExerciseTrainingObject();
+            exerciseTrainingObject.setTrainingProgramId(trainingId);
+            exerciseTrainingObject.setExerciseId(exeId);
+            exerciseTrainingObject.setSuperset(false);
+            exerciseTrainingObject.setSupersetFirstItemId(0);
+            exerciseTrainingObject.setPositionAtTraining(i);
+            exerciseTrainingObject.setPositionAtSuperset(0);
+            db.addExerciseTrainingObject(exerciseTrainingObject);
         }
     }
 
     private void initTableForFirstTime() {
-        db.addRecTrainings(getString(R.string.traLegs), db.convertArrayToString(exeLegs)); // FIXME
-        db.addRecTrainings(getString(R.string.traChest), db.convertArrayToString(exeChest));
-        db.addRecTrainings(getString(R.string.traBack), db.convertArrayToString(exeBack));
-        db.addRecTrainings(getString(R.string.traShoulders), db.convertArrayToString(exeShoulders));
-        db.addRecTrainings(getString(R.string.traBiceps), db.convertArrayToString(exeBiceps));
-        db.addRecTrainings(getString(R.string.traTriceps), db.convertArrayToString(exeTriceps));
-        db.addRecTrainings(getString(R.string.traAbs), db.convertArrayToString(exeAbs));
-
-        for (String exeLeg : exeLegs) db.addExercise(exeLeg, "90", Constants.PART_OF_BODY_LEGS);
-        for (String anExeChest : exeChest)
-            db.addExercise(anExeChest, "60", Constants.PART_OF_BODY_CHEST);
-        for (String exeBicep : exeBiceps)
-            db.addExercise(exeBicep, "60", Constants.PART_OF_BODY_BICEPS);
-        for (String exeTricep : exeTriceps)
-            db.addExercise(exeTricep, "60", Constants.PART_OF_BODY_TRICEPS);
-        for (String anExeBack : exeBack)
-            db.addExercise(anExeBack, "60", Constants.PART_OF_BODY_BACK);
-        for (String exeShoulder : exeShoulders)
-            db.addExercise(exeShoulder, "60", Constants.PART_OF_BODY_SHOULDERS);
-        for (String exeAb : exeAbs) db.addExercise(exeAb, "60", Constants.PART_OF_BODY_ABS);
+        initTableForFirstTime(Constants.PART_OF_BODY_LEGS, getString(R.string.traLegs), exeLegs);
+        initTableForFirstTime(Constants.PART_OF_BODY_CHEST, getString(R.string.traChest), exeChest);
+        initTableForFirstTime(Constants.PART_OF_BODY_BICEPS, getString(R.string.traBiceps), exeBiceps);
+        initTableForFirstTime(Constants.PART_OF_BODY_TRICEPS, getString(R.string.traTriceps), exeTriceps);
+        initTableForFirstTime(Constants.PART_OF_BODY_BACK, getString(R.string.traBack), exeBack);
+        initTableForFirstTime(Constants.PART_OF_BODY_SHOULDERS, getString(R.string.traShoulders), exeShoulders);
+        initTableForFirstTime(Constants.PART_OF_BODY_ABS, getString(R.string.traAbs), exeAbs);
     }
 
     private void updateTableForVersion5() {
@@ -158,16 +158,20 @@ public class StartActivity extends AnalyticsActivity {
         c = db.getDataTrainings(null,null,null,null,null,null);
         if (c.moveToFirst()){
             do {
-                ExerciseTrainingObject exerciseTrainingObject = new ExerciseTrainingObject();
-
+                String[] exercises = db.convertStringToArray(c.getString(2));
+                for (int i = 0; i < exercises.length; i++){
+                    ExerciseTrainingObject exerciseTrainingObject = new ExerciseTrainingObject();
+                    exerciseTrainingObject.setTrainingProgramId(c.getInt(0));
+                    exerciseTrainingObject.setExerciseId(db.getExerciseId(exercises[i]));
+                    exerciseTrainingObject.setPositionAtSuperset(0);
+                    exerciseTrainingObject.setPositionAtTraining(i);
+                    exerciseTrainingObject.setSuperset(false);
+                    exerciseTrainingObject.setSupersetFirstItemId(0);
+                    db.addExerciseTrainingObject(exerciseTrainingObject);
+                }
             } while (c.moveToNext());
         }
         c.close();
-    }
-
-    protected void onDestroy() {
-        super.onDestroy();
-        db.close();
     }
 
     class InitTask extends AsyncTask<Void, Void, Void> {
@@ -179,7 +183,6 @@ public class StartActivity extends AnalyticsActivity {
 
         @Override
         protected Void doInBackground(Void... params) {
-
             try {
                 initialize();
                 initTableForFirstTime();

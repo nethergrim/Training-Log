@@ -479,12 +479,12 @@ public class DB {
                 groupBy, having, orderedBy);
     }
 
-    public void addExercise(String exeName, String timer, String partOfBody) {
+    public long addExercise(String exeName, String timer, String partOfBody) {
         ContentValues cv = new ContentValues();
         cv.put(EXE_NAME, exeName);
         cv.put(TIMER_VALUE, timer);
         cv.put(PART_OF_BODY, partOfBody);
-        mDB.insert(DB_EXE_TABLE, null, cv);
+        return mDB.insert(DB_EXE_TABLE, null, cv);
     }
 
     public List<Exercise> getExercises() {
@@ -528,6 +528,15 @@ public class DB {
         return null;
     }
 
+    public int getExerciseId(String exerciseName){
+        String[] args = {exerciseName};
+        Cursor c = mDB.query(DB_EXE_TABLE, null, EXE_NAME + "=?", args, null, null, null);
+        if (c.moveToFirst()){
+            return c.getInt(0);
+        }
+        return 0;
+    }
+
     public String getTrainingName(int _id) {
         String[] args = {_id + ""};
         Cursor c = mDB.query(DB_TRAININGS_TABLE, null, COLUMN_ID + "=?", args, null, null, null);
@@ -537,12 +546,10 @@ public class DB {
             return "";
     }
 
-    public void addRecTrainings(String traName, String exeName) {
+    public long addRecTrainings(String traName) {
         ContentValues cv = new ContentValues();
-        cv.put(EXE_NAME, exeName);
         cv.put(TRA_NAME, traName);
-        long id = mDB.insert(DB_TRAININGS_TABLE, null, cv);
-        Log.d(LOG_TAG, "added record to trainigns: id == " + id);
+        return mDB.insert(DB_TRAININGS_TABLE, null, cv);
     }
 
     public void addRecMeasure(String date, String part_of_body, String value) {
