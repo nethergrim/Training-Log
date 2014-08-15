@@ -41,7 +41,6 @@ public class NewCreatingTrainingDayActivity extends AnalyticsActivity implements
     private View.OnTouchListener listener2;
     private View.OnTouchListener listener3;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,7 +55,6 @@ public class NewCreatingTrainingDayActivity extends AnalyticsActivity implements
         etName = (EditText) findViewById(R.id.etTrainingName);
         setTypeFaceLight(etName);
     }
-
 
     private void initList() {
         textNoExe = (TextViewLight) findViewById(R.id.text_add_exersices);
@@ -144,15 +142,16 @@ public class NewCreatingTrainingDayActivity extends AnalyticsActivity implements
                     firstSupersetPosition = (int) db.addExerciseTrainingObject(exerciseTrainingObject);
                 } else if (row.isInSuperset() && lastWasSuperset) {
                     exerciseTrainingObject.setSupersetFirstItemId(firstSupersetPosition);
+                    db.addExerciseTrainingObject(exerciseTrainingObject);
                 } else {
                     exerciseTrainingObject.setSupersetFirstItemId(0);
+                    db.addExerciseTrainingObject(exerciseTrainingObject);
                 }
 
                 lastWasSuperset = row.isInSuperset();
             }
             Toast.makeText(this, R.string.saved, Toast.LENGTH_SHORT).show();
             finish();
-
         }
     }
 

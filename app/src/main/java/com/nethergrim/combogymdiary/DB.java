@@ -186,12 +186,15 @@ public class DB {
     }
 
     public void close() {
-        if (mDBHelper != null)
-            mDBHelper.close();
+        try {
+            if (mDBHelper != null)
+                mDBHelper.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public Cursor getAllData_Exe() {
-
         return mDB.query(DB_EXE_TABLE, null, null, null, null, null, null);
     }
 
