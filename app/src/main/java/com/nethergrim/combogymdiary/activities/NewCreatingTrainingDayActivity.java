@@ -8,6 +8,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -23,6 +24,7 @@ import com.nethergrim.combogymdiary.view.FAB;
 import com.nethergrim.combogymdiary.view.TextViewLight;
 import com.shamanland.fab.ShowHideOnScroll;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,9 +35,6 @@ public class NewCreatingTrainingDayActivity extends AnalyticsActivity implements
     private EditText etName;
     private DB db;
     private TrainingDayAdapter adapter;
-    private FAB fabAdd;
-    private FAB fabSs;
-    private FAB fabSave;
     private View.OnTouchListener listener1;
     private View.OnTouchListener listener2;
     private View.OnTouchListener listener3;
@@ -74,9 +73,9 @@ public class NewCreatingTrainingDayActivity extends AnalyticsActivity implements
     }
 
     private void initButtons() {
-        fabSave = (FAB)findViewById(R.id.fabSave);
-        fabSs = (FAB)findViewById(R.id.fabSs);
-        fabAdd = (FAB)findViewById(R.id.btnAdd);
+        FAB fabSave = (FAB) findViewById(R.id.fabSave);
+        FAB fabSs = (FAB) findViewById(R.id.fabSs);
+        FAB fabAdd = (FAB) findViewById(R.id.btnAdd);
 
         listener1 = new ShowHideOnScroll(fabAdd);
         listener2 = new ShowHideOnScroll(fabSave);
@@ -160,65 +159,62 @@ public class NewCreatingTrainingDayActivity extends AnalyticsActivity implements
 
     private class TrainingDayAdapter extends BaseAdapter{
 
-        private List<Exercise> data = new ArrayList<Exercise>();
-        private List<Boolean> supersetBoolean;
-        private List<Integer> supersetPosition;
+        private ArrayList<Row> rows = new ArrayList<Row>();
         private LayoutInflater inflater;
 
         public TrainingDayAdapter(Context context){
-            supersetBoolean = new ArrayList<Boolean>();
-            supersetPosition = new ArrayList<Integer>();
             this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         }
 
+        @Override
+        public void notifyDataSetChanged() {
+            super.notifyDataSetChanged();
+            if (getCount() < 1){
+                NewCreatingTrainingDayActivity.this.textNoExe.setVisibility(View.VISIBLE);
+            }
+        }
+
         public void addData(List<Exercise> newData){
-            this.data.addAll(newData);
+            for (Exercise aNewData : newData) {
+                rows.add(new Row(aNewData));
+            }
             notifyDataSetChanged();
         }
 
         @Override
         public int getCount() {
-            return data.size();
+            return rows.size();
         }
 
         @Override
-        public Exercise getItem(int position) {
-            return data.get(position);
+        public Row getItem(int position) {
+            return rows.get(position);
         }
 
         @Override
         public long getItemId(int position) {
-            return data.get(position).getId();
+            return rows.get(position).getExercise().getId();
         }
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
+        public View getView(final int position, View convertView, ViewGroup parent) {
             View v = convertView;
             if (v == null){
                 v = inflater.inflate(R.layout.list_item_creating_programm, parent, false);
                 ViewHolder viewHolder = new ViewHolder();
                 viewHolder.textViewLightExerciseName = (TextViewLight) v.findViewById(R.id.text_exercise);
                 viewHolder.textViewLightSupersetNumber = (TextViewLight) v.findViewById(R.id.text_number_of_superset);
-                viewHolder.btnUp = (ImageButton)v.findViewById(R.id.btnUp);
-                viewHolder.btnDown = (ImageButton)v.findViewById(R.id.btnDown);
                 viewHolder.imageViewSuperset = (ImageView)v.findViewById(R.id.imageSuperset);
+                viewHolder.btnDelete = (Button)v.findViewById(R.id.ib_delete);
                 v.setTag(viewHolder);
             }
-
             ViewHolder holder = (ViewHolder) v.getTag();
-
-            holder.textViewLightExerciseName.setText(data.get(position).getName());
-
-            holder.btnUp.setOnClickListener(new View.OnClickListener() {
+            holder.textViewLightExerciseName.setText(rows.get(position).getExercise().getName());
+            holder.btnDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                     // TODO SWAP UP
-                }
-            });
-            holder.btnDown.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    // TODO SWAP DOWN
+                    rows.remove(position);
+                    notifyDataSetChanged();
                 }
             });
 
@@ -233,10 +229,46 @@ public class NewCreatingTrainingDayActivity extends AnalyticsActivity implements
 
         private class ViewHolder {
             TextViewLight textViewLightExerciseName;
-            ImageButton btnUp;
-            ImageButton btnDown;
             ImageView imageViewSuperset;
+            Button btnDelete;
             TextViewLight textViewLightSupersetNumber;
+        }
+    }
+
+    private class Row implements Serializable {
+
+        private Exercise exercise;
+        private boolean isInSuperset;
+        private int supersetPosition;
+
+        public Row (Exercise exercise){
+            this.exercise = exercise;
+            isInSuperset = false;
+            supersetPosition = -1;
+        }
+
+        public Exercise getExercise() {
+            return exercise;
+        }
+
+        public void setExercise(Exercise exercise) {
+            this.exercise = exercise;
+        }
+
+        public boolean isInSuperset() {
+            return isInSuperset;
+        }
+
+        public void setInSuperset(boolean isInSuperset) {
+            this.isInSuperset = isInSuperset;
+        }
+
+        public int getSupersetPosition() {
+            return supersetPosition;
+        }
+
+        public void setSupersetPosition(int supersetPosition) {
+            this.supersetPosition = supersetPosition;
         }
     }
 }
