@@ -9,6 +9,8 @@ public class Prefs {
     private static final String KEY_ADS_REMOVED = "ads_removed";
     private static final String KEY_SUPERSET_INFO_SHOWED = "superset_info_showed";
     public final static String KEY_TRAINING_AT_PROGRESS = "training_at_progress";
+    public final static String KEY_DATABASE_FILLED = "database_filled";
+    private static final String KEY_DATABASE_UPDATED_TOV5 = "db_updated_to5";
 
     private static SharedPreferences prefs;
     private static Prefs pref;
@@ -50,6 +52,22 @@ public class Prefs {
 
     public boolean getTrainingAtProgress() {
         return prefs.getBoolean(KEY_TRAINING_AT_PROGRESS, false);
+    }
+
+    public void setDatabaseFilled(boolean filled){
+        prefs.edit().putBoolean(KEY_DATABASE_FILLED, filled).apply();
+    }
+
+    public boolean getDatabaseFilled(){
+        return prefs.getBoolean(KEY_DATABASE_FILLED, false);
+    }
+
+    public boolean getDbUpdatedToV5(){
+        return prefs.getBoolean(KEY_DATABASE_UPDATED_TOV5, false);
+    }
+
+    public void setDbUpdatedToV5(boolean updatedToV5){
+        prefs.edit().putBoolean(KEY_DATABASE_UPDATED_TOV5, updatedToV5).apply();
     }
 
 

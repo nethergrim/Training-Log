@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string name="add_exercises_to_workout">Add exercise!</string>
+    <string name="enter_training_name">Enter the name of the workout!</string>
     <string name="fav_exercise">Favorite exercise</string>
     <string name="choose_muscle_part">Choose muscle group</string>
     <string name="superset_info">In order to combine several exercises in <b>superset</b> click (Ss) and select those exercises that you want.</string>

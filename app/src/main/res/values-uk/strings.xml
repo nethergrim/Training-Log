@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="add_exercises_to_workout">Додайте вправи!</string>
+    <string name="enter_training_name">Введіть назву тренування!</string>
     <string name="fav_exercise">Улюблена вправа</string>
     <string name="choose_muscle_part">Виберіть м\'язову групу.</string>
     <string name="superset_info">Для того щоб об\'єднати кілька вправ в <b>суперсет</b> натисніть кнопку (Ss) і виберіть ті вправи які хочете.</string>

@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:tools="http://schemas.android.com/tools">
-
-
-
+<resources >
+    <string name="add_exercises_to_workout">Добавьте упражнения!</string>
+    <string name="enter_training_name">Введите название тренировки!</string>
     <string name="fav_exercise">Любимое упражнение</string>
     <string name="choose_muscle_part">Выберите мышечную группу</string>
     <string name="superset_info">Для того чтобы объединить несколько упражнений в <b>суперсет</b> нажмите кнопку (Ss), и выберите те упражнения которые хотите.</string>

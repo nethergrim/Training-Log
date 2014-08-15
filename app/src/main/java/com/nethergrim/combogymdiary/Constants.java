@@ -21,6 +21,7 @@ public class Constants {
     public final static String TYPE_OF_DIALOG = "type_of_dialog";
 
 
+
     public static String[] getPartsOfBodyRealNames(Context context) {
         String[] array = context.getResources().getStringArray(R.array.MuscleGroupsArray);
         String[] result = new String[array.length + 1];

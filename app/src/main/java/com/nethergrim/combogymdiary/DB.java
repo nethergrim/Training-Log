@@ -13,6 +13,7 @@ import android.util.Log;
 import com.nethergrim.combogymdiary.activities.BaseActivity;
 import com.nethergrim.combogymdiary.model.Exercise;
 import com.nethergrim.combogymdiary.model.ExerciseGroup;
+import com.nethergrim.combogymdiary.model.ExerciseTrainingObject;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -31,56 +32,94 @@ public class DB {
     public static final String TIMER_VALUE = "timer_value";
     public static final String COMMENT_TO_TRAINING = "comment_to_training";
     public static final String DB_MAIN_TABLE = "main_tab";
+    public static final String DB_TABLE_TRAINING_EXERCISE = "training_exercise";
     public static final String DATE = "Date";
     public static final String WEIGHT = "Weight";
     public static final String REPS = "Reps";
     public static final String SET = "SetsN";
-    public static final String PART_OF_BODY = "part_of_body";
-    private static final String DB_MAIN_CREATE = "create table "
-            + DB_MAIN_TABLE + "(" + COLUMN_ID
-            + " integer primary key autoincrement, " + TRA_NAME + " text, "
-            + EXE_NAME + " text, " + DATE + " text, " + WEIGHT + " integer, "
-            + REPS + " integer, " + SET + " integer" + ");";
     public static final String TOTAL_TIME_OF_TRAINING = "time_of_training";
     public static final String DB_COMMENT_TABLE = "comment_table";
+    public static final String PART_OF_BODY = "part_of_body";
     public static final String TOTAL_WEIGHT_OF_TRAINING = "total_weight";
-
-    private static final String DB_COMMENT_CREATE = "create table "
-            + DB_COMMENT_TABLE + "(" + COLUMN_ID
-            + " integer primary key autoincrement, " + DATE + " text, "
-            + COMMENT_TO_TRAINING + " text, " + TOTAL_TIME_OF_TRAINING
-            + " text, " + TOTAL_WEIGHT_OF_TRAINING + " integer" + ");";
     public static final String DB_MEASURE_TABLE = "measurements_tab";
     public static final String PART_OF_BODY_FOR_MEASURING = "part_of_body";
     public static final String MEASURE_VALUE = "measure_value";
-    private static final String DB_MEASURE_CREATE = "create table " + DB_MEASURE_TABLE + "(" +
-            COLUMN_ID + " integer primary key autoincrement, " +
-            DATE + " text, " +
-            PART_OF_BODY_FOR_MEASURING + " text, " +
-            MEASURE_VALUE + " text" + ");";
     public static final String DB_TRAININGS_TABLE = "trainings_tab";
-    private static final String DB_TRAININGS_CREATE = "create table "
-            + DB_TRAININGS_TABLE + "(" + COLUMN_ID
-            + " integer primary key autoincrement, " + TRA_NAME + " text, "
-            + EXE_NAME + " text" + ");";
     public static final String strSeparator = "__,__";
     public static final String SIMPLE_DATE_FORMAT = "dd.MM.yyyy";
+    public static final String SUPERSET_EXISTS = "superset";
+    public static final String SUPERSET_POSITION = "superset_position";
+    public static final String SUPERSET_FIRST_ID = "superset_first_id";
+    public static final String POSITION_AT_TRAINING = "position_at_training";
+    public static final String EXERCISE_ID = "training_exercise_id";
+    public static final String TRAINING_PROGRAM_ID = "training_program_id";
     private static final int DB_VERSION = 5;
     private static final String DB_EXE_TABLE = "exe_tab";
-
-    private static final String DB_EXE_CREATE = "create table " + DB_EXE_TABLE + "("
-            + COLUMN_ID + " integer primary key autoincrement, "
-            + TRA_NAME + " text, "   // unUsed!!
-            + EXE_NAME + " text, "
-            + TIMER_VALUE + " text, "
-            + PART_OF_BODY + " text"
-            + ");";
     private Context mCtx;
     private DBHelper mDBHelper;
     private SQLiteDatabase mDB;
 
+
+    private static final String DB_MAIN_CREATE = "create table " + DB_MAIN_TABLE + "("
+            + COLUMN_ID + " integer primary key autoincrement, "
+            + TRA_NAME + " text, "
+            + EXE_NAME + " text, "
+            + DATE + " text, "
+            + WEIGHT + " integer, "
+            + REPS + " integer, "
+            + SET + " integer" + ");";
+
+    private static final String DB_COMMENT_CREATE = "create table "
+            + DB_COMMENT_TABLE + "("
+            + COLUMN_ID + " integer primary key autoincrement, "
+            + DATE + " text, "
+            + COMMENT_TO_TRAINING + " text, "
+            + TOTAL_TIME_OF_TRAINING + " text, "
+            + TOTAL_WEIGHT_OF_TRAINING + " integer" + ");";
+
+    private static final String DB_MEASURE_CREATE = "create table " +   DB_MEASURE_TABLE + "(" +
+            COLUMN_ID + " integer primary key autoincrement, " +
+            DATE + " text, " +
+            PART_OF_BODY_FOR_MEASURING + " text, " +
+            MEASURE_VALUE + " text" + ");";
+
+    private static final String DB_TRAININGS_CREATE = "create table "  + DB_TRAININGS_TABLE + "("
+            + COLUMN_ID + " integer primary key autoincrement, "
+            + TRA_NAME + " text, "
+            + EXE_NAME + " text"             // UNUSED, DEPRECATED!
+            + ");";
+
+    private static final String DB_TRAINING_EXERCISE_CREATE = "create table "  + DB_TABLE_TRAINING_EXERCISE + "("
+            + COLUMN_ID + " integer primary key autoincrement, "
+            + TRAINING_PROGRAM_ID + " integer, "
+            + EXERCISE_ID + " integer, "
+            + POSITION_AT_TRAINING + " integer, "
+            + SUPERSET_EXISTS + " boolean, "
+            + SUPERSET_POSITION + " integer, "
+            + SUPERSET_FIRST_ID + " integer" + ");";
+
+    private static final String DB_EXE_CREATE = "create table " + DB_EXE_TABLE + "("
+            + COLUMN_ID + " integer primary key autoincrement, "
+            + TRA_NAME + " text, "           // UNUSED, DEPRECATED!
+            + EXE_NAME + " text, "
+            + TIMER_VALUE + " text, "
+            + PART_OF_BODY + " text"
+            + ");";
+
+
     public DB(Context ctx) {
         mCtx = ctx;
+    }
+
+    public void addExerciseTrainingObject(ExerciseTrainingObject object){
+        ContentValues cv = new ContentValues();
+        cv.put(TRAINING_PROGRAM_ID, object.getTrainingProgramId());
+        cv.put(EXERCISE_ID, object.getExerciseId());
+        cv.put(POSITION_AT_TRAINING, object.getPositionAtTraining());
+        cv.put(SUPERSET_EXISTS, object.isSuperset());
+        cv.put(SUPERSET_POSITION, object.getPositionAtSuperset());
+        cv.put(SUPERSET_FIRST_ID, object.getSupersetFirstItemId());
+        mDB.insert(DB_TABLE_TRAINING_EXERCISE, null, cv);
     }
 
     public String convertDateToString(Date date) {
@@ -528,8 +567,7 @@ public class DB {
         mDB.insert(DB_MAIN_TABLE, null, cv);
     }
 
-    public void addRecComment(String date, String comment, int totalWeight,
-                              String time) {
+    public void addRecComment(String date, String comment, int totalWeight, String time) {
         ContentValues cv = new ContentValues();
         cv.put(DATE, date);
         cv.put(COMMENT_TO_TRAINING, comment);
@@ -597,12 +635,6 @@ public class DB {
         mDB.delete(DB_MAIN_TABLE, COLUMN_ID + " = " + id, null);
     }
 
-    public void addPartOfBodyToExercise(int exerciseId, String partOfBody) {
-        ContentValues cv = new ContentValues();
-        cv.put(PART_OF_BODY, partOfBody);
-        mDB.update(DB_EXE_TABLE, cv, COLUMN_ID + " = " + exerciseId, null);
-    }
-
     private class DBHelper extends SQLiteOpenHelper {
 
         public DBHelper(Context context, String name, CursorFactory factory,
@@ -618,7 +650,7 @@ public class DB {
             db.execSQL(DB_MEASURE_CREATE);
             db.execSQL(DB_TRAININGS_CREATE);
             db.execSQL(DB_COMMENT_CREATE);
-
+            db.execSQL(DB_TRAINING_EXERCISE_CREATE);
         }
 
         @Override
@@ -635,8 +667,8 @@ public class DB {
                 db.execSQL(DB_COMMENT_CREATE);
             }
             if (oldVersion == 4 && newVersion == 5) {
+                db.execSQL(DB_TRAINING_EXERCISE_CREATE);
                 db.execSQL("ALTER TABLE " + DB_EXE_TABLE + " ADD COLUMN " + PART_OF_BODY + " TEXT");
-                Log.e("log", "db updated to v5");
             }
         }
     }

@@ -10,20 +10,20 @@ import android.preference.PreferenceManager;
 import com.nethergrim.combogymdiary.Constants;
 import com.nethergrim.combogymdiary.DB;
 import com.nethergrim.combogymdiary.R;
+import com.nethergrim.combogymdiary.model.ExerciseTrainingObject;
+import com.nethergrim.combogymdiary.tools.Prefs;
 import com.yandex.metrica.Counter;
 
 public class StartActivity extends AnalyticsActivity {
 
-    private final static String DATABASE_FILLED = "database_filled";
-    private SharedPreferences sp;
     private DB db;
-    String[] exeLegs;
-    String[] exeChest;
-    String[] exeBack;
-    String[] exeShoulders;
-    String[] exeBiceps;
-    String[] exeTriceps;
-    String[] exeAbs;
+    private String[] exeLegs;
+    private String[] exeChest;
+    private String[] exeBack;
+    private String[] exeShoulders;
+    private String[] exeBiceps;
+    private String[] exeTriceps;
+    private String[] exeAbs;
 
     private void goNext() {
         Intent gotoStartTraining = new Intent(this, BaseActivity.class);
@@ -32,16 +32,8 @@ public class StartActivity extends AnalyticsActivity {
     }
 
     private void initialize() {
-        sp = PreferenceManager.getDefaultSharedPreferences(this);
         db = new DB(this);
         db.open();
-        Cursor tmp = db.getDataExe(null, null, null, null, null, null);
-        if (tmp.getCount() < 3) {
-            sp.edit().putBoolean(DATABASE_FILLED, false).apply();
-        } else {
-            sp.edit().putBoolean(DATABASE_FILLED, true).apply();
-        }
-        tmp.close();
         exeLegs = getResources().getStringArray(R.array.exercisesArrayLegs);
         exeChest = getResources().getStringArray(R.array.exercisesArrayChest);
         exeBack = getResources().getStringArray(R.array.exercisesArrayBack);
@@ -61,18 +53,19 @@ public class StartActivity extends AnalyticsActivity {
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        initialize();
-        if (!sp.getBoolean(DATABASE_FILLED, false)) {
+        if (!Prefs.getPreferences().getDatabaseFilled()) {
+            Prefs.getPreferences().setDbUpdatedToV5(true);
             InitTask task = new InitTask();
             task.execute();
-        } else {
+        }
+        if (!Prefs.getPreferences().getDbUpdatedToV5()){
             UpdateTask task = new UpdateTask();
             task.execute();
         }
     }
 
     private void initTableForFirstTime() {
-        db.addRecTrainings(getString(R.string.traLegs), db.convertArrayToString(exeLegs));
+        db.addRecTrainings(getString(R.string.traLegs), db.convertArrayToString(exeLegs)); // FIXME
         db.addRecTrainings(getString(R.string.traChest), db.convertArrayToString(exeChest));
         db.addRecTrainings(getString(R.string.traBack), db.convertArrayToString(exeBack));
         db.addRecTrainings(getString(R.string.traShoulders), db.convertArrayToString(exeShoulders));
@@ -162,6 +155,14 @@ public class StartActivity extends AnalyticsActivity {
             } while (c.moveToNext());
         }
         c.close();
+        c = db.getDataTrainings(null,null,null,null,null,null);
+        if (c.moveToFirst()){
+            do {
+                ExerciseTrainingObject exerciseTrainingObject = new ExerciseTrainingObject();
+
+            } while (c.moveToNext());
+        }
+        c.close();
     }
 
     protected void onDestroy() {
@@ -173,7 +174,6 @@ public class StartActivity extends AnalyticsActivity {
 
         @Override
         protected void onPreExecute() {
-            sp.edit().putBoolean(DATABASE_FILLED, true).apply();
             super.onPreExecute();
         }
 
@@ -181,7 +181,9 @@ public class StartActivity extends AnalyticsActivity {
         protected Void doInBackground(Void... params) {
 
             try {
+                initialize();
                 initTableForFirstTime();
+                Prefs.getPreferences().setDatabaseFilled(true);
             } catch (Exception e) {
                 Counter.sharedInstance().reportError("", e);
             }
@@ -204,9 +206,9 @@ public class StartActivity extends AnalyticsActivity {
 
         @Override
         protected Void doInBackground(Void... params) {
-
+            initialize();
             updateTableForVersion5();
-
+            Prefs.getPreferences().setDbUpdatedToV5(true);
             return null;
         }
 

@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.nethergrim.combogymdiary.DB;
 import com.nethergrim.combogymdiary.R;
@@ -64,9 +65,11 @@ public class NewCreatingTrainingDayActivity extends AnalyticsActivity implements
         list.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                listener1.onTouch(v, event);
-                listener2.onTouch(v, event);
-                listener3.onTouch(v, event);
+                if (list.getCount() > 5){
+                    listener1.onTouch(v, event);
+                    listener2.onTouch(v, event);
+                    listener3.onTouch(v, event);
+                }
                 return false;
             }
         });
@@ -91,15 +94,32 @@ public class NewCreatingTrainingDayActivity extends AnalyticsActivity implements
         fabSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO save
+                save();
             }
         });
         fabSs.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO add supersets
+                addSuperset();
             }
         });
+    }
+
+    private void addSuperset() {                                                    // TODO add supersets
+
+    }
+
+    private void save() {
+        if (etName.getText().toString() == null || etName.getText().toString().equals("")){
+            Toast.makeText(this, R.string.enter_training_name, Toast.LENGTH_SHORT).show();
+            return;
+        } else if (list.getCount() == 0){
+            Toast.makeText(this, R.string.add_exercises_to_workout, Toast.LENGTH_SHORT).show();
+            return;
+        } else {
+            List<Row> rows = adapter.getRows();
+            // TODO save
+        }
     }
 
     @Override
@@ -181,6 +201,10 @@ public class NewCreatingTrainingDayActivity extends AnalyticsActivity implements
             notifyDataSetChanged();
         }
 
+        public List<Row>getRows(){
+            return this.rows;
+        }
+
         @Override
         public int getCount() {
             return rows.size();
@@ -217,13 +241,13 @@ public class NewCreatingTrainingDayActivity extends AnalyticsActivity implements
                     notifyDataSetChanged();
                 }
             });
-
-            holder.textViewLightSupersetNumber.setVisibility(View.GONE);
-            holder.imageViewSuperset.setVisibility(View.GONE);
-            // TODO SUPERSET
-
-
-
+            if (rows.get(position).isInSuperset()){
+                holder.textViewLightSupersetNumber.setVisibility(View.VISIBLE);
+                holder.textViewLightSupersetNumber.setText(String.valueOf(rows.get(position).getSupersetPosition()));
+            } else {
+                holder.textViewLightSupersetNumber.setVisibility(View.GONE);
+                holder.imageViewSuperset.setVisibility(View.GONE);
+            }
             return v;
         }
 
