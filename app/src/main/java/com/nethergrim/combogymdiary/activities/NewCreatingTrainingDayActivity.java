@@ -1,12 +1,18 @@
 package com.nethergrim.combogymdiary.activities;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.ActionMode;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -30,7 +36,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NewCreatingTrainingDayActivity extends AnalyticsActivity implements DialogAddExercises.OnExerciseAddCallback {
+public class NewCreatingTrainingDayActivity extends AnalyticsActivity implements DialogAddExercises.OnExerciseAddCallback, ActionMode.Callback {
 
     private ListView list;
     private TextViewLight textNoExe;
@@ -40,6 +46,7 @@ public class NewCreatingTrainingDayActivity extends AnalyticsActivity implements
     private View.OnTouchListener listener1;
     private View.OnTouchListener listener2;
     private View.OnTouchListener listener3;
+    private boolean isInActionMode = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +77,23 @@ public class NewCreatingTrainingDayActivity extends AnalyticsActivity implements
                     listener3.onTouch(v, event);
                 }
                 return false;
+            }
+        });
+        list.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    Log.e("log", "onItemSelected pos: " + position + "  id: " + id );
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    Log.e("log", "onItemClick pos: " + position + "  id: " + id );
             }
         });
     }
@@ -210,6 +234,32 @@ public class NewCreatingTrainingDayActivity extends AnalyticsActivity implements
         db.close();
     }
 
+
+    @Override
+    public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+        isInActionMode = true;
+        list.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+        getMenuInflater().inflate(R.menu.menu_creating_training_day,menu);
+        return true;
+    }
+
+    @Override
+    public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+
+        return false;
+    }
+
+    @Override
+    public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+        return false;
+    }
+
+    @Override
+    public void onDestroyActionMode(ActionMode mode) {
+        list.setChoiceMode(ListView.CHOICE_MODE_NONE);
+        isInActionMode = false;
+    }
+
     private class TrainingDayAdapter extends BaseAdapter{
 
         private ArrayList<Row> rows = new ArrayList<Row>();
@@ -238,6 +288,11 @@ public class NewCreatingTrainingDayActivity extends AnalyticsActivity implements
             return this.rows;
         }
 
+        public void removeItem(int itemId){
+            rows.remove(itemId);
+            this.notifyDataSetChanged();
+        }
+
         @Override
         public int getCount() {
             return rows.size();
@@ -262,18 +317,10 @@ public class NewCreatingTrainingDayActivity extends AnalyticsActivity implements
                 viewHolder.textViewLightExerciseName = (TextViewLight) v.findViewById(R.id.text_exercise);
                 viewHolder.textViewLightSupersetNumber = (TextViewLight) v.findViewById(R.id.text_number_of_superset);
                 viewHolder.imageViewSuperset = (ImageView)v.findViewById(R.id.imageSuperset);
-                viewHolder.btnDelete = (Button)v.findViewById(R.id.ib_delete);
                 v.setTag(viewHolder);
             }
             ViewHolder holder = (ViewHolder) v.getTag();
             holder.textViewLightExerciseName.setText(rows.get(position).getExercise().getName());
-            holder.btnDelete.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    rows.remove(position);
-                    notifyDataSetChanged();
-                }
-            });
             if (rows.get(position).isInSuperset()){
                 holder.textViewLightSupersetNumber.setVisibility(View.VISIBLE);
                 holder.textViewLightSupersetNumber.setText(String.valueOf(rows.get(position).getSupersetPosition()));
@@ -281,13 +328,27 @@ public class NewCreatingTrainingDayActivity extends AnalyticsActivity implements
                 holder.textViewLightSupersetNumber.setVisibility(View.GONE);
                 holder.imageViewSuperset.setVisibility(View.GONE);
             }
+            v.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    list.setChoiceMode(AbsListView.CHOICE_MODE_MULTIPLE);
+                    startActionMode(NewCreatingTrainingDayActivity.this);
+                    v.setSelected(true);
+                    v.setBackgroundColor(getResources().getColor(R.color.material_light_blue_a100));
+                    return false;
+                }
+            });
+            if (v.isSelected()){
+                v.setBackgroundColor(getResources().getColor(R.color.material_light_blue_a100));
+            } else {
+                v.setBackgroundColor(Color.WHITE);
+            }
             return v;
         }
 
         private class ViewHolder {
             TextViewLight textViewLightExerciseName;
             ImageView imageViewSuperset;
-            Button btnDelete;
             TextViewLight textViewLightSupersetNumber;
         }
     }

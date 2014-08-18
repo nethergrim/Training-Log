@@ -4,19 +4,14 @@
     android:layout_width="match_parent"
     android:layout_height="48dp">
 
-    <Button
-        android:id="@+id/ib_delete"
-        android:background="@drawable/btn_delete_selector"
-        android:layout_width="30dp"
-        android:layout_centerVertical="true"
-        android:layout_height="36dp" />
-
     <com.nethergrim.combogymdiary.view.TextViewLight
         android:id="@+id/text_exercise"
         android:textSize="16sp"
+
         android:gravity="center_vertical|start"
-        android:layout_toRightOf="@+id/ib_delete"
+        android:layout_alignParentLeft="true"
         android:layout_toLeftOf="@+id/imageSuperset"
+        android:focusable="false"
         android:layout_margin="4dp"
         android:singleLine="true"
         android:ellipsize="end"
@@ -28,6 +23,7 @@
         android:layout_toLeftOf="@+id/text_number_of_superset"
         android:layout_margin="4dp"
         android:src="@drawable/ic_btn_ss"
+        android:focusable="false"
         android:layout_centerVertical="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
@@ -35,6 +31,7 @@
     <com.nethergrim.combogymdiary.view.TextViewLight
         android:layout_width="wrap_content"
         android:gravity="center_vertical"
+        android:focusable="false"
         android:layout_margin="4dp"
         android:textSize="16sp"
         android:text="1"
