@@ -71,31 +71,15 @@ public class NewCreatingTrainingDayActivity extends AnalyticsActivity implements
         list.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                if (list.getCount() > 5){
+                if (list.getCount() > 5) {
                     listener1.onTouch(v, event);
                     listener2.onTouch(v, event);
                     listener3.onTouch(v, event);
                 }
-                return false;
+                return true;
             }
         });
-        list.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    Log.e("log", "onItemSelected pos: " + position + "  id: " + id );
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    Log.e("log", "onItemClick pos: " + position + "  id: " + id );
-            }
-        });
+        list.setChoiceMode(AbsListView.CHOICE_MODE_MULTIPLE);
     }
 
     private void initButtons() {
@@ -238,7 +222,6 @@ public class NewCreatingTrainingDayActivity extends AnalyticsActivity implements
     @Override
     public boolean onCreateActionMode(ActionMode mode, Menu menu) {
         isInActionMode = true;
-        list.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
         getMenuInflater().inflate(R.menu.menu_creating_training_day,menu);
         return true;
     }
@@ -256,7 +239,6 @@ public class NewCreatingTrainingDayActivity extends AnalyticsActivity implements
 
     @Override
     public void onDestroyActionMode(ActionMode mode) {
-        list.setChoiceMode(ListView.CHOICE_MODE_NONE);
         isInActionMode = false;
     }
 
@@ -333,16 +315,18 @@ public class NewCreatingTrainingDayActivity extends AnalyticsActivity implements
                 public boolean onLongClick(View v) {
                     list.setChoiceMode(AbsListView.CHOICE_MODE_MULTIPLE);
                     startActionMode(NewCreatingTrainingDayActivity.this);
-                    v.setSelected(true);
-                    v.setBackgroundColor(getResources().getColor(R.color.material_light_blue_a100));
+                    list.setItemChecked(position, true);
                     return false;
                 }
             });
-            if (v.isSelected()){
-                v.setBackgroundColor(getResources().getColor(R.color.material_light_blue_a100));
-            } else {
-                v.setBackgroundColor(Color.WHITE);
-            }
+            v.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (isInActionMode){
+                        list.setItemChecked(position, !list.isItemChecked(position));
+                    }
+                }
+            });
             return v;
         }
 

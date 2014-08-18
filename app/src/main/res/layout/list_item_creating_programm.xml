@@ -2,6 +2,7 @@
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    android:background="@drawable/list_item_background_selector"
     android:layout_height="48dp">
 
     <com.nethergrim.combogymdiary.view.TextViewLight
@@ -22,7 +23,7 @@
         android:id="@+id/imageSuperset"
         android:layout_toLeftOf="@+id/text_number_of_superset"
         android:layout_margin="4dp"
-        android:src="@drawable/ic_btn_ss"
+        android:src="@drawable/ic_ss_new"
         android:focusable="false"
         android:layout_centerVertical="true"
         android:layout_width="wrap_content"
