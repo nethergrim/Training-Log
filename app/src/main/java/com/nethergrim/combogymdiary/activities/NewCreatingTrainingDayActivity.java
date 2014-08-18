@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.SparseBooleanArray;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -209,6 +210,13 @@ public class NewCreatingTrainingDayActivity extends AnalyticsActivity implements
                 newExercises.add(db.getExercise(anIdList));
             }
             adapter.addData(newExercises);
+            clearSelection();
+        }
+    }
+
+    private void clearSelection(){
+        for (int i = 0; i < list.getCount(); i++){
+            list.setItemChecked(i, false);
         }
     }
 
@@ -234,12 +242,25 @@ public class NewCreatingTrainingDayActivity extends AnalyticsActivity implements
 
     @Override
     public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+        if (list.getCheckedItemCount() > 0) {
+
+            SparseBooleanArray arrayToDelete = list.getCheckedItemPositions();
+            int count = list.getCount();
+            for (int i = count - 1; i >= 0; i--) {
+                if (arrayToDelete.get(i)) {
+                    adapter.removeItem(i);
+                }
+            }
+        }
+        clearSelection();
+        mode.finish();
         return false;
     }
 
     @Override
     public void onDestroyActionMode(ActionMode mode) {
         isInActionMode = false;
+        clearSelection();
     }
 
     private class TrainingDayAdapter extends BaseAdapter{
@@ -270,8 +291,8 @@ public class NewCreatingTrainingDayActivity extends AnalyticsActivity implements
             return this.rows;
         }
 
-        public void removeItem(int itemId){
-            rows.remove(itemId);
+        public void removeItem(int position){
+            rows.remove(position);
             this.notifyDataSetChanged();
         }
 
