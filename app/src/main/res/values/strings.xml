@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string name="add_superset">Add superset</string>
     <string name="add_exercises_to_workout">Add exercise!</string>
     <string name="enter_training_name">Enter the name of the workout!</string>
     <string name="fav_exercise">Favorite exercise</string>

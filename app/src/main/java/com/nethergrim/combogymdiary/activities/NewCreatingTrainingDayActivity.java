@@ -1,9 +1,7 @@
 package com.nethergrim.combogymdiary.activities;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
@@ -13,11 +11,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
-import android.widget.AdapterView;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -37,7 +32,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NewCreatingTrainingDayActivity extends AnalyticsActivity implements DialogAddExercises.OnExerciseAddCallback, ActionMode.Callback {
+public class NewCreatingTrainingDayActivity extends AnalyticsActivity implements DialogAddExercises.OnExerciseAddCallback{
 
     private ListView list;
     private TextViewLight textNoExe;
@@ -48,6 +43,79 @@ public class NewCreatingTrainingDayActivity extends AnalyticsActivity implements
     private View.OnTouchListener listener2;
     private View.OnTouchListener listener3;
     private boolean isInActionMode = false;
+
+    private ActionMode.Callback deleteCallback = new ActionMode.Callback() {
+        @Override
+        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+            isInActionMode = true;
+            getMenuInflater().inflate(R.menu.menu_creating_training_day,menu);
+            return true;
+        }
+
+        @Override
+        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+            return false;
+        }
+
+        @Override
+        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+            if (list.getCheckedItemCount() > 0) {
+                SparseBooleanArray arrayToDelete = list.getCheckedItemPositions();
+                int count = list.getCount();
+                for (int i = count - 1; i >= 0; i--) {
+                    if (arrayToDelete.get(i)) {
+                        adapter.removeItem(i);
+                    }
+                }
+            }
+            clearSelection();
+            mode.finish();
+            return true;
+        }
+
+        @Override
+        public void onDestroyActionMode(ActionMode mode) {
+            isInActionMode = false;
+            clearSelection();
+        }
+    };
+
+    private ActionMode.Callback supersetCallback = new ActionMode.Callback() {
+        @Override
+        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+            isInActionMode = true;
+            getMenuInflater().inflate(R.menu.add_superset,menu);
+            return true;
+        }
+
+        @Override
+        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+            return false;
+        }
+
+        @Override
+        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+            if (list.getCheckedItemCount() > 1) {
+                SparseBooleanArray arrayToDelete = list.getCheckedItemPositions();
+                int count = list.getCount();
+                int position = list.getCheckedItemCount() - 1;
+                for (int i = count - 1; i >= 0; i--) {
+                    if (arrayToDelete.get(i)) {
+                        adapter.addSuperset(i, position--);
+                    }
+                }
+            }
+            clearSelection();
+            mode.finish();
+            return true;
+        }
+
+        @Override
+        public void onDestroyActionMode(ActionMode mode) {
+            isInActionMode = false;
+            clearSelection();
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,26 +163,28 @@ public class NewCreatingTrainingDayActivity extends AnalyticsActivity implements
         fabAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DialogAddExercises dialogAddExercises = new DialogAddExercises();
-                dialogAddExercises.show(getFragmentManager(), DialogAddExercises.class.getName());
+                if (!isInActionMode){
+                    DialogAddExercises dialogAddExercises = new DialogAddExercises();
+                    dialogAddExercises.show(getFragmentManager(), DialogAddExercises.class.getName());
+                }
             }
         });
         fabSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                save();
+                if (!isInActionMode){
+                    save();
+                }
             }
         });
         fabSs.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addSuperset();
+                if (!isInActionMode){
+                    NewCreatingTrainingDayActivity.this.startActionMode(supersetCallback);
+                }
             }
         });
-    }
-
-    private void addSuperset() {                                                    // TODO add supersets
-
     }
 
     private void save() {
@@ -227,42 +297,6 @@ public class NewCreatingTrainingDayActivity extends AnalyticsActivity implements
     }
 
 
-    @Override
-    public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-        isInActionMode = true;
-        getMenuInflater().inflate(R.menu.menu_creating_training_day,menu);
-        return true;
-    }
-
-    @Override
-    public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-
-        return false;
-    }
-
-    @Override
-    public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-        if (list.getCheckedItemCount() > 0) {
-
-            SparseBooleanArray arrayToDelete = list.getCheckedItemPositions();
-            int count = list.getCount();
-            for (int i = count - 1; i >= 0; i--) {
-                if (arrayToDelete.get(i)) {
-                    adapter.removeItem(i);
-                }
-            }
-        }
-        clearSelection();
-        mode.finish();
-        return false;
-    }
-
-    @Override
-    public void onDestroyActionMode(ActionMode mode) {
-        isInActionMode = false;
-        clearSelection();
-    }
-
     private class TrainingDayAdapter extends BaseAdapter{
 
         private ArrayList<Row> rows = new ArrayList<Row>();
@@ -291,7 +325,21 @@ public class NewCreatingTrainingDayActivity extends AnalyticsActivity implements
             return this.rows;
         }
 
+        public void addSuperset(int position, int positionInsuperset){
+                rows.get(position).setInSuperset(true);
+                rows.get(position).setSupersetPosition(positionInsuperset);
+            this.notifyDataSetChanged();
+        }
+
+        public void removeAllSupersets(){
+            for (int i = 0; i < rows.size(); i++){
+                rows.get(i).setInSuperset(false);
+                rows.get(i).setSupersetPosition(0);
+            }
+        }
+
         public void removeItem(int position){
+            if (rows.get(position).isInSuperset()) removeAllSupersets();
             rows.remove(position);
             this.notifyDataSetChanged();
         }
@@ -326,7 +374,8 @@ public class NewCreatingTrainingDayActivity extends AnalyticsActivity implements
             holder.textViewLightExerciseName.setText(rows.get(position).getExercise().getName());
             if (rows.get(position).isInSuperset()){
                 holder.textViewLightSupersetNumber.setVisibility(View.VISIBLE);
-                holder.textViewLightSupersetNumber.setText(String.valueOf(rows.get(position).getSupersetPosition()));
+                holder.textViewLightSupersetNumber.setText(String.valueOf(rows.get(position).getSupersetPosition() + 1));
+                holder.imageViewSuperset.setVisibility(View.VISIBLE);
             } else {
                 holder.textViewLightSupersetNumber.setVisibility(View.GONE);
                 holder.imageViewSuperset.setVisibility(View.GONE);
@@ -334,9 +383,10 @@ public class NewCreatingTrainingDayActivity extends AnalyticsActivity implements
             v.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
-                    list.setChoiceMode(AbsListView.CHOICE_MODE_MULTIPLE);
-                    startActionMode(NewCreatingTrainingDayActivity.this);
-                    list.setItemChecked(position, true);
+                    if (!isInActionMode){
+                        startActionMode(deleteCallback);
+                        list.setItemChecked(position, true);
+                    }
                     return false;
                 }
             });
