@@ -14,10 +14,8 @@ import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SimpleCursorAdapter;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -27,19 +25,15 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.nethergrim.combogymdiary.DB;
 import com.nethergrim.combogymdiary.R;
 import com.nethergrim.combogymdiary.activities.BaseActivity;
-import com.nethergrim.combogymdiary.activities.EditingProgramAtTrainingActivity;
-import com.nethergrim.combogymdiary.activities.NewCreatingTrainingDayActivity;
+import com.nethergrim.combogymdiary.activities.CreatingTrainingDayActivity;
 import com.nethergrim.combogymdiary.dialogs.DialogGoToMarket;
 import com.nethergrim.combogymdiary.view.FAB;
-import com.nethergrim.combogymdiary.view.FloatingActionButton;
 import com.shamanland.fab.ShowHideOnScroll;
 
 public class StartTrainingFragment extends Fragment implements
@@ -97,7 +91,7 @@ public class StartTrainingFragment extends Fragment implements
         fabAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent gotoAddingProgramActivity = new Intent(getActivity(), NewCreatingTrainingDayActivity.class);
+                Intent gotoAddingProgramActivity = new Intent(getActivity(), CreatingTrainingDayActivity.class);
                 startActivity(gotoAddingProgramActivity);
             }
         });
@@ -105,23 +99,16 @@ public class StartTrainingFragment extends Fragment implements
         return v;
     }
 
-    public void onPause() {
-        super.onPause();
-        unregisterForContextMenu(lvMain);
-    }
-
     public void onResume() {
         super.onResume();
         ((FragmentActivity) getActivity()).getSupportLoaderManager()
                 .getLoader(LOADER_ID).forceLoad();
-        SharedPreferences sp = PreferenceManager
-                .getDefaultSharedPreferences(getActivity());
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
         if (sp.contains(BaseActivity.TRAININGS_DONE_NUM)
                 && sp.getInt(BaseActivity.TRAININGS_DONE_NUM, 0) > 5
                 && !sp.contains(BaseActivity.MARKET_LEAVED_FEEDBACK)) {
             DialogFragment dialog = new DialogGoToMarket();
-            dialog.show(getActivity().getFragmentManager(),
-                    "dialog_goto_market");
+            dialog.show(getActivity().getFragmentManager(), "dialog_goto_market");
             dialog.setCancelable(false);
         }
     }
@@ -144,8 +131,8 @@ public class StartTrainingFragment extends Fragment implements
             ((FragmentActivity) getActivity()).getSupportLoaderManager().getLoader(LOADER_ID).forceLoad();
             Toast.makeText(getActivity(), getResources().getString(R.string.deleted), Toast.LENGTH_SHORT).show();
         } else if (item.getItemId() == CM_EDIT_ID) {
-            Intent intent = new Intent(getActivity(), NewCreatingTrainingDayActivity.class);
-            intent.putExtra(NewCreatingTrainingDayActivity.BUNDLE_ID_KEY, (int) acmi.id);
+            Intent intent = new Intent(getActivity(), CreatingTrainingDayActivity.class);
+            intent.putExtra(CreatingTrainingDayActivity.BUNDLE_ID_KEY, (int) acmi.id);
             startActivity(intent);
             return true;
         }

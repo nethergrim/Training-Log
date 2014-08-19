@@ -6,7 +6,7 @@
     android:paddingLeft="16dp"
     android:paddingBottom="4dp"
     android:background="@color/white"
-    tools:context="com.nethergrim.combogymdiary.activities.NewCreatingTrainingDayActivity">
+    tools:context="com.nethergrim.combogymdiary.activities.CreatingTrainingDayActivity">
 
     <EditText
         android:layout_alignParentTop="true"

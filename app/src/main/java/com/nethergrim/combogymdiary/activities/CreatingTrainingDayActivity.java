@@ -2,6 +2,7 @@ package com.nethergrim.combogymdiary.activities;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
@@ -32,7 +33,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NewCreatingTrainingDayActivity extends AnalyticsActivity implements DialogAddExercises.OnExerciseAddCallback{
+public class CreatingTrainingDayActivity extends AnalyticsActivity implements DialogAddExercises.OnExerciseAddCallback{
 
 
     public static final String BUNDLE_ID_KEY = "com.nethergrim.combogymdiary.ID";
@@ -201,6 +202,21 @@ public class NewCreatingTrainingDayActivity extends AnalyticsActivity implements
             }
         });
         list.setChoiceMode(AbsListView.CHOICE_MODE_MULTIPLE);
+        if (editing){
+            loadTrainingsFromDbAndAdd();
+        }
+    }
+
+    private void loadTrainingsFromDbAndAdd() {
+        List<ExerciseTrainingObject> trainingObjects = db.getExerciseTrainingObjects(oldId);
+        List<Row> rows = new ArrayList<Row>();
+        for (ExerciseTrainingObject trainingObject : trainingObjects) {
+            Row row = new Row(db.getExercise(trainingObject.getExerciseId()));
+            row.setSupersetPosition(trainingObject.getPositionAtSuperset());
+            row.setInSuperset(trainingObject.isSuperset());
+            rows.add(row);
+        }
+        adapter.addRows(rows);
     }
 
     private void initButtons() {
@@ -233,7 +249,7 @@ public class NewCreatingTrainingDayActivity extends AnalyticsActivity implements
             @Override
             public void onClick(View v) {
                 if (!isInActionMode){
-                    NewCreatingTrainingDayActivity.this.startActionMode(supersetCallback);
+                    CreatingTrainingDayActivity.this.startActionMode(supersetCallback);
                 }
             }
         });
@@ -245,6 +261,7 @@ public class NewCreatingTrainingDayActivity extends AnalyticsActivity implements
         } else if (list.getCount() == 0){
             Toast.makeText(this, R.string.add_exercises_to_workout, Toast.LENGTH_SHORT).show();
         } else {
+            if (editing) db.deleteTrainingProgram(oldId);
             List<Row> rows = adapter.getRows();
             int trainingId = (int) db.addTrainings(etName.getText().toString());
             int firstSupersetPosition = 0;
@@ -313,8 +330,10 @@ public class NewCreatingTrainingDayActivity extends AnalyticsActivity implements
         @Override
         public void notifyDataSetChanged() {
             super.notifyDataSetChanged();
-            if (getCount() < 1){
-                NewCreatingTrainingDayActivity.this.textNoExe.setVisibility(View.VISIBLE);
+            if (getCount() == 0){
+                CreatingTrainingDayActivity.this.textNoExe.setVisibility(View.VISIBLE);
+            } else if (getCount() > 0) {
+                CreatingTrainingDayActivity.this.textNoExe.setVisibility(View.GONE);
             }
         }
 
@@ -322,6 +341,11 @@ public class NewCreatingTrainingDayActivity extends AnalyticsActivity implements
             for (Exercise aNewData : newData) {
                 rows.add(new Row(aNewData));
             }
+            notifyDataSetChanged();
+        }
+
+        public void addRows(List<Row> rows){
+            this.rows.addAll(rows);
             notifyDataSetChanged();
         }
 
