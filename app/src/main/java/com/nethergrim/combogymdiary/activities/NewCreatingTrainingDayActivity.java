@@ -85,6 +85,7 @@ public class NewCreatingTrainingDayActivity extends AnalyticsActivity implements
         public boolean onCreateActionMode(ActionMode mode, Menu menu) {
             isInActionMode = true;
             getMenuInflater().inflate(R.menu.add_superset,menu);
+            clearSelection();
             return true;
         }
 
