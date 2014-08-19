@@ -14,6 +14,7 @@ import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SimpleCursorAdapter;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Gravity;
@@ -69,7 +70,7 @@ public class StartTrainingFragment extends Fragment implements
         db = new DB(getActivity());
         db.open();
         String[] from = new String[]{DB.TRA_NAME};
-        int[] to = new int[]{R.id.tvText,};
+        int[] to = new int[]{R.id.tvText};
         scAdapter = new SimpleCursorAdapter(getActivity(), R.layout.my_list_item, null, from, to, 0);
     }
 
@@ -137,36 +138,15 @@ public class StartTrainingFragment extends Fragment implements
     }
 
     public boolean onContextItemSelected(MenuItem item) {
-        AdapterContextMenuInfo acmi = (AdapterContextMenuInfo) item
-                .getMenuInfo();
+        AdapterContextMenuInfo acmi = (AdapterContextMenuInfo) item.getMenuInfo();
         if (item.getItemId() == CM_DELETE_ID) {
-            Cursor cursor = db.getDataTrainings(null, null, null, null, null, null);
-            LinearLayout llTmp = (LinearLayout) acmi.targetView;
-            TextView tvTmp = (TextView) llTmp.findViewById(R.id.tvText);
-            String traName = tvTmp.getText().toString();
-            if (cursor.moveToFirst()) {
-                do {
-                    if (cursor.getString(1).equals(traName)) {
-                        db.delRec_Trainings(cursor.getInt(0));
-                        Toast.makeText(getActivity(),
-                                getResources().getString(R.string.deleted),
-                                Toast.LENGTH_SHORT).show();
-                    }
-                } while (cursor.moveToNext());
-                ((FragmentActivity) getActivity()).getSupportLoaderManager()
-                        .getLoader(LOADER_ID).forceLoad();
-                cursor.close();
-                return true;
-            }
+            db.deleteTrainingProgram((int) acmi.id);
+            ((FragmentActivity) getActivity()).getSupportLoaderManager().getLoader(LOADER_ID).forceLoad();
+            Toast.makeText(getActivity(), getResources().getString(R.string.deleted), Toast.LENGTH_SHORT).show();
         } else if (item.getItemId() == CM_EDIT_ID) {
-            long id = acmi.id;
-            Intent intent = new Intent(getActivity(),
-                    EditingProgramAtTrainingActivity.class);
-            intent.putExtra("trID", id);
-            intent.putExtra("ifAddingExe", false);
-            startActivityForResult(intent, 1);
-            ((FragmentActivity) getActivity()).getSupportLoaderManager()
-                    .getLoader(LOADER_ID).forceLoad();
+            Intent intent = new Intent(getActivity(), NewCreatingTrainingDayActivity.class);
+            intent.putExtra(NewCreatingTrainingDayActivity.BUNDLE_ID_KEY, (int) acmi.id);
+            startActivity(intent);
             return true;
         }
         return super.onContextItemSelected(item);

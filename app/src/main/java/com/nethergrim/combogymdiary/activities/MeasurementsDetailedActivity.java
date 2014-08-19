@@ -9,6 +9,7 @@ import android.view.MenuItem;
 
 import com.nethergrim.combogymdiary.DB;
 import com.nethergrim.combogymdiary.R;
+import com.nethergrim.combogymdiary.tools.Prefs;
 import com.nethergrim.combogymdiary.view.TextViewLight;
 
 public class MeasurementsDetailedActivity extends AnalyticsActivity {
@@ -45,19 +46,7 @@ public class MeasurementsDetailedActivity extends AnalyticsActivity {
         String[] args = {date};
         Cursor cursor = db.getDataMeasures(cols, DB.DATE + "=?", args, null, null, DB.DATE);
 
-        SharedPreferences sp = PreferenceManager
-                .getDefaultSharedPreferences(this);
-        String item = sp.getString(BaseActivity.MEASURE_ITEM, "1");
-        String measureItem = "";
-        if (item.equals("1")) {
-            measureItem = " ("
-                    + getResources().getStringArray(R.array.measure_items)[0]
-                    + ") ";
-        } else if (item.equals("2")) {
-            measureItem = " ("
-                    + getResources().getStringArray(R.array.measure_items)[1]
-                    + ") ";
-        }
+        String measureItem = Prefs.getPreferences().getWeightMeasureType(this);
 
         if (cursor.moveToFirst()) {
             do {

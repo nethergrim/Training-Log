@@ -4,6 +4,9 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import com.nethergrim.combogymdiary.R;
+import com.nethergrim.combogymdiary.activities.BaseActivity;
+
 
 public class Prefs {
     private static final String KEY_ADS_REMOVED = "ads_removed";
@@ -11,6 +14,7 @@ public class Prefs {
     public final static String KEY_TRAINING_AT_PROGRESS = "training_at_progress";
     public final static String KEY_DATABASE_FILLED = "database_filled";
     private static final String KEY_DATABASE_UPDATED_TOV5 = "db_updated_to5";
+    private static final String KEY_MEASURE_ITEM = "measureItem";
 
     private static SharedPreferences prefs;
     private static Prefs pref;
@@ -68,6 +72,16 @@ public class Prefs {
 
     public void setDbUpdatedToV5(boolean updatedToV5){
         prefs.edit().putBoolean(KEY_DATABASE_UPDATED_TOV5, updatedToV5).apply();
+    }
+
+    public String getWeightMeasureType(Context context) {
+        String item = prefs.getString(KEY_MEASURE_ITEM, "1");
+        if (item.equals("1")) {
+            return context.getResources().getStringArray(R.array.measure_items)[0];
+        } else if (item.equals("2")) {
+            return context.getResources().getStringArray(R.array.measure_items)[1];
+        }
+        return "";
     }
 
 

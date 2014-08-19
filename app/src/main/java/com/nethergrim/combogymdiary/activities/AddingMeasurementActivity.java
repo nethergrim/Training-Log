@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.nethergrim.combogymdiary.DB;
 import com.nethergrim.combogymdiary.R;
+import com.nethergrim.combogymdiary.tools.Prefs;
 import com.nethergrim.combogymdiary.view.FAB;
 import com.nethergrim.combogymdiary.view.FloatingActionButton;
 
@@ -45,19 +46,7 @@ public class AddingMeasurementActivity extends AnalyticsActivity {
         db = new DB(this);
         db.open();
         TextView tvTmp = (TextView) findViewById(R.id.textView1weight);
-        SharedPreferences sp = PreferenceManager
-                .getDefaultSharedPreferences(this);
-        String item = sp.getString(BaseActivity.MEASURE_ITEM, "1");
-        String measureItem = "";
-        if (item.equals("1")) {
-            measureItem = " ("
-                    + getResources().getStringArray(R.array.measure_items)[0]
-                    + ") ";
-        } else if (item.equals("2")) {
-            measureItem = " ("
-                    + getResources().getStringArray(R.array.measure_items)[1]
-                    + ") ";
-        }
+        String measureItem = Prefs.getPreferences().getWeightMeasureType(this);
         tvTmp.setText(getResources().getString(R.string.weight) + measureItem);
         FAB fab = (FAB) findViewById(R.id.fabSaveMeasurements);
         fab.setOnClickListener(new View.OnClickListener() {

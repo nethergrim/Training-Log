@@ -3,6 +3,8 @@ package com.nethergrim.combogymdiary;
 import android.content.Context;
 import android.database.Cursor;
 
+import com.nethergrim.combogymdiary.tools.Prefs;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -78,7 +80,7 @@ public class Statistics {
                     if (diff > (millisecInDay * days)) {
                         Double firstWeight = Double.parseDouble(c.getString(3));
                         result = lastWeight > firstWeight ? "+" + (lastWeight - firstWeight) : "-" + (firstWeight - lastWeight);
-                        return result + " " + db.getWeightMeasureType(context);
+                        return result + " " + Prefs.getPreferences().getWeightMeasureType(context);
                     }
                 }
             } while (true);

@@ -119,7 +119,7 @@
     <string name="edit">Edit</string>
     <string name="stop">Stop</string>
     <string name="delete">Delete</string>
-    <string name="creating_program">Creating/Editing program:</string>
+    <string name="creating_program">Creating program</string>
     <string name="create_new_exercise">Edit exercise</string>
     <string name="Weight">Weight:</string>
     <string name="reps">Reps:</string>

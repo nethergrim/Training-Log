@@ -1,11 +1,9 @@
 package com.nethergrim.combogymdiary.activities;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 
 import com.nethergrim.combogymdiary.Constants;
 import com.nethergrim.combogymdiary.DB;
@@ -63,7 +61,7 @@ public class StartActivity extends AnalyticsActivity {
     }
 
     private void initTableForFirstTime(String partOfBody, String trainingName, String[] exerciseList){
-        int trainingId = (int) db.addRecTrainings(trainingName);
+        int trainingId = (int) db.addTrainings(trainingName);
         for (int i = 0; i < exerciseList.length; i++) {
             int exeId = (int) db.addExercise(exerciseList[i], "60", partOfBody);
             ExerciseTrainingObject exerciseTrainingObject = new ExerciseTrainingObject();

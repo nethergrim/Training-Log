@@ -19,6 +19,7 @@ import android.widget.ScrollView;
 
 import com.nethergrim.combogymdiary.DB;
 import com.nethergrim.combogymdiary.R;
+import com.nethergrim.combogymdiary.tools.Prefs;
 import com.nethergrim.combogymdiary.view.TextViewLight;
 
 public class HistoryDetailedActivity extends Activity {
@@ -115,22 +116,8 @@ public class HistoryDetailedActivity extends Activity {
         if (total == 0)
             ifZero = true;
 
-        int px = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
-                8, getResources().getDisplayMetrics());
-
-        SharedPreferences sp = PreferenceManager
-                .getDefaultSharedPreferences(this);
-        String item = sp.getString(BaseActivity.MEASURE_ITEM, "1");
-        measureItem = "";
-        if (item.equals("1")) {
-            measureItem = " ("
-                    + getResources().getStringArray(R.array.measure_items)[0]
-                    + ") ";
-        } else if (item.equals("2")) {
-            measureItem = " ("
-                    + getResources().getStringArray(R.array.measure_items)[1]
-                    + ") ";
-        }
+        int px = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 8, getResources().getDisplayMetrics());
+        measureItem = Prefs.getPreferences().getWeightMeasureType(this);
         scrollView.addView(llMain, linLayoutParam);
         llMain.setGravity(Gravity.CENTER);
 
@@ -139,17 +126,14 @@ public class HistoryDetailedActivity extends Activity {
             do {
 
                 LayoutInflater inflater = getLayoutInflater();
-                View card = inflater.inflate(R.layout.item_detailed_history,
-                        null, false);
+                View card = inflater.inflate(R.layout.item_detailed_history, null, false);
                 TextViewLight tvName = (TextViewLight) card.findViewById(R.id.textViewExerciseName);
                 LinearLayout llData = (LinearLayout) card
                         .findViewById(R.id.linearLayoutForConent);
                 llData.setGravity(Gravity.CENTER);
                 tvName.setText(cursor.getString(2));
                 tvName.setTextColor(color);
-
                 lpView.setMargins(0, px, 0, 0);
-
                 llMain.addView(card, lpView);
                 do {
                     TextViewLight tvNewSet = new TextViewLight(this);

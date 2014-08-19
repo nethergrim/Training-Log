@@ -34,6 +34,8 @@ import java.util.List;
 
 public class NewCreatingTrainingDayActivity extends AnalyticsActivity implements DialogAddExercises.OnExerciseAddCallback{
 
+
+    public static final String BUNDLE_ID_KEY = "com.nethergrim.combogymdiary.ID";
     private ListView list;
     private TextViewLight textNoExe;
     private EditText etName;
@@ -43,6 +45,8 @@ public class NewCreatingTrainingDayActivity extends AnalyticsActivity implements
     private View.OnTouchListener listener2;
     private View.OnTouchListener listener3;
     private boolean isInActionMode = false;
+    private boolean editing = false;
+    private int oldId;
 
     private ActionMode.Callback deleteCallback = new ActionMode.Callback() {
         @Override
@@ -122,15 +126,62 @@ public class NewCreatingTrainingDayActivity extends AnalyticsActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_creating_training_day);
+        if (getIntent().getIntExtra(BUNDLE_ID_KEY, -1) >= 0){
+            oldId = getIntent().getIntExtra(BUNDLE_ID_KEY, 0);
+            editing = true;
+        }
         db = new DB(this);
         db.open();
-        setTitle(R.string.creating_program);
+        if (!editing){
+            setTitle(R.string.creating_program);
+        } else {
+            setTitle(R.string.editing_program);
+        }
         getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setDisplayShowHomeEnabled(false);
         initButtons();
         initList();
         etName = (EditText) findViewById(R.id.etTrainingName);
         setTypeFaceLight(etName);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        showSuperSetDialog();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (list.getCount() > 0) {
+            textNoExe.setVisibility(View.GONE);
+        } else {
+            textNoExe.setVisibility(View.VISIBLE);
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                super.onBackPressed();
+                return true;
+        }
+        return false;
+    }
+
+    @Override
+    public void onExerciseAddedCallback(List<Integer> idList) {
+        final List<Exercise> newExercises = new ArrayList<Exercise>();
+        if (idList != null && idList.size() > 0){
+            textNoExe.setVisibility(View.GONE);
+            for (Integer anIdList : idList) {
+                newExercises.add(db.getExercise(anIdList));
+            }
+            adapter.addData(newExercises);
+            clearSelection();
+        }
     }
 
     private void initList() {
@@ -191,13 +242,11 @@ public class NewCreatingTrainingDayActivity extends AnalyticsActivity implements
     private void save() {
         if (etName.getText().toString() == null || etName.getText().toString().equals("")){
             Toast.makeText(this, R.string.enter_training_name, Toast.LENGTH_SHORT).show();
-            return;
         } else if (list.getCount() == 0){
             Toast.makeText(this, R.string.add_exercises_to_workout, Toast.LENGTH_SHORT).show();
-            return;
         } else {
             List<Row> rows = adapter.getRows();
-            int trainingId = (int) db.addRecTrainings(etName.getText().toString());
+            int trainingId = (int) db.addTrainings(etName.getText().toString());
             int firstSupersetPosition = 0;
             boolean lastWasSuperset = false;
 
@@ -235,22 +284,6 @@ public class NewCreatingTrainingDayActivity extends AnalyticsActivity implements
         }
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        showSuperSetDialog();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if (list.getCount() > 0) {
-            textNoExe.setVisibility(View.GONE);
-        } else {
-            textNoExe.setVisibility(View.VISIBLE);
-        }
-    }
-
     private void showSuperSetDialog() {
         if (Prefs.getPreferences().getSuperSetInfoShowed() <= 3) {
             DialogInfo dialogInfo = new DialogInfo();
@@ -262,41 +295,11 @@ public class NewCreatingTrainingDayActivity extends AnalyticsActivity implements
         }
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                super.onBackPressed();
-                return true;
-        }
-        return false;
-    }
-
-    @Override
-    public void onExerciseAddedCallback(List<Integer> idList) {
-        final List<Exercise> newExercises = new ArrayList<Exercise>();
-        if (idList != null && idList.size() > 0){
-            textNoExe.setVisibility(View.GONE);
-            for (Integer anIdList : idList) {
-                newExercises.add(db.getExercise(anIdList));
-            }
-            adapter.addData(newExercises);
-            clearSelection();
-        }
-    }
-
     private void clearSelection(){
         for (int i = 0; i < list.getCount(); i++){
             list.setItemChecked(i, false);
         }
     }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        db.close();
-    }
-
 
     private class TrainingDayAdapter extends BaseAdapter{
 
@@ -333,9 +336,9 @@ public class NewCreatingTrainingDayActivity extends AnalyticsActivity implements
         }
 
         public void removeAllSupersets(){
-            for (int i = 0; i < rows.size(); i++){
-                rows.get(i).setInSuperset(false);
-                rows.get(i).setSupersetPosition(0);
+            for (Row row : rows) {
+                row.setInSuperset(false);
+                row.setSupersetPosition(0);
             }
         }
 
@@ -444,5 +447,11 @@ public class NewCreatingTrainingDayActivity extends AnalyticsActivity implements
         public void setSupersetPosition(int supersetPosition) {
             this.supersetPosition = supersetPosition;
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        db.close();
     }
 }

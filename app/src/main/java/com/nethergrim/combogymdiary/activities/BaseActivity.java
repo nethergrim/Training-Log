@@ -67,7 +67,7 @@ public class BaseActivity extends AnalyticsActivity implements
     public final static String TRAINING_AT_PROGRESS = "training_at_progress";
     public final static String COMMENT_TO_TRAINING = "comment_to_training";
     public final static String START_TIME = "start_time";
-    public final static String MEASURE_ITEM = "measureItem";
+
     public final static String TRAINING_ID = "training_id";
     public final static String TRA_ID = "tra_id";
     public final static String MARKET_LEAVED_FEEDBACK = "market_leaved_feedback";

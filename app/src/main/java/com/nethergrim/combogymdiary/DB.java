@@ -132,18 +132,6 @@ public class DB {
         return "";
     }
 
-    public String getWeightMeasureType(Context context) {
-        SharedPreferences sp = PreferenceManager
-                .getDefaultSharedPreferences(context);
-        String item = sp.getString(BaseActivity.MEASURE_ITEM, "1");
-        if (item.equals("1")) {
-            return context.getResources().getStringArray(R.array.measure_items)[0];
-        } else if (item.equals("2")) {
-            return context.getResources().getStringArray(R.array.measure_items)[1];
-        }
-        return "";
-    }
-
     public Date convertStringToDate(String string) {
         SimpleDateFormat format = new SimpleDateFormat(SIMPLE_DATE_FORMAT);
         try {
@@ -175,16 +163,6 @@ public class DB {
         mDB = mDBHelper.getWritableDatabase();
     }
 
-    public String getExerciseByID(int id) {
-        String[] args = {"" + id};
-        Cursor c = mDB.query(DB.DB_EXE_TABLE, null, DB.COLUMN_ID + "=?", args,
-                null, null, null);
-        if (c.moveToFirst()) {
-            return c.getString(2);
-        } else
-            return null;
-    }
-
     public void close() {
         try {
             if (mDBHelper != null)
@@ -194,21 +172,19 @@ public class DB {
         }
     }
 
-    public Cursor getAllData_Exe() {
-        return mDB.query(DB_EXE_TABLE, null, null, null, null, null, null);
-    }
-
-    public Cursor getDataExercises(String groupBy) {
-
-        return mDB.query(DB_EXE_TABLE, null, null, null, groupBy, null, null);
+    public String getExerciseByID(int id) {
+        String[] args = {"" + id};
+        Cursor c = mDB.query(DB.DB_EXE_TABLE, null, DB.COLUMN_ID + "=?", args, null, null, null);
+        if (c.moveToFirst()) {
+            return c.getString(2);
+        } else
+            return null;
     }
 
     public int getExeIdByName(String name) {
-
         String[] args = {name};
         String[] cols = {DB.COLUMN_ID};
-        Cursor c = mDB.query(DB_EXE_TABLE, cols, DB.EXE_NAME + "=?", args,
-                (String) null, (String) null, (String) null);
+        Cursor c = mDB.query(DB_EXE_TABLE, cols, DB.EXE_NAME + "=?", args,  null, null,  null);
         if (c.moveToFirst()) {
             return c.getInt(0);
         } else {
@@ -223,15 +199,16 @@ public class DB {
     public boolean delRecordMeasurement(String date) {
         String[] args = {date};
         int tmp = mDB.delete(DB_MEASURE_TABLE, DATE + "=?", args);
-        if (tmp > 0) {
-            return true;
-        } else
-            return false;
+        return tmp > 0;
+    }
+
+    public void deleteTrainingProgram(int id){
+        mDB.delete(DB_TRAININGS_TABLE, COLUMN_ID + " = " + id, null);
+        mDB.delete(DB_TABLE_TRAINING_EXERCISE, TRAINING_PROGRAM_ID + " = " + id, null);
     }
 
     public String getTrainingList(int _id) {
-        Cursor c = mDB.query(DB_TRAININGS_TABLE, null, null, null, null, null,
-                null);
+        Cursor c = mDB.query(DB_TRAININGS_TABLE, null, null, null, null, null, null);
         if (c.moveToFirst()) {
             do {
                 if (c.getInt(0) == _id) {
@@ -275,43 +252,6 @@ public class DB {
                 updateRec_Training(c.getInt(0), 2, newString);
             } while (c.moveToNext());
         }
-    }
-
-    public void deleteExersice(String name, String trainingName) {
-        String[] args = {trainingName};
-        Cursor c = mDB.query(DB_TRAININGS_TABLE, null, TRA_NAME + "=?", args,
-                (String) null, (String) null, (String) null);
-        if (c.moveToFirst()) {
-            int delta = 0;
-            String tmp = c.getString(2);
-            String[] tmpArray = convertStringToArray(tmp);
-            int[] intArray = new int[tmpArray.length];
-            for (int i = 0; i < intArray.length; i++)
-                intArray[i] = 0;
-            for (int i = 0; i < tmpArray.length; i++) {
-                if (tmpArray[i].equals(name)) {
-                    intArray[i] = 1;
-                    delta++;
-                }
-            }
-            String[] newArray = new String[tmpArray.length - delta];
-            for (int i = 0, j = 0; i < tmpArray.length; i++) {
-                if (intArray[i] == 0) {
-                    newArray[j] = tmpArray[i];
-                    j++;
-                } else if (intArray[i] == 1) {
-                    continue;
-                }
-            }
-
-            String newString = convertArrayToString(newArray);
-
-            updateRec_Training(c.getInt(0), 2, newString);
-        }
-    }
-
-    public void deleteComment(String date) {
-        mDB.delete(DB_COMMENT_TABLE, DATE + " = " + date, null);
     }
 
     public int getLastWeightOrReps(String _exeName, int _set, boolean ifWeight) {
@@ -361,31 +301,17 @@ public class DB {
         String result = "60";
         String[] cols = {DB.TIMER_VALUE};
         String[] tags = {exeName};
-        Cursor c1 = mDB.query(DB_EXE_TABLE, cols, DB.EXE_NAME + "=?", tags,
-                null, null, null, null);
+        Cursor c1 = mDB.query(DB_EXE_TABLE, cols, DB.EXE_NAME + "=?", tags, null, null, null, null);
         if (c1.moveToFirst()) {
             result = c1.getString(0);
-        } else
-            Log.d(LOG_TAG, "ERROR There is no such exe:" + exeName);
-        return result;
-    }
-
-    public int getIdValueByExerciseName(String exeName) {
-        int result;
-        String[] cols = {DB.COLUMN_ID};
-        String[] tags = {exeName};
-        Cursor c = mDB.query(DB_EXE_TABLE, cols, DB.EXE_NAME + "=?", tags,
-                null, null, null, null);
-        c.moveToFirst();
-        result = c.getInt(0);
+        }
         return result;
     }
 
     public int getThisWeight(int currentSet, String exeName) {
         int result = 0;
         String[] args = {exeName};
-        Cursor c = mDB.query(DB_MAIN_TABLE, null, EXE_NAME + "=?", args, null,
-                null, null);
+        Cursor c = mDB.query(DB_MAIN_TABLE, null, EXE_NAME + "=?", args, null, null, null);
         if (c.moveToLast()) {
             do {
                 if (c.getInt(6) == currentSet) {
@@ -400,8 +326,7 @@ public class DB {
     public int getThisReps(int currentSet, String exeName) {
         int result = 0;
         String[] args = {exeName};
-        Cursor c = mDB.query(DB_MAIN_TABLE, null, EXE_NAME + "=?", args, null,
-                null, null);
+        Cursor c = mDB.query(DB_MAIN_TABLE, null, EXE_NAME + "=?", args, null, null, null);
         if (c.moveToLast()) {
             do {
                 if (c.getInt(6) == currentSet) {
@@ -426,60 +351,29 @@ public class DB {
                 }
             } while (c.moveToPrevious());
         }
-        Log.d(LOG_TAG, "returned ID == " + result);
         return result;
     }
 
-    public Cursor getAllData_Main() {
-        return mDB.query(DB_MAIN_TABLE, null, null, null, null, null, null);
+    public Cursor getDataMain(String[] column, String selection, String[] selectionArgs, String groupBy, String having, String orderedBy) {
+        return mDB.query(DB_MAIN_TABLE, column, selection, selectionArgs, groupBy, having, orderedBy);
     }
 
-    public Cursor getDataMain(String[] column, // The columns to return
-                              String selection, // The columns for the WHERE clause
-                              String[] selectionArgs, // The values for the WHERE clause
-                              String groupBy, // group the rows
-                              String having, // filter by row groups
-                              String orderedBy // The sort order
-    ) {
-
-        return mDB.query(DB_MAIN_TABLE, column, selection, selectionArgs,
-                groupBy, having, orderedBy);
+    public Cursor getDataExe(String[] column, String selection, String[] selectionArgs, String groupBy, String having, String orderedBy) {
+        return mDB.query(DB_EXE_TABLE, column, selection, selectionArgs,  groupBy, having, orderedBy);
     }
 
-    public Cursor getDataExe(String[] column, // The columns to return
-                             String selection, // The columns for the WHERE clause
-                             String[] selectionArgs, // The values for the WHERE clause
-                             String groupBy, // group the rows
-                             String having, // filter by row groups
-                             String orderedBy // The sort order
-    ) {
-        return mDB.query(DB_EXE_TABLE, column, selection, selectionArgs,
-                groupBy, having, orderedBy);
-    }
-
-    public Cursor getDataTrainings(String[] column, String selection,
-                                   String[] selectionArgs, String groupBy, String having,
-                                   String orderedBy) {
-        return mDB.query(DB_TRAININGS_TABLE, column, selection, selectionArgs,
-                groupBy, having, orderedBy);
+    public Cursor getDataTrainings(String[] column, String selection, String[] selectionArgs, String groupBy, String having, String orderedBy) {
+        return mDB.query(DB_TRAININGS_TABLE, column, selection, selectionArgs, groupBy, having, orderedBy);
     }
 
     public Cursor getCommentData(String date) {
         String[] args = {date};
-        Cursor c = mDB.query(DB_COMMENT_TABLE, null, DATE + "=?", args, null,
-                null, null);
+        Cursor c = mDB.query(DB_COMMENT_TABLE, null, DATE + "=?", args, null, null, null);
         return c;
     }
 
-    public Cursor getDataMeasures(String[] column, // The columns to return
-                                  String selection, // The columns for the WHERE clause
-                                  String[] selectionArgs, // The values for the WHERE clause
-                                  String groupBy, // group the rows
-                                  String having, // filter by row groups
-                                  String orderedBy // The sort order
-    ) {
-        return mDB.query(DB_MEASURE_TABLE, column, selection, selectionArgs,
-                groupBy, having, orderedBy);
+    public Cursor getDataMeasures(String[] column, String selection, String[] selectionArgs, String groupBy, String having, String orderedBy) {
+        return mDB.query(DB_MEASURE_TABLE, column, selection, selectionArgs, groupBy, having, orderedBy);
     }
 
     public long addExercise(String exeName, String timer, String partOfBody) {
@@ -492,7 +386,7 @@ public class DB {
 
     public List<Exercise> getExercises() {
         Cursor c = mDB.query(DB_EXE_TABLE, null, null, null, null, null, null);
-        ArrayList<Exercise> exercises = new ArrayList<Exercise>();
+        List<Exercise> exercises = new ArrayList<Exercise>();
         if (c.moveToFirst()) {
             do {
                 exercises.add(new Exercise(c.getInt(0), c.getString(2), c.getString(3), c.getString(4)));
@@ -517,7 +411,6 @@ public class DB {
                 exerciseGroup.setList(exercises);
                 result.add(exerciseGroup);
             }
-
         }
         return result;
     }
@@ -531,6 +424,26 @@ public class DB {
         return null;
     }
 
+    public List<ExerciseTrainingObject> getExerciseTrainingObjects(int trainingId){
+        String[] args = {String.valueOf(trainingId)};
+        Cursor c = mDB.query(DB_TABLE_TRAINING_EXERCISE, null, TRAINING_PROGRAM_ID + "=?", args,null,null,POSITION_AT_TRAINING);
+        List<ExerciseTrainingObject> result = new ArrayList<ExerciseTrainingObject>();
+        if (c.moveToFirst()){
+            do {
+                ExerciseTrainingObject exerciseTrainingObject = new ExerciseTrainingObject();
+                exerciseTrainingObject.setId(c.getInt(0));
+                exerciseTrainingObject.setTrainingProgramId(trainingId);
+                exerciseTrainingObject.setExerciseId(c.getInt(2));
+                exerciseTrainingObject.setPositionAtTraining(c.getInt(3));
+                exerciseTrainingObject.setSuperset(c.getInt(4) == 1 ? true : false);
+                exerciseTrainingObject.setPositionAtSuperset(c.getInt(5));
+                exerciseTrainingObject.setSupersetFirstItemId(c.getInt(6));
+                result.add(exerciseTrainingObject);
+            } while (c.moveToNext());
+        }
+        return result;
+    }
+
     public int getExerciseId(String exerciseName){
         String[] args = {exerciseName};
         Cursor c = mDB.query(DB_EXE_TABLE, null, EXE_NAME + "=?", args, null, null, null);
@@ -540,8 +453,8 @@ public class DB {
         return 0;
     }
 
-    public String getTrainingName(int _id) {
-        String[] args = {_id + ""};
+    public String getTrainingName(int id) {
+        String[] args = {id + ""};
         Cursor c = mDB.query(DB_TRAININGS_TABLE, null, COLUMN_ID + "=?", args, null, null, null);
         if (c.moveToFirst()) {
             return c.getString(1);
@@ -549,7 +462,7 @@ public class DB {
             return "";
     }
 
-    public long addRecTrainings(String traName) {
+    public long addTrainings(String traName) {
         ContentValues cv = new ContentValues();
         cv.put(TRA_NAME, traName);
         return mDB.insert(DB_TRAININGS_TABLE, null, cv);
@@ -561,12 +474,9 @@ public class DB {
         cv.put(PART_OF_BODY_FOR_MEASURING, part_of_body);
         cv.put(MEASURE_VALUE, value);
         mDB.insert(DB_MEASURE_TABLE, null, cv);
-        Log.d(LOG_TAG, "Added row: date = " + date + " part_of_body = "
-                + part_of_body + " value = " + value);
     }
 
-    public void addRecMainTable(String traName, String exeName, String date,
-                                int weight, int reps, int set) {
+    public void addRecMainTable(String traName, String exeName, String date, int weight, int reps, int set) {
         ContentValues cv = new ContentValues();
         cv.put(EXE_NAME, exeName);
         cv.put(TRA_NAME, traName);
@@ -583,23 +493,17 @@ public class DB {
         cv.put(COMMENT_TO_TRAINING, comment);
         cv.put(TOTAL_WEIGHT_OF_TRAINING, totalWeight);
         cv.put(TOTAL_TIME_OF_TRAINING, time);
-
         mDB.insert(DB_COMMENT_TABLE, null, cv);
     }
 
     public Cursor getDataComment(String[] cols, String selection, String[] args, String groupby, String having, String orderBy) {
-        return mDB.query(DB_COMMENT_TABLE, cols, selection, args, groupby,
-                having, orderBy);
+        return mDB.query(DB_COMMENT_TABLE, cols, selection, args, groupby, having, orderBy);
     }
 
     public void updateExercise(int Id, String column, String data) {
         ContentValues cv1 = new ContentValues();
         cv1.put(column, data);
-        mDB.update(DB_EXE_TABLE, cv1, "_id = " + Id, null);
-    }
-
-    public void delDB() {
-        mCtx.deleteDatabase(DB.DB_NAME);
+        mDB.update(DB_EXE_TABLE, cv1, COLUMN_ID + " = " + Id, null);
     }
 
     public void updateRec_Main(int Id, int colId, String data_str, int data_int) {
@@ -617,9 +521,7 @@ public class DB {
         } else if (colId == 6) {
             cv.put(SET, data_int);
         }
-        Log.d(LOG_TAG, "Updating main DB:\n" + "id == " + Id + " colID == "
-                + colId + " data == " + data_int);
-        mDB.update(DB_MAIN_TABLE, cv, "_id = " + Id, null);
+        mDB.update(DB_MAIN_TABLE, cv, COLUMN_ID + " = " + Id, null);
     }
 
     public void updateRec_Training(int Id, int colId, String data_str) {
@@ -629,16 +531,11 @@ public class DB {
         } else if (colId == 2) {
             cv.put(EXE_NAME, data_str);
         }
-        mDB.update(DB_TRAININGS_TABLE, cv, "_id = " + Id, null);
+        mDB.update(DB_TRAININGS_TABLE, cv, COLUMN_ID + " = " + Id, null);
     }
 
     public void deleteExercise(long id) {
         mDB.delete(DB_EXE_TABLE, COLUMN_ID + " = " + id, null);
-    }
-
-    public void delRec_Trainings(long id) {
-        mDB.delete(DB_TRAININGS_TABLE, COLUMN_ID + " = " + id, null);
-        Log.d(LOG_TAG, "deleting id == " + id);
     }
 
     public void delRec_Main(long id) {
@@ -654,7 +551,6 @@ public class DB {
 
         @Override
         public void onCreate(SQLiteDatabase db) {
-            Log.d(LOG_TAG, "DB created");
             db.execSQL(DB_EXE_CREATE);
             db.execSQL(DB_MAIN_CREATE);
             db.execSQL(DB_MEASURE_CREATE);
@@ -666,11 +562,9 @@ public class DB {
         @Override
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
             if (oldVersion == 1 && newVersion == 2) {
-                Log.d(LOG_TAG, "DB updated from v1 to v2");
                 db.execSQL(DB_MEASURE_CREATE);
             }
             if (oldVersion == 2 && newVersion == 3) {
-                Log.d(LOG_TAG, "DB updating from v2 to v3");
                 db.execSQL(DB_TRAININGS_CREATE);
             }
             if (oldVersion == 3 && newVersion == 4) {
