@@ -88,7 +88,6 @@ public class DialogAddExercises extends DialogFragment implements DialogInterfac
         private boolean blocked = false;
 
         public ExercisesAdapter(Context context) {
-            this.realNames = Constants.partsOfBody;
             this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             DB db = new DB(context);
             db.open();

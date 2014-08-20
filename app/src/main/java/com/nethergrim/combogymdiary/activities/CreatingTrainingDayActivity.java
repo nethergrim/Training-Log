@@ -54,6 +54,9 @@ public class CreatingTrainingDayActivity extends AnalyticsActivity implements Di
     private boolean isInActionMode = false;
     private boolean editing = false;
     private int oldId;
+    private FAB fabSave;
+    private FAB fabSs;
+    private FAB fabAdd;
 
     private ActionMode.Callback supersetCallback = new ActionMode.Callback() {
         @Override
@@ -90,6 +93,9 @@ public class CreatingTrainingDayActivity extends AnalyticsActivity implements Di
         public void onDestroyActionMode(ActionMode mode) {
             clearSelection();
             isInActionMode = false;
+            fabAdd.setVisibility(View.VISIBLE);
+            fabSave.setVisibility(View.VISIBLE);
+            fabSs.setVisibility(View.VISIBLE);
         }
     };
 
@@ -194,13 +200,17 @@ public class CreatingTrainingDayActivity extends AnalyticsActivity implements Di
         list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-//                if (!isInActionMode){
-//                    startActionMode(deleteCallback);
-//                    list.setItemChecked(position, true);
-//                    return true;
-//                }
                 list.startSwapping(position);
                 return false;
+            }
+        });
+
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if (!isInActionMode){
+                    clearSelection();
+                }
             }
         });
 
@@ -236,9 +246,9 @@ public class CreatingTrainingDayActivity extends AnalyticsActivity implements Di
     }
 
     private void initButtons() {
-        FAB fabSave = (FAB) findViewById(R.id.fabSave);
-        FAB fabSs = (FAB) findViewById(R.id.fabSs);
-        FAB fabAdd = (FAB) findViewById(R.id.btnAdd);
+        fabSave = (FAB) findViewById(R.id.fabSave);
+        fabSs = (FAB) findViewById(R.id.fabSs);
+        fabAdd = (FAB) findViewById(R.id.btnAdd);
 
         listener1 = new ShowHideOnScroll(fabAdd);
         listener2 = new ShowHideOnScroll(fabSave);
@@ -267,6 +277,9 @@ public class CreatingTrainingDayActivity extends AnalyticsActivity implements Di
             public void onClick(View v) {
                 if (!isInActionMode && list.getCount() > 1){
                     CreatingTrainingDayActivity.this.startActionMode(supersetCallback);
+                    fabAdd.setVisibility(View.GONE);
+                    fabSave.setVisibility(View.GONE);
+                    fabSs.setVisibility(View.GONE);
                 }
             }
         });
