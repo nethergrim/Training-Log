@@ -83,7 +83,6 @@ public class DialogAddExercises extends DialogFragment implements DialogInterfac
 
     private class ExercisesAdapter extends BaseExpandableListAdapter {
 
-        private String realNames[];
         private LayoutInflater inflater;
         private List<ExerciseGroup> data;
         private boolean blocked = false;
@@ -151,7 +150,7 @@ public class DialogAddExercises extends DialogFragment implements DialogInterfac
                 v = inflater.inflate(android.R.layout.simple_expandable_list_item_1, parent, false);
             }
             TextView text1 = (TextView) v.findViewById(android.R.id.text1);
-            text1.setText(realNames[groupPosition]);
+            text1.setText(Constants.getRealPartOfBodyName(data.get(groupPosition).getName()));
             text1.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), Constants.TYPEFACE_LIGHT));
             text1.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
             elv.expandGroup(groupPosition);

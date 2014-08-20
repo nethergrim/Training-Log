@@ -55,49 +55,10 @@ public class CreatingTrainingDayActivity extends AnalyticsActivity implements Di
     private boolean editing = false;
     private int oldId;
 
-    private ActionMode.Callback deleteCallback = new ActionMode.Callback() {
-        @Override
-        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-            list.setChoiceMode(AbsListView.CHOICE_MODE_MULTIPLE);
-            isInActionMode = true;
-            getMenuInflater().inflate(R.menu.menu_creating_training_day,menu);
-            return true;
-        }
-
-        @Override
-        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-            return false;
-        }
-
-        @Override
-        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-            if (list.getCheckedItemCount() > 0) {
-                SparseBooleanArray arrayToDelete = list.getCheckedItemPositions();
-                int count = list.getCount();
-                for (int i = count - 1; i >= 0; i--) {
-                    if (arrayToDelete.get(i)) {
-                        adapter.removeItem(i);
-                    }
-                }
-            }
-            clearSelection();
-            mode.finish();
-            return true;
-        }
-
-        @Override
-        public void onDestroyActionMode(ActionMode mode) {
-            isInActionMode = false;
-            clearSelection();
-            list.setChoiceMode(AbsListView.CHOICE_MODE_NONE);
-        }
-    };
-
     private ActionMode.Callback supersetCallback = new ActionMode.Callback() {
         @Override
         public boolean onCreateActionMode(ActionMode mode, Menu menu) {
             isInActionMode = true;
-            list.setChoiceMode(AbsListView.CHOICE_MODE_MULTIPLE);
             getMenuInflater().inflate(R.menu.add_superset,menu);
             clearSelection();
             return true;
@@ -121,16 +82,14 @@ public class CreatingTrainingDayActivity extends AnalyticsActivity implements Di
                 }
             }
             clearSelection();
-            list.setChoiceMode(AbsListView.CHOICE_MODE_NONE);
             mode.finish();
             return true;
         }
 
         @Override
         public void onDestroyActionMode(ActionMode mode) {
-            isInActionMode = false;
-            list.setChoiceMode(AbsListView.CHOICE_MODE_NONE);
             clearSelection();
+            isInActionMode = false;
         }
     };
 
@@ -144,16 +103,18 @@ public class CreatingTrainingDayActivity extends AnalyticsActivity implements Di
         }
         db = new DB(this);
         db.open();
+        etName = (EditText) findViewById(R.id.etTrainingName);
         if (!editing){
             setTitle(R.string.creating_program);
         } else {
+            etName.setText(db.getTrainingName(oldId));
             setTitle(R.string.editing_program);
         }
         getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setDisplayShowHomeEnabled(false);
         initButtons();
         initList();
-        etName = (EditText) findViewById(R.id.etTrainingName);
+
         setTypeFaceLight(etName);
     }
 
@@ -376,6 +337,7 @@ public class CreatingTrainingDayActivity extends AnalyticsActivity implements Di
 
     @Override
     public void onListItemSwapped(int i1, int i2) {
+        clearSelection();
         adapter.swapItems(i1, i2);
     }
 
@@ -446,9 +408,13 @@ public class CreatingTrainingDayActivity extends AnalyticsActivity implements Di
         }
 
         public void removeItem(int position){
-            if (rows.get(position).isInSuperset()) removeAllSupersets();
-            rows.remove(position);
-            this.notifyDataSetChanged();
+            try {
+                if (rows.get(position).isInSuperset()) removeAllSupersets();
+                rows.remove(position);
+                this.notifyDataSetChanged();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         @Override

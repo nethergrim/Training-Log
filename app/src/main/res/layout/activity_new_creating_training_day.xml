@@ -34,7 +34,7 @@
 
     <com.nethergrim.combogymdiary.view.DraggableListView
         android:id="@+id/listView"
-        android:choiceMode="none"
+        android:choiceMode="multipleChoice"
         android:layout_below="@+id/etTrainingName"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
