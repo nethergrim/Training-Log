@@ -19,11 +19,7 @@
         android:id="@+id/etTrainingName"
         android:layout_height="48dp" />
 
-    <ListView
-        android:id="@+id/listView"
-        android:layout_below="@+id/etTrainingName"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+
 
     <com.nethergrim.combogymdiary.view.TextViewLight
         android:layout_centerInParent="true"
@@ -35,6 +31,13 @@
         android:id="@+id/text_add_exersices"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+
+    <com.nethergrim.combogymdiary.view.DraggableListView
+        android:id="@+id/listView"
+        android:choiceMode="none"
+        android:layout_below="@+id/etTrainingName"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 
 
     <com.nethergrim.combogymdiary.view.FAB

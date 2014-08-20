@@ -12,7 +12,9 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -25,6 +27,8 @@ import com.nethergrim.combogymdiary.dialogs.DialogInfo;
 import com.nethergrim.combogymdiary.model.Exercise;
 import com.nethergrim.combogymdiary.model.ExerciseTrainingObject;
 import com.nethergrim.combogymdiary.tools.Prefs;
+import com.nethergrim.combogymdiary.tools.StableArrayAdapter;
+import com.nethergrim.combogymdiary.view.DraggableListView;
 import com.nethergrim.combogymdiary.view.FAB;
 import com.nethergrim.combogymdiary.view.TextViewLight;
 import com.shamanland.fab.ShowHideOnScroll;
@@ -33,11 +37,11 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CreatingTrainingDayActivity extends AnalyticsActivity implements DialogAddExercises.OnExerciseAddCallback{
+public class CreatingTrainingDayActivity extends AnalyticsActivity implements DialogAddExercises.OnExerciseAddCallback, DraggableListView.OnListItemSwapListener {
 
 
     public static final String BUNDLE_ID_KEY = "com.nethergrim.combogymdiary.ID";
-    private ListView list;
+    private DraggableListView list;
     private TextViewLight textNoExe;
     private EditText etName;
     private DB db;
@@ -52,6 +56,7 @@ public class CreatingTrainingDayActivity extends AnalyticsActivity implements Di
     private ActionMode.Callback deleteCallback = new ActionMode.Callback() {
         @Override
         public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+            list.setChoiceMode(AbsListView.CHOICE_MODE_MULTIPLE);
             isInActionMode = true;
             getMenuInflater().inflate(R.menu.menu_creating_training_day,menu);
             return true;
@@ -82,6 +87,7 @@ public class CreatingTrainingDayActivity extends AnalyticsActivity implements Di
         public void onDestroyActionMode(ActionMode mode) {
             isInActionMode = false;
             clearSelection();
+            list.setChoiceMode(AbsListView.CHOICE_MODE_SINGLE);
         }
     };
 
@@ -89,6 +95,7 @@ public class CreatingTrainingDayActivity extends AnalyticsActivity implements Di
         @Override
         public boolean onCreateActionMode(ActionMode mode, Menu menu) {
             isInActionMode = true;
+            list.setChoiceMode(AbsListView.CHOICE_MODE_MULTIPLE);
             getMenuInflater().inflate(R.menu.add_superset,menu);
             clearSelection();
             return true;
@@ -120,6 +127,7 @@ public class CreatingTrainingDayActivity extends AnalyticsActivity implements Di
         public void onDestroyActionMode(ActionMode mode) {
             isInActionMode = false;
             clearSelection();
+            list.setChoiceMode(AbsListView.CHOICE_MODE_SINGLE);
         }
     };
 
@@ -180,28 +188,55 @@ public class CreatingTrainingDayActivity extends AnalyticsActivity implements Di
             for (Integer anIdList : idList) {
                 newExercises.add(db.getExercise(anIdList));
             }
-            adapter.addData(newExercises);
+            adapter.addNewData(newExercises);
             clearSelection();
         }
     }
 
     private void initList() {
         textNoExe = (TextViewLight) findViewById(R.id.text_add_exersices);
-        list = (ListView) findViewById(R.id.listView);
+        list = (DraggableListView) findViewById(R.id.listView);
+        list.setListener(this);
+        list.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (isInActionMode){
+                    list.setItemChecked(position, !list.isItemChecked(position));
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                            }
+        });
         adapter = new TrainingDayAdapter(this);
         list.setAdapter(adapter);
-        list.setOnTouchListener(new View.OnTouchListener() {
+//        list.setOnTouchListener(new View.OnTouchListener() {
+//            @Override
+//            public boolean onTouch(View v, MotionEvent event) {
+//                if (list.getCount() > 5) {
+//                    listener1.onTouch(v, event);
+//                    listener2.onTouch(v, event);
+//                    listener3.onTouch(v, event);
+//                    return true;
+//                }
+//                return false;
+//            }
+//        });
+
+        list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (list.getCount() > 5) {
-                    listener1.onTouch(v, event);
-                    listener2.onTouch(v, event);
-                    listener3.onTouch(v, event);
-                }
-                return true;
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+//                if (!isInActionMode){
+//                    startActionMode(deleteCallback);
+//                    list.setItemChecked(position, true);
+//                    return true;
+//                }
+                list.startSwapping(position);
+                return false;
             }
         });
-        list.setChoiceMode(AbsListView.CHOICE_MODE_MULTIPLE);
+
         if (editing){
             loadTrainingsFromDbAndAdd();
         }
@@ -318,10 +353,16 @@ public class CreatingTrainingDayActivity extends AnalyticsActivity implements Di
         }
     }
 
+    @Override
+    public void onListItemSwapped(int i1, int i2) {
+        adapter.swapItems(i1, i2);
+    }
+
     private class TrainingDayAdapter extends BaseAdapter{
 
         private ArrayList<Row> rows = new ArrayList<Row>();
         private LayoutInflater inflater;
+        final int INVALID_ID = -1;
 
         public TrainingDayAdapter(Context context){
             this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -337,15 +378,24 @@ public class CreatingTrainingDayActivity extends AnalyticsActivity implements Di
             }
         }
 
-        public void addData(List<Exercise> newData){
+        public void addNewData(List<Exercise> newData){
+            ArrayList<String> data = new ArrayList<String>();
             for (Exercise aNewData : newData) {
                 rows.add(new Row(aNewData));
+                data.add(aNewData.getName());
             }
             notifyDataSetChanged();
         }
 
         public void addRows(List<Row> rows){
             this.rows.addAll(rows);
+            notifyDataSetChanged();
+        }
+
+        public void swapItems(int i1, int i2){
+            Row tmp = rows.get(i1);
+            rows.set(i1, rows.get(i2));
+            rows.set(i2, tmp);
             notifyDataSetChanged();
         }
 
@@ -378,27 +428,30 @@ public class CreatingTrainingDayActivity extends AnalyticsActivity implements Di
         }
 
         @Override
-        public Row getItem(int position) {
-            return rows.get(position);
+        public String getItem(int position) {
+            return rows.get(position).getExercise().getName();
         }
 
         @Override
         public long getItemId(int position) {
+            if (position < 0 || position >= rows.size()) {
+                return INVALID_ID;
+            }
             return rows.get(position).getExercise().getId();
         }
 
         @Override
         public View getView(final int position, View convertView, ViewGroup parent) {
-            View v = convertView;
-            if (v == null){
-                v = inflater.inflate(R.layout.list_item_creating_programm, parent, false);
+            View view = convertView;
+            if (view == null){
+                view = inflater.inflate(R.layout.list_item_creating_programm, parent, false);
                 ViewHolder viewHolder = new ViewHolder();
-                viewHolder.textViewLightExerciseName = (TextViewLight) v.findViewById(R.id.text_exercise);
-                viewHolder.textViewLightSupersetNumber = (TextViewLight) v.findViewById(R.id.text_number_of_superset);
-                viewHolder.imageViewSuperset = (ImageView)v.findViewById(R.id.imageSuperset);
-                v.setTag(viewHolder);
+                viewHolder.textViewLightExerciseName = (TextViewLight) view.findViewById(R.id.text_exercise);
+                viewHolder.textViewLightSupersetNumber = (TextViewLight)view.findViewById(R.id.text_number_of_superset);
+                viewHolder.imageViewSuperset = (ImageView)view.findViewById(R.id.imageSuperset);
+                view.setTag(viewHolder);
             }
-            ViewHolder holder = (ViewHolder) v.getTag();
+            ViewHolder holder = (ViewHolder) view.getTag();
             holder.textViewLightExerciseName.setText(rows.get(position).getExercise().getName());
             if (rows.get(position).isInSuperset()){
                 holder.textViewLightSupersetNumber.setVisibility(View.VISIBLE);
@@ -408,25 +461,7 @@ public class CreatingTrainingDayActivity extends AnalyticsActivity implements Di
                 holder.textViewLightSupersetNumber.setVisibility(View.GONE);
                 holder.imageViewSuperset.setVisibility(View.GONE);
             }
-            v.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    if (!isInActionMode){
-                        startActionMode(deleteCallback);
-                        list.setItemChecked(position, true);
-                    }
-                    return false;
-                }
-            });
-            v.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (isInActionMode){
-                        list.setItemChecked(position, !list.isItemChecked(position));
-                    }
-                }
-            });
-            return v;
+            return view;
         }
 
         private class ViewHolder {

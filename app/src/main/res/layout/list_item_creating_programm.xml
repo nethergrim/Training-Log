@@ -8,7 +8,6 @@
     <com.nethergrim.combogymdiary.view.TextViewLight
         android:id="@+id/text_exercise"
         android:textSize="16sp"
-
         android:gravity="center_vertical|start"
         android:layout_alignParentLeft="true"
         android:layout_toLeftOf="@+id/imageSuperset"

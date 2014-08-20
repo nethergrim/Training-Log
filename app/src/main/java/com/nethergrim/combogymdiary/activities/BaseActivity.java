@@ -198,8 +198,6 @@ public class BaseActivity extends AnalyticsActivity implements
             int response = ownedItems.getInt("RESPONSE_CODE");
             if (response == 0) {
                 ArrayList<String> purchaseDataList = ownedItems.getStringArrayList("INAPP_PURCHASE_DATA_LIST");
-                Log.e("myLogs", "purchaseDataList.size() == " + purchaseDataList.size());
-
                 if (purchaseDataList.size() > 0) {
                     Prefs.getPreferences().setAdsRemoved(true);
                     Counter.sharedInstance().reportEvent("checkAd() true, paid");
