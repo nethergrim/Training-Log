@@ -28,6 +28,7 @@ import com.nethergrim.combogymdiary.model.Exercise;
 import com.nethergrim.combogymdiary.model.ExerciseTrainingObject;
 import com.nethergrim.combogymdiary.tools.Prefs;
 import com.nethergrim.combogymdiary.tools.StableArrayAdapter;
+import com.nethergrim.combogymdiary.tools.SwipeDismissListViewTouchListener;
 import com.nethergrim.combogymdiary.view.DraggableListView;
 import com.nethergrim.combogymdiary.view.FAB;
 import com.nethergrim.combogymdiary.view.TextViewLight;
@@ -49,6 +50,7 @@ public class CreatingTrainingDayActivity extends AnalyticsActivity implements Di
     private View.OnTouchListener listener1;
     private View.OnTouchListener listener2;
     private View.OnTouchListener listener3;
+    private SwipeDismissListViewTouchListener swipeListener;
     private boolean isInActionMode = false;
     private boolean editing = false;
     private int oldId;
@@ -87,7 +89,7 @@ public class CreatingTrainingDayActivity extends AnalyticsActivity implements Di
         public void onDestroyActionMode(ActionMode mode) {
             isInActionMode = false;
             clearSelection();
-            list.setChoiceMode(AbsListView.CHOICE_MODE_SINGLE);
+            list.setChoiceMode(AbsListView.CHOICE_MODE_NONE);
         }
     };
 
@@ -119,6 +121,7 @@ public class CreatingTrainingDayActivity extends AnalyticsActivity implements Di
                 }
             }
             clearSelection();
+            list.setChoiceMode(AbsListView.CHOICE_MODE_NONE);
             mode.finish();
             return true;
         }
@@ -126,8 +129,8 @@ public class CreatingTrainingDayActivity extends AnalyticsActivity implements Di
         @Override
         public void onDestroyActionMode(ActionMode mode) {
             isInActionMode = false;
+            list.setChoiceMode(AbsListView.CHOICE_MODE_NONE);
             clearSelection();
-            list.setChoiceMode(AbsListView.CHOICE_MODE_SINGLE);
         }
     };
 
@@ -214,6 +217,9 @@ public class CreatingTrainingDayActivity extends AnalyticsActivity implements Di
         list.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
+                if (list != null && list.getCount() > 0){
+                    swipeListener.onTouch(v,event);
+                }
                 if (list.getCount() > 5) {
                     listener1.onTouch(v, event);
                     listener2.onTouch(v, event);
@@ -234,6 +240,20 @@ public class CreatingTrainingDayActivity extends AnalyticsActivity implements Di
 //                }
                 list.startSwapping(position);
                 return false;
+            }
+        });
+
+        swipeListener = new SwipeDismissListViewTouchListener(list, new SwipeDismissListViewTouchListener.DismissCallbacks() {
+            @Override
+            public boolean canDismiss(int position) {
+                return true;
+            }
+
+            @Override
+            public void onDismiss(ListView listView, int[] reverseSortedPositions) {
+                for (int i = 0; i < reverseSortedPositions.length; i++){
+                    adapter.removeItem(reverseSortedPositions[0]);
+                }
             }
         });
 
@@ -263,6 +283,7 @@ public class CreatingTrainingDayActivity extends AnalyticsActivity implements Di
         listener2 = new ShowHideOnScroll(fabSave);
         listener3 = new ShowHideOnScroll(fabSs);
 
+
         fabAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -283,7 +304,7 @@ public class CreatingTrainingDayActivity extends AnalyticsActivity implements Di
         fabSs.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!isInActionMode){
+                if (!isInActionMode && list.getCount() > 1){
                     CreatingTrainingDayActivity.this.startActionMode(supersetCallback);
                 }
             }
@@ -379,12 +400,20 @@ public class CreatingTrainingDayActivity extends AnalyticsActivity implements Di
         }
 
         public void addNewData(List<Exercise> newData){
-            ArrayList<String> data = new ArrayList<String>();
             for (Exercise aNewData : newData) {
-                rows.add(new Row(aNewData));
-                data.add(aNewData.getName());
+                if (!containsExercise(aNewData.getId())){
+                    rows.add(new Row(aNewData));
+                }
             }
             notifyDataSetChanged();
+        }
+
+        public boolean containsExercise(long id){
+            for (Row row : rows) {
+                if (row.getExercise().getId() == id)
+                    return true;
+            }
+            return false;
         }
 
         public void addRows(List<Row> rows){

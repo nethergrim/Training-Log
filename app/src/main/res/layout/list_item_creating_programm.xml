@@ -5,12 +5,13 @@
     android:background="@drawable/list_item_background_selector"
     android:layout_height="48dp">
 
+
     <com.nethergrim.combogymdiary.view.TextViewLight
         android:id="@+id/text_exercise"
         android:textSize="16sp"
         android:gravity="center_vertical|start"
-        android:layout_alignParentLeft="true"
         android:layout_toLeftOf="@+id/imageSuperset"
+        android:layout_alignParentLeft="true"
         android:focusable="false"
         android:layout_margin="4dp"
         android:singleLine="true"
