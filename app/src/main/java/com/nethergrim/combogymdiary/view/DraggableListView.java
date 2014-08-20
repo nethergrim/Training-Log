@@ -86,7 +86,7 @@ public class DraggableListView extends ListView {
         init(context);
     }
 
-    public void init(Context context) {
+    private void init(Context context) {
         stroke_color = context.getResources().getColor(R.color.material_light_blue_a400);
         setOnScrollListener(mScrollListener);
         DisplayMetrics metrics = context.getResources().getDisplayMetrics();
@@ -170,7 +170,7 @@ public class DraggableListView extends ListView {
     }
 
     /** Retrieves the view in the list corresponding to itemID */
-    public View getViewForID (long itemID) {
+    private View getViewForID (long itemID) {
         int firstVisiblePosition = getFirstVisiblePosition();
         ListAdapter adapter = getAdapter();
         for(int i = 0; i < getChildCount(); i++) {
@@ -185,7 +185,7 @@ public class DraggableListView extends ListView {
     }
 
     /** Retrieves the position in the list corresponding to itemID */
-    public int getPositionForID (long itemID) {
+    private int getPositionForID (long itemID) {
         View v = getViewForID(itemID);
         if (v == null) {
             return -1;
@@ -441,7 +441,7 @@ public class DraggableListView extends ListView {
      * or below the bounds of the listview. If so, the listview does an appropriate
      * upward or downward smooth scroll so as to reveal new items.
      */
-    public boolean handleMobileCellScroll(Rect r) {
+    private boolean handleMobileCellScroll(Rect r) {
         int offset = computeVerticalScrollOffset();
         int height = getHeight();
         int extent = computeVerticalScrollExtent();
@@ -461,10 +461,6 @@ public class DraggableListView extends ListView {
 
         return false;
     }
-
-//    public void setArrayList(ArrayList<String> cheeseList) {
-//        mCheeseList = cheeseList;
-//    }
 
     /**
      * This scroll listener is added to the listview in order to handle cell swapping

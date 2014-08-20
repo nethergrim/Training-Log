@@ -211,18 +211,18 @@ public class CreatingTrainingDayActivity extends AnalyticsActivity implements Di
         });
         adapter = new TrainingDayAdapter(this);
         list.setAdapter(adapter);
-//        list.setOnTouchListener(new View.OnTouchListener() {
-//            @Override
-//            public boolean onTouch(View v, MotionEvent event) {
-//                if (list.getCount() > 5) {
-//                    listener1.onTouch(v, event);
-//                    listener2.onTouch(v, event);
-//                    listener3.onTouch(v, event);
-//                    return true;
-//                }
-//                return false;
-//            }
-//        });
+        list.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (list.getCount() > 5) {
+                    listener1.onTouch(v, event);
+                    listener2.onTouch(v, event);
+                    listener3.onTouch(v, event);
+                    return false;
+                }
+                return false;
+            }
+        });
 
         list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override

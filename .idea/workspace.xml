@@ -45,11 +45,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1ae25ada-db98-44c3-aaa8-db4b3954c501" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/view/DraggableListView.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/activities/BaseActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/activities/BaseActivity.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/activities/CreatingTrainingDayActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/activities/CreatingTrainingDayActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_new_creating_training_day.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_new_creating_training_day.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/list_item_creating_programm.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/list_item_creating_programm.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/view/DraggableListView.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/view/DraggableListView.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="GymDiary.iws" />
@@ -73,23 +70,68 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="DraggableListView.java" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="DraggableListView.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/view/DraggableListView.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.52896994" vertical-offset="1887" max-vertical-offset="9367">
-              <caret line="142" column="35" selection-start-line="142" selection-start-column="35" selection-end-line="142" selection-end-column="35" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="360" max-vertical-offset="1853">
+              <caret line="463" column="0" selection-start-line="463" selection-start-column="0" selection-end-line="463" selection-end-column="0" />
               <folding>
-                <element signature="imports" expanded="true" />
+                <element signature="docComment;class#DraggableListView#0" expanded="false" />
+                <element signature="class#OnListItemSwapListener#0;class#DraggableListView#0" expanded="false" />
+                <element signature="method#DraggableListView#0;class#DraggableListView#0" expanded="false" />
+                <element signature="method#DraggableListView#1;class#DraggableListView#0" expanded="false" />
+                <element signature="method#DraggableListView#2;class#DraggableListView#0" expanded="false" />
+                <element signature="method#init#0;class#DraggableListView#0" expanded="false" />
+                <element signature="method#startSwapping#0;class#DraggableListView#0" expanded="false" />
+                <element signature="docComment;method#getAndAddHoverView#0;class#DraggableListView#0" expanded="false" />
+                <element signature="method#getAndAddHoverView#0;class#DraggableListView#0" expanded="false" />
+                <element signature="docComment;method#getBitmapWithBorder#0;class#DraggableListView#0" expanded="false" />
+                <element signature="method#getBitmapWithBorder#0;class#DraggableListView#0" expanded="false" />
+                <element signature="docComment;method#getBitmapFromView#0;class#DraggableListView#0" expanded="false" />
+                <element signature="method#getBitmapFromView#0;class#DraggableListView#0" expanded="false" />
+                <element signature="docComment;method#updateNeighborViewsForID#0;class#DraggableListView#0" expanded="false" />
+                <element signature="method#updateNeighborViewsForID#0;class#DraggableListView#0" expanded="false" />
+                <element signature="docComment;method#getViewForID#0;class#DraggableListView#0" expanded="false" />
+                <element signature="method#getViewForID#0;class#DraggableListView#0" expanded="false" />
+                <element signature="docComment;method#getPositionForID#0;class#DraggableListView#0" expanded="false" />
+                <element signature="method#getPositionForID#0;class#DraggableListView#0" expanded="false" />
+                <element signature="docComment;method#dispatchDraw#0;class#DraggableListView#0" expanded="false" />
+                <element signature="method#dispatchDraw#0;class#DraggableListView#0" expanded="false" />
+                <element signature="method#onTouchEvent#0;class#DraggableListView#0" expanded="false" />
+                <element signature="docComment;method#handleCellSwitch#0;class#DraggableListView#0" expanded="false" />
+                <element signature="method#handleCellSwitch#0;class#DraggableListView#0" expanded="false" />
+                <element signature="docComment;method#touchEventsEnded#0;class#DraggableListView#0" expanded="false" />
+                <element signature="method#touchEventsEnded#0;class#DraggableListView#0" expanded="false" />
+                <element signature="e#12262#12339#0" expanded="false" />
+                <element signature="class#13189:13798" expanded="false" />
+                <element signature="method#onAnimationEnd#0;class#13189:13798" expanded="false" />
+                <element signature="docComment;method#touchEventsCancelled#0;class#DraggableListView#0" expanded="false" />
+                <element signature="method#touchEventsCancelled#0;class#DraggableListView#0" expanded="false" />
+                <element signature="docComment;field#sBoundEvaluator#0;class#DraggableListView#0" expanded="false" />
+                <element signature="class#14728:15299" expanded="false" />
+                <element signature="method#evaluate#0;class#14728:15299" expanded="false" />
+                <element signature="method#interpolate#0;class#14728:15299" expanded="false" />
+                <element signature="docComment;method#handleMobileCellScroll#0;class#DraggableListView#0" expanded="false" />
+                <element signature="method#handleMobileCellScroll#0;class#DraggableListView#0" expanded="false" />
+                <element signature="docComment;method#handleMobileCellScroll#1;class#DraggableListView#0" expanded="false" />
+                <element signature="method#handleMobileCellScroll#1;class#DraggableListView#0" expanded="false" />
+                <element signature="docComment;field#mScrollListener#0;class#DraggableListView#0" expanded="false" />
+                <element signature="class#17004:20444" expanded="false" />
+                <element signature="method#onScroll#0;class#17004:20444" expanded="false" />
+                <element signature="method#onScrollStateChanged#0;class#17004:20444" expanded="false" />
+                <element signature="method#isScrollCompleted#0;class#17004:20444" expanded="false" />
+                <element signature="method#checkAndHandleFirstVisibleCellChange#0;class#17004:20444" expanded="false" />
+                <element signature="method#checkAndHandleLastVisibleCellChange#0;class#17004:20444" expanded="false" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="CreatingTrainingDayActivity.java" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="CreatingTrainingDayActivity.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/activities/CreatingTrainingDayActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="1887" max-vertical-offset="3434">
-              <caret line="404" column="0" selection-start-line="404" selection-start-column="0" selection-end-line="404" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.45600858" vertical-offset="1275" max-vertical-offset="3434">
+              <caret line="236" column="13" selection-start-line="236" selection-start-column="13" selection-end-line="236" selection-end-column="13" />
               <folding>
                 <element signature="class#2063:3313" expanded="false" />
                 <element signature="method#onActionItemClicked#0;class#2063:3313" expanded="false" />
@@ -101,14 +143,15 @@
                 <element signature="method#onResume#0;class#CreatingTrainingDayActivity#0" expanded="false" />
                 <element signature="method#onOptionsItemSelected#0;class#CreatingTrainingDayActivity#0" expanded="false" />
                 <element signature="method#onExerciseAddedCallback#0;class#CreatingTrainingDayActivity#0" expanded="false" />
-                <element signature="e#7848#8324#0" expanded="true" />
-                <element signature="e#8313#8314#0" expanded="true" />
+                <element signature="e#7371#7781#0" expanded="true" />
+                <element signature="e#7770#7771#0" expanded="true" />
+                <element signature="e#7825#8301#0" expanded="true" />
                 <element signature="method#loadTrainingsFromDbAndAdd#0;class#CreatingTrainingDayActivity#0" expanded="false" />
                 <element signature="method#initButtons#0;class#CreatingTrainingDayActivity#0" expanded="false" />
                 <element signature="method#save#0;class#CreatingTrainingDayActivity#0" expanded="false" />
-                <element signature="e#10395#10423#0" expanded="true" />
-                <element signature="e#10528#10561#0" expanded="true" />
-                <element signature="e#12424#12438#0" expanded="true" />
+                <element signature="e#10372#10400#0" expanded="true" />
+                <element signature="e#10505#10538#0" expanded="true" />
+                <element signature="e#12401#12415#0" expanded="true" />
                 <element signature="method#showSuperSetDialog#0;class#CreatingTrainingDayActivity#0" expanded="false" />
                 <element signature="method#clearSelection#0;class#CreatingTrainingDayActivity#0" expanded="false" />
                 <element signature="method#TrainingDayAdapter#0;class#TrainingDayAdapter#0;class#CreatingTrainingDayActivity#0" expanded="false" />
@@ -905,8 +948,8 @@
         <option value="$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/tools/StableArrayAdapter.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/list_item_creating_programm.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_new_creating_training_day.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/activities/CreatingTrainingDayActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/view/DraggableListView.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/activities/CreatingTrainingDayActivity.java" />
       </list>
     </option>
   </component>
@@ -1497,7 +1540,7 @@
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.22135417" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.32604167" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="true" weight="0.32604167" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Thumbnails" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32982087" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
@@ -2014,10 +2057,65 @@
         <state />
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/view/DraggableListView.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="360" max-vertical-offset="1853">
+          <caret line="463" column="0" selection-start-line="463" selection-start-column="0" selection-end-line="463" selection-end-column="0" />
+          <folding>
+            <element signature="docComment;class#DraggableListView#0" expanded="false" />
+            <element signature="class#OnListItemSwapListener#0;class#DraggableListView#0" expanded="false" />
+            <element signature="method#DraggableListView#0;class#DraggableListView#0" expanded="false" />
+            <element signature="method#DraggableListView#1;class#DraggableListView#0" expanded="false" />
+            <element signature="method#DraggableListView#2;class#DraggableListView#0" expanded="false" />
+            <element signature="method#init#0;class#DraggableListView#0" expanded="false" />
+            <element signature="method#startSwapping#0;class#DraggableListView#0" expanded="false" />
+            <element signature="docComment;method#getAndAddHoverView#0;class#DraggableListView#0" expanded="false" />
+            <element signature="method#getAndAddHoverView#0;class#DraggableListView#0" expanded="false" />
+            <element signature="docComment;method#getBitmapWithBorder#0;class#DraggableListView#0" expanded="false" />
+            <element signature="method#getBitmapWithBorder#0;class#DraggableListView#0" expanded="false" />
+            <element signature="docComment;method#getBitmapFromView#0;class#DraggableListView#0" expanded="false" />
+            <element signature="method#getBitmapFromView#0;class#DraggableListView#0" expanded="false" />
+            <element signature="docComment;method#updateNeighborViewsForID#0;class#DraggableListView#0" expanded="false" />
+            <element signature="method#updateNeighborViewsForID#0;class#DraggableListView#0" expanded="false" />
+            <element signature="docComment;method#getViewForID#0;class#DraggableListView#0" expanded="false" />
+            <element signature="method#getViewForID#0;class#DraggableListView#0" expanded="false" />
+            <element signature="docComment;method#getPositionForID#0;class#DraggableListView#0" expanded="false" />
+            <element signature="method#getPositionForID#0;class#DraggableListView#0" expanded="false" />
+            <element signature="docComment;method#dispatchDraw#0;class#DraggableListView#0" expanded="false" />
+            <element signature="method#dispatchDraw#0;class#DraggableListView#0" expanded="false" />
+            <element signature="method#onTouchEvent#0;class#DraggableListView#0" expanded="false" />
+            <element signature="docComment;method#handleCellSwitch#0;class#DraggableListView#0" expanded="false" />
+            <element signature="method#handleCellSwitch#0;class#DraggableListView#0" expanded="false" />
+            <element signature="docComment;method#touchEventsEnded#0;class#DraggableListView#0" expanded="false" />
+            <element signature="method#touchEventsEnded#0;class#DraggableListView#0" expanded="false" />
+            <element signature="e#12262#12339#0" expanded="false" />
+            <element signature="class#13189:13798" expanded="false" />
+            <element signature="method#onAnimationEnd#0;class#13189:13798" expanded="false" />
+            <element signature="docComment;method#touchEventsCancelled#0;class#DraggableListView#0" expanded="false" />
+            <element signature="method#touchEventsCancelled#0;class#DraggableListView#0" expanded="false" />
+            <element signature="docComment;field#sBoundEvaluator#0;class#DraggableListView#0" expanded="false" />
+            <element signature="class#14728:15299" expanded="false" />
+            <element signature="method#evaluate#0;class#14728:15299" expanded="false" />
+            <element signature="method#interpolate#0;class#14728:15299" expanded="false" />
+            <element signature="docComment;method#handleMobileCellScroll#0;class#DraggableListView#0" expanded="false" />
+            <element signature="method#handleMobileCellScroll#0;class#DraggableListView#0" expanded="false" />
+            <element signature="docComment;method#handleMobileCellScroll#1;class#DraggableListView#0" expanded="false" />
+            <element signature="method#handleMobileCellScroll#1;class#DraggableListView#0" expanded="false" />
+            <element signature="docComment;field#mScrollListener#0;class#DraggableListView#0" expanded="false" />
+            <element signature="class#17004:20444" expanded="false" />
+            <element signature="method#onScroll#0;class#17004:20444" expanded="false" />
+            <element signature="method#onScrollStateChanged#0;class#17004:20444" expanded="false" />
+            <element signature="method#isScrollCompleted#0;class#17004:20444" expanded="false" />
+            <element signature="method#checkAndHandleFirstVisibleCellChange#0;class#17004:20444" expanded="false" />
+            <element signature="method#checkAndHandleLastVisibleCellChange#0;class#17004:20444" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/activities/CreatingTrainingDayActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="1887" max-vertical-offset="3434">
-          <caret line="404" column="0" selection-start-line="404" selection-start-column="0" selection-end-line="404" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.45600858" vertical-offset="1275" max-vertical-offset="3434">
+          <caret line="236" column="13" selection-start-line="236" selection-start-column="13" selection-end-line="236" selection-end-column="13" />
           <folding>
             <element signature="class#2063:3313" expanded="false" />
             <element signature="method#onActionItemClicked#0;class#2063:3313" expanded="false" />
@@ -2029,14 +2127,15 @@
             <element signature="method#onResume#0;class#CreatingTrainingDayActivity#0" expanded="false" />
             <element signature="method#onOptionsItemSelected#0;class#CreatingTrainingDayActivity#0" expanded="false" />
             <element signature="method#onExerciseAddedCallback#0;class#CreatingTrainingDayActivity#0" expanded="false" />
-            <element signature="e#7848#8324#0" expanded="true" />
-            <element signature="e#8313#8314#0" expanded="true" />
+            <element signature="e#7371#7781#0" expanded="true" />
+            <element signature="e#7770#7771#0" expanded="true" />
+            <element signature="e#7825#8301#0" expanded="true" />
             <element signature="method#loadTrainingsFromDbAndAdd#0;class#CreatingTrainingDayActivity#0" expanded="false" />
             <element signature="method#initButtons#0;class#CreatingTrainingDayActivity#0" expanded="false" />
             <element signature="method#save#0;class#CreatingTrainingDayActivity#0" expanded="false" />
-            <element signature="e#10395#10423#0" expanded="true" />
-            <element signature="e#10528#10561#0" expanded="true" />
-            <element signature="e#12424#12438#0" expanded="true" />
+            <element signature="e#10372#10400#0" expanded="true" />
+            <element signature="e#10505#10538#0" expanded="true" />
+            <element signature="e#12401#12415#0" expanded="true" />
             <element signature="method#showSuperSetDialog#0;class#CreatingTrainingDayActivity#0" expanded="false" />
             <element signature="method#clearSelection#0;class#CreatingTrainingDayActivity#0" expanded="false" />
             <element signature="method#TrainingDayAdapter#0;class#TrainingDayAdapter#0;class#CreatingTrainingDayActivity#0" expanded="false" />
@@ -2051,16 +2150,6 @@
             <element signature="method#Row#0;class#Row#0;class#CreatingTrainingDayActivity#0" expanded="false" />
             <element signature="method#setSupersetPosition#0;class#Row#0;class#CreatingTrainingDayActivity#0" expanded="false" />
             <element signature="method#onDestroy#0;class#CreatingTrainingDayActivity#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/view/DraggableListView.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.52896994" vertical-offset="1887" max-vertical-offset="9367">
-          <caret line="142" column="35" selection-start-line="142" selection-start-column="35" selection-end-line="142" selection-end-column="35" />
-          <folding>
-            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
