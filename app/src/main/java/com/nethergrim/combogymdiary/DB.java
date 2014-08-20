@@ -219,41 +219,6 @@ public class DB {
         return null;
     }
 
-    public void deleteExersice(String name) {
-        Cursor c = mDB.query(DB_TRAININGS_TABLE, null, null, null, null, null, null);
-        if (c.moveToFirst()) {
-            do {
-                int delta = 0;
-                String tmp = c.getString(2);
-                String[] tmpArray = convertStringToArray(tmp);
-                int[] intArray = new int[tmpArray.length];
-                for (int i = 0; i < intArray.length; i++)
-                    intArray[i] = 0;
-
-                for (int i = 0; i < tmpArray.length; i++) {
-                    if (tmpArray[i].equals(name)) {
-                        intArray[i] = 1;
-                        delta++;
-                    }
-                }
-
-                String[] newArray = new String[tmpArray.length - delta];
-                for (int i = 0, j = 0; i < tmpArray.length; i++) {
-                    if (intArray[i] == 0) {
-                        newArray[j] = tmpArray[i];
-                        j++;
-                    } else if (intArray[i] == 1) {
-                        continue;
-                    }
-                }
-
-                String newString = convertArrayToString(newArray);
-
-                updateRec_Training(c.getInt(0), 2, newString);
-            } while (c.moveToNext());
-        }
-    }
-
     public int getLastWeightOrReps(String _exeName, int _set, boolean ifWeight) {
         String[] cols = {DB.WEIGHT, DB.SET};
         if (ifWeight) {
@@ -535,6 +500,7 @@ public class DB {
     }
 
     public void deleteExercise(long id) {
+        mDB.delete(DB_TABLE_TRAINING_EXERCISE, COLUMN_ID + " = " + id, null);
         mDB.delete(DB_EXE_TABLE, COLUMN_ID + " = " + id, null);
     }
 

@@ -135,8 +135,7 @@ public class ExerciseListFragment extends Fragment {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View v = inflater.inflate(R.layout.simple_expandable_list_item_1, parent, false);
             TextViewLight text1 = (TextViewLight) v.findViewById(R.id.tvl1);
-            String realNames[] = Constants.getPartsOfBodyRealNames(getActivity());
-            text1.setText(realNames[groupPosition]);
+            text1.setText(Constants.getRealPartOfBodyName(data.get(groupPosition).getName()));
             text1.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), Constants.TYPEFACE_LIGHT));
             text1.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
             v.setTag(data.get(groupPosition));

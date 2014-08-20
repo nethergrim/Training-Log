@@ -13,5 +13,6 @@ public class MyApp extends Application {
         Counter.initialize(getApplicationContext());
         Counter.sharedInstance().setTrackLocationEnabled(false);
         Prefs.init(getApplicationContext());
+        Constants.getPartsOfBodyRealNames(this);
     }
 }

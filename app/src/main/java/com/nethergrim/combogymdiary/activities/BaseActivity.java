@@ -539,7 +539,6 @@ public class BaseActivity extends AnalyticsActivity implements
     @Override
     public void onExerciseDeleteAccepted(Exercise exercise) {
         db.deleteExercise(exercise.getId());
-        db.deleteExersice(exercise.getName());
         exerciseListFragment.updateList(this);
         Toast.makeText(this, R.string.deleted, Toast.LENGTH_SHORT).show();
     }

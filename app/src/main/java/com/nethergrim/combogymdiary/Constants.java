@@ -19,6 +19,7 @@ public class Constants {
     public static final String _ID = "_id";
     public static final String BUNDLE_EXERCISE = "exercise";
     public final static String TYPE_OF_DIALOG = "type_of_dialog";
+    public static String[] partsOfBody;
 
 
 
@@ -33,7 +34,19 @@ public class Constants {
         result[5] = array[5];
         result[6] = array[6];
         result[7] = context.getResources().getString(R.string.without_category);
+        partsOfBody = result;
         return result;
+    }
+
+    public static String getRealPartOfBodyName(String constantName){
+        if (constantName.equals(PART_OF_BODY_LEGS)) return partsOfBody[0];
+        else if (constantName.equals(PART_OF_BODY_CHEST)) return partsOfBody[1];
+        else if (constantName.equals(PART_OF_BODY_BACK)) return partsOfBody[2];
+        else if (constantName.equals(PART_OF_BODY_SHOULDERS)) return partsOfBody[3];
+        else if (constantName.equals(PART_OF_BODY_BICEPS)) return partsOfBody[4];
+        else if (constantName.equals(PART_OF_BODY_TRICEPS)) return partsOfBody[5];
+        else if (constantName.equals(PART_OF_BODY_ABS)) return partsOfBody[6];
+        else return partsOfBody[7];
     }
 
 }
