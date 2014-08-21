@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-
-
     <item
         android:id="@+id/itemExit"
-        android:icon="@drawable/ic_action_accept"
         android:title="@string/add_superset"
-        android:showAsAction="always|withText">
+        android:showAsAction="always">
     </item>
 </menu>

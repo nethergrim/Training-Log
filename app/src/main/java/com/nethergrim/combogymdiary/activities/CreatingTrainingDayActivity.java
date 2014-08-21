@@ -1,8 +1,8 @@
 package com.nethergrim.combogymdiary.activities;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
@@ -11,10 +11,8 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -27,7 +25,6 @@ import com.nethergrim.combogymdiary.dialogs.DialogInfo;
 import com.nethergrim.combogymdiary.model.Exercise;
 import com.nethergrim.combogymdiary.model.ExerciseTrainingObject;
 import com.nethergrim.combogymdiary.tools.Prefs;
-import com.nethergrim.combogymdiary.tools.StableArrayAdapter;
 import com.nethergrim.combogymdiary.tools.SwipeDismissListViewTouchListener;
 import com.nethergrim.combogymdiary.view.DraggableListView;
 import com.nethergrim.combogymdiary.view.FAB;
@@ -37,6 +34,7 @@ import com.shamanland.fab.ShowHideOnScroll;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class CreatingTrainingDayActivity extends AnalyticsActivity implements DialogAddExercises.OnExerciseAddCallback, DraggableListView.OnListItemSwapListener {
 
@@ -52,17 +50,12 @@ public class CreatingTrainingDayActivity extends AnalyticsActivity implements Di
     private View.OnTouchListener listener3;
     private SwipeDismissListViewTouchListener swipeListener;
     private boolean isInActionMode = false;
-    private boolean editing = false;
-    private int oldId;
-    private FAB fabSave;
-    private FAB fabSs;
-    private FAB fabAdd;
-
     private ActionMode.Callback supersetCallback = new ActionMode.Callback() {
         @Override
         public boolean onCreateActionMode(ActionMode mode, Menu menu) {
             isInActionMode = true;
-            getMenuInflater().inflate(R.menu.add_superset,menu);
+            etName.setVisibility(View.GONE);
+            getMenuInflater().inflate(R.menu.add_superset, menu);
             clearSelection();
             return true;
         }
@@ -75,12 +68,15 @@ public class CreatingTrainingDayActivity extends AnalyticsActivity implements Di
         @Override
         public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
             if (list.getCheckedItemCount() > 1) {
-                SparseBooleanArray arrayToDelete = list.getCheckedItemPositions();
+                SparseBooleanArray sparseBooleanArray = list.getCheckedItemPositions();
                 int count = list.getCount();
+                Random random = new Random();
                 int position = list.getCheckedItemCount() - 1;
+                int color = Color.argb(255, random.nextInt(256), random.nextInt(256), random.nextInt(256));
+                int supsersetId = random.nextInt();
                 for (int i = count - 1; i >= 0; i--) {
-                    if (arrayToDelete.get(i)) {
-                        adapter.addSuperset(i, position--);
+                    if (sparseBooleanArray.get(i)) {
+                        adapter.addSuperset(i, position--, supsersetId, color);
                     }
                 }
             }
@@ -92,25 +88,31 @@ public class CreatingTrainingDayActivity extends AnalyticsActivity implements Di
         @Override
         public void onDestroyActionMode(ActionMode mode) {
             clearSelection();
+            etName.setVisibility(View.VISIBLE);
             isInActionMode = false;
             fabAdd.setVisibility(View.VISIBLE);
             fabSave.setVisibility(View.VISIBLE);
             fabSs.setVisibility(View.VISIBLE);
         }
     };
+    private boolean editing = false;
+    private int oldId;
+    private FAB fabSave;
+    private FAB fabSs;
+    private FAB fabAdd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_creating_training_day);
-        if (getIntent().getIntExtra(BUNDLE_ID_KEY, -1) >= 0){
+        if (getIntent().getIntExtra(BUNDLE_ID_KEY, -1) >= 0) {
             oldId = getIntent().getIntExtra(BUNDLE_ID_KEY, 0);
             editing = true;
         }
         db = new DB(this);
         db.open();
         etName = (EditText) findViewById(R.id.etTrainingName);
-        if (!editing){
+        if (!editing) {
             setTitle(R.string.creating_program);
         } else {
             etName.setText(db.getTrainingName(oldId));
@@ -153,7 +155,7 @@ public class CreatingTrainingDayActivity extends AnalyticsActivity implements Di
     @Override
     public void onExerciseAddedCallback(List<Integer> idList) {
         final List<Exercise> newExercises = new ArrayList<Exercise>();
-        if (idList != null && idList.size() > 0){
+        if (idList != null && idList.size() > 0) {
             textNoExe.setVisibility(View.GONE);
             for (Integer anIdList : idList) {
                 newExercises.add(db.getExercise(anIdList));
@@ -170,22 +172,22 @@ public class CreatingTrainingDayActivity extends AnalyticsActivity implements Di
         list.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (isInActionMode){
+                if (isInActionMode) {
                     list.setItemChecked(position, !list.isItemChecked(position));
                 }
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                            }
+            }
         });
         adapter = new TrainingDayAdapter(this);
         list.setAdapter(adapter);
         list.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                if (list != null && list.getCount() > 0){
-                    swipeListener.onTouch(v,event);
+                if (list != null && list.getCount() > 0) {
+                    swipeListener.onTouch(v, event);
                 }
                 if (list.getCount() > 5) {
                     listener1.onTouch(v, event);
@@ -208,7 +210,7 @@ public class CreatingTrainingDayActivity extends AnalyticsActivity implements Di
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (!isInActionMode){
+                if (!isInActionMode) {
                     clearSelection();
                 }
             }
@@ -222,13 +224,13 @@ public class CreatingTrainingDayActivity extends AnalyticsActivity implements Di
 
             @Override
             public void onDismiss(ListView listView, int[] reverseSortedPositions) {
-                for (int i = 0; i < reverseSortedPositions.length; i++){
+                for (int i = 0; i < reverseSortedPositions.length; i++) {
                     adapter.removeItem(reverseSortedPositions[0]);
                 }
             }
         });
 
-        if (editing){
+        if (editing) {
             loadTrainingsFromDbAndAdd();
         }
     }
@@ -239,6 +241,7 @@ public class CreatingTrainingDayActivity extends AnalyticsActivity implements Di
         for (ExerciseTrainingObject trainingObject : trainingObjects) {
             Row row = new Row(db.getExercise(trainingObject.getExerciseId()));
             row.setSupersetPosition(trainingObject.getPositionAtSuperset());
+            row.setSupersetColor(trainingObject.getSupersetColor());
             row.setInSuperset(trainingObject.isSuperset());
             rows.add(row);
         }
@@ -258,7 +261,7 @@ public class CreatingTrainingDayActivity extends AnalyticsActivity implements Di
         fabAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!isInActionMode){
+                if (!isInActionMode) {
                     DialogAddExercises dialogAddExercises = new DialogAddExercises();
                     dialogAddExercises.show(getFragmentManager(), DialogAddExercises.class.getName());
                 }
@@ -267,7 +270,7 @@ public class CreatingTrainingDayActivity extends AnalyticsActivity implements Di
         fabSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!isInActionMode){
+                if (!isInActionMode) {
                     save();
                 }
             }
@@ -275,7 +278,7 @@ public class CreatingTrainingDayActivity extends AnalyticsActivity implements Di
         fabSs.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!isInActionMode && list.getCount() > 1){
+                if (!isInActionMode && list.getCount() > 1) {
                     CreatingTrainingDayActivity.this.startActionMode(supersetCallback);
                     fabAdd.setVisibility(View.GONE);
                     fabSave.setVisibility(View.GONE);
@@ -286,9 +289,9 @@ public class CreatingTrainingDayActivity extends AnalyticsActivity implements Di
     }
 
     private void save() {
-        if (etName.getText().toString() == null || etName.getText().toString().equals("")){
+        if (etName.getText().toString() == null || etName.getText().toString().equals("")) {
             Toast.makeText(this, R.string.enter_training_name, Toast.LENGTH_SHORT).show();
-        } else if (list.getCount() == 0){
+        } else if (list.getCount() == 0) {
             Toast.makeText(this, R.string.add_exercises_to_workout, Toast.LENGTH_SHORT).show();
         } else {
             if (editing) db.deleteTrainingProgram(oldId);
@@ -297,7 +300,7 @@ public class CreatingTrainingDayActivity extends AnalyticsActivity implements Di
             int firstSupersetPosition = 0;
             boolean lastWasSuperset = false;
 
-            for (int i = 0; i < rows.size(); i++){
+            for (int i = 0; i < rows.size(); i++) {
                 ExerciseTrainingObject exerciseTrainingObject = new ExerciseTrainingObject();
                 Row row = rows.get(i);
 
@@ -305,15 +308,17 @@ public class CreatingTrainingDayActivity extends AnalyticsActivity implements Di
                 exerciseTrainingObject.setExerciseId((int) row.getExercise().getId());
                 exerciseTrainingObject.setPositionAtTraining(i);
 
-                if (row.isInSuperset()){
+
+                if (row.isInSuperset()) {
                     exerciseTrainingObject.setSuperset(true);
+                    exerciseTrainingObject.setSupersetColor(row.getSupersetColor());
                     exerciseTrainingObject.setPositionAtSuperset(row.getSupersetPosition());
                 } else {
                     exerciseTrainingObject.setSuperset(false);
                     exerciseTrainingObject.setPositionAtSuperset(0);
                 }
 
-                if (row.isInSuperset() && !lastWasSuperset){
+                if (row.isInSuperset() && !lastWasSuperset) {
                     exerciseTrainingObject.setSupersetFirstItemId(-1);
                     firstSupersetPosition = (int) db.addExerciseTrainingObject(exerciseTrainingObject);
                 } else if (row.isInSuperset() && lastWasSuperset) {
@@ -342,8 +347,8 @@ public class CreatingTrainingDayActivity extends AnalyticsActivity implements Di
         }
     }
 
-    private void clearSelection(){
-        for (int i = 0; i < list.getCount(); i++){
+    private void clearSelection() {
+        for (int i = 0; i < list.getCount(); i++) {
             list.setItemChecked(i, false);
         }
     }
@@ -354,36 +359,42 @@ public class CreatingTrainingDayActivity extends AnalyticsActivity implements Di
         adapter.swapItems(i1, i2);
     }
 
-    private class TrainingDayAdapter extends BaseAdapter{
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        db.close();
+    }
 
+    private class TrainingDayAdapter extends BaseAdapter {
+
+        final int INVALID_ID = -1;
         private ArrayList<Row> rows = new ArrayList<Row>();
         private LayoutInflater inflater;
-        final int INVALID_ID = -1;
 
-        public TrainingDayAdapter(Context context){
+        public TrainingDayAdapter(Context context) {
             this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         }
 
         @Override
         public void notifyDataSetChanged() {
             super.notifyDataSetChanged();
-            if (getCount() == 0){
+            if (getCount() == 0) {
                 CreatingTrainingDayActivity.this.textNoExe.setVisibility(View.VISIBLE);
             } else if (getCount() > 0) {
                 CreatingTrainingDayActivity.this.textNoExe.setVisibility(View.GONE);
             }
         }
 
-        public void addNewData(List<Exercise> newData){
+        public void addNewData(List<Exercise> newData) {
             for (Exercise aNewData : newData) {
-                if (!containsExercise(aNewData.getId())){
+                if (!containsExercise(aNewData.getId())) {
                     rows.add(new Row(aNewData));
                 }
             }
             notifyDataSetChanged();
         }
 
-        public boolean containsExercise(long id){
+        public boolean containsExercise(long id) {
             for (Row row : rows) {
                 if (row.getExercise().getId() == id)
                     return true;
@@ -391,38 +402,44 @@ public class CreatingTrainingDayActivity extends AnalyticsActivity implements Di
             return false;
         }
 
-        public void addRows(List<Row> rows){
+        public void addRows(List<Row> rows) {
             this.rows.addAll(rows);
             notifyDataSetChanged();
         }
 
-        public void swapItems(int i1, int i2){
+        public void swapItems(int i1, int i2) {
             Row tmp = rows.get(i1);
             rows.set(i1, rows.get(i2));
             rows.set(i2, tmp);
             notifyDataSetChanged();
         }
 
-        public List<Row>getRows(){
+        public List<Row> getRows() {
             return this.rows;
         }
 
-        public void addSuperset(int position, int positionInsuperset){
-                rows.get(position).setInSuperset(true);
-                rows.get(position).setSupersetPosition(positionInsuperset);
+        public void addSuperset(int position, int positionInsuperset, int supersetId, int supersetColor) {
+            rows.get(position).setInSuperset(true);
+            rows.get(position).setSupersetPosition(positionInsuperset);
+            rows.get(position).setSupersetId(supersetId);
+            rows.get(position).setSupersetColor(supersetColor);
             this.notifyDataSetChanged();
         }
 
-        public void removeAllSupersets(){
+        public void removeAllSupersets(int id) {
             for (Row row : rows) {
-                row.setInSuperset(false);
-                row.setSupersetPosition(0);
+                if (row.getSupersetId() == id){
+                    row.setInSuperset(false);
+                    row.setSupersetPosition(0);
+                    row.setSupersetId(0);
+                    row.setSupersetColor(0);
+                }
             }
         }
 
-        public void removeItem(int position){
+        public void removeItem(int position) {
             try {
-                if (rows.get(position).isInSuperset()) removeAllSupersets();
+                if (rows.get(position).isInSuperset()) removeAllSupersets(rows.get(position).getSupersetId());
                 rows.remove(position);
                 this.notifyDataSetChanged();
             } catch (Exception e) {
@@ -451,21 +468,25 @@ public class CreatingTrainingDayActivity extends AnalyticsActivity implements Di
         @Override
         public View getView(final int position, View convertView, ViewGroup parent) {
             View view = convertView;
-            if (view == null){
+            if (view == null) {
                 view = inflater.inflate(R.layout.list_item_creating_programm, parent, false);
                 ViewHolder viewHolder = new ViewHolder();
                 viewHolder.textViewLightExerciseName = (TextViewLight) view.findViewById(R.id.text_exercise);
-                viewHolder.textViewLightSupersetNumber = (TextViewLight)view.findViewById(R.id.text_number_of_superset);
-                viewHolder.imageViewSuperset = (ImageView)view.findViewById(R.id.imageSuperset);
+                viewHolder.textViewLightSupersetNumber = (TextViewLight) view.findViewById(R.id.text_number_of_superset);
+                viewHolder.color = view.findViewById(R.id.color_superset);
+                viewHolder.imageViewSuperset = (ImageView) view.findViewById(R.id.imageSuperset);
                 view.setTag(viewHolder);
             }
             ViewHolder holder = (ViewHolder) view.getTag();
             holder.textViewLightExerciseName.setText(rows.get(position).getExercise().getName());
-            if (rows.get(position).isInSuperset()){
+            if (rows.get(position).isInSuperset()) {
+                holder.color.setVisibility(View.VISIBLE);
+                holder.color.setBackgroundColor(rows.get(position).getSupersetColor());
                 holder.textViewLightSupersetNumber.setVisibility(View.VISIBLE);
                 holder.textViewLightSupersetNumber.setText(String.valueOf(rows.get(position).getSupersetPosition() + 1));
                 holder.imageViewSuperset.setVisibility(View.VISIBLE);
             } else {
+                holder.color.setVisibility(View.GONE);
                 holder.textViewLightSupersetNumber.setVisibility(View.GONE);
                 holder.imageViewSuperset.setVisibility(View.GONE);
             }
@@ -475,6 +496,7 @@ public class CreatingTrainingDayActivity extends AnalyticsActivity implements Di
         private class ViewHolder {
             TextViewLight textViewLightExerciseName;
             ImageView imageViewSuperset;
+            View color;
             TextViewLight textViewLightSupersetNumber;
         }
     }
@@ -484,11 +506,29 @@ public class CreatingTrainingDayActivity extends AnalyticsActivity implements Di
         private Exercise exercise;
         private boolean isInSuperset;
         private int supersetPosition;
+        private int supersetId;
+        private int supersetColor;
 
-        public Row (Exercise exercise){
+        public Row(Exercise exercise) {
             this.exercise = exercise;
             isInSuperset = false;
             supersetPosition = -1;
+        }
+
+        public int getSupersetId() {
+            return supersetId;
+        }
+
+        public void setSupersetId(int supersetId) {
+            this.supersetId = supersetId;
+        }
+
+        public int getSupersetColor() {
+            return supersetColor;
+        }
+
+        public void setSupersetColor(int supersetColor) {
+            this.supersetColor = supersetColor;
         }
 
         public Exercise getExercise() {
@@ -514,11 +554,5 @@ public class CreatingTrainingDayActivity extends AnalyticsActivity implements Di
         public void setSupersetPosition(int supersetPosition) {
             this.supersetPosition = supersetPosition;
         }
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        db.close();
     }
 }

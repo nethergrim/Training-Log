@@ -47,7 +47,7 @@ public class AddingMeasurementActivity extends AnalyticsActivity {
         db.open();
         TextView tvTmp = (TextView) findViewById(R.id.textView1weight);
         String measureItem = Prefs.getPreferences().getWeightMeasureType(this);
-        tvTmp.setText(getResources().getString(R.string.weight) + measureItem);
+        tvTmp.setText(getResources().getString(R.string.weight) + " (" + measureItem + ")");
         FAB fab = (FAB) findViewById(R.id.fabSaveMeasurements);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override

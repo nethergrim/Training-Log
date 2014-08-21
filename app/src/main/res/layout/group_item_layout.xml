@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="60dp">
+
+    <com.nethergrim.combogymdiary.view.TextViewLight
+        android:id="@+id/text_group_name"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:background="@color/material_indigo_a400"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</RelativeLayout>

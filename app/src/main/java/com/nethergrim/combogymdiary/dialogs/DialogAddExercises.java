@@ -67,6 +67,7 @@ public class DialogAddExercises extends DialogFragment implements DialogInterfac
         });
         adapter = new ExercisesAdapter(getActivity());
         elv.setAdapter(adapter);
+        elv.setGroupIndicator(null);
         elv.setChoiceMode(ExpandableListView.CHOICE_MODE_MULTIPLE);
         AlertDialog.Builder adb = new AlertDialog.Builder(getActivity())
                 .setTitle(R.string.add_an_exercise)
@@ -146,13 +147,14 @@ public class DialogAddExercises extends DialogFragment implements DialogInterfac
         public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
             View v = convertView;
             if (v == null) {
-                v = inflater.inflate(android.R.layout.simple_expandable_list_item_1, parent, false);
+                v = inflater.inflate(R.layout.group_item_layout, parent, false);
             }
-            TextView text1 = (TextView) v.findViewById(android.R.id.text1);
+            TextView text1 = (TextView) v.findViewById(R.id.text_group_name);
             text1.setText(Constants.getRealPartOfBodyName(data.get(groupPosition).getName()));
             text1.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), Constants.TYPEFACE_LIGHT));
             text1.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
             elv.expandGroup(groupPosition);
+
             return v;
         }
 

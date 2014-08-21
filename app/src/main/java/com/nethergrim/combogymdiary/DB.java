@@ -50,6 +50,7 @@ public class DB {
     public static final String SUPERSET_EXISTS = "superset";
     public static final String SUPERSET_POSITION = "superset_position";
     public static final String SUPERSET_FIRST_ID = "superset_first_id";
+    public static final String SUPERSET_COLOR = "superset_color";
     public static final String POSITION_AT_TRAINING = "position_at_training";
     public static final String EXERCISE_ID = "training_exercise_id";
     public static final String TRAINING_PROGRAM_ID = "training_program_id";
@@ -96,7 +97,9 @@ public class DB {
             + POSITION_AT_TRAINING + " integer, "
             + SUPERSET_EXISTS + " boolean, "
             + SUPERSET_POSITION + " integer, "
-            + SUPERSET_FIRST_ID + " integer" + ");";
+            + SUPERSET_FIRST_ID + " integer, "
+            + SUPERSET_COLOR + " integer"
+            + ");";
 
     private static final String DB_EXE_CREATE = "create table " + DB_EXE_TABLE + "("
             + COLUMN_ID + " integer primary key autoincrement, "
@@ -119,6 +122,7 @@ public class DB {
         cv.put(SUPERSET_EXISTS, object.isSuperset());
         cv.put(SUPERSET_POSITION, object.getPositionAtSuperset());
         cv.put(SUPERSET_FIRST_ID, object.getSupersetFirstItemId());
+        cv.put(SUPERSET_COLOR, object.getSupersetColor());
         return mDB.insert(DB_TABLE_TRAINING_EXERCISE, null, cv);
     }
 
@@ -403,6 +407,7 @@ public class DB {
                 exerciseTrainingObject.setSuperset(c.getInt(4) == 1 ? true : false);
                 exerciseTrainingObject.setPositionAtSuperset(c.getInt(5));
                 exerciseTrainingObject.setSupersetFirstItemId(c.getInt(6));
+                exerciseTrainingObject.setSupersetColor(c.getInt(7));
                 result.add(exerciseTrainingObject);
             } while (c.moveToNext());
         }

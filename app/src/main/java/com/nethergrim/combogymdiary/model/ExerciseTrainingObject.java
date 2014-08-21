@@ -9,11 +9,12 @@ public class ExerciseTrainingObject implements Serializable{
 
     private int id;
     private int trainingProgramId;
-    private int exercise;
+    private int exerciseid;
     private int positionAtTraining;
     private boolean superset;
     private int positionAtSuperset;
     private int supersetFirstItemId;
+    private int supersetColor;
 
     public ExerciseTrainingObject(){}
 
@@ -42,11 +43,11 @@ public class ExerciseTrainingObject implements Serializable{
     }
 
     public int getExerciseId() {
-        return exercise;
+        return exerciseid;
     }
 
     public void setExerciseId(int exercise) {
-        this.exercise = exercise;
+        this.exerciseid = exercise;
     }
 
     public int getPositionAtTraining() {
@@ -79,5 +80,13 @@ public class ExerciseTrainingObject implements Serializable{
 
     public void setSupersetFirstItemId(int supersetFirstItemId) {
         this.supersetFirstItemId = supersetFirstItemId;
+    }
+
+    public int getSupersetColor() {
+        return supersetColor;
+    }
+
+    public void setSupersetColor(int supersetColor) {
+        this.supersetColor = supersetColor;
     }
 }
