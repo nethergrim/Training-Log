@@ -80,7 +80,7 @@ public class Statistics {
                     if (diff > (millisecInDay * days)) {
                         Double firstWeight = Double.parseDouble(c.getString(3));
                         result = lastWeight > firstWeight ? "+" + (lastWeight - firstWeight) : "-" + (firstWeight - lastWeight);
-                        return result + " " + Prefs.getPreferences().getWeightMeasureType(context);
+                        return result + " " + Prefs.get().getWeightMeasureType(context);
                     }
                 }
             } while (true);

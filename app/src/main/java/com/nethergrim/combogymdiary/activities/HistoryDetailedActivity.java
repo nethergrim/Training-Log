@@ -115,7 +115,7 @@ public class HistoryDetailedActivity extends Activity {
             ifZero = true;
 
         int px = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 8, getResources().getDisplayMetrics());
-        measureItem = Prefs.getPreferences().getWeightMeasureType(this);
+        measureItem = Prefs.get().getWeightMeasureType(this);
         scrollView.addView(llMain, linLayoutParam);
         llMain.setGravity(Gravity.CENTER);
 

@@ -19,6 +19,8 @@ public class Constants {
     public static final String _ID = "_id";
     public static final String BUNDLE_EXERCISE = "exercise";
     public final static String TYPE_OF_DIALOG = "type_of_dialog";
+    public static final String MARKET_LINK = "market://details?id=com.nethergrim.combogymdiary";
+    public static final String MARKET_LINK_HTTP = "http://play.google.com/store/apps/details?id=com.nethergrim.combogymdiary";
     public static String[] partsOfBody;
 
 

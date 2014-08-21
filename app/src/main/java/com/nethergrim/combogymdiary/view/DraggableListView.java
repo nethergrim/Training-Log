@@ -93,9 +93,13 @@ public class DraggableListView extends ListView {
         mSmoothScrollAmountAtEdge = (int)(SMOOTH_SCROLL_AMOUNT_AT_EDGE / metrics.density);
     }
 
-    public void startSwapping(int position){
+    public void startSwapping(){
         mTotalOffset = 0;
-        View selectedView = getChildAt(position);
+
+        int position = pointToPosition(mDownX, mDownY);
+        int itemNum = position - getFirstVisiblePosition();
+
+        View selectedView = getChildAt(itemNum);
         mMobileItemId = getAdapter().getItemId(position);
         mHoverCell = getAndAddHoverView(selectedView);
         selectedView.setVisibility(INVISIBLE);

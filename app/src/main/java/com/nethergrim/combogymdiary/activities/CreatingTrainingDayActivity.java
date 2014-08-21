@@ -74,7 +74,7 @@ public class CreatingTrainingDayActivity extends AnalyticsActivity implements Di
                 int position = list.getCheckedItemCount() - 1;
                 int color = Color.argb(255, random.nextInt(256), random.nextInt(256), random.nextInt(256));
                 int supsersetId = random.nextInt();
-                for (int i = 0; i < 10; i++){
+                for (int i = 0; i < 10; i++){                                                                   // REALLY RANDOM ID =)))
                     if (db.isAlreadyThisIdInSupersets(supsersetId) || adapter.alreadyHasThisId(supsersetId)){
                         supsersetId = random.nextInt();
                     } else {
@@ -209,7 +209,7 @@ public class CreatingTrainingDayActivity extends AnalyticsActivity implements Di
         list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                list.startSwapping(position);
+                list.startSwapping();
                 return false;
             }
         });
@@ -335,13 +335,13 @@ public class CreatingTrainingDayActivity extends AnalyticsActivity implements Di
     }
 
     private void showSuperSetDialog() {
-        if (Prefs.getPreferences().getSuperSetInfoShowed() <= 3) {
+        if (Prefs.get().getSuperSetInfoShowed() <= 3) {
             DialogInfo dialogInfo = new DialogInfo();
             Bundle args = new Bundle();
             args.putBoolean(DialogInfo.KEY_INFO_ABOUT_SUPERSET, true);
             dialogInfo.setArguments(args);
             dialogInfo.show(getFragmentManager(), DialogInfo.class.getName());
-            Prefs.getPreferences().setSuperSetInfoShowed(Prefs.getPreferences().getSuperSetInfoShowed() + 1);
+            Prefs.get().setSuperSetInfoShowed(Prefs.get().getSuperSetInfoShowed() + 1);
         }
     }
 

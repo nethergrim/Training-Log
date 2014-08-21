@@ -47,12 +47,13 @@ import android.widget.ToggleButton;
 
 import com.nethergrim.combogymdiary.DB;
 import com.nethergrim.combogymdiary.R;
-import com.nethergrim.combogymdiary.activities.BaseActivity;
 import com.nethergrim.combogymdiary.activities.EditingProgramAtTrainingActivity;
 import com.nethergrim.combogymdiary.activities.HistoryDetailedActivity;
 import com.nethergrim.combogymdiary.dialogs.DialogAddCommentToTraining;
 import com.nethergrim.combogymdiary.dialogs.DialogExitFromTraining;
+import com.nethergrim.combogymdiary.model.ExerciseTrainingObject;
 import com.nethergrim.combogymdiary.service.TrainingService;
+import com.nethergrim.combogymdiary.tools.Prefs;
 import com.nethergrim.combogymdiary.tools.StableArrayAdapter;
 import com.nethergrim.combogymdiary.view.DynamicListView;
 import com.nethergrim.combogymdiary.view.FAB;
@@ -61,8 +62,8 @@ import com.yandex.metrica.Counter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.StringTokenizer;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import kankan.wheel.widget.WheelView;
 import kankan.wheel.widget.adapters.AbstractWheelTextAdapter;
@@ -70,16 +71,14 @@ import kankan.wheel.widget.adapters.AbstractWheelTextAdapter;
 public class TrainingFragment extends Fragment implements
         OnCheckedChangeListener, OnClickListener, DynamicListView.OnElementSwapped {
 
-    public final static String TRAINING_AT_PROGRESS = "training_at_progress";
-    public final static String TRA_ID = "tra_id";
+    public static final String BUNDLE_KEY_TRAINING_ID = "com.nethergrim.combogymdiary.TRAINING_ID";
     public final static String CHECKED_POSITION = "checked_pos";
     private final static String START_TIME = "start_time";
     private final static String LIST_OF_SETS = "list_of_sets";
     private final static String PROGRESS = "progress";
     private final static String TIMER_IS_ON = "timerIsOn";
-    public String RINGTONE = "ringtone";
+    public static final String RINGTONE = "ringtone";
     private ActionBar bar;
-    private static final AtomicInteger sNextGeneratedId = new AtomicInteger(1);
     private Boolean tglChecked = true, vibrate = false;
     private EditText etTimer;
     private DB db;
@@ -90,27 +89,13 @@ public class TrainingFragment extends Fragment implements
     private long startTime = 0;
     private Handler h;
     private WheelView repsWheel, weightWheel;
-    private TextView tvInfoText, tvWeight;
+    private TextView tvInfoText;
     private ArrayList<String> alExersicesList = new ArrayList<String>();
     private ArrayList<Integer> alSetList = new ArrayList<Integer>();
+    private List<ExerciseTrainingObject> trainingsList = new ArrayList<ExerciseTrainingObject>();
     private int trainingId = 0;
     private boolean btnBlocked = false;
     private PopupWindow popupWindow;
-    Runnable timerRunnable = new Runnable() {
-        @Override
-        public void run() {
-            long millis = System.currentTimeMillis() - startTime;
-            int seconds = (int) (millis / 1000);
-            int minutes = (seconds / 60);
-            seconds = (seconds % 60);
-            bar.setSubtitle((String.format("%d:%02d", minutes, seconds)) + " "
-                    + " " + " ["
-                    + ((set == currentSet ? set : currentSet) + 1) + " "
-                    + getResources().getString(R.string.set) + "] ");
-            timerHandler.postDelayed(this, 500);
-
-        }
-    };
     private Handler timerHandler = new Handler();
     private LinearLayout llBottom;
     private Animation anim = null;
@@ -207,6 +192,32 @@ public class TrainingFragment extends Fragment implements
         }
     };
 
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+        setRetainInstance(true);
+        db = new DB(getActivity());
+        db.open();
+        sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        trainingId = getArguments().getInt(BUNDLE_KEY_TRAINING_ID);
+        trainingsList = db.getExerciseTrainingObjects(trainingId);
+        isTrainingAtProgress = Prefs.get().getTrainingAtProgress();
+        Prefs.get().setTrainingAtProgress(true);
+        Prefs.get().setCurrentTrainingId(trainingId);
+        traName = db.getTrainingName(trainingId);
+        bar = getActivity().getActionBar();
+        bar.setTitle(traName);
+        loadExercisesFromDbAndUpdateList();
+
+        for (int i = 0; i < 150; i++) {
+            alSetList.add(0);
+        }
+        getActivity().startService(
+                new Intent(getActivity(), TrainingService.class));
+        startTime = System.currentTimeMillis();
+        sp.edit().putLong(START_TIME, startTime);
+    }
+
     @SuppressWarnings("rawtypes")
     @Override
     public void onSwapped(ArrayList arrayList, int indexOne, int indexTwo) {
@@ -244,34 +255,7 @@ public class TrainingFragment extends Fragment implements
         }
     }
 
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
-        setRetainInstance(true);
-        db = new DB(getActivity());
-        db.open();
-        sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        trainingId = getArguments().getInt(BaseActivity.TRAINING_ID);
-        isTrainingAtProgress = sp.getBoolean(TRAINING_AT_PROGRESS, false);
-        sp.edit().putInt(TRA_ID, trainingId).apply();
-        sp.edit().putBoolean(TRAINING_AT_PROGRESS, true).apply();
-        traName = db.getTrainingName(trainingId);
-        bar = getActivity().getActionBar();
-        bar.setTitle(traName);
-        loadExercisesFromDbAndUpdateList();
-
-        for (int i = 0; i < 150; i++) {
-            alSetList.add(0);
-        }
-        getActivity().startService(
-                new Intent(getActivity(), TrainingService.class));
-        startTime = System.currentTimeMillis();
-        sp.edit().putLong(START_TIME, startTime);
-
-    }
-
-
-
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.training_at_progress_new_wheel_new_list, null);
         fabBack = (FAB) v.findViewById(R.id.fabBack);
@@ -282,7 +266,6 @@ public class TrainingFragment extends Fragment implements
         fabForward.setOnClickListener(this);;
         llBottom = (LinearLayout) v.findViewById(R.id.LLBottom);
         anim = AnimationUtils.loadAnimation(getActivity(), R.anim.setfortraining);
-        tvWeight = (TextView) v.findViewById(R.id.textView4__);
         repsWheel = (WheelView) v.findViewById(R.id.wheelReps);
         repsWheel.setVisibleItems(7);
         repsWheel.setWheelBackground(R.drawable.card);
@@ -400,6 +383,7 @@ public class TrainingFragment extends Fragment implements
         blocked = false;
     }
 
+    @Override
     public void onResume() {
         super.onResume();
         listView.setKeepScreenOn(!(sp.getBoolean("toTurnOff", false)));
@@ -490,6 +474,7 @@ public class TrainingFragment extends Fragment implements
         h.sendEmptyMessageDelayed(1, 100);
     }
 
+    @Override
     public void onPause() {
         super.onPause();
         sp.edit().putLong(START_TIME, startTime).apply();
@@ -499,7 +484,6 @@ public class TrainingFragment extends Fragment implements
         saveExercicesToDatabase();
     }
 
-
     private void saveExercicesToDatabase() {
         String[] e = new String[alExersicesList.size()];
         for (int i = 0; i < e.length; ++i) {
@@ -508,6 +492,7 @@ public class TrainingFragment extends Fragment implements
         db.updateRec_Training(trainingId, 2, db.convertArrayToString(e));
     }
 
+    @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         menu.clear();
         inflater.inflate(R.menu.main, menu);
@@ -932,15 +917,20 @@ public class TrainingFragment extends Fragment implements
         }
     }
 
-    public static int generateViewId() {
-        for (; ; ) {
-            final int result = sNextGeneratedId.get();
-            // aapt-generated IDs have the high byte nonzero; clamp to the range under that.
-            int newValue = result + 1;
-            if (newValue > 0x00FFFFFF) newValue = 1; // Roll over to 1, not 0.
-            if (sNextGeneratedId.compareAndSet(result, newValue)) {
-                return result;
-            }
+    private Runnable timerRunnable = new Runnable() {
+        @Override
+        public void run() {
+            long millis = System.currentTimeMillis() - startTime;
+            int seconds = (int) (millis / 1000);
+            int minutes = (seconds / 60);
+            seconds = (seconds % 60);
+            bar.setSubtitle((String.format("%d:%02d", minutes, seconds)) + " "
+                    + " " + " ["
+                    + ((set == currentSet ? set : currentSet) + 1) + " "
+                    + getResources().getString(R.string.set) + "] ");
+            timerHandler.postDelayed(this, 500);
+
         }
-    }
+    };
+
 }

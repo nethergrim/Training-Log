@@ -15,6 +15,9 @@ public class Prefs {
     public final static String KEY_DATABASE_FILLED = "database_filled";
     private static final String KEY_DATABASE_UPDATED_TOV5 = "db_updated_to5";
     private static final String KEY_MEASURE_ITEM = "measureItem";
+    public static final String KEY_CURRENT_TRAINING_ID = "current_training_id";
+    public static final String KEY_TRAININGS_COUNT = "trainings_count";
+    public static final String KEY_MARKET_ALREADY_LEAVED_FEEDBACK = "market_already_leaved_feedback";
 
     private static SharedPreferences prefs;
     private static Prefs pref;
@@ -30,7 +33,7 @@ public class Prefs {
         return pref;
     }
 
-    public static Prefs getPreferences() {
+    public static Prefs get() {
         return pref;
     }
 
@@ -84,5 +87,28 @@ public class Prefs {
         return "";
     }
 
+    public void setCurrentTrainingId(int id){
+        prefs.edit().putInt(KEY_CURRENT_TRAINING_ID, id).apply();
+    }
+
+    public int getCurrentTrainingId(){
+        return prefs.getInt(KEY_CURRENT_TRAINING_ID, 0);
+    }
+
+    public void setTrainingsCount(int count){
+        prefs.edit().putInt(KEY_TRAININGS_COUNT, count).apply();
+    }
+
+    public int getTrainingsCount(){
+        return prefs.getInt(KEY_TRAININGS_COUNT, 0);
+    }
+
+    public void setMarketAlreadyLeavedFeedback(boolean already){
+        prefs.edit().putBoolean(KEY_MARKET_ALREADY_LEAVED_FEEDBACK, already).apply();
+    }
+
+    public boolean getMarketAlreadyLeavedFeedback(){
+        return prefs.getBoolean(KEY_MARKET_ALREADY_LEAVED_FEEDBACK, false);
+    }
 
 }

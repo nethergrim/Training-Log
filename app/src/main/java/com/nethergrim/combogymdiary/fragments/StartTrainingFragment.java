@@ -1,14 +1,11 @@
 package com.nethergrim.combogymdiary.fragments;
 
 import android.app.Activity;
-import android.app.DialogFragment;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
@@ -30,9 +27,9 @@ import android.widget.Toast;
 
 import com.nethergrim.combogymdiary.DB;
 import com.nethergrim.combogymdiary.R;
-import com.nethergrim.combogymdiary.activities.BaseActivity;
 import com.nethergrim.combogymdiary.activities.CreatingTrainingDayActivity;
 import com.nethergrim.combogymdiary.dialogs.DialogGoToMarket;
+import com.nethergrim.combogymdiary.tools.Prefs;
 import com.nethergrim.combogymdiary.view.FAB;
 import com.shamanland.fab.ShowHideOnScroll;
 
@@ -101,14 +98,10 @@ public class StartTrainingFragment extends Fragment implements
 
     public void onResume() {
         super.onResume();
-        ((FragmentActivity) getActivity()).getSupportLoaderManager()
-                .getLoader(LOADER_ID).forceLoad();
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        if (sp.contains(BaseActivity.TRAININGS_DONE_NUM)
-                && sp.getInt(BaseActivity.TRAININGS_DONE_NUM, 0) > 5
-                && !sp.contains(BaseActivity.MARKET_LEAVED_FEEDBACK)) {
-            DialogFragment dialog = new DialogGoToMarket();
-            dialog.show(getActivity().getFragmentManager(), "dialog_goto_market");
+        ((FragmentActivity) getActivity()).getSupportLoaderManager().getLoader(LOADER_ID).forceLoad();
+        if (Prefs.get().getTrainingsCount() > 4   && !Prefs.get().getMarketAlreadyLeavedFeedback()) {
+            DialogGoToMarket dialog = new DialogGoToMarket();
+            dialog.show(getActivity().getFragmentManager(), DialogGoToMarket.class.getName());
             dialog.setCancelable(false);
         }
     }

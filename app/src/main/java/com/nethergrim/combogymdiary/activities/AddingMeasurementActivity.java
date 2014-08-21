@@ -1,9 +1,6 @@
 package com.nethergrim.combogymdiary.activities;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
@@ -14,7 +11,6 @@ import com.nethergrim.combogymdiary.DB;
 import com.nethergrim.combogymdiary.R;
 import com.nethergrim.combogymdiary.tools.Prefs;
 import com.nethergrim.combogymdiary.view.FAB;
-import com.nethergrim.combogymdiary.view.FloatingActionButton;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -46,7 +42,7 @@ public class AddingMeasurementActivity extends AnalyticsActivity {
         db = new DB(this);
         db.open();
         TextView tvTmp = (TextView) findViewById(R.id.textView1weight);
-        String measureItem = Prefs.getPreferences().getWeightMeasureType(this);
+        String measureItem = Prefs.get().getWeightMeasureType(this);
         tvTmp.setText(getResources().getString(R.string.weight) + " (" + measureItem + ")");
         FAB fab = (FAB) findViewById(R.id.fabSaveMeasurements);
         fab.setOnClickListener(new View.OnClickListener() {

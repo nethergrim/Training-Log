@@ -21,7 +21,6 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -63,16 +62,11 @@ import java.util.Random;
 
 public class BaseActivity extends AnalyticsActivity implements
         OnSelectedListener, MyInterface, OnStartTrainingAccept, DialogUniversalApprove.OnDeleteExerciseCallback, AdapterView.OnItemClickListener {
+
     public final static String TOTAL_WEIGHT = "total_weight";
-    public final static String TRAINING_AT_PROGRESS = "training_at_progress";
     public final static String COMMENT_TO_TRAINING = "comment_to_training";
     public final static String START_TIME = "start_time";
-
-    public final static String TRAINING_ID = "training_id";
-    public final static String TRA_ID = "tra_id";
-    public final static String MARKET_LEAVED_FEEDBACK = "market_leaved_feedback";
     public final static String AUTO_BACKUP_TO_DRIVE = "settingAutoBackup";
-    public final static String TRAININGS_DONE_NUM = "trainings_done_num";
     public final static String USER_CLICKED_POSITION = "user_clicked_position";
     public final static String SECONDS = "seconds";
     private final static String FRAGMENT_ID = "fragment_id";
@@ -169,10 +163,10 @@ public class BaseActivity extends AnalyticsActivity implements
         getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setHomeButtonEnabled(true);
         sp = PreferenceManager.getDefaultSharedPreferences(this);
-        if (sp.getBoolean(TRAINING_AT_PROGRESS, false)) {
+        if (Prefs.get().getTrainingAtProgress()) {
             currentFragment = trainingFragment;
             Bundle args = new Bundle();
-            args.putInt(TRAINING_ID, sp.getInt(TRA_ID, 0));
+            args.putInt(TrainingFragment.BUNDLE_KEY_TRAINING_ID, Prefs.get().getCurrentTrainingId());
             currentFragment.setArguments(args);
             listButtons[0] = getResources().getString(
                     R.string.continue_training);
@@ -199,21 +193,21 @@ public class BaseActivity extends AnalyticsActivity implements
             if (response == 0) {
                 ArrayList<String> purchaseDataList = ownedItems.getStringArrayList("INAPP_PURCHASE_DATA_LIST");
                 if (purchaseDataList.size() > 0) {
-                    Prefs.getPreferences().setAdsRemoved(true);
+                    Prefs.get().setAdsRemoved(true);
                     Counter.sharedInstance().reportEvent("checkAd() true, paid");
                     return true;
                 } else if (purchaseDataList.size() == 0) {
-                    Prefs.getPreferences().setAdsRemoved(false);
+                    Prefs.get().setAdsRemoved(false);
                     return false;
                 }
 
             } else {
-                Prefs.getPreferences().setAdsRemoved(false);
+                Prefs.get().setAdsRemoved(false);
             }
 
         } catch (RemoteException e) {
             Counter.sharedInstance().reportError("", e);
-            Prefs.getPreferences().setAdsRemoved(false);
+            Prefs.get().setAdsRemoved(false);
         }
         return false;
     }
@@ -247,7 +241,7 @@ public class BaseActivity extends AnalyticsActivity implements
                 String sku = jo.getString("productId");
                 Counter.sharedInstance().reportEvent(
                         "bought the " + sku + ".");
-                Prefs.getPreferences().setAdsRemoved(true);
+                Prefs.get().setAdsRemoved(true);
                 initStrings();
                 adapter.notifyDataSetChanged();
             } catch (JSONException e) {
@@ -266,7 +260,7 @@ public class BaseActivity extends AnalyticsActivity implements
     }
 
     private void initStrings() {
-        if (!Prefs.getPreferences().getAdsRemoved()) {
+        if (!Prefs.get().getAdsRemoved()) {
             listButtons = new String[9];
             listButtons[8] = getString(R.string.remove_ads);
         } else {
@@ -292,7 +286,7 @@ public class BaseActivity extends AnalyticsActivity implements
 
     public void onItemSelected(int position) {
         mDrawerLayout.closeDrawer(mDrawerList);
-        if (!Prefs.getPreferences().getAdsRemoved()) {
+        if (!Prefs.get().getAdsRemoved()) {
             adCounter++;
             if (adCounter >= 4) {
                 adCounter = 0;
@@ -316,7 +310,7 @@ public class BaseActivity extends AnalyticsActivity implements
                     currentFragment = trainingFragment;
                     Bundle args = new Bundle();
                     if (!currentFragment.isVisible())
-                        args.putInt(TRAINING_ID, sp.getInt(TRA_ID, 0));
+                        args.putInt(TrainingFragment.BUNDLE_KEY_TRAINING_ID, Prefs.get().getCurrentTrainingId());
                     else
                         return;
                     currentFragment.setArguments(args);
@@ -436,7 +430,7 @@ public class BaseActivity extends AnalyticsActivity implements
             backUP.backupToSd();
         }
         tmpCursor.close();
-        sp.edit().putBoolean(TRAINING_AT_PROGRESS, false).apply();
+        Prefs.get().setTrainingAtProgress(false);
         sp.edit().putInt(USER_CLICKED_POSITION, 0).apply();
         sp.edit().putInt(TrainingFragment.CHECKED_POSITION, 0).apply();
         SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
@@ -459,30 +453,20 @@ public class BaseActivity extends AnalyticsActivity implements
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.cancelAll();
 
-        if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean(
-                AUTO_BACKUP_TO_DRIVE, true)) {
-
+        if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean(AUTO_BACKUP_TO_DRIVE, true)) {
             Intent backup = new Intent(this, DriveBackupActivity.class);
             backup.putExtra(BaseDriveActivity.KEY_AUTOBACKUP, true);
             startActivity(backup);
         }
 
-        if (sp.contains(TRAININGS_DONE_NUM)) {
-            int tmp = sp.getInt(TRAININGS_DONE_NUM, 0);
-            tmp++;
-            sp.edit().putInt(TRAININGS_DONE_NUM, tmp).apply();
-        } else {
-            sp.edit().putInt(TRAININGS_DONE_NUM, 1).apply();
-        }
-
+        Prefs.get().setTrainingsCount(Prefs.get().getTrainingsCount() + 1);
         getFragmentManager().beginTransaction().replace(R.id.content, new StartTrainingFragment()).commit();
-
         db.close();
         listButtons[0] = getResources().getString(
                 R.string.startTrainingButtonString);
         adapter.notifyDataSetChanged();
         getActionBar().setSubtitle(null);
-        if (!Prefs.getPreferences().getAdsRemoved()){
+        if (!Prefs.get().getAdsRemoved()){
             AdBuddiz.showAd(this);
         }
     }
@@ -492,13 +476,12 @@ public class BaseActivity extends AnalyticsActivity implements
         trainingFragment = new TrainingFragment();
         currentFragment = trainingFragment;
         Bundle args = new Bundle();
-        args.putInt(TRAINING_ID, id);
+        args.putInt(TrainingFragment.BUNDLE_KEY_TRAINING_ID, id);
         currentFragment.setArguments(args);
         getFragmentManager().beginTransaction().replace(R.id.content, currentFragment).commit();
         setTrainingAlreadyStarted(true);
         listButtons[0] = getResources().getString(R.string.continue_training);
         adapter.notifyDataSetChanged();
-
     }
 
     @Override

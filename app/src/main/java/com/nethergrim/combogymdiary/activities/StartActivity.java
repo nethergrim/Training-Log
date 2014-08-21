@@ -50,11 +50,11 @@ public class StartActivity extends AnalyticsActivity {
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        if (!Prefs.getPreferences().getDatabaseFilled()) {
-            Prefs.getPreferences().setDbUpdatedToV5(true);
+        if (!Prefs.get().getDatabaseFilled()) {
+            Prefs.get().setDbUpdatedToV5(true);
             InitTask task = new InitTask();
             task.execute();
-        } else if (!Prefs.getPreferences().getDbUpdatedToV5()){
+        } else if (!Prefs.get().getDbUpdatedToV5()){
             UpdateTask task = new UpdateTask();
             task.execute();
         } else goNext();
@@ -184,7 +184,7 @@ public class StartActivity extends AnalyticsActivity {
             try {
                 initialize();
                 initTableForFirstTime();
-                Prefs.getPreferences().setDatabaseFilled(true);
+                Prefs.get().setDatabaseFilled(true);
             } catch (Exception e) {
                 Counter.sharedInstance().reportError("", e);
             }
@@ -209,7 +209,7 @@ public class StartActivity extends AnalyticsActivity {
         protected Void doInBackground(Void... params) {
             initialize();
             updateTableForVersion5();
-            Prefs.getPreferences().setDbUpdatedToV5(true);
+            Prefs.get().setDbUpdatedToV5(true);
             return null;
         }
 

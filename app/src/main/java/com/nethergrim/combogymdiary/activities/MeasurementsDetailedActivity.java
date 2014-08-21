@@ -1,10 +1,8 @@
 package com.nethergrim.combogymdiary.activities;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.view.MenuItem;
 
 import com.nethergrim.combogymdiary.DB;
@@ -46,7 +44,7 @@ public class MeasurementsDetailedActivity extends AnalyticsActivity {
         String[] args = {date};
         Cursor cursor = db.getDataMeasures(cols, DB.DATE + "=?", args, null, null, DB.DATE);
 
-        String measureItem = Prefs.getPreferences().getWeightMeasureType(this);
+        String measureItem = Prefs.get().getWeightMeasureType(this);
 
         if (cursor.moveToFirst()) {
             do {
