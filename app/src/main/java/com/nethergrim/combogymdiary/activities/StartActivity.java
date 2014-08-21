@@ -68,7 +68,7 @@ public class StartActivity extends AnalyticsActivity {
             exerciseTrainingObject.setTrainingProgramId(trainingId);
             exerciseTrainingObject.setExerciseId(exeId);
             exerciseTrainingObject.setSuperset(false);
-            exerciseTrainingObject.setSupersetFirstItemId(0);
+            exerciseTrainingObject.setSupersetId(0);
             exerciseTrainingObject.setPositionAtTraining(i);
             exerciseTrainingObject.setPositionAtSuperset(0);
             db.addExerciseTrainingObject(exerciseTrainingObject);
@@ -86,7 +86,7 @@ public class StartActivity extends AnalyticsActivity {
     }
 
     private void updateTableForVersion5() {
-        Cursor c = db.getDataExe(null, null, null, null, null, DB.COLUMN_ID);
+        Cursor c = db.getDataExe(null, null, null, null, null, DB._ID);
         if (c.moveToFirst()) {
             do {
                 if (c.getString(4) == null || c.getString(4).equals("")) {
@@ -164,7 +164,7 @@ public class StartActivity extends AnalyticsActivity {
                     exerciseTrainingObject.setPositionAtSuperset(0);
                     exerciseTrainingObject.setPositionAtTraining(i);
                     exerciseTrainingObject.setSuperset(false);
-                    exerciseTrainingObject.setSupersetFirstItemId(0);
+                    exerciseTrainingObject.setSupersetId(0);
                     db.addExerciseTrainingObject(exerciseTrainingObject);
                 }
             } while (c.moveToNext());

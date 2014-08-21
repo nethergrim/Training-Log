@@ -13,18 +13,10 @@ public class ExerciseTrainingObject implements Serializable{
     private int positionAtTraining;
     private boolean superset;
     private int positionAtSuperset;
-    private int supersetFirstItemId;
+    private int supersetId;
     private int supersetColor;
 
     public ExerciseTrainingObject(){}
-
-    public ExerciseTrainingObject(int id){
-        this.id = id;
-        positionAtSuperset = 0;
-        superset = false;
-        supersetFirstItemId = 0;
-        positionAtTraining = 0;
-    }
 
     public int getId() {
         return id;
@@ -74,12 +66,12 @@ public class ExerciseTrainingObject implements Serializable{
         this.positionAtSuperset = positionAtSuperset;
     }
 
-    public int getSupersetFirstItemId() {
-        return supersetFirstItemId;
+    public int getSupersetId() {
+        return supersetId;
     }
 
-    public void setSupersetFirstItemId(int supersetFirstItemId) {
-        this.supersetFirstItemId = supersetFirstItemId;
+    public void setSupersetId(int supersetId) {
+        this.supersetId = supersetId;
     }
 
     public int getSupersetColor() {

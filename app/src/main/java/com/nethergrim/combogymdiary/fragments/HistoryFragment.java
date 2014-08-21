@@ -57,7 +57,7 @@ public class HistoryFragment extends Fragment implements
         getActivity().getActionBar().setTitle(R.string.training_history);
         ListView lvMain = (ListView) v.findViewById(R.id.lvMainHistory);
         registerForContextMenu(lvMain);
-        String[] from = new String[]{DB.DATE, DB.TRA_NAME};
+        String[] from = new String[]{DB.DATE, DB.TRAINING_NAME};
         int[] to = new int[]{R.id.tvDouble1, R.id.tvDouble2};
         adapter = new SimpleCursorAdapter(getActivity(), R.layout.list_with_arrow_double_textview, null, from, to, 0);
         lvMain.setAdapter(adapter);
@@ -113,7 +113,7 @@ public class HistoryFragment extends Fragment implements
         if (item.getItemId() == CM_DELETE_ID) {
             int id = (int) acmi.id;
             String[] args = {"" + id};
-            Cursor c = db.getDataMain(null, DB.COLUMN_ID + "=?", args, null,
+            Cursor c = db.getDataMain(null, DB._ID + "=?", args, null,
                     null, null);
             c.moveToFirst();
             String dateToDelete = c.getString(3);
@@ -172,7 +172,7 @@ public class HistoryFragment extends Fragment implements
         @Override
         public Cursor loadInBackground() {
             cursor = db.getDataMain(null, null, null, DB.DATE, null,
-                    DB.COLUMN_ID + " DESC");
+                    DB._ID + " DESC");
             return cursor;
         }
     }

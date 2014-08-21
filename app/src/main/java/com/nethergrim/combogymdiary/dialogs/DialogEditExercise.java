@@ -166,7 +166,7 @@ public class DialogEditExercise extends DialogFragment implements OnClickListene
         } else if (v.getId() == R.id.btnSave && editing) {  // editing
             if (!etName.getText().toString().isEmpty() && !etTimer.getText().toString().isEmpty()) {
                 dismiss();
-                db.updateExercise((int) exercise.getId(), DB.EXE_NAME, etName.getText().toString());
+                db.updateExercise((int) exercise.getId(), DB.EXERCISE_NAME, etName.getText().toString());
                 db.updateExercise((int) exercise.getId(), DB.TIMER_VALUE, etTimer.getText().toString());
                 db.updateExercise((int) exercise.getId(), DB.PART_OF_BODY, exercise.getPartOfBody());
                 Toast.makeText(getActivity(), R.string.saved, Toast.LENGTH_SHORT).show();

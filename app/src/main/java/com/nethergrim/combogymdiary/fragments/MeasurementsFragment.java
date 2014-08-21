@@ -12,7 +12,6 @@ import android.support.v4.content.Loader;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -31,7 +30,6 @@ import com.nethergrim.combogymdiary.R;
 import com.nethergrim.combogymdiary.activities.AddingMeasurementActivity;
 import com.nethergrim.combogymdiary.activities.MeasurementsDetailedActivity;
 import com.nethergrim.combogymdiary.view.FAB;
-import com.nethergrim.combogymdiary.view.FloatingActionButton;
 import com.shamanland.fab.ShowHideOnScroll;
 
 public class MeasurementsFragment extends Fragment implements
@@ -163,7 +161,7 @@ public class MeasurementsFragment extends Fragment implements
         @Override
         public Cursor loadInBackground() {
             cursor = db.getDataMeasures(null, null, null, DB.DATE, null,
-                    DB.COLUMN_ID + " DESC");
+                    DB._ID + " DESC");
             return cursor;
         }
     }

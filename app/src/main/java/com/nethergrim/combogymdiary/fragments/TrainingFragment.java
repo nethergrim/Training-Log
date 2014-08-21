@@ -24,7 +24,6 @@ import android.text.TextWatcher;
 import android.util.SparseBooleanArray;
 import android.view.ActionMode;
 import android.view.Display;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -57,7 +56,6 @@ import com.nethergrim.combogymdiary.service.TrainingService;
 import com.nethergrim.combogymdiary.tools.StableArrayAdapter;
 import com.nethergrim.combogymdiary.view.DynamicListView;
 import com.nethergrim.combogymdiary.view.FAB;
-import com.nethergrim.combogymdiary.view.FloatingActionButton;
 import com.yandex.metrica.Counter;
 
 import java.text.SimpleDateFormat;
@@ -535,7 +533,7 @@ public class TrainingFragment extends Fragment implements
             startActivityForResult(intent, 1);
         } else if (itemId == R.id.itemSeePreviousTraining) {
             String[] args = {traName};
-            Cursor tmpCursor = db.getDataMain(null, DB.TRA_NAME + "=?", args,
+            Cursor tmpCursor = db.getDataMain(null, DB.TRAINING_NAME + "=?", args,
                     DB.DATE, null, null);
             if (tmpCursor.moveToLast()
                     && (tmpCursor.getCount() > 1 || !tmpCursor.getString(3)

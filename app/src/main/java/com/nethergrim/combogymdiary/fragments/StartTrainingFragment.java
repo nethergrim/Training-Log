@@ -63,7 +63,7 @@ public class StartTrainingFragment extends Fragment implements
         setHasOptionsMenu(true);
         db = new DB(getActivity());
         db.open();
-        String[] from = new String[]{DB.TRA_NAME};
+        String[] from = new String[]{DB.TRAINING_NAME};
         int[] to = new int[]{R.id.tvText};
         scAdapter = new SimpleCursorAdapter(getActivity(), R.layout.my_list_item, null, from, to, 0);
     }

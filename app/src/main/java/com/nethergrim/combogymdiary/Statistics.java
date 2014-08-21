@@ -24,7 +24,7 @@ public class Statistics {
 
     public String getMainExercise() {
         String result = context.getResources().getString(R.string.none);
-        Cursor exercises = db.getDataMain(DB.EXE_NAME);
+        Cursor exercises = db.getDataMain(DB.EXERCISE_NAME);
         ArrayList<String> alExercises = new ArrayList<String>();
         if (exercises.moveToFirst()) {
             do {
@@ -36,7 +36,7 @@ public class Statistics {
             alCount.add(0);
         }
         Cursor allCursor = db.getDataMain(null, null, null, null, null,
-                DB.EXE_NAME);
+                DB.EXERCISE_NAME);
         if (allCursor.moveToFirst()) {
             do {
                 for (int i = 0; i < alExercises.size(); i++) {
@@ -65,7 +65,7 @@ public class Statistics {
     public String getBodyWeightDelta(int days) {
         String result = context.getResources().getString(R.string.none);
         String[] args = {context.getResources().getString(R.string.weight)};
-        Cursor c = db.getDataMeasures(null, DB.PART_OF_BODY_FOR_MEASURING + "=?", args, null, null, DB.COLUMN_ID);
+        Cursor c = db.getDataMeasures(null, DB.PART_OF_BODY_FOR_MEASURING + "=?", args, null, null, DB._ID);
         if (c.moveToLast()) {
             Date lastDate = db.convertStringToDate(c.getString(1));
             Calendar lastDay = Calendar.getInstance();

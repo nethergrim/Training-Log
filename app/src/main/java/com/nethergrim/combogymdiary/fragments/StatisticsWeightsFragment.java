@@ -62,7 +62,7 @@ public class StatisticsWeightsFragment extends android.support.v4.app.Fragment
         content = (FrameLayout) v.findViewById(R.id.frameStatsContent);
         spinnerExercises = (Spinner) v.findViewById(R.id.spinnerExercises);
 
-        String[] fromExe = new String[]{DB.EXE_NAME};
+        String[] fromExe = new String[]{DB.EXERCISE_NAME};
         int[] to = new int[]{android.R.id.text1};
         adapterExercise = new SimpleCursorAdapter(getActivity(),
                 android.R.layout.simple_spinner_item, null, fromExe, to, 0);
@@ -117,7 +117,7 @@ public class StatisticsWeightsFragment extends android.support.v4.app.Fragment
 
         graphView.removeAllSeries();
         String[] args = {name};
-        dataCursor = db.getDataMain(null, DB.EXE_NAME + "=?", args, null, null,
+        dataCursor = db.getDataMain(null, DB.EXERCISE_NAME + "=?", args, null, null,
                 null);
 
         if (dataCursor.moveToFirst()) {
@@ -215,7 +215,7 @@ public class StatisticsWeightsFragment extends android.support.v4.app.Fragment
         public Cursor loadInBackground() {
             if (ID == LOADER_EXE_ID) {
                 cursor = db.getDataExe(null, null, null, null, null,
-                        DB.EXE_NAME);
+                        DB.EXERCISE_NAME);
             }
             return cursor;
         }

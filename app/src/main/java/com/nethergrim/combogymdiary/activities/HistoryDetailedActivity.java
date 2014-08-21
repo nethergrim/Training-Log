@@ -2,10 +2,8 @@ package com.nethergrim.combogymdiary.activities;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -87,7 +85,7 @@ public class HistoryDetailedActivity extends Activity {
     }
 
     private void setupCursor() {
-        String[] cols = {DB.DATE, DB.TRA_NAME, DB.EXE_NAME, DB.WEIGHT,
+        String[] cols = {DB.DATE, DB.TRAINING_NAME, DB.EXERCISE_NAME, DB.WEIGHT,
                 DB.REPS, DB.SET};
         String[] args = {trDate};
         cursor = db.getDataMain(cols, DB.DATE + "=?", args, null, null, null);

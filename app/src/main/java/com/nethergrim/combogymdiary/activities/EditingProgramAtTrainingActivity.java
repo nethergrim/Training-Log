@@ -47,7 +47,7 @@ public class EditingProgramAtTrainingActivity extends AnalyticsActivity
         traID = in.getLongExtra("trID", 0);
         getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setDisplayShowHomeEnabled(false);
-        String[] from = new String[]{DB.EXE_NAME};
+        String[] from = new String[]{DB.EXERCISE_NAME};
         int[] to = new int[]{android.R.id.text1};
         scAdapter = new SimpleCursorAdapter(this,
                 android.R.layout.simple_list_item_multiple_choice, null, from,
@@ -101,7 +101,7 @@ public class EditingProgramAtTrainingActivity extends AnalyticsActivity
 
     private void initData() {
         String[] args = {"" + traID};
-        Cursor c = db.getDataTrainings(null, DB.COLUMN_ID + "=?", args, null,
+        Cursor c = db.getDataTrainings(null, DB._ID + "=?", args, null,
                 null, null);
         c.moveToFirst();
         getActionBar().setTitle(
@@ -211,7 +211,7 @@ public class EditingProgramAtTrainingActivity extends AnalyticsActivity
 
         @Override
         public Cursor loadInBackground() {
-            cursor = db.getDataExe(null, null, null, null, null, DB.EXE_NAME);
+            cursor = db.getDataExe(null, null, null, null, null, DB.EXERCISE_NAME);
             return cursor;
         }
     }

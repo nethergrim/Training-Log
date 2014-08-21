@@ -74,6 +74,13 @@ public class CreatingTrainingDayActivity extends AnalyticsActivity implements Di
                 int position = list.getCheckedItemCount() - 1;
                 int color = Color.argb(255, random.nextInt(256), random.nextInt(256), random.nextInt(256));
                 int supsersetId = random.nextInt();
+                for (int i = 0; i < 10; i++){
+                    if (db.isAlreadyThisIdInSupersets(supsersetId) || adapter.alreadyHasThisId(supsersetId)){
+                        supsersetId = random.nextInt();
+                    } else {
+                        break;
+                    }
+                }
                 for (int i = count - 1; i >= 0; i--) {
                     if (sparseBooleanArray.get(i)) {
                         adapter.addSuperset(i, position--, supsersetId, color);
@@ -243,6 +250,7 @@ public class CreatingTrainingDayActivity extends AnalyticsActivity implements Di
             row.setSupersetPosition(trainingObject.getPositionAtSuperset());
             row.setSupersetColor(trainingObject.getSupersetColor());
             row.setInSuperset(trainingObject.isSuperset());
+            row.setSupersetId(trainingObject.getSupersetId());
             rows.add(row);
         }
         adapter.addRows(rows);
@@ -297,8 +305,6 @@ public class CreatingTrainingDayActivity extends AnalyticsActivity implements Di
             if (editing) db.deleteTrainingProgram(oldId);
             List<Row> rows = adapter.getRows();
             int trainingId = (int) db.addTrainings(etName.getText().toString());
-            int firstSupersetPosition = 0;
-            boolean lastWasSuperset = false;
 
             for (int i = 0; i < rows.size(); i++) {
                 ExerciseTrainingObject exerciseTrainingObject = new ExerciseTrainingObject();
@@ -308,28 +314,20 @@ public class CreatingTrainingDayActivity extends AnalyticsActivity implements Di
                 exerciseTrainingObject.setExerciseId((int) row.getExercise().getId());
                 exerciseTrainingObject.setPositionAtTraining(i);
 
-
                 if (row.isInSuperset()) {
                     exerciseTrainingObject.setSuperset(true);
                     exerciseTrainingObject.setSupersetColor(row.getSupersetColor());
                     exerciseTrainingObject.setPositionAtSuperset(row.getSupersetPosition());
+                    exerciseTrainingObject.setSupersetId(row.getSupersetId());
                 } else {
+                    exerciseTrainingObject.setSupersetId(0);
+                    exerciseTrainingObject.setSupersetColor(0);
                     exerciseTrainingObject.setSuperset(false);
                     exerciseTrainingObject.setPositionAtSuperset(0);
                 }
 
-                if (row.isInSuperset() && !lastWasSuperset) {
-                    exerciseTrainingObject.setSupersetFirstItemId(-1);
-                    firstSupersetPosition = (int) db.addExerciseTrainingObject(exerciseTrainingObject);
-                } else if (row.isInSuperset() && lastWasSuperset) {
-                    exerciseTrainingObject.setSupersetFirstItemId(firstSupersetPosition);
-                    db.addExerciseTrainingObject(exerciseTrainingObject);
-                } else {
-                    exerciseTrainingObject.setSupersetFirstItemId(0);
-                    db.addExerciseTrainingObject(exerciseTrainingObject);
-                }
+                db.addExerciseTrainingObject(exerciseTrainingObject);
 
-                lastWasSuperset = row.isInSuperset();
             }
             Toast.makeText(this, R.string.saved, Toast.LENGTH_SHORT).show();
             finish();
@@ -405,6 +403,15 @@ public class CreatingTrainingDayActivity extends AnalyticsActivity implements Di
         public void addRows(List<Row> rows) {
             this.rows.addAll(rows);
             notifyDataSetChanged();
+        }
+
+        public boolean alreadyHasThisId(int supersetId){
+            for (int i = 0; i < rows.size(); i++){
+                if (rows.get(i).getSupersetId() == supersetId){
+                    return true;
+                }
+            }
+            return false;
         }
 
         public void swapItems(int i1, int i2) {

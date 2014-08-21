@@ -46,7 +46,7 @@ public class AddingProgramActivity extends AnalyticsActivity implements
         lvExe.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
         db = new DB(this);
         db.open();
-        String[] from = new String[]{DB.EXE_NAME};
+        String[] from = new String[]{DB.EXERCISE_NAME};
         int[] to = new int[]{android.R.id.text1,};
         adapter = new SimpleCursorAdapter(this,
                 android.R.layout.simple_list_item_multiple_choice, null, from,
@@ -139,7 +139,7 @@ public class AddingProgramActivity extends AnalyticsActivity implements
 
         @Override
         public Cursor loadInBackground() {
-            cursor = db.getDataExe(null, null, null, null, null, DB.EXE_NAME);
+            cursor = db.getDataExe(null, null, null, null, null, DB.EXERCISE_NAME);
             return cursor;
         }
     }
