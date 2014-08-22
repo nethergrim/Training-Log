@@ -52,7 +52,7 @@ public class DB {
     public static final String EXERCISE_ID = "training_exercise_id";
     public static final String TRAINING_PROGRAM_ID = "training_program_id";
     private static final int DB_VERSION = 5;
-    private static final String DB_EXE_TABLE = "exe_tab";
+    private static final String DB_TABLE_EXERCISES = "exe_tab";
     private Context mCtx;
     private DBHelper mDBHelper;
     private SQLiteDatabase mDB;
@@ -65,7 +65,13 @@ public class DB {
             + DATE + " text, "
             + WEIGHT + " integer, "
             + REPS + " integer, "
-            + SET + " integer" + ");";
+            + SET + " integer, "
+            + SUPERSET_EXISTS + " boolean, "
+            + SUPERSET_ID + " integer, "
+            + SUPERSET_COLOR + " integer, "
+            + TRAINING_PROGRAM_ID + " integer, "
+            + EXERCISE_ID + " integer"
+            + ");";
 
     private static final String DB_COMMENT_CREATE = "create table "
             + DB_TABLE_COMMENT + "("
@@ -98,7 +104,7 @@ public class DB {
             + SUPERSET_COLOR + " integer"
             + ");";
 
-    private static final String DB_EXE_CREATE = "create table " + DB_EXE_TABLE + "("
+    private static final String DB_EXE_CREATE = "create table " + DB_TABLE_EXERCISES + "("
             + _ID + " integer primary key autoincrement, "
             + TRAINING_NAME + " text, "           // UNUSED, DEPRECATED!
             + EXERCISE_NAME + " text, "
@@ -176,7 +182,7 @@ public class DB {
     public int getExeIdByName(String name) {
         String[] args = {name};
         String[] cols = {DB._ID};
-        Cursor c = mDB.query(DB_EXE_TABLE, cols, DB.EXERCISE_NAME + "=?", args,  null, null,  null);
+        Cursor c = mDB.query(DB_TABLE_EXERCISES, cols, DB.EXERCISE_NAME + "=?", args,  null, null,  null);
         if (c.moveToFirst()) {
             return c.getInt(0);
         } else {
@@ -248,7 +254,7 @@ public class DB {
         String result = "60";
         String[] cols = {DB.TIMER_VALUE};
         String[] tags = {exeName};
-        Cursor c1 = mDB.query(DB_EXE_TABLE, cols, DB.EXERCISE_NAME + "=?", tags, null, null, null, null);
+        Cursor c1 = mDB.query(DB_TABLE_EXERCISES, cols, DB.EXERCISE_NAME + "=?", tags, null, null, null, null);
         if (c1.moveToFirst()) {
             result = c1.getString(0);
         }
@@ -306,7 +312,7 @@ public class DB {
     }
 
     public Cursor getDataExe(String[] column, String selection, String[] selectionArgs, String groupBy, String having, String orderedBy) {
-        return mDB.query(DB_EXE_TABLE, column, selection, selectionArgs,  groupBy, having, orderedBy);
+        return mDB.query(DB_TABLE_EXERCISES, column, selection, selectionArgs,  groupBy, having, orderedBy);
     }
 
     public Cursor getDataTrainings(String[] column, String selection, String[] selectionArgs, String groupBy, String having, String orderedBy) {
@@ -328,11 +334,11 @@ public class DB {
         cv.put(EXERCISE_NAME, exeName);
         cv.put(TIMER_VALUE, timer);
         cv.put(PART_OF_BODY, partOfBody);
-        return mDB.insert(DB_EXE_TABLE, null, cv);
+        return mDB.insert(DB_TABLE_EXERCISES, null, cv);
     }
 
     public List<Exercise> getExercises() {
-        Cursor c = mDB.query(DB_EXE_TABLE, null, null, null, null, null, null);
+        Cursor c = mDB.query(DB_TABLE_EXERCISES, null, null, null, null, null, null);
         List<Exercise> exercises = new ArrayList<Exercise>();
         if (c.moveToFirst()) {
             do {
@@ -349,7 +355,7 @@ public class DB {
             exerciseGroup.setPositionInGlobalArray(i);
             exerciseGroup.setName(Constants.PARTS_OF_BODY[i]);
             String[] args = {Constants.PARTS_OF_BODY[i]};
-            Cursor c = mDB.query(DB_EXE_TABLE, null, PART_OF_BODY + "=?", args, null, null, EXERCISE_NAME);
+            Cursor c = mDB.query(DB_TABLE_EXERCISES, null, PART_OF_BODY + "=?", args, null, null, EXERCISE_NAME);
             List<Exercise> exercises = new ArrayList<Exercise>();
             if (c.moveToFirst()) {
                 do {
@@ -364,7 +370,7 @@ public class DB {
 
     public Exercise getExercise(long id) {
         String[] args = {id + ""};
-        Cursor c = mDB.query(DB_EXE_TABLE, null, _ID + "=?", args, null, null, null);
+        Cursor c = mDB.query(DB_TABLE_EXERCISES, null, _ID + "=?", args, null, null, null);
         if (c.moveToFirst()) {
             return new Exercise(c.getInt(0), c.getString(2), c.getString(3), c.getString(4));
         }
@@ -425,7 +431,7 @@ public class DB {
 
     public int getExerciseId(String exerciseName){
         String[] args = {exerciseName};
-        Cursor c = mDB.query(DB_EXE_TABLE, null, EXERCISE_NAME + "=?", args, null, null, null);
+        Cursor c = mDB.query(DB_TABLE_EXERCISES, null, EXERCISE_NAME + "=?", args, null, null, null);
         if (c.moveToFirst()){
             return c.getInt(0);
         }
@@ -455,7 +461,7 @@ public class DB {
         mDB.insert(DB_MEASURE_TABLE, null, cv);
     }
 
-    public void addRecMainTable(String traName, String exeName, String date, int weight, int reps, int set) {
+    public void addRecMainTable(String traName, String exeName, String date, int weight, int reps, int set, boolean isInSuperset, int supersetId, int supersetColor, int trainingId, int exerciseID) {
         ContentValues cv = new ContentValues();
         cv.put(EXERCISE_NAME, exeName);
         cv.put(TRAINING_NAME, traName);
@@ -463,6 +469,11 @@ public class DB {
         cv.put(WEIGHT, weight);
         cv.put(REPS, reps);
         cv.put(SET, set);
+        cv.put(SUPERSET_EXISTS, isInSuperset);
+        cv.put(SUPERSET_ID, supersetId);
+        cv.put(SUPERSET_COLOR, supersetColor);
+        cv.put(TRAINING_PROGRAM_ID, trainingId);
+        cv.put(EXERCISE_ID, exerciseID);
         mDB.insert(DB_TABLE_MAIN, null, cv);
     }
 
@@ -482,7 +493,7 @@ public class DB {
     public void updateExercise(int Id, String column, String data) {
         ContentValues cv1 = new ContentValues();
         cv1.put(column, data);
-        mDB.update(DB_EXE_TABLE, cv1, _ID + " = " + Id, null);
+        mDB.update(DB_TABLE_EXERCISES, cv1, _ID + " = " + Id, null);
     }
 
     public void updateRec_Main(int Id, int colId, String data_str, int data_int) {
@@ -515,7 +526,7 @@ public class DB {
 
     public void deleteExercise(long id) {
         mDB.delete(DB_TABLE_TRAINING_EXERCISE, _ID + " = " + id, null);
-        mDB.delete(DB_EXE_TABLE, _ID + " = " + id, null);
+        mDB.delete(DB_TABLE_EXERCISES, _ID + " = " + id, null);
     }
 
     public void delRec_Main(long id) {
@@ -552,7 +563,12 @@ public class DB {
             }
             if (oldVersion == 4 && newVersion == 5) {
                 db.execSQL(DB_TRAINING_EXERCISE_CREATE);
-                db.execSQL("ALTER TABLE " + DB_EXE_TABLE + " ADD COLUMN " + PART_OF_BODY + " TEXT");
+                db.execSQL("ALTER TABLE " + DB_TABLE_EXERCISES + " ADD COLUMN " + PART_OF_BODY + " TEXT");
+                db.execSQL("ALTER TABLE " + DB_TABLE_MAIN + " ADD COLUMN " + SUPERSET_EXISTS + " TEXT");
+                db.execSQL("ALTER TABLE " + DB_TABLE_MAIN + " ADD COLUMN " + SUPERSET_ID + " TEXT");
+                db.execSQL("ALTER TABLE " + DB_TABLE_MAIN + " ADD COLUMN " + SUPERSET_COLOR + " TEXT");
+                db.execSQL("ALTER TABLE " + DB_TABLE_MAIN + " ADD COLUMN " + TRAINING_PROGRAM_ID + " TEXT");
+                db.execSQL("ALTER TABLE " + DB_TABLE_MAIN + " ADD COLUMN " + EXERCISE_ID + " TEXT");
             }
         }
     }
