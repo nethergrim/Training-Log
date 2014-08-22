@@ -7,7 +7,6 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.media.AudioManager;
@@ -18,7 +17,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Vibrator;
-import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.SparseBooleanArray;
@@ -61,11 +59,14 @@ import com.nethergrim.combogymdiary.view.FAB;
 import com.nethergrim.combogymdiary.view.TextViewLight;
 import com.yandex.metrica.Counter;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.StringTokenizer;
 
 import kankan.wheel.widget.WheelView;
 import kankan.wheel.widget.adapters.AbstractWheelTextAdapter;
@@ -738,38 +739,38 @@ public class TrainingFragment extends Fragment implements
         }
     }
 
-    public void saveSetsToPreferences() {              // FIXME SAVE AND RESTORE DATA TO PREFS
-//
-//        StringBuilder str = new StringBuilder();
-//        for (int i = 0; i < setsList.size(); i++) {
-//            str.append(setsList.get(i)).append(",");
-//        }
-//        sp.edit().putString(LIST_OF_SETS, str.toString()).apply();
+    public void saveSetsToPreferences() {
+
+        List<TrainingRow> currentData = adapter.getData();
+        JSONArray jsonArray = new JSONArray();
+        for (TrainingRow aCurrentData : currentData) {
+            JSONObject jsonObject = new JSONObject();
+            try {
+                jsonObject.put("setCount",aCurrentData.getSetsCount());
+                jsonArray.put(jsonObject);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        Prefs.get().saveSets(jsonArray.toString());
     }
 
-    public void restoreSetsFromPreferences() { // FIXME
-//        if (sp.contains(LIST_OF_SETS)) {
-//            String savedString = sp.getString(LIST_OF_SETS, "");
-//            StringTokenizer st = new StringTokenizer(savedString, ",");
-//            ArrayList<Integer> array = new ArrayList<Integer>();
-//            int size = st.countTokens();
-//            for (int i = 0; i < size; i++) {
-//                try {
-//                    array.add(Integer.parseInt(st.nextToken()));
-//                } catch (Exception e) {
-//                    array.add(0);
-//                }
-//            }
-//            setsList = array;
-//        }
+    public void restoreSetsFromPreferences() {
+        try {
+            JSONArray jsonArray = new JSONArray(Prefs.get().getSavedSets());
+            for (int i = 0; i < jsonArray.length(); i++){
+                JSONObject tmp = (JSONObject) jsonArray.get(i);
+                adapter.getData().get(i).setSetsCount(tmp.getInt("setCount"));
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     private void saveExercicesToDatabase() { // FIXME
-//        String[] e = new String[exerciseList.size()];
-//        for (int i = 0; i < e.length; ++i) {
-//            e[i] = exerciseList.get(i);
-//        }
-//        db.updateRec_Training(trainingId, 2, db.convertArrayToString(e));
+        List<TrainingRow> currentData = adapter.getData();
+
+
     }
 
     private void playSound(Context context, Uri sound) {

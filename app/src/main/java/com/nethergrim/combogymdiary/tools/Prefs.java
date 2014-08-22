@@ -27,6 +27,7 @@ public class Prefs {
     private static final String KEY_PROGRESS = "progress";
     private static final String KEY_TIMER_ON = "timerIsOn";
     private static final String KEY_RINGTONE_ALARM = "ringtone";
+    private static final String KEY_SETS = "sets";
 
     private static SharedPreferences prefs;
     private static Prefs pref;
@@ -190,5 +191,13 @@ public class Prefs {
 
     public String getRingtone(){
         return prefs.getString(KEY_RINGTONE_ALARM, null);
+    }
+
+    public void saveSets(String sets){
+        prefs.edit().putString(KEY_SETS, sets).apply();
+    }
+
+    public String getSavedSets(){
+        return prefs.getString(KEY_SETS, "");
     }
 }
