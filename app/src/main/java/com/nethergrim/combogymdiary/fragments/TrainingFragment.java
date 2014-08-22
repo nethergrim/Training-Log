@@ -51,6 +51,7 @@ import com.nethergrim.combogymdiary.activities.EditingProgramAtTrainingActivity;
 import com.nethergrim.combogymdiary.activities.HistoryDetailedActivity;
 import com.nethergrim.combogymdiary.dialogs.DialogAddCommentToTraining;
 import com.nethergrim.combogymdiary.dialogs.DialogExitFromTraining;
+import com.nethergrim.combogymdiary.model.ExerciseTrainingObject;
 import com.nethergrim.combogymdiary.model.TrainingRow;
 import com.nethergrim.combogymdiary.service.TrainingService;
 import com.nethergrim.combogymdiary.tools.Prefs;
@@ -75,15 +76,11 @@ public class TrainingFragment extends Fragment implements
         OnCheckedChangeListener, OnClickListener, DraggableListView.OnListItemSwapListener {
 
     public static final String BUNDLE_KEY_TRAINING_ID = "com.nethergrim.combogymdiary.TRAINING_ID";
-//    private final static String PROGRESS = "progress";
-//    private final static String TIMER_IS_ON = "timerIsOn";
-//    public static final String RINGTONE = "ringtone";
     private ActionBar actionBar;
     private Boolean tglChecked = true, vibrate = false;
     private EditText etTimer;
     private DB db;
     private String trainingName = "", currentExerciseName = "", date = "";
-//    private SharedPreferences sp;
     private int currentCheckedPosition = 0, set = 0, currentSet = 0, oldReps = 0,
             oldWeight = 0, timerValue = 0, vibrateLenght = 0, currentId = 0;
     private long startTime = 0;
@@ -102,6 +99,7 @@ public class TrainingFragment extends Fragment implements
     private TrainingAdapter adapter;
     private FAB fabSave, fabBack, fabForward;
     private boolean isInActionMode = false;
+    private int trainingId;
     private ActionMode.Callback mActionModeCallback = new ActionMode.Callback() {
 
         @Override
@@ -188,8 +186,7 @@ public class TrainingFragment extends Fragment implements
         setRetainInstance(true);
         db = new DB(getActivity());
         db.open();
-//        sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        int trainingId = getArguments().getInt(BUNDLE_KEY_TRAINING_ID);
+        trainingId = getArguments().getInt(BUNDLE_KEY_TRAINING_ID);
         adapter = new TrainingAdapter(getActivity());
         adapter.addData(db.getTrainingRows(trainingId));
         isTrainingAtProgress = Prefs.get().getTrainingAtProgress();
@@ -339,6 +336,7 @@ public class TrainingFragment extends Fragment implements
     @Override
     public void onResume() {
         super.onResume();
+        actionBar.setTitle(trainingName);
         listView.setKeepScreenOn(!Prefs.get().getTurnScreenOff());
         vibrate = Prefs.get().getVibrateOn();
         String vl = Prefs.get().getVibrateLenght();
@@ -739,7 +737,7 @@ public class TrainingFragment extends Fragment implements
         }
     }
 
-    public void saveSetsToPreferences() {
+    public void saveSetsToPreferences() {// FIXME make at background
 
         List<TrainingRow> currentData = adapter.getData();
         JSONArray jsonArray = new JSONArray();
@@ -755,22 +753,41 @@ public class TrainingFragment extends Fragment implements
         Prefs.get().saveSets(jsonArray.toString());
     }
 
-    public void restoreSetsFromPreferences() {
+    public void restoreSetsFromPreferences() {// FIXME make at background
         try {
             JSONArray jsonArray = new JSONArray(Prefs.get().getSavedSets());
             for (int i = 0; i < jsonArray.length(); i++){
                 JSONObject tmp = (JSONObject) jsonArray.get(i);
                 adapter.getData().get(i).setSetsCount(tmp.getInt("setCount"));
             }
+            adapter.notifyDataSetChanged();
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
 
-    private void saveExercicesToDatabase() { // FIXME
+    private void saveExercicesToDatabase() { // FIXME make at background
         List<TrainingRow> currentData = adapter.getData();
-
-
+        db.deleteTrainingProgram(trainingId, true);
+        for (int i = 0; i < currentData.size(); i++) {
+            ExerciseTrainingObject exerciseTrainingObject = new ExerciseTrainingObject();
+            TrainingRow row = currentData.get(i);
+            exerciseTrainingObject.setTrainingProgramId(trainingId);
+            exerciseTrainingObject.setExerciseId(row.getExerciseId());
+            exerciseTrainingObject.setPositionAtTraining(i);
+            if (row.isSuperset()) {
+                exerciseTrainingObject.setSuperset(true);
+                exerciseTrainingObject.setSupersetColor(row.getSupersetColor());
+                exerciseTrainingObject.setPositionAtSuperset(row.getPositionAtSuperset());
+                exerciseTrainingObject.setSupersetId(row.getSupersetId());
+            } else {
+                exerciseTrainingObject.setSupersetId(0);
+                exerciseTrainingObject.setSupersetColor(0);
+                exerciseTrainingObject.setSuperset(false);
+                exerciseTrainingObject.setPositionAtSuperset(0);
+            }
+            db.addExerciseTrainingObject(exerciseTrainingObject);
+        }
     }
 
     private void playSound(Context context, Uri sound) {

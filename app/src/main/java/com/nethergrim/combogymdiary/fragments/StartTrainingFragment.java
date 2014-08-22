@@ -120,7 +120,7 @@ public class StartTrainingFragment extends Fragment implements
     public boolean onContextItemSelected(MenuItem item) {
         AdapterContextMenuInfo acmi = (AdapterContextMenuInfo) item.getMenuInfo();
         if (item.getItemId() == CM_DELETE_ID) {
-            db.deleteTrainingProgram((int) acmi.id);
+            db.deleteTrainingProgram((int) acmi.id, false);
             ((FragmentActivity) getActivity()).getSupportLoaderManager().getLoader(LOADER_ID).forceLoad();
             Toast.makeText(getActivity(), getResources().getString(R.string.deleted), Toast.LENGTH_SHORT).show();
         } else if (item.getItemId() == CM_EDIT_ID) {

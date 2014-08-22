@@ -302,7 +302,7 @@ public class CreatingTrainingDayActivity extends AnalyticsActivity implements Di
         } else if (list.getCount() == 0) {
             Toast.makeText(this, R.string.add_exercises_to_workout, Toast.LENGTH_SHORT).show();
         } else {
-            if (editing) db.deleteTrainingProgram(oldId);
+            if (editing) db.deleteTrainingProgram(oldId, false);
             List<Row> rows = adapter.getRows();
             int trainingId = (int) db.addTrainings(etName.getText().toString());
 

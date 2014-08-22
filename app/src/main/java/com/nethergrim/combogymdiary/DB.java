@@ -173,15 +173,6 @@ public class DB {
         }
     }
 
-    public String getExerciseByID(int id) {
-        String[] args = {"" + id};
-        Cursor c = mDB.query(DB.DB_EXE_TABLE, null, DB._ID + "=?", args, null, null, null);
-        if (c.moveToFirst()) {
-            return c.getString(2);
-        } else
-            return null;
-    }
-
     public int getExeIdByName(String name) {
         String[] args = {name};
         String[] cols = {DB._ID};
@@ -203,21 +194,11 @@ public class DB {
         return tmp > 0;
     }
 
-    public void deleteTrainingProgram(int id){
-        mDB.delete(DB_TRAININGS_TABLE, _ID + " = " + id, null);
-        mDB.delete(DB_TABLE_TRAINING_EXERCISE, TRAINING_PROGRAM_ID + " = " + id, null);
-    }
-
-    public String getTrainingList(int _id) {
-        Cursor c = mDB.query(DB_TRAININGS_TABLE, null, null, null, null, null, null);
-        if (c.moveToFirst()) {
-            do {
-                if (c.getInt(0) == _id) {
-                    return c.getString(2);
-                }
-            } while ((c.moveToNext()));
+    public void deleteTrainingProgram(int id, boolean onlyFromExerciseTable){
+        if (!onlyFromExerciseTable){
+            mDB.delete(DB_TRAININGS_TABLE, _ID + " = " + id, null);
         }
-        return null;
+        mDB.delete(DB_TABLE_TRAINING_EXERCISE, TRAINING_PROGRAM_ID + " = " + id, null);
     }
 
     public int getLastWeightOrReps(String _exeName, int _set, boolean ifWeight) {
