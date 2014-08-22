@@ -136,6 +136,11 @@ public class DB {
         return c.moveToFirst();
     }
 
+    public boolean hasTrainingPrograms(){
+        Cursor c = mDB.query(DB_TRAININGS_TABLE,null,null,null,null,null,null);
+        return c.moveToFirst();
+    }
+
     public String convertDateToString(Date date) {
         try {
             SimpleDateFormat dateformat = new SimpleDateFormat(SIMPLE_DATE_FORMAT);

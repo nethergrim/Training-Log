@@ -51,7 +51,6 @@ public class StartActivity extends AnalyticsActivity {
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         if (!Prefs.get().getDatabaseFilled()) {
-            Prefs.get().setDbUpdatedToV5(true);
             InitTask task = new InitTask();
             task.execute();
         } else if (!Prefs.get().getDbUpdatedToV5()){
@@ -76,13 +75,15 @@ public class StartActivity extends AnalyticsActivity {
     }
 
     private void initTableForFirstTime() {
-        initTableForFirstTime(Constants.PART_OF_BODY_LEGS, getString(R.string.traLegs), exeLegs);
-        initTableForFirstTime(Constants.PART_OF_BODY_CHEST, getString(R.string.traChest), exeChest);
-        initTableForFirstTime(Constants.PART_OF_BODY_BICEPS, getString(R.string.traBiceps), exeBiceps);
-        initTableForFirstTime(Constants.PART_OF_BODY_TRICEPS, getString(R.string.traTriceps), exeTriceps);
-        initTableForFirstTime(Constants.PART_OF_BODY_BACK, getString(R.string.traBack), exeBack);
-        initTableForFirstTime(Constants.PART_OF_BODY_SHOULDERS, getString(R.string.traShoulders), exeShoulders);
-        initTableForFirstTime(Constants.PART_OF_BODY_ABS, getString(R.string.traAbs), exeAbs);
+        if (!db.hasTrainingPrograms()){
+            initTableForFirstTime(Constants.PART_OF_BODY_LEGS, getString(R.string.traLegs), exeLegs);
+            initTableForFirstTime(Constants.PART_OF_BODY_CHEST, getString(R.string.traChest), exeChest);
+            initTableForFirstTime(Constants.PART_OF_BODY_BICEPS, getString(R.string.traBiceps), exeBiceps);
+            initTableForFirstTime(Constants.PART_OF_BODY_TRICEPS, getString(R.string.traTriceps), exeTriceps);
+            initTableForFirstTime(Constants.PART_OF_BODY_BACK, getString(R.string.traBack), exeBack);
+            initTableForFirstTime(Constants.PART_OF_BODY_SHOULDERS, getString(R.string.traShoulders), exeShoulders);
+            initTableForFirstTime(Constants.PART_OF_BODY_ABS, getString(R.string.traAbs), exeAbs);
+        }
     }
 
     private void updateTableForVersion5() {
@@ -186,6 +187,7 @@ public class StartActivity extends AnalyticsActivity {
             try {
                 initialize();
                 initTableForFirstTime();
+                Prefs.get().setDbUpdatedToV5(true);
                 Prefs.get().setDatabaseFilled(true);
             } catch (Exception e) {
                 Counter.sharedInstance().reportError("", e);
