@@ -4,10 +4,13 @@
     android:layout_height="wrap_content"
     android:layout_marginTop="8dp"
     android:background="@drawable/card"
-    android:paddingBottom="4dp"
-    android:paddingLeft="8dp"
-    android:paddingRight="8dp"
-    android:paddingTop="4dp" >
+    android:paddingBottom="4dp" >
+
+    <View
+        android:id="@+id/view_color_for_superset"
+        android:layout_alignParentTop="true"
+        android:layout_width="match_parent"
+        android:layout_height="5dp"/>
 
     <com.nethergrim.combogymdiary.view.TextViewLight
         android:id="@+id/textViewExerciseName"
@@ -15,7 +18,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
+        android:layout_below="@+id/view_color_for_superset"
         android:gravity="center_horizontal"
         android:textSize="17sp" />
 

@@ -72,18 +72,17 @@ public class HistoryFragment extends Fragment implements
                 String date = (String) t.getText();
                 TextView tra = (TextView) par.findViewById(R.id.tvDouble2);
                 String traName = (String) tra.getText();
-                goToDetailed(position, id, date, traName);
+                goToDetailed(id, date, traName);
             }
         });
         return v;
     }
 
-    public void goToDetailed(int position, long ID, String date, String traName) {
-        Intent intent_history_detailed = new Intent(getActivity(),
-                HistoryDetailedActivity.class);
-        intent_history_detailed.putExtra("date", date);
-        intent_history_detailed.putExtra("trName", traName);
-        intent_history_detailed.putExtra("traID", ID);
+    public void goToDetailed(long ID, String date, String traName) {
+        Intent intent_history_detailed = new Intent(getActivity(), HistoryDetailedActivity.class);
+        intent_history_detailed.putExtra(HistoryDetailedActivity.BUNDLE_KEY_DATE, date);
+        intent_history_detailed.putExtra(HistoryDetailedActivity.BUNDLE_KEY_TRAINING_NAME, traName);
+        intent_history_detailed.putExtra(HistoryDetailedActivity.BUNDLE_KEY_TRAINING_ID, ID);
         startActivity(intent_history_detailed);
     }
 
@@ -113,13 +112,11 @@ public class HistoryFragment extends Fragment implements
         if (item.getItemId() == CM_DELETE_ID) {
             int id = (int) acmi.id;
             String[] args = {"" + id};
-            Cursor c = db.getDataMain(null, DB._ID + "=?", args, null,
-                    null, null);
+            Cursor c = db.getDataMain(null, DB._ID + "=?", args, null,  null, null);
             c.moveToFirst();
             String dateToDelete = c.getString(3);
             String[] argsDate = {dateToDelete};
-            Cursor cur = db.getDataMain(null, DB.DATE + "=?", argsDate, null,
-                    null, null);
+            Cursor cur = db.getDataMain(null, DB.DATE + "=?", argsDate, null,  null, null);
             if (cur.moveToFirst()) {
                 do {
                     db.delRec_Main(cur.getInt(0));
@@ -132,8 +129,7 @@ public class HistoryFragment extends Fragment implements
                 Counter.sharedInstance().reportError("", e);
             }
 
-            ((FragmentActivity) getActivity()).getSupportLoaderManager()
-                    .getLoader(LOADER_ID).forceLoad();
+            ((FragmentActivity) getActivity()).getSupportLoaderManager().getLoader(LOADER_ID).forceLoad();
             return true;
         }
         return super.onContextItemSelected(item);
@@ -171,8 +167,7 @@ public class HistoryFragment extends Fragment implements
 
         @Override
         public Cursor loadInBackground() {
-            cursor = db.getDataMain(null, null, null, DB.DATE, null,
-                    DB._ID + " DESC");
+            cursor = db.getDataMain(null, null, null, DB.DATE, null, DB._ID + " DESC");
             return cursor;
         }
     }
