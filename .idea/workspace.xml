@@ -46,7 +46,7 @@
     </layouts>
   </component>
   <component name="AndroidLogFilters">
-    <option name="TOOL_WINDOW_LOG_LEVEL" value="ERROR" />
+    <option name="TOOL_WINDOW_LOG_LEVEL" value="WARN" />
     <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="app: com.nethergrim.combogymdiary" />
   </component>
   <component name="ChangeListManager">
@@ -88,26 +88,25 @@
       <file leaf-file-name="TrainingFragment.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/fragments/TrainingFragment.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.77360517" vertical-offset="2747" max-vertical-offset="3791">
-              <caret line="848" column="30" selection-start-line="848" selection-start-column="30" selection-end-line="848" selection-end-column="30" />
+            <state vertical-scroll-proportion="1.2863706" vertical-offset="3835" max-vertical-offset="4947">
+              <caret line="851" column="9" selection-start-line="851" selection-start-column="9" selection-end-line="851" selection-end-column="9" />
               <folding>
-                <element signature="class#4735:7279" expanded="false" />
-                <element signature="method#onCreateActionMode#0;class#4735:7279" expanded="false" />
-                <element signature="method#onPrepareActionMode#0;class#4735:7279" expanded="false" />
-                <element signature="method#onActionItemClicked#0;class#4735:7279" expanded="false" />
-                <element signature="method#onDestroyActionMode#0;class#4735:7279" expanded="false" />
+                <element signature="class#4760:7304" expanded="false" />
+                <element signature="method#onCreateActionMode#0;class#4760:7304" expanded="false" />
+                <element signature="method#onPrepareActionMode#0;class#4760:7304" expanded="false" />
+                <element signature="method#onActionItemClicked#0;class#4760:7304" expanded="false" />
+                <element signature="method#onDestroyActionMode#0;class#4760:7304" expanded="false" />
                 <element signature="method#onCreate#0;class#TrainingFragment#0" expanded="false" />
                 <element signature="method#onCreateView#0;class#TrainingFragment#0" expanded="false" />
-                <element signature="class#9888:10304" expanded="false" />
-                <element signature="method#onTextChanged#0;class#9888:10304" expanded="false" />
-                <element signature="method#beforeTextChanged#0;class#9888:10304" expanded="false" />
+                <element signature="class#9913:10329" expanded="false" />
+                <element signature="method#onTextChanged#0;class#9913:10329" expanded="false" />
+                <element signature="method#beforeTextChanged#0;class#9913:10329" expanded="false" />
                 <element signature="method#initSetButtons#0;class#TrainingFragment#0" expanded="false" />
                 <element signature="method#onResume#0;class#TrainingFragment#0" expanded="false" />
                 <element signature="method#onPause#0;class#TrainingFragment#0" expanded="false" />
                 <element signature="method#onCreateOptionsMenu#0;class#TrainingFragment#0" expanded="false" />
                 <element signature="method#onOptionsItemSelected#0;class#TrainingFragment#0" expanded="false" />
                 <element signature="method#updateTimer#0;class#TrainingFragment#0" expanded="false" />
-                <element signature="method#onClick#0;class#TrainingFragment#0" expanded="false" />
                 <element signature="method#showPopup#0;class#TrainingFragment#0" expanded="false" />
                 <element signature="method#saveSetsToPreferences#0;class#TrainingFragment#0" expanded="false" />
                 <element signature="method#restoreSetsFromPreferences#0;class#TrainingFragment#0" expanded="false" />
@@ -1352,7 +1351,7 @@
     <property name="recentsLimit" value="5" />
     <property name="android.project.structure.last.selected" value="app" />
     <property name="android.project.structure.proportion" value="0.15" />
-    <property name="ANDROID_EXTENDED_DEVICE_CHOOSER_SERIALS" value="03a15e6b006b9441" />
+    <property name="ANDROID_EXTENDED_DEVICE_CHOOSER_SERIALS" value="070b0900" />
     <property name="FullScreen" value="false" />
     <property name="LayoutCode.rearrangeEntriesJava" value="true" />
     <property name="restartRequiresConfirmation" value="true" />
@@ -1565,7 +1564,7 @@
       <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.31458333" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.290625" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Android" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.290625" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -1678,23 +1677,22 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="4386" max-vertical-offset="14773">
           <caret line="334" column="24" selection-start-line="334" selection-start-column="24" selection-end-line="334" selection-end-column="24" />
           <folding>
-            <element signature="class#4735:7279" expanded="false" />
-            <element signature="method#onCreateActionMode#0;class#4735:7279" expanded="false" />
-            <element signature="method#onPrepareActionMode#0;class#4735:7279" expanded="false" />
-            <element signature="method#onActionItemClicked#0;class#4735:7279" expanded="false" />
-            <element signature="method#onDestroyActionMode#0;class#4735:7279" expanded="false" />
+            <element signature="class#4760:7304" expanded="false" />
+            <element signature="method#onCreateActionMode#0;class#4760:7304" expanded="false" />
+            <element signature="method#onPrepareActionMode#0;class#4760:7304" expanded="false" />
+            <element signature="method#onActionItemClicked#0;class#4760:7304" expanded="false" />
+            <element signature="method#onDestroyActionMode#0;class#4760:7304" expanded="false" />
             <element signature="method#onCreate#0;class#TrainingFragment#0" expanded="false" />
             <element signature="method#onCreateView#0;class#TrainingFragment#0" expanded="false" />
-            <element signature="class#9888:10304" expanded="false" />
-            <element signature="method#onTextChanged#0;class#9888:10304" expanded="false" />
-            <element signature="method#beforeTextChanged#0;class#9888:10304" expanded="false" />
+            <element signature="class#9913:10329" expanded="false" />
+            <element signature="method#onTextChanged#0;class#9913:10329" expanded="false" />
+            <element signature="method#beforeTextChanged#0;class#9913:10329" expanded="false" />
             <element signature="method#initSetButtons#0;class#TrainingFragment#0" expanded="false" />
             <element signature="method#onResume#0;class#TrainingFragment#0" expanded="false" />
             <element signature="method#onPause#0;class#TrainingFragment#0" expanded="false" />
             <element signature="method#onCreateOptionsMenu#0;class#TrainingFragment#0" expanded="false" />
             <element signature="method#onOptionsItemSelected#0;class#TrainingFragment#0" expanded="false" />
             <element signature="method#updateTimer#0;class#TrainingFragment#0" expanded="false" />
-            <element signature="method#onClick#0;class#TrainingFragment#0" expanded="false" />
             <element signature="method#showPopup#0;class#TrainingFragment#0" expanded="false" />
             <element signature="method#saveSetsToPreferences#0;class#TrainingFragment#0" expanded="false" />
             <element signature="method#restoreSetsFromPreferences#0;class#TrainingFragment#0" expanded="false" />
@@ -2212,26 +2210,25 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/fragments/TrainingFragment.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.77360517" vertical-offset="2747" max-vertical-offset="3791">
-          <caret line="848" column="30" selection-start-line="848" selection-start-column="30" selection-end-line="848" selection-end-column="30" />
+        <state vertical-scroll-proportion="1.2863706" vertical-offset="3835" max-vertical-offset="4947">
+          <caret line="851" column="9" selection-start-line="851" selection-start-column="9" selection-end-line="851" selection-end-column="9" />
           <folding>
-            <element signature="class#4735:7279" expanded="false" />
-            <element signature="method#onCreateActionMode#0;class#4735:7279" expanded="false" />
-            <element signature="method#onPrepareActionMode#0;class#4735:7279" expanded="false" />
-            <element signature="method#onActionItemClicked#0;class#4735:7279" expanded="false" />
-            <element signature="method#onDestroyActionMode#0;class#4735:7279" expanded="false" />
+            <element signature="class#4760:7304" expanded="false" />
+            <element signature="method#onCreateActionMode#0;class#4760:7304" expanded="false" />
+            <element signature="method#onPrepareActionMode#0;class#4760:7304" expanded="false" />
+            <element signature="method#onActionItemClicked#0;class#4760:7304" expanded="false" />
+            <element signature="method#onDestroyActionMode#0;class#4760:7304" expanded="false" />
             <element signature="method#onCreate#0;class#TrainingFragment#0" expanded="false" />
             <element signature="method#onCreateView#0;class#TrainingFragment#0" expanded="false" />
-            <element signature="class#9888:10304" expanded="false" />
-            <element signature="method#onTextChanged#0;class#9888:10304" expanded="false" />
-            <element signature="method#beforeTextChanged#0;class#9888:10304" expanded="false" />
+            <element signature="class#9913:10329" expanded="false" />
+            <element signature="method#onTextChanged#0;class#9913:10329" expanded="false" />
+            <element signature="method#beforeTextChanged#0;class#9913:10329" expanded="false" />
             <element signature="method#initSetButtons#0;class#TrainingFragment#0" expanded="false" />
             <element signature="method#onResume#0;class#TrainingFragment#0" expanded="false" />
             <element signature="method#onPause#0;class#TrainingFragment#0" expanded="false" />
             <element signature="method#onCreateOptionsMenu#0;class#TrainingFragment#0" expanded="false" />
             <element signature="method#onOptionsItemSelected#0;class#TrainingFragment#0" expanded="false" />
             <element signature="method#updateTimer#0;class#TrainingFragment#0" expanded="false" />
-            <element signature="method#onClick#0;class#TrainingFragment#0" expanded="false" />
             <element signature="method#showPopup#0;class#TrainingFragment#0" expanded="false" />
             <element signature="method#saveSetsToPreferences#0;class#TrainingFragment#0" expanded="false" />
             <element signature="method#restoreSetsFromPreferences#0;class#TrainingFragment#0" expanded="false" />

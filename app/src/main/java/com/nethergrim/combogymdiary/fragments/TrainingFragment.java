@@ -19,6 +19,7 @@ import android.os.Message;
 import android.os.Vibrator;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.ActionMode;
 import android.view.Display;
@@ -311,11 +312,11 @@ public class TrainingFragment extends Fragment implements
             llBottom.setVisibility(View.VISIBLE);
         }
         Prefs.get().setCheckedPosition(position);
+        currentExerciseName = adapter.getData().get(position).getExerciseName();
         listView.setItemChecked(position,true);
         listView.smoothScrollToPosition(position);
         currentCheckedPosition = position;
-        currentExerciseName = adapter.getData().get(position).getExerciseName();
-        set = adapter.getData().get(position).getSetsCount();
+        set = adapter.getData().get(currentCheckedPosition).getSetsCount();
         try {
             timerValue = Integer.parseInt(db.getTimerValueByExerciseName(currentExerciseName));
         } catch (NumberFormatException e) {
@@ -849,7 +850,6 @@ public class TrainingFragment extends Fragment implements
                 onSelected(i);
             }
         }
-
     }
 
     private class RepsAdapter extends AbstractWheelTextAdapter {
