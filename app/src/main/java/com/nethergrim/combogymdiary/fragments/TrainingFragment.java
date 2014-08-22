@@ -818,8 +818,9 @@ public class TrainingFragment extends Fragment implements
         if (adapter.getData().get(currentCheckedPosition).isSuperset()){
             int supersetId = adapter.getData().get(currentCheckedPosition).getSupersetId();
             int supersetPosition = adapter.getData().get(currentCheckedPosition).getPositionAtSuperset();
-            if (getNextSuperSetExercise(supersetId, supersetPosition) > 0){
-                onSelected(getNextSuperSetExercise(supersetId, supersetPosition));
+            int next = getNextSuperSetExercise(supersetId, supersetPosition);
+            if (next >= 0){
+                onSelected(next);
             } else {
                 checkFirstSupersetExercise(supersetId);
                 showProgressDialog(true);
@@ -828,13 +829,14 @@ public class TrainingFragment extends Fragment implements
     }
 
     private int getNextSuperSetExercise(int supersetId, int supersetPosition){
-        int result = -1;
-        for (int i = 0; i < adapter.getData().size(); i++){
-            if (adapter.getData().get(i).getSupersetId() == supersetId && adapter.getData().get(i).getPositionAtSuperset() > supersetPosition){
-                return i;
+        for (int j = 0; j < 10; j++){
+            for (int i = 0; i < adapter.getData().size(); i++){
+                if (adapter.getData().get(i).getSupersetId() == supersetId && adapter.getData().get(i).getPositionAtSuperset() == supersetPosition + j + 1){
+                    return i;
+                }
             }
         }
-        return result;
+        return -1;
     }
 
     private void checkFirstSupersetExercise(int supersetId){

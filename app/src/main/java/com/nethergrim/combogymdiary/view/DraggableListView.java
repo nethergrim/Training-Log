@@ -363,7 +363,11 @@ public class DraggableListView extends ListView {
                 return;
             }
 
-            mHoverCellCurrentBounds.offsetTo(mHoverCellOriginalBounds.left, mobileView.getTop());
+            try {
+                mHoverCellCurrentBounds.offsetTo(mHoverCellOriginalBounds.left, mobileView.getTop());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
             ObjectAnimator hoverViewAnimator = ObjectAnimator.ofObject(mHoverCell, "bounds",
                     sBoundEvaluator, mHoverCellCurrentBounds);

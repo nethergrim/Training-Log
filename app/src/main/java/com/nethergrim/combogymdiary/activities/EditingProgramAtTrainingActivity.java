@@ -16,7 +16,7 @@ import android.widget.ListView;
 
 import com.nethergrim.combogymdiary.DB;
 import com.nethergrim.combogymdiary.R;
-
+@Deprecated
 public class EditingProgramAtTrainingActivity extends AnalyticsActivity
         implements LoaderCallbacks<Cursor> {
 
