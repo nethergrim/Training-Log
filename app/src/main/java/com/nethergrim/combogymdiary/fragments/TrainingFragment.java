@@ -84,6 +84,20 @@ public class TrainingFragment extends Fragment implements
     private int currentCheckedPosition = 0, set = 0, currentSet = 0, oldReps = 0,
             oldWeight = 0, timerValue = 0, vibrateLenght = 0, currentId = 0;
     private long startTime = 0;
+    private Runnable timerRunnable = new Runnable() {
+        @Override
+        public void run() {
+            long millis = System.currentTimeMillis() - startTime;
+            int seconds = (int) (millis / 1000);
+            int minutes = (seconds / 60);
+            seconds = (seconds % 60);
+            actionBar.setSubtitle((String.format("%d:%02d", minutes, seconds)) + " "
+                    + " " + " ["
+                    + ((set == currentSet ? set : currentSet) + 1) + " "
+                    + getResources().getString(R.string.set) + "] ");
+            timerHandler.postDelayed(this, 500);
+        }
+    };
     private Handler handler;
     private WheelView repsWheel, weightWheel;
     private TextView tvInfoText;
@@ -99,7 +113,6 @@ public class TrainingFragment extends Fragment implements
     private TrainingAdapter adapter;
     private FAB fabSave, fabBack, fabForward;
     private boolean isInActionMode = false;
-    private int trainingId;
     private ActionMode.Callback mActionModeCallback = new ActionMode.Callback() {
 
         @Override
@@ -127,23 +140,12 @@ public class TrainingFragment extends Fragment implements
         @Override
         public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
             if (item.getItemId() == R.id.cab_delete) {
-
-                long[] itemsChecked = listView.getCheckedItemIds();
                 SparseBooleanArray deletingPositions = listView.getCheckedItemPositions();
-
-                if (itemsChecked.length >= listView.getCount()) {
-                    Toast.makeText(getActivity(), R.string.cannot_delete_all_exe, Toast.LENGTH_LONG).show();
-                    return false;
-                }
-
-                if (itemsChecked.length > 0) {
-                    for (int i = deletingPositions.size() - 1; i >= 0; --i){
-                        if (deletingPositions.get(i)){
-                            adapter.deleteItem(i);
-                        }
+                for (int i = deletingPositions.size() - 1; i >= 0; --i) {
+                    if (deletingPositions.get(i)) {
+                        adapter.deleteItem(i);
                     }
                 }
-
                 for (int i = 0; i < listView.getCount(); ++i) {
                     listView.setItemChecked(i, false);
                 }
@@ -179,6 +181,7 @@ public class TrainingFragment extends Fragment implements
             isInActionMode = false;
         }
     };
+    private int trainingId;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -199,7 +202,6 @@ public class TrainingFragment extends Fragment implements
         startTime = System.currentTimeMillis();
         Prefs.get().setStartTime(startTime);
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -249,7 +251,7 @@ public class TrainingFragment extends Fragment implements
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                if (!isInActionMode){
+                if (!isInActionMode) {
                     listView.startSwapping();
                     return true;
                 }
@@ -744,7 +746,7 @@ public class TrainingFragment extends Fragment implements
         for (TrainingRow aCurrentData : currentData) {
             JSONObject jsonObject = new JSONObject();
             try {
-                jsonObject.put("setCount",aCurrentData.getSetsCount());
+                jsonObject.put("setCount", aCurrentData.getSetsCount());
                 jsonArray.put(jsonObject);
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -756,7 +758,7 @@ public class TrainingFragment extends Fragment implements
     public void restoreSetsFromPreferences() {// FIXME make at background
         try {
             JSONArray jsonArray = new JSONArray(Prefs.get().getSavedSets());
-            for (int i = 0; i < jsonArray.length(); i++){
+            for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject tmp = (JSONObject) jsonArray.get(i);
                 adapter.getData().get(i).setSetsCount(tmp.getInt("setCount"));
             }
@@ -889,38 +891,23 @@ public class TrainingFragment extends Fragment implements
         }
     }
 
-    private Runnable timerRunnable = new Runnable() {
-        @Override
-        public void run() {
-            long millis = System.currentTimeMillis() - startTime;
-            int seconds = (int) (millis / 1000);
-            int minutes = (seconds / 60);
-            seconds = (seconds % 60);
-            actionBar.setSubtitle((String.format("%d:%02d", minutes, seconds)) + " "
-                    + " " + " ["
-                    + ((set == currentSet ? set : currentSet) + 1) + " "
-                    + getResources().getString(R.string.set) + "] ");
-            timerHandler.postDelayed(this, 500);
-        }
-    };
-
-    private class TrainingAdapter extends BaseAdapter{
+    private class TrainingAdapter extends BaseAdapter {
 
         private final static int INVALID_ID = -1;
         private LayoutInflater inflater;
         private List<TrainingRow> data;
 
-        public TrainingAdapter(Context context){
+        public TrainingAdapter(Context context) {
             this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             data = new ArrayList<TrainingRow>();
         }
 
-        public void addData(List<TrainingRow> newData){
+        public void addData(List<TrainingRow> newData) {
             data.addAll(newData);
             notifyDataSetChanged();
         }
 
-        public void deleteItem(int position){
+        public void deleteItem(int position) {
             data.remove(position);
             notifyDataSetChanged();
         }
@@ -941,7 +928,7 @@ public class TrainingFragment extends Fragment implements
 
         @Override
         public long getItemId(int position) {
-            if (position >= 0 && position < data.size()){
+            if (position >= 0 && position < data.size()) {
                 return data.get(position).getId();
             } else {
                 return INVALID_ID;
@@ -983,7 +970,6 @@ public class TrainingFragment extends Fragment implements
             TextViewLight tvSupersetNumber;
         }
     }
-
 
 
 }
