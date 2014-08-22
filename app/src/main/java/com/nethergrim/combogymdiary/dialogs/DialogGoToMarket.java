@@ -35,7 +35,7 @@ public class DialogGoToMarket extends DialogFragment implements OnClickListener 
                 Counter.sharedInstance().reportEvent("Go to martet: YES");
                 break;
             case Dialog.BUTTON_NEGATIVE:
-                Prefs.get().setMarketAlreadyLeavedFeedback(false);
+                Prefs.get().setMarketAlreadyLeavedFeedback(true);
                 break;
             case Dialog.BUTTON_NEUTRAL:
                 Prefs.get().setTrainingsCount(1);

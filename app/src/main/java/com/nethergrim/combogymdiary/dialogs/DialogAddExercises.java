@@ -36,6 +36,10 @@ public class DialogAddExercises extends DialogFragment implements DialogInterfac
     private ExercisesAdapter adapter;
     private ExpandableListView elv;
 
+    public void setListener (OnExerciseAddCallback callback){
+        this.listener = callback;
+    }
+
     @Override
     public void onClick(DialogInterface dialog, int which) {
         switch (which) {
@@ -49,11 +53,11 @@ public class DialogAddExercises extends DialogFragment implements DialogInterfac
         }
     }
 
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        this.listener = (OnExerciseAddCallback) activity;
-    }
+//    @Override
+//    public void onAttach(Activity activity) {
+//        super.onAttach(activity);
+//        this.listener = (OnExerciseAddCallback) activity;
+//    }
 
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);

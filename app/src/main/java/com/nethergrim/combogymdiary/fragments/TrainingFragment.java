@@ -50,7 +50,9 @@ import com.nethergrim.combogymdiary.R;
 import com.nethergrim.combogymdiary.activities.EditingProgramAtTrainingActivity;
 import com.nethergrim.combogymdiary.activities.HistoryDetailedActivity;
 import com.nethergrim.combogymdiary.dialogs.DialogAddCommentToTraining;
+import com.nethergrim.combogymdiary.dialogs.DialogAddExercises;
 import com.nethergrim.combogymdiary.dialogs.DialogExitFromTraining;
+import com.nethergrim.combogymdiary.model.Exercise;
 import com.nethergrim.combogymdiary.model.ExerciseTrainingObject;
 import com.nethergrim.combogymdiary.model.TrainingRow;
 import com.nethergrim.combogymdiary.service.TrainingService;
@@ -68,12 +70,13 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 import kankan.wheel.widget.WheelView;
 import kankan.wheel.widget.adapters.AbstractWheelTextAdapter;
 
 public class TrainingFragment extends Fragment implements
-        OnCheckedChangeListener, OnClickListener, DraggableListView.OnListItemSwapListener {
+        OnCheckedChangeListener, OnClickListener, DraggableListView.OnListItemSwapListener, DialogAddExercises.OnExerciseAddCallback {
 
     public static final String BUNDLE_KEY_TRAINING_ID = "com.nethergrim.combogymdiary.TRAINING_ID";
     private ActionBar actionBar;
@@ -157,7 +160,7 @@ public class TrainingFragment extends Fragment implements
                     listView.setItemChecked(0, true);
                     llBottom.setVisibility(View.VISIBLE);
                 }
-
+                saveExercicesToDatabase();
                 mode.finish();
                 return true;
             }
@@ -447,12 +450,10 @@ public class TrainingFragment extends Fragment implements
             dlg1.setCancelable(false);
             if (!dlg1.isAdded())
                 dlg1.show(getFragmentManager(), "dlg1");
-        } else if (itemId == R.id.itemEditTrainings) {
-            Intent intent = new Intent(getActivity(),
-                    EditingProgramAtTrainingActivity.class);
-            intent.putExtra("trName", trainingName);
-            intent.putExtra("ifAddingExe", true);
-            startActivityForResult(intent, 1);
+        } else if (itemId == R.id.item_add_exercises) {
+            DialogAddExercises dialogAddExercises = new DialogAddExercises();
+            dialogAddExercises.show(getFragmentManager(), DialogAddExercises.class.getName());
+            dialogAddExercises.setListener(this);
         } else if (itemId == R.id.itemSeePreviousTraining) {
             String[] args = {trainingName};
             Cursor tmpCursor = db.getDataMain(null, DB.TRAINING_NAME + "=?", args,
@@ -481,39 +482,12 @@ public class TrainingFragment extends Fragment implements
                         Toast.LENGTH_SHORT).show();
             }
         } else if (itemId == R.id.itemAddCommentToTraining) {
-
             DialogAddCommentToTraining dialog = new DialogAddCommentToTraining();
             dialog.show(getFragmentManager(), "");
         } else if (itemId == R.id.itemDeleteExercise) {
             getActivity().startActionMode(mActionModeCallback);
         }
         return false;
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) { // FIXME add data to adapter
-        if (data == null) {
-            return;
-        }
-
-
-//        long[] itemsChecked = data
-//                .getLongArrayExtra("return_array_of_exersices");
-//        for (long anItemsChecked : itemsChecked) {
-//            exerciseList.add(db.getExerciseByID((int) anItemsChecked));
-//            setsList.add(0);
-//        }
-//        for (int j = 0; j < 100; j++) {
-//            setsList.add(0);
-//        }
-//
-//        String[] tmp = new String[exerciseList.size()];
-//
-//        for (int i = 0; i < exerciseList.size(); i++) {
-//            tmp[i] = exerciseList.get(i);
-//        }
-//        db.updateRec_Training(trainingId, 2, db.convertArrayToString(tmp));
-//        updateAdapter();
     }
 
     private void updateTimer(String tmp) {
@@ -832,6 +806,28 @@ public class TrainingFragment extends Fragment implements
         Object temp = list.get(indexOne);
         list.set(indexOne, list.get(indexTwo));
         list.set(indexTwo, temp);
+    }
+
+    @Override
+    public void onExerciseAddedCallback(List<Integer> idList) {// TODO make at background
+        List<TrainingRow> newData = new ArrayList<TrainingRow>();
+        Random random = new Random();
+        for (Integer anIdList : idList) {
+            TrainingRow row = new TrainingRow();
+            Exercise exercise = db.getExercise(anIdList);
+            row.setExerciseName(exercise.getName());
+            row.setExerciseId(anIdList);
+            row.setSuperset(false);
+            row.setSetsCount(0);
+            row.setTrainingProgramId(trainingId);
+            row.setPositionAtSuperset(0);
+            row.setSupersetColor(0);
+            row.setSupersetId(0);
+            row.setId(random.nextInt());
+            newData.add(row);
+        }
+        adapter.addData(newData);
+        saveExercicesToDatabase();
     }
 
     private class RepsAdapter extends AbstractWheelTextAdapter {

@@ -8,7 +8,7 @@
         android:title="@string/see_last_training">
     </item>
     <item
-        android:id="@+id/itemEditTrainings"
+        android:id="@+id/item_add_exercises"
         android:icon="@drawable/ic_action_new"
         android:showAsAction="collapseActionView"
         android:title="@string/add_an_exercise">

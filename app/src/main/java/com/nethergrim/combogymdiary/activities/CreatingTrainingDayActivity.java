@@ -272,6 +272,7 @@ public class CreatingTrainingDayActivity extends AnalyticsActivity implements Di
                 if (!isInActionMode) {
                     DialogAddExercises dialogAddExercises = new DialogAddExercises();
                     dialogAddExercises.show(getFragmentManager(), DialogAddExercises.class.getName());
+                    dialogAddExercises.setListener(CreatingTrainingDayActivity.this);
                 }
             }
         });
