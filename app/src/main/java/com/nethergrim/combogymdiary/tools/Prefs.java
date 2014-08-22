@@ -11,13 +11,22 @@ import com.nethergrim.combogymdiary.activities.BaseActivity;
 public class Prefs {
     private static final String KEY_ADS_REMOVED = "ads_removed";
     private static final String KEY_SUPERSET_INFO_SHOWED = "superset_info_showed";
-    public final static String KEY_TRAINING_AT_PROGRESS = "training_at_progress";
-    public final static String KEY_DATABASE_FILLED = "database_filled";
+    private final static String KEY_TRAINING_AT_PROGRESS = "training_at_progress";
+    private final static String KEY_DATABASE_FILLED = "database_filled";
     private static final String KEY_DATABASE_UPDATED_TOV5 = "db_updated_to5";
     private static final String KEY_MEASURE_ITEM = "measureItem";
-    public static final String KEY_CURRENT_TRAINING_ID = "current_training_id";
-    public static final String KEY_TRAININGS_COUNT = "trainings_count";
-    public static final String KEY_MARKET_ALREADY_LEAVED_FEEDBACK = "market_already_leaved_feedback";
+    private static final String KEY_CURRENT_TRAINING_ID = "current_training_id";
+    private static final String KEY_TRAININGS_COUNT = "trainings_count";
+    private static final String KEY_MARKET_ALREADY_LEAVED_FEEDBACK = "market_already_leaved_feedback";
+    private static final String KEY_START_TIME = "start_time";
+    private static final String KEY_CHECKED_POSITION = "checked_position";
+    private static final String KEY_TURN_SCREEN_OFF = "toTurnOff";
+    private static final String KEY_VIBRATE_ON = "vibrateOn";
+    private static final String KEY_VIBRATE_LENGHT = "vibtateLenght";
+    private static final String KEY_TO_NOTIFY_WITH_ALARM = "toNotifyWithSound";
+    private static final String KEY_PROGRESS = "progress";
+    private static final String KEY_TIMER_ON = "timerIsOn";
+    private static final String KEY_RINGTONE_ALARM = "ringtone";
 
     private static SharedPreferences prefs;
     private static Prefs pref;
@@ -111,4 +120,75 @@ public class Prefs {
         return prefs.getBoolean(KEY_MARKET_ALREADY_LEAVED_FEEDBACK, false);
     }
 
+    public void setStartTime(long time){
+        prefs.edit().putLong(KEY_START_TIME, time).apply();
+    }
+
+    public long getStartTime(){
+        return prefs.getLong(KEY_START_TIME, 0);
+    }
+
+    public void setCheckedPosition(int position){
+        prefs.edit().putInt(KEY_CHECKED_POSITION, position).apply();
+    }
+
+    public int getCheckedPosition(){
+        return prefs.getInt(KEY_CHECKED_POSITION, 0);
+    }
+
+    public void setTurnScreenOff(boolean turnOff){
+        prefs.edit().putBoolean(KEY_TURN_SCREEN_OFF, turnOff).apply();
+    }
+
+    public boolean getTurnScreenOff(){
+        return prefs.getBoolean(KEY_TURN_SCREEN_OFF, false);
+    }
+
+    public void setVibrateOn(boolean vibrate){
+        prefs.edit().putBoolean(KEY_VIBRATE_ON, vibrate).apply();
+    }
+
+    public boolean getVibrateOn(){
+        return prefs.getBoolean(KEY_VIBRATE_ON, true);
+    }
+
+    public void setVibrateLenght(String value){
+        prefs.edit().putString(KEY_VIBRATE_LENGHT, value).apply();
+    }
+
+    public String getVibrateLenght(){
+        return prefs.getString(KEY_VIBRATE_LENGHT, "2");
+    }
+
+    public void setNotifyWithSound(boolean notify){
+        prefs.edit().putBoolean(KEY_TO_NOTIFY_WITH_ALARM, notify).apply();
+    }
+
+    public boolean getNotifyWithSound(){
+        return prefs.getBoolean(KEY_TO_NOTIFY_WITH_ALARM, true);
+    }
+
+    public void setProgress(int progress){
+        prefs.edit().putInt(KEY_PROGRESS, progress).apply();
+    }
+
+    public int getProgress(){
+        return prefs.getInt(KEY_PROGRESS, 0);
+    }
+
+    public void setTimerOn(boolean timerOn){
+        prefs.edit().putBoolean(KEY_TIMER_ON, timerOn).apply();
+    }
+
+    public boolean getTimerOn(){
+        return prefs.getBoolean(KEY_TIMER_ON, false);
+    }
+
+    public void setRingtone(String ringtone){
+        prefs.edit().putString(KEY_RINGTONE_ALARM, ringtone).apply();
+    }
+
+    public String getRingtone(){
+        return prefs.getString(KEY_RINGTONE_ALARM, null);
+    }
 }

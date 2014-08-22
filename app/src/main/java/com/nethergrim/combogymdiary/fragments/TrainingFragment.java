@@ -35,9 +35,11 @@ import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
+import android.widget.BaseAdapter;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
@@ -51,12 +53,12 @@ import com.nethergrim.combogymdiary.activities.EditingProgramAtTrainingActivity;
 import com.nethergrim.combogymdiary.activities.HistoryDetailedActivity;
 import com.nethergrim.combogymdiary.dialogs.DialogAddCommentToTraining;
 import com.nethergrim.combogymdiary.dialogs.DialogExitFromTraining;
-import com.nethergrim.combogymdiary.model.ExerciseTrainingObject;
+import com.nethergrim.combogymdiary.model.TrainingRow;
 import com.nethergrim.combogymdiary.service.TrainingService;
 import com.nethergrim.combogymdiary.tools.Prefs;
-import com.nethergrim.combogymdiary.tools.StableArrayAdapter;
-import com.nethergrim.combogymdiary.view.DynamicListView;
+import com.nethergrim.combogymdiary.view.DraggableListView;
 import com.nethergrim.combogymdiary.view.FAB;
+import com.nethergrim.combogymdiary.view.TextViewLight;
 import com.yandex.metrica.Counter;
 
 import java.text.SimpleDateFormat;
@@ -69,31 +71,24 @@ import kankan.wheel.widget.WheelView;
 import kankan.wheel.widget.adapters.AbstractWheelTextAdapter;
 
 public class TrainingFragment extends Fragment implements
-        OnCheckedChangeListener, OnClickListener, DynamicListView.OnElementSwapped {
+        OnCheckedChangeListener, OnClickListener, DraggableListView.OnListItemSwapListener {
 
     public static final String BUNDLE_KEY_TRAINING_ID = "com.nethergrim.combogymdiary.TRAINING_ID";
-    public final static String CHECKED_POSITION = "checked_pos";
-    private final static String START_TIME = "start_time";
-    private final static String LIST_OF_SETS = "list_of_sets";
-    private final static String PROGRESS = "progress";
-    private final static String TIMER_IS_ON = "timerIsOn";
-    public static final String RINGTONE = "ringtone";
-    private ActionBar bar;
+//    private final static String PROGRESS = "progress";
+//    private final static String TIMER_IS_ON = "timerIsOn";
+//    public static final String RINGTONE = "ringtone";
+    private ActionBar actionBar;
     private Boolean tglChecked = true, vibrate = false;
     private EditText etTimer;
     private DB db;
-    private String traName = "", exeName = "", date = "";
-    private SharedPreferences sp;
-    private int checkedPosition = 0, set = 0, currentSet = 0, oldReps = 0,
+    private String trainingName = "", currentExerciseName = "", date = "";
+//    private SharedPreferences sp;
+    private int currentCheckedPosition = 0, set = 0, currentSet = 0, oldReps = 0,
             oldWeight = 0, timerValue = 0, vibrateLenght = 0, currentId = 0;
     private long startTime = 0;
-    private Handler h;
+    private Handler handler;
     private WheelView repsWheel, weightWheel;
     private TextView tvInfoText;
-    private ArrayList<String> alExersicesList = new ArrayList<String>();
-    private ArrayList<Integer> alSetList = new ArrayList<Integer>();
-    private List<ExerciseTrainingObject> trainingsList = new ArrayList<ExerciseTrainingObject>();
-    private int trainingId = 0;
     private boolean btnBlocked = false;
     private PopupWindow popupWindow;
     private Handler timerHandler = new Handler();
@@ -102,13 +97,15 @@ public class TrainingFragment extends Fragment implements
     private boolean isTrainingAtProgress = false, toPlaySound = false;
     private ProgressDialog pd;
     private boolean isActiveDialog = false, blocked = false, blockedSelection = false;
-    private DynamicListView listView;
-    private StableArrayAdapter adapter;
+    private DraggableListView listView;
+    private TrainingAdapter adapter;
     private FAB fabSave, fabBack, fabForward;
+    private boolean isInActionMode = false;
     private ActionMode.Callback mActionModeCallback = new ActionMode.Callback() {
 
         @Override
         public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+            isInActionMode = true;
             MenuInflater inflater = mode.getMenuInflater();
             inflater.inflate(R.menu.cab_training, menu);
             fabSave.setVisibility(View.GONE);
@@ -124,7 +121,6 @@ public class TrainingFragment extends Fragment implements
             for (int i = 0; i < listView.getCount(); ++i) {
                 listView.setItemChecked(i, false);
             }
-            listView.setupLongClickListener(0);
             llBottom.setVisibility(View.GONE);
             return false;
         }
@@ -134,25 +130,19 @@ public class TrainingFragment extends Fragment implements
             if (item.getItemId() == R.id.cab_delete) {
 
                 long[] itemsChecked = listView.getCheckedItemIds();
-                SparseBooleanArray deletingPositions = listView
-                        .getCheckedItemPositions();
+                SparseBooleanArray deletingPositions = listView.getCheckedItemPositions();
 
                 if (itemsChecked.length >= listView.getCount()) {
-                    Toast.makeText(getActivity(),
-                            R.string.cannot_delete_all_exe, Toast.LENGTH_LONG)
-                            .show();
+                    Toast.makeText(getActivity(), R.string.cannot_delete_all_exe, Toast.LENGTH_LONG).show();
                     return false;
                 }
 
                 if (itemsChecked.length > 0) {
-
-                    for (int i = listView.getCount(); i > 0; i--) {
-                        if (deletingPositions.get(i - 1)) {
-                            alExersicesList.remove(i - 1);
-                            alSetList.remove(i - 1);
+                    for (int i = deletingPositions.size() - 1; i >= 0; --i){
+                        if (deletingPositions.get(i)){
+                            adapter.deleteItem(i);
                         }
                     }
-                    updateAdapter();
                 }
 
                 for (int i = 0; i < listView.getCount(); ++i) {
@@ -160,7 +150,6 @@ public class TrainingFragment extends Fragment implements
                 }
                 blockedSelection = false;
                 listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-                listView.setupLongClickListener();
 
                 if (listView.getCount() > 0) {
                     onSelected(0);
@@ -181,7 +170,6 @@ public class TrainingFragment extends Fragment implements
             }
             blockedSelection = false;
             listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-            listView.setupLongClickListener();
             if (listView.getCount() > 0) {
                 onSelected(0);
                 listView.setItemChecked(0, true);
@@ -189,6 +177,7 @@ public class TrainingFragment extends Fragment implements
             }
             fabSave.setVisibility(View.VISIBLE);
             initSetButtons();
+            isInActionMode = false;
         }
     };
 
@@ -198,62 +187,21 @@ public class TrainingFragment extends Fragment implements
         setRetainInstance(true);
         db = new DB(getActivity());
         db.open();
-        sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        trainingId = getArguments().getInt(BUNDLE_KEY_TRAINING_ID);
-        trainingsList = db.getExerciseTrainingObjects(trainingId);
+//        sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        int trainingId = getArguments().getInt(BUNDLE_KEY_TRAINING_ID);
+        adapter = new TrainingAdapter(getActivity());
+        adapter.addData(db.getTrainingRows(trainingId));
         isTrainingAtProgress = Prefs.get().getTrainingAtProgress();
         Prefs.get().setTrainingAtProgress(true);
         Prefs.get().setCurrentTrainingId(trainingId);
-        traName = db.getTrainingName(trainingId);
-        bar = getActivity().getActionBar();
-        bar.setTitle(traName);
-        loadExercisesFromDbAndUpdateList();
-
-        for (int i = 0; i < 150; i++) {
-            alSetList.add(0);
-        }
-        getActivity().startService(
-                new Intent(getActivity(), TrainingService.class));
+        trainingName = db.getTrainingName(trainingId);
+        actionBar = getActivity().getActionBar();
+        actionBar.setTitle(trainingName);
+        getActivity().startService(new Intent(getActivity(), TrainingService.class));
         startTime = System.currentTimeMillis();
-        sp.edit().putLong(START_TIME, startTime);
+        Prefs.get().setStartTime(startTime);
     }
 
-    @SuppressWarnings("rawtypes")
-    @Override
-    public void onSwapped(ArrayList arrayList, int indexOne, int indexTwo) {
-        swapElements(alSetList, indexOne, indexTwo);
-        swapElements(alExersicesList, indexOne, indexTwo);
-        if (checkedPosition == indexOne) {
-            checkedPosition = indexTwo;
-        } else if (checkedPosition == indexTwo) {
-            checkedPosition = indexOne;
-        }
-        onSelected(checkedPosition);
-    }
-
-    @SuppressWarnings({"rawtypes", "unchecked"})
-    private void swapElements(ArrayList arrayList, int indexOne, int indexTwo) {
-        Object temp = arrayList.get(indexOne);
-        arrayList.set(indexOne, arrayList.get(indexTwo));
-        arrayList.set(indexTwo, temp);
-    }
-
-    private void loadExercisesFromDbAndUpdateList() {
-        alExersicesList = new ArrayList<String>();
-        try {
-            if (db.getTrainingList(trainingId) != null) {
-                String[] exersices = db.convertStringToArray(db
-                        .getTrainingList(trainingId));
-                for (int i = 0; i < exersices.length; i++) {
-                    alExersicesList.add(exersices[i]);
-                }
-            } else {
-                alExersicesList.add(" none ");
-            }
-        } catch (Exception e2) {
-            Counter.sharedInstance().reportError("", e2);
-        }
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -263,7 +211,7 @@ public class TrainingFragment extends Fragment implements
         fabSave = (FAB) v.findViewById(R.id.fabSaveSet);
         fabSave.setOnClickListener(this);
         fabForward = (FAB) v.findViewById(R.id.fabForward);
-        fabForward.setOnClickListener(this);;
+        fabForward.setOnClickListener(this);
         llBottom = (LinearLayout) v.findViewById(R.id.LLBottom);
         anim = AnimationUtils.loadAnimation(getActivity(), R.anim.setfortraining);
         repsWheel = (WheelView) v.findViewById(R.id.wheelReps);
@@ -284,34 +232,43 @@ public class TrainingFragment extends Fragment implements
         etTimer.setOnClickListener(this);
         etTimer.addTextChangedListener(new TextWatcher() {
             @Override
-            public void onTextChanged(CharSequence s, int start, int before,int count) { }
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
 
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count,    int after) { }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
 
             @Override
             public void afterTextChanged(Editable s) {
                 updateTimer(s.toString());
             }
         });
-
         tvInfoText = (TextView) v.findViewById(R.id.infoText);
-        listView = (DynamicListView) v.findViewById(R.id.listViewExerciseList);
-        listView.setList(alExersicesList);
+        listView = (DraggableListView) v.findViewById(R.id.listViewExerciseList);
         listView.setListener(this);
-        adapter = new StableArrayAdapter(getActivity(), R.layout.my_training_list_item, alExersicesList);
         listView.setAdapter(adapter);
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                if (!isInActionMode){
+                    listView.startSwapping();
+                    return true;
+                }
+                return false;
+            }
+        });
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View itemClicked, int position, long id) {
                 onSelected(position);
             }
         });
-        listView.setItemChecked(sp.getInt(CHECKED_POSITION, 0), true);
-        onSelected(sp.getInt(CHECKED_POSITION, 0));
+        listView.setItemChecked(Prefs.get().getCheckedPosition(), true);
+        onSelected(Prefs.get().getCheckedPosition());
         SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
         date = sdf.format(new Date(System.currentTimeMillis()));
-        boolean isTimerOn = sp.getBoolean(TIMER_IS_ON, false);
+        boolean isTimerOn = Prefs.get().getTimerOn();
         if (isTimerOn) {
             tglTimerOn.setChecked(true);
             tglChecked = true;
@@ -344,22 +301,20 @@ public class TrainingFragment extends Fragment implements
     private void onSelected(int position) {
         if (blockedSelection)
             return;
-        if (alExersicesList.size() == 0) {
+        if (adapter.getData().size() == 0) {
             llBottom.setVisibility(View.GONE);
-            Toast.makeText(getActivity(), R.string.please_add_an_exe,
-                    Toast.LENGTH_LONG).show();
+            Toast.makeText(getActivity(), R.string.please_add_an_exe, Toast.LENGTH_LONG).show();
             return;
         } else {
             llBottom.setVisibility(View.VISIBLE);
         }
-
-        sp.edit().putInt(CHECKED_POSITION, position).apply();
-        checkedPosition = position;
-        exeName = alExersicesList.get(position);
-        set = alSetList.get(position);
+        Prefs.get().setCheckedPosition(position);
+        currentCheckedPosition = position;
+        currentExerciseName = adapter.getData().get(position).getExerciseName();
+        set = adapter.getData().get(position).getSetsCount();
         try {
             timerValue = Integer.parseInt(db
-                    .getTimerValueByExerciseName(exeName));
+                    .getTimerValueByExerciseName(currentExerciseName));
         } catch (NumberFormatException e) {
             Toast.makeText(getActivity(), R.string.parsing_error, Toast.LENGTH_LONG).show();
             timerValue = 60;
@@ -368,17 +323,14 @@ public class TrainingFragment extends Fragment implements
         currentSet = set;
         etTimer.setText(String.valueOf(timerValue));
         initSetButtons();
-        oldReps = db.getLastWeightOrReps(exeName, set, false);
-        oldWeight = db.getLastWeightOrReps(exeName, set, true);
+        oldReps = db.getLastWeightOrReps(currentExerciseName, set, false);
+        oldWeight = db.getLastWeightOrReps(currentExerciseName, set, true);
         if (oldReps > 0 && oldWeight > 0) {
-            tvInfoText.setText(getResources().getString(
-                    R.string.previous_result_was)
-                    + " " + oldWeight + "x" + oldReps);
+            tvInfoText.setText(getResources().getString(R.string.previous_result_was) + " " + oldWeight + "x" + oldReps);
             weightWheel.setCurrentItem(oldWeight - 1);
             repsWheel.setCurrentItem(oldReps - 1);
         } else {
-            tvInfoText.setText(getResources().getString(R.string.new_set)
-                    + " (" + (set + 1) + ")");
+            tvInfoText.setText(getResources().getString(R.string.new_set) + " (" + (set + 1) + ")");
         }
         blocked = false;
     }
@@ -386,22 +338,21 @@ public class TrainingFragment extends Fragment implements
     @Override
     public void onResume() {
         super.onResume();
-        listView.setKeepScreenOn(!(sp.getBoolean("toTurnOff", false)));
-        vibrate = sp.getBoolean("vibrateOn", true);
-        String vl = sp.getString("vibtateLenght", "2");
+        listView.setKeepScreenOn(!Prefs.get().getTurnScreenOff());
+        vibrate = Prefs.get().getVibrateOn();
+        String vl = Prefs.get().getVibrateLenght();
         try {
-            vibrateLenght = Integer.parseInt(vl);
+            vibrateLenght = Integer.parseInt(vl) * 1000;
         } catch (Exception e) {
-            vibrateLenght = 2;
+            vibrateLenght = 2000;
         }
-        vibrateLenght *= 1000;
-        toPlaySound = sp.getBoolean("toNotifyWithSound", true);
+        toPlaySound = Prefs.get().getNotifyWithSound();
         if (isTrainingAtProgress) {
-            startTime = sp.getLong(START_TIME, 0);
+            startTime = Prefs.get().getStartTime();
             restoreSetsFromPreferences();
             try {
-                listView.setItemChecked(sp.getInt(CHECKED_POSITION, 0), true);
-                onSelected(sp.getInt(CHECKED_POSITION, 0));
+                listView.setItemChecked(Prefs.get().getCheckedPosition(), true);
+                onSelected(Prefs.get().getCheckedPosition());
             } catch (Exception e) {
                 listView.setItemChecked(0, true);
                 onSelected(0);
@@ -410,7 +361,7 @@ public class TrainingFragment extends Fragment implements
         timerHandler.postDelayed(timerRunnable, 0);
         fabSave.setVisibility(View.VISIBLE);
         initSetButtons();
-        h = new Handler() {
+        handler = new Handler() {
             public void handleMessage(Message msg) {
                 if (msg.what == 0) {
                     this.removeMessages(0);
@@ -418,16 +369,12 @@ public class TrainingFragment extends Fragment implements
                     pd.setIndeterminate(false);
                     if (pd.getProgress() < pd.getMax()) {
                         pd.incrementProgressBy(1);
-                        h.sendEmptyMessageDelayed(1, 1000);
+                        handler.sendEmptyMessageDelayed(1, 1000);
                     } else {
                         if (toPlaySound) {
-                            String sound = sp.getString(RINGTONE, null);
-
+                            String sound = Prefs.get().getRingtone();
                             if (sound == null) {
-                                playSound(
-                                        getActivity(),
-                                        RingtoneManager
-                                                .getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
+                                playSound(getActivity(), RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
                                 );
                             } else {
                                 Uri uri = Uri.parse(sound);
@@ -447,13 +394,11 @@ public class TrainingFragment extends Fragment implements
                         pd.dismiss();
                     }
                 }
-
             }
         };
-
     }
 
-    private void goDialogProgress() {
+    private void showProgressDialog() {
         pd = new ProgressDialog(getActivity());
         pd.setTitle(R.string.resting);
         pd.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
@@ -465,31 +410,22 @@ public class TrainingFragment extends Fragment implements
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
-                        h.removeCallbacksAndMessages(null);
+                        handler.removeCallbacksAndMessages(null);
                     }
                 }
         );
         pd.show();
         isActiveDialog = true;
-        h.sendEmptyMessageDelayed(1, 100);
+        handler.sendEmptyMessageDelayed(1, 100);
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        sp.edit().putLong(START_TIME, startTime).apply();
         timerHandler.removeCallbacks(timerRunnable);
         saveSetsToPreferences();
         isTrainingAtProgress = true;
         saveExercicesToDatabase();
-    }
-
-    private void saveExercicesToDatabase() {
-        String[] e = new String[alExersicesList.size()];
-        for (int i = 0; i < e.length; ++i) {
-            e[i] = alExersicesList.get(i);
-        }
-        db.updateRec_Training(trainingId, 2, db.convertArrayToString(e));
     }
 
     @Override
@@ -513,11 +449,11 @@ public class TrainingFragment extends Fragment implements
         } else if (itemId == R.id.itemEditTrainings) {
             Intent intent = new Intent(getActivity(),
                     EditingProgramAtTrainingActivity.class);
-            intent.putExtra("trName", traName);
+            intent.putExtra("trName", trainingName);
             intent.putExtra("ifAddingExe", true);
             startActivityForResult(intent, 1);
         } else if (itemId == R.id.itemSeePreviousTraining) {
-            String[] args = {traName};
+            String[] args = {trainingName};
             Cursor tmpCursor = db.getDataMain(null, DB.TRAINING_NAME + "=?", args,
                     DB.DATE, null, null);
             if (tmpCursor.moveToLast()
@@ -540,7 +476,7 @@ public class TrainingFragment extends Fragment implements
             } else {
                 Toast.makeText(
                         getActivity(),
-                        getResources().getString(R.string.no_history) + traName,
+                        getResources().getString(R.string.no_history) + trainingName,
                         Toast.LENGTH_SHORT).show();
             }
         } else if (itemId == R.id.itemAddCommentToTraining) {
@@ -554,29 +490,29 @@ public class TrainingFragment extends Fragment implements
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) { // FIXME add data to adapter
         if (data == null) {
             return;
         }
 
-        long[] itemsChecked = data
-                .getLongArrayExtra("return_array_of_exersices");
-        for (int i = 0; i < itemsChecked.length; i++) {
 
-            alExersicesList.add(db.getExerciseByID((int) itemsChecked[i]));
-            alSetList.add(0);
-        }
-        for (int j = 0; j < 100; j++) {
-            alSetList.add(0);
-        }
-        adapter.notifyDataSetChanged();
-        String[] tmp = new String[alExersicesList.size()];
-
-        for (int i = 0; i < alExersicesList.size(); i++) {
-            tmp[i] = alExersicesList.get(i);
-        }
-        db.updateRec_Training(trainingId, 2, db.convertArrayToString(tmp));
-        updateAdapter();
+//        long[] itemsChecked = data
+//                .getLongArrayExtra("return_array_of_exersices");
+//        for (long anItemsChecked : itemsChecked) {
+//            exerciseList.add(db.getExerciseByID((int) anItemsChecked));
+//            setsList.add(0);
+//        }
+//        for (int j = 0; j < 100; j++) {
+//            setsList.add(0);
+//        }
+//
+//        String[] tmp = new String[exerciseList.size()];
+//
+//        for (int i = 0; i < exerciseList.size(); i++) {
+//            tmp[i] = exerciseList.get(i);
+//        }
+//        db.updateRec_Training(trainingId, 2, db.convertArrayToString(tmp));
+//        updateAdapter();
     }
 
     private void updateTimer(String tmp) {
@@ -586,10 +522,10 @@ public class TrainingFragment extends Fragment implements
         } else {
             timerv = etTimer.getText().toString();
         }
-        String tmpStr = db.getTimerValueByExerciseName(exeName);
+        String tmpStr = db.getTimerValueByExerciseName(currentExerciseName);
 
         if (tmpStr != null && timerv != null && !tmpStr.equals(timerv)) {
-            int exe_id = db.getExeIdByName(exeName);
+            int exe_id = db.getExeIdByName(currentExerciseName);
             db.updateExercise(exe_id, DB.TIMER_VALUE, timerv);
         }
         try {
@@ -612,11 +548,9 @@ public class TrainingFragment extends Fragment implements
         if (id == R.id.fabSaveSet && currentSet == set && !btnBlocked) {
             int wei = (weightWheel.getCurrentItem() + 1);
             int rep_s = (repsWheel.getCurrentItem() + 1);
-            int tmp = alSetList.get(checkedPosition);
-            tmp++;
-            alSetList.set(checkedPosition, tmp);
-            set = alSetList.get(checkedPosition);
-            db.addRecMainTable(traName, exeName, date, wei, rep_s, set);
+            adapter.getData().get(currentCheckedPosition).incrementSetsCount();
+            set = adapter.getData().get(currentCheckedPosition).getSetsCount();
+            db.addRecMainTable(trainingName, currentExerciseName, date, wei, rep_s, set);
             currentSet = set;
             initSetButtons();
             try {
@@ -625,11 +559,11 @@ public class TrainingFragment extends Fragment implements
                 e.printStackTrace();
             }
             if (isActiveDialog) {
-                h.sendEmptyMessage(0);
+                handler.sendEmptyMessage(0);
             }
             showPopup();
-            oldReps = db.getLastWeightOrReps(exeName, set, false);
-            oldWeight = db.getLastWeightOrReps(exeName, set, true);
+            oldReps = db.getLastWeightOrReps(currentExerciseName, set, false);
+            oldWeight = db.getLastWeightOrReps(currentExerciseName, set, true);
             if (oldReps > 0 && oldWeight > 0) {
                 tvInfoText.setText(getResources().getString(
                         R.string.previous_result_was)
@@ -648,14 +582,14 @@ public class TrainingFragment extends Fragment implements
             Toast.makeText(getActivity(), R.string.resaved, Toast.LENGTH_SHORT)
                     .show();
             currentSet = set;
-            onSelected(checkedPosition);
+            onSelected(currentCheckedPosition);
         } else if (id == R.id.fabBack) {
             if (currentSet > 0) {
                 llBottom.startAnimation(anim);
                 currentSet--;
-                int weitghsS = db.getThisWeight(currentSet + 1, exeName) - 1;
-                int repsS = db.getThisReps(currentSet + 1, exeName) - 1;
-                currentId = db.getThisId(currentSet + 1, exeName);
+                int weitghsS = db.getThisWeight(currentSet + 1, currentExerciseName) - 1;
+                int repsS = db.getThisReps(currentSet + 1, currentExerciseName) - 1;
+                currentId = db.getThisId(currentSet + 1, currentExerciseName);
                 weightWheel.setCurrentItem(weitghsS);
                 repsWheel.setCurrentItem(repsS);
                 tvInfoText.setText(getResources().getString(
@@ -672,8 +606,8 @@ public class TrainingFragment extends Fragment implements
             if (currentSet < set - 1) {
                 llBottom.startAnimation(anim);
                 currentSet++;
-                int weitghsS = db.getThisWeight(currentSet + 1, exeName) - 1;
-                int repsS = db.getThisReps(currentSet + 1, exeName) - 1;
+                int weitghsS = db.getThisWeight(currentSet + 1, currentExerciseName) - 1;
+                int repsS = db.getThisReps(currentSet + 1, currentExerciseName) - 1;
                 weightWheel.setCurrentItem(weitghsS);
                 repsWheel.setCurrentItem(repsS);
                 tvInfoText.setText(getResources().getString(
@@ -686,7 +620,7 @@ public class TrainingFragment extends Fragment implements
                         + (currentSet + 1) + ")");
             } else if (currentSet == set - 1) {
                 llBottom.startAnimation(anim);
-                onSelected(checkedPosition);
+                onSelected(currentCheckedPosition);
             }
         }
         initSetButtons();
@@ -747,7 +681,7 @@ public class TrainingFragment extends Fragment implements
                     try {
                         Thread.sleep(2500);
                     } catch (Exception e) {
-
+                        e.printStackTrace();
                     }
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
@@ -759,15 +693,15 @@ public class TrainingFragment extends Fragment implements
                     try {
                         Thread.sleep(100);
                     } catch (Exception e) {
-
+                        e.printStackTrace();
                     }
 
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             if (tglChecked) {
-                                sp.edit().putInt(PROGRESS, 0).apply();
-                                goDialogProgress();
+                                Prefs.get().setProgress(0);
+                                showProgressDialog();
                             }
                         }
                     });
@@ -776,8 +710,8 @@ public class TrainingFragment extends Fragment implements
             thread.start();
         } else {
             if (tglChecked) {
-                sp.edit().putInt(PROGRESS, 0).apply();
-                goDialogProgress();
+                Prefs.get().setProgress(0);
+                showProgressDialog();
             }
         }
 
@@ -794,40 +728,48 @@ public class TrainingFragment extends Fragment implements
     @Override
     public void onCheckedChanged(CompoundButton tglTimerOn, boolean isChecked) {
         if (isChecked) {
-            sp.edit().putBoolean(TIMER_IS_ON, true).apply();
+            Prefs.get().setTimerOn(true);
             tglChecked = true;
             etTimer.setEnabled(true);
         } else {
-            sp.edit().putBoolean(TIMER_IS_ON, false).apply();
+            Prefs.get().setTimerOn(false);
             tglChecked = false;
             etTimer.setEnabled(false);
         }
     }
 
-    public void saveSetsToPreferences() {
-
-        StringBuilder str = new StringBuilder();
-        for (int i = 0; i < alSetList.size(); i++) {
-            str.append(alSetList.get(i)).append(",");
-        }
-        sp.edit().putString(LIST_OF_SETS, str.toString()).apply();
+    public void saveSetsToPreferences() {              // FIXME SAVE AND RESTORE DATA TO PREFS
+//
+//        StringBuilder str = new StringBuilder();
+//        for (int i = 0; i < setsList.size(); i++) {
+//            str.append(setsList.get(i)).append(",");
+//        }
+//        sp.edit().putString(LIST_OF_SETS, str.toString()).apply();
     }
 
-    public void restoreSetsFromPreferences() {
-        if (sp.contains(LIST_OF_SETS)) {
-            String savedString = sp.getString(LIST_OF_SETS, "");
-            StringTokenizer st = new StringTokenizer(savedString, ",");
-            ArrayList<Integer> array = new ArrayList<Integer>();
-            int size = st.countTokens();
-            for (int i = 0; i < size; i++) {
-                try {
-                    array.add(Integer.parseInt(st.nextToken()));
-                } catch (Exception e) {
-                    array.add(0);
-                }
-            }
-            alSetList = array;
-        }
+    public void restoreSetsFromPreferences() { // FIXME
+//        if (sp.contains(LIST_OF_SETS)) {
+//            String savedString = sp.getString(LIST_OF_SETS, "");
+//            StringTokenizer st = new StringTokenizer(savedString, ",");
+//            ArrayList<Integer> array = new ArrayList<Integer>();
+//            int size = st.countTokens();
+//            for (int i = 0; i < size; i++) {
+//                try {
+//                    array.add(Integer.parseInt(st.nextToken()));
+//                } catch (Exception e) {
+//                    array.add(0);
+//                }
+//            }
+//            setsList = array;
+//        }
+    }
+
+    private void saveExercicesToDatabase() { // FIXME
+//        String[] e = new String[exerciseList.size()];
+//        for (int i = 0; i < e.length; ++i) {
+//            e[i] = exerciseList.get(i);
+//        }
+//        db.updateRec_Training(trainingId, 2, db.convertArrayToString(e));
     }
 
     private void playSound(Context context, Uri sound) {
@@ -846,18 +788,30 @@ public class TrainingFragment extends Fragment implements
         }
     }
 
-    protected void updateAdapter() {
-        adapter = new StableArrayAdapter(getActivity(),
-                R.layout.my_training_list_item, alExersicesList);
-        listView.setAdapter(adapter);
-    }
-
     private int dpFromPx(float px) {
         return (int) (px / getActivity().getResources().getDisplayMetrics().density);
     }
 
     private int pxFromDp(float dp) {
         return (int) (dp * getActivity().getResources().getDisplayMetrics().density);
+    }
+
+    @Override
+    public void onListItemSwapped(int i1, int i2) {
+        swapElements(adapter.getData(), i1, i2);
+        if (currentCheckedPosition == i1) {
+            currentCheckedPosition = i2;
+        } else if (currentCheckedPosition == i2) {
+            currentCheckedPosition = i1;
+        }
+        onSelected(currentCheckedPosition);
+        adapter.notifyDataSetChanged();
+    }
+
+    private void swapElements(List list, int indexOne, int indexTwo) {
+        Object temp = list.get(indexOne);
+        list.set(indexOne, list.get(indexTwo));
+        list.set(indexTwo, temp);
     }
 
     private class RepsAdapter extends AbstractWheelTextAdapter {
@@ -924,13 +878,94 @@ public class TrainingFragment extends Fragment implements
             int seconds = (int) (millis / 1000);
             int minutes = (seconds / 60);
             seconds = (seconds % 60);
-            bar.setSubtitle((String.format("%d:%02d", minutes, seconds)) + " "
+            actionBar.setSubtitle((String.format("%d:%02d", minutes, seconds)) + " "
                     + " " + " ["
                     + ((set == currentSet ? set : currentSet) + 1) + " "
                     + getResources().getString(R.string.set) + "] ");
             timerHandler.postDelayed(this, 500);
-
         }
     };
+
+    private class TrainingAdapter extends BaseAdapter{
+
+        private final static int INVALID_ID = -1;
+        private LayoutInflater inflater;
+        private List<TrainingRow> data;
+
+        public TrainingAdapter(Context context){
+            this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            data = new ArrayList<TrainingRow>();
+        }
+
+        public void addData(List<TrainingRow> newData){
+            data.addAll(newData);
+            notifyDataSetChanged();
+        }
+
+        public void deleteItem(int position){
+            data.remove(position);
+            notifyDataSetChanged();
+        }
+
+        public List<TrainingRow> getData() {
+            return this.data;
+        }
+
+        @Override
+        public int getCount() {
+            return data.size();
+        }
+
+        @Override
+        public TrainingRow getItem(int position) {
+            return data.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            if (position >= 0 && position < data.size()){
+                return data.get(position).getId();
+            } else {
+                return INVALID_ID;
+            }
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            View view = convertView;
+            if (view == null) {
+                view = inflater.inflate(R.layout.list_item_creating_programm, parent, false);
+                ViewHolder viewHolder = new ViewHolder();
+                viewHolder.tvExerciseName = (TextViewLight) view.findViewById(R.id.text_exercise);
+                viewHolder.tvSupersetNumber = (TextViewLight) view.findViewById(R.id.text_number_of_superset);
+                viewHolder.color = view.findViewById(R.id.color_superset);
+                viewHolder.imageViewSuperset = (ImageView) view.findViewById(R.id.imageSuperset);
+                view.setTag(viewHolder);
+            }
+            ViewHolder holder = (ViewHolder) view.getTag();
+            holder.tvExerciseName.setText(data.get(position).getExerciseName());
+            if (data.get(position).isSuperset()) {
+                holder.color.setVisibility(View.VISIBLE);
+                holder.color.setBackgroundColor(data.get(position).getSupersetColor());
+                holder.tvSupersetNumber.setVisibility(View.VISIBLE);
+                holder.tvSupersetNumber.setText(String.valueOf(data.get(position).getPositionAtSuperset() + 1));
+                holder.imageViewSuperset.setVisibility(View.VISIBLE);
+            } else {
+                holder.color.setVisibility(View.GONE);
+                holder.tvSupersetNumber.setVisibility(View.GONE);
+                holder.imageViewSuperset.setVisibility(View.GONE);
+            }
+            return view;
+        }
+
+        private class ViewHolder {
+            TextViewLight tvExerciseName;
+            ImageView imageViewSuperset;
+            View color;
+            TextViewLight tvSupersetNumber;
+        }
+    }
+
+
 
 }

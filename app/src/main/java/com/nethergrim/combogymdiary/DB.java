@@ -10,6 +10,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import com.nethergrim.combogymdiary.model.Exercise;
 import com.nethergrim.combogymdiary.model.ExerciseGroup;
 import com.nethergrim.combogymdiary.model.ExerciseTrainingObject;
+import com.nethergrim.combogymdiary.model.TrainingRow;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -405,6 +406,28 @@ public class DB {
                 exerciseTrainingObject.setSupersetId(c.getInt(6));
                 exerciseTrainingObject.setSupersetColor(c.getInt(7));
                 result.add(exerciseTrainingObject);
+            } while (c.moveToNext());
+        }
+        return result;
+    }
+
+    public List<TrainingRow> getTrainingRows(int trainingID){
+        String[] args = {String.valueOf(trainingID)};
+        Cursor c = mDB.query(DB_TABLE_TRAINING_EXERCISE, null, TRAINING_PROGRAM_ID + "=?", args,null,null,POSITION_AT_TRAINING);
+        List<TrainingRow> result = new ArrayList<TrainingRow>();
+        if (c.moveToFirst()){
+            do {
+                TrainingRow trainingRow = new TrainingRow();
+                trainingRow.setId(c.getInt(0));
+                trainingRow.setTrainingProgramId(trainingID);
+                trainingRow.setExerciseId(c.getInt(2));
+                trainingRow.setPositionAtTraining(c.getInt(3));
+                trainingRow.setSuperset(c.getInt(4) == 1 ? true : false);
+                trainingRow.setPositionAtSuperset(c.getInt(5));
+                trainingRow.setSupersetId(c.getInt(6));
+                trainingRow.setSupersetColor(c.getInt(7));
+                trainingRow.setExerciseName(this.getExercise(trainingRow.getExerciseId()).getName());
+                result.add(trainingRow);
             } while (c.moveToNext());
         }
         return result;

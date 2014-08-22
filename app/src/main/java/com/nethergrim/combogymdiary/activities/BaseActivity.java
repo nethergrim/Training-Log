@@ -432,7 +432,7 @@ public class BaseActivity extends AnalyticsActivity implements
         tmpCursor.close();
         Prefs.get().setTrainingAtProgress(false);
         sp.edit().putInt(USER_CLICKED_POSITION, 0).apply();
-        sp.edit().putInt(TrainingFragment.CHECKED_POSITION, 0).apply();
+        Prefs.get().setCheckedPosition(0);
         SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
         String date = sdf.format(new Date(System.currentTimeMillis()));
         int tmpSec = sp.getInt(SECONDS, 0);
