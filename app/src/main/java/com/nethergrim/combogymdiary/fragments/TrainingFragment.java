@@ -47,7 +47,6 @@ import android.widget.ToggleButton;
 
 import com.nethergrim.combogymdiary.DB;
 import com.nethergrim.combogymdiary.R;
-import com.nethergrim.combogymdiary.activities.EditingProgramAtTrainingActivity;
 import com.nethergrim.combogymdiary.activities.HistoryDetailedActivity;
 import com.nethergrim.combogymdiary.dialogs.DialogAddCommentToTraining;
 import com.nethergrim.combogymdiary.dialogs.DialogAddExercises;
@@ -312,12 +311,13 @@ public class TrainingFragment extends Fragment implements
             llBottom.setVisibility(View.VISIBLE);
         }
         Prefs.get().setCheckedPosition(position);
+        listView.setItemChecked(position,true);
+        listView.smoothScrollToPosition(position);
         currentCheckedPosition = position;
         currentExerciseName = adapter.getData().get(position).getExerciseName();
         set = adapter.getData().get(position).getSetsCount();
         try {
-            timerValue = Integer.parseInt(db
-                    .getTimerValueByExerciseName(currentExerciseName));
+            timerValue = Integer.parseInt(db.getTimerValueByExerciseName(currentExerciseName));
         } catch (NumberFormatException e) {
             Toast.makeText(getActivity(), R.string.parsing_error, Toast.LENGTH_LONG).show();
             timerValue = 60;
@@ -402,25 +402,28 @@ public class TrainingFragment extends Fragment implements
         };
     }
 
-    private void showProgressDialog() {
-        pd = new ProgressDialog(getActivity());
-        pd.setTitle(R.string.resting);
-        pd.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-        pd.setMax(timerValue);
-        pd.setCancelable(false);
-        pd.setButton(DialogInterface.BUTTON_NEGATIVE,
-                getResources().getString(R.string.cancel),
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                        handler.removeCallbacksAndMessages(null);
+    private void showProgressDialog(boolean ignoreSuperset) {
+        if (tglChecked && !adapter.getData().get(currentCheckedPosition).isSuperset()  || tglChecked && ignoreSuperset){
+            Prefs.get().setProgress(0);
+            pd = new ProgressDialog(getActivity());
+            pd.setTitle(R.string.resting);
+            pd.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+            pd.setMax(timerValue);
+            pd.setCancelable(false);
+            pd.setButton(DialogInterface.BUTTON_NEGATIVE,
+                    getResources().getString(R.string.cancel),
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            handler.removeCallbacksAndMessages(null);
+                        }
                     }
-                }
-        );
-        pd.show();
-        isActiveDialog = true;
-        handler.sendEmptyMessageDelayed(1, 100);
+            );
+            pd.show();
+            isActiveDialog = true;
+            handler.sendEmptyMessageDelayed(1, 100);
+        }
     }
 
     @Override
@@ -515,9 +518,7 @@ public class TrainingFragment extends Fragment implements
     public void onClick(View arg0) {
         int id = arg0.getId();
         if (blocked) {
-            Toast.makeText(getActivity(),
-                    getResources().getString(R.string.select_an_exercise),
-                    Toast.LENGTH_LONG).show();
+            Toast.makeText(getActivity(), getResources().getString(R.string.select_an_exercise), Toast.LENGTH_LONG).show();
             return;
         }
         if (id == R.id.fabSaveSet && currentSet == set && !btnBlocked) {
@@ -541,23 +542,22 @@ public class TrainingFragment extends Fragment implements
             oldWeight = db.getLastWeightOrReps(currentExerciseName, set, true);
             if (oldReps > 0 && oldWeight > 0) {
                 tvInfoText.setText(getResources().getString(
-                        R.string.previous_result_was)
-                        + " " + oldWeight + "x" + oldReps);
+                        R.string.previous_result_was)  + " " + oldWeight + "x" + oldReps);
                 weightWheel.setCurrentItem(oldWeight - 1);
                 repsWheel.setCurrentItem(oldReps - 1);
             } else {
-                tvInfoText.setText(getResources().getString(R.string.new_set)
-                        + " (" + (set + 1) + ")");
+                tvInfoText.setText(getResources().getString(R.string.new_set) + " (" + (set + 1) + ")");
             }
+
         } else if (id == R.id.fabSaveSet && currentSet < set) {
             int wei = (weightWheel.getCurrentItem() + 1);
             int rep_s = (repsWheel.getCurrentItem() + 1);
             db.updateRec_Main(currentId, 4, null, wei);
             db.updateRec_Main(currentId, 5, null, rep_s);
-            Toast.makeText(getActivity(), R.string.resaved, Toast.LENGTH_SHORT)
-                    .show();
+            Toast.makeText(getActivity(), R.string.resaved, Toast.LENGTH_SHORT).show();
             currentSet = set;
             onSelected(currentCheckedPosition);
+
         } else if (id == R.id.fabBack) {
             if (currentSet > 0) {
                 llBottom.startAnimation(anim);
@@ -568,13 +568,7 @@ public class TrainingFragment extends Fragment implements
                 weightWheel.setCurrentItem(weitghsS);
                 repsWheel.setCurrentItem(repsS);
                 tvInfoText.setText(getResources().getString(
-                        R.string.resaved_text)
-                        + " "
-                        + (weitghsS + 1)
-                        + "x"
-                        + (repsS + 1)
-                        + " ("
-                        + (currentSet + 1) + ")");
+                        R.string.resaved_text) + " " + (weitghsS + 1) + "x" + (repsS + 1) + " (" + (currentSet + 1) + ")");
             }
 
         } else if (id == R.id.fabForward) {
@@ -586,13 +580,7 @@ public class TrainingFragment extends Fragment implements
                 weightWheel.setCurrentItem(weitghsS);
                 repsWheel.setCurrentItem(repsS);
                 tvInfoText.setText(getResources().getString(
-                        R.string.resaved_text)
-                        + " "
-                        + (weitghsS + 1)
-                        + "x"
-                        + (repsS + 1)
-                        + " ("
-                        + (currentSet + 1) + ")");
+                        R.string.resaved_text) + " " + (weitghsS + 1) + "x" + (repsS + 1) + " (" + (currentSet + 1) + ")");
             } else if (currentSet == set - 1) {
                 llBottom.startAnimation(anim);
                 onSelected(currentCheckedPosition);
@@ -674,23 +662,17 @@ public class TrainingFragment extends Fragment implements
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            if (tglChecked) {
-                                Prefs.get().setProgress(0);
-                                showProgressDialog();
-                            }
+                            showProgressDialog(false);
+
                         }
                     });
                 }
             });
             thread.start();
         } else {
-            if (tglChecked) {
-                Prefs.get().setProgress(0);
-                showProgressDialog();
-            }
+            showProgressDialog(false);
         }
-
-
+        goToNextExerciseInSuperset();
     }
 
     private void hidePopup() {
@@ -828,6 +810,46 @@ public class TrainingFragment extends Fragment implements
         }
         adapter.addData(newData);
         saveExercicesToDatabase();
+    }
+
+    private void goToNextExerciseInSuperset(){
+        if (adapter.getData().get(currentCheckedPosition).isSuperset()){
+            int supersetId = adapter.getData().get(currentCheckedPosition).getSupersetId();
+            int supersetPosition = adapter.getData().get(currentCheckedPosition).getPositionAtSuperset();
+            if (getNextSuperSetExercise(supersetId, supersetPosition) > 0){
+                onSelected(getNextSuperSetExercise(supersetId, supersetPosition));
+            } else {
+                checkFirstSupersetExercise(supersetId);
+                showProgressDialog(true);
+            }
+        }
+    }
+
+    private int getNextSuperSetExercise(int supersetId, int supersetPosition){
+        int result = -1;
+        for (int i = 0; i < adapter.getData().size(); i++){
+            if (adapter.getData().get(i).getSupersetId() == supersetId && adapter.getData().get(i).getPositionAtSuperset() > supersetPosition){
+                return i;
+            }
+        }
+        return result;
+    }
+
+    private void checkFirstSupersetExercise(int supersetId){
+        int minSupersetPosition = 100;
+
+        for (int i = 0; i < adapter.getData().size(); i++){
+            if (adapter.getData().get(i).getSupersetId() == supersetId && adapter.getData().get(i).getPositionAtSuperset() < minSupersetPosition){
+                minSupersetPosition = adapter.getData().get(i).getPositionAtSuperset();
+            }
+        }
+
+        for (int i = 0; i < adapter.getData().size(); i++){
+            if (adapter.getData().get(i).getSupersetId() == supersetId && adapter.getData().get(i).getPositionAtSuperset() == minSupersetPosition){
+                onSelected(i);
+            }
+        }
+
     }
 
     private class RepsAdapter extends AbstractWheelTextAdapter {
