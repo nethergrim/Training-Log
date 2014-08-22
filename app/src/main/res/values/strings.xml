@@ -171,7 +171,5 @@
     <string name="previous_result_was">New set! Last time: </string>
     <string name="backup_database_to_sd">Backup database to SD card</string>
     <string name="replace_from_backup">Replase database from SD card</string>
-    <string name="title_activity_new_creating_training_day">NewCreatingTrainingDayActivity</string>
-    <string name="hello_world">Hello world!</string>
 
 </resources>

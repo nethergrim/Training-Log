@@ -1,11 +1,13 @@
 package com.nethergrim.combogymdiary;
 
+import android.app.backup.BackupManager;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import com.nethergrim.combogymdiary.model.Exercise;
 import com.nethergrim.combogymdiary.model.ExerciseGroup;
@@ -129,6 +131,11 @@ public class DB {
         return mDB.insert(DB_TABLE_TRAINING_EXERCISE, null, cv);
     }
 
+    public boolean hasExerciseTrainingObjects(){
+        Cursor c = mDB.query(DB_TABLE_TRAINING_EXERCISE,null,null,null,null,null,null);
+        return c.moveToFirst();
+    }
+
     public String convertDateToString(Date date) {
         try {
             SimpleDateFormat dateformat = new SimpleDateFormat(SIMPLE_DATE_FORMAT);
@@ -177,6 +184,9 @@ public class DB {
         } catch (Exception e) {
             e.printStackTrace();
         }
+//        BackupManager bm = new BackupManager(mCtx);
+//        bm.dataChanged();
+//        Log.d("log", "backup requested");
     }
 
     public int getExeIdByName(String name) {

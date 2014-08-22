@@ -23,6 +23,7 @@ import com.nethergrim.combogymdiary.googledrive.BaseDriveActivity;
 import com.nethergrim.combogymdiary.googledrive.DriveBackupActivity;
 import com.nethergrim.combogymdiary.googledrive.DriveRestoreActivity;
 import com.nethergrim.combogymdiary.tools.Backuper;
+import com.nethergrim.combogymdiary.tools.Prefs;
 
 public class SettingsActivity extends PreferenceActivity implements MyInterface {
 
@@ -224,6 +225,7 @@ public class SettingsActivity extends PreferenceActivity implements MyInterface 
             db.open();
             db.close();
             Intent intent = new Intent(this, StartActivity.class);
+            Prefs.get().setDbUpdatedToV5(false);
             startActivity(intent);
             finish();
         }

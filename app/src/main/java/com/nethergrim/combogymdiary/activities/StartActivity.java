@@ -86,90 +86,92 @@ public class StartActivity extends AnalyticsActivity {
     }
 
     private void updateTableForVersion5() {
-        Cursor c = db.getDataExe(null, null, null, null, null, DB._ID);
-        if (c.moveToFirst()) {
-            do {
-                if (c.getString(4) == null || c.getString(4).equals("")) {
-                    boolean fixed = false;
-                    for (String exe : exeAbs) {
-                        if (c.getString(2).equals(exe)) {
-                            db.updateExercise(c.getInt(0), DB.PART_OF_BODY, Constants.PART_OF_BODY_ABS);
-                            fixed = true;
-                            break;
+        if (!db.hasExerciseTrainingObjects()){
+            Cursor c = db.getDataExe(null, null, null, null, null, DB._ID);
+            if (c.moveToFirst()) {
+                do {
+                    if (c.getString(4) == null || c.getString(4).equals("")) {
+                        boolean fixed = false;
+                        for (String exe : exeAbs) {
+                            if (c.getString(2).equals(exe)) {
+                                db.updateExercise(c.getInt(0), DB.PART_OF_BODY, Constants.PART_OF_BODY_ABS);
+                                fixed = true;
+                                break;
+                            }
+                        }
+                        if (!fixed)
+                            for (String exe : exeShoulders) {
+                                if (c.getString(2).equals(exe)) {
+                                    db.updateExercise(c.getInt(0), DB.PART_OF_BODY, Constants.PART_OF_BODY_SHOULDERS);
+                                    fixed = true;
+                                    break;
+                                }
+                            }
+                        if (!fixed)
+                            for (String exe : exeBack) {
+                                if (c.getString(2).equals(exe)) {
+                                    db.updateExercise(c.getInt(0), DB.PART_OF_BODY, Constants.PART_OF_BODY_BACK);
+                                    fixed = true;
+                                    break;
+                                }
+                            }
+                        if (!fixed)
+                            for (String exe : exeTriceps) {
+                                if (c.getString(2).equals(exe)) {
+                                    db.updateExercise(c.getInt(0), DB.PART_OF_BODY, Constants.PART_OF_BODY_TRICEPS);
+                                    fixed = true;
+                                    break;
+                                }
+                            }
+                        if (!fixed)
+                            for (String exe : exeBiceps) {
+                                if (c.getString(2).equals(exe)) {
+                                    db.updateExercise(c.getInt(0), DB.PART_OF_BODY, Constants.PART_OF_BODY_BICEPS);
+                                    fixed = true;
+                                    break;
+                                }
+                            }
+                        if (!fixed)
+                            for (String exe : exeChest) {
+                                if (c.getString(2).equals(exe)) {
+                                    db.updateExercise(c.getInt(0), DB.PART_OF_BODY, Constants.PART_OF_BODY_CHEST);
+                                    fixed = true;
+                                    break;
+                                }
+                            }
+                        if (!fixed)
+                            for (String exe : exeLegs) {
+                                if (c.getString(2).equals(exe)) {
+                                    db.updateExercise(c.getInt(0), DB.PART_OF_BODY, Constants.PART_OF_BODY_LEGS);
+                                    fixed = true;
+                                    break;
+                                }
+                            }
+                        if (!fixed) {
+                            db.updateExercise(c.getInt(0), DB.PART_OF_BODY, Constants.PART_OF_BODY_NONE);
                         }
                     }
-                    if (!fixed)
-                        for (String exe : exeShoulders) {
-                            if (c.getString(2).equals(exe)) {
-                                db.updateExercise(c.getInt(0), DB.PART_OF_BODY, Constants.PART_OF_BODY_SHOULDERS);
-                                fixed = true;
-                                break;
-                            }
-                        }
-                    if (!fixed)
-                        for (String exe : exeBack) {
-                            if (c.getString(2).equals(exe)) {
-                                db.updateExercise(c.getInt(0), DB.PART_OF_BODY, Constants.PART_OF_BODY_BACK);
-                                fixed = true;
-                                break;
-                            }
-                        }
-                    if (!fixed)
-                        for (String exe : exeTriceps) {
-                            if (c.getString(2).equals(exe)) {
-                                db.updateExercise(c.getInt(0), DB.PART_OF_BODY, Constants.PART_OF_BODY_TRICEPS);
-                                fixed = true;
-                                break;
-                            }
-                        }
-                    if (!fixed)
-                        for (String exe : exeBiceps) {
-                            if (c.getString(2).equals(exe)) {
-                                db.updateExercise(c.getInt(0), DB.PART_OF_BODY, Constants.PART_OF_BODY_BICEPS);
-                                fixed = true;
-                                break;
-                            }
-                        }
-                    if (!fixed)
-                        for (String exe : exeChest) {
-                            if (c.getString(2).equals(exe)) {
-                                db.updateExercise(c.getInt(0), DB.PART_OF_BODY, Constants.PART_OF_BODY_CHEST);
-                                fixed = true;
-                                break;
-                            }
-                        }
-                    if (!fixed)
-                        for (String exe : exeLegs) {
-                            if (c.getString(2).equals(exe)) {
-                                db.updateExercise(c.getInt(0), DB.PART_OF_BODY, Constants.PART_OF_BODY_LEGS);
-                                fixed = true;
-                                break;
-                            }
-                        }
-                    if (!fixed) {
-                        db.updateExercise(c.getInt(0), DB.PART_OF_BODY, Constants.PART_OF_BODY_NONE);
+                } while (c.moveToNext());
+            }
+            c.close();
+            c = db.getDataTrainings(null,null,null,null,null,null);
+            if (c.moveToFirst()){
+                do {
+                    String[] exercises = db.convertStringToArray(c.getString(2));
+                    for (int i = 0; i < exercises.length; i++){
+                        ExerciseTrainingObject exerciseTrainingObject = new ExerciseTrainingObject();
+                        exerciseTrainingObject.setTrainingProgramId(c.getInt(0));
+                        exerciseTrainingObject.setExerciseId(db.getExerciseId(exercises[i]));
+                        exerciseTrainingObject.setPositionAtSuperset(0);
+                        exerciseTrainingObject.setPositionAtTraining(i);
+                        exerciseTrainingObject.setSuperset(false);
+                        exerciseTrainingObject.setSupersetId(0);
+                        db.addExerciseTrainingObject(exerciseTrainingObject);
                     }
-                }
-            } while (c.moveToNext());
+                } while (c.moveToNext());
+            }
+            c.close();
         }
-        c.close();
-        c = db.getDataTrainings(null,null,null,null,null,null);
-        if (c.moveToFirst()){
-            do {
-                String[] exercises = db.convertStringToArray(c.getString(2));
-                for (int i = 0; i < exercises.length; i++){
-                    ExerciseTrainingObject exerciseTrainingObject = new ExerciseTrainingObject();
-                    exerciseTrainingObject.setTrainingProgramId(c.getInt(0));
-                    exerciseTrainingObject.setExerciseId(db.getExerciseId(exercises[i]));
-                    exerciseTrainingObject.setPositionAtSuperset(0);
-                    exerciseTrainingObject.setPositionAtTraining(i);
-                    exerciseTrainingObject.setSuperset(false);
-                    exerciseTrainingObject.setSupersetId(0);
-                    db.addExerciseTrainingObject(exerciseTrainingObject);
-                }
-            } while (c.moveToNext());
-        }
-        c.close();
     }
 
     class InitTask extends AsyncTask<Void, Void, Void> {
