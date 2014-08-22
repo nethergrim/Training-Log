@@ -94,10 +94,9 @@ public class TrainingFragment extends Fragment implements
             int seconds = (int) (millis / 1000);
             int minutes = (seconds / 60);
             seconds = (seconds % 60);
-            actionBar.setSubtitle((String.format("%d:%02d", minutes, seconds)) + " "
-                    + " " + " ["
-                    + ((set == currentSet ? set : currentSet) + 1) + " "
-                    + getResources().getString(R.string.set) + "] ");
+            if (resumed){
+                actionBar.setSubtitle((String.format("%d:%02d", minutes, seconds)) + " " + " [" + ((set == currentSet ? set : currentSet) + 1) + " " + getResources().getString(R.string.set) + "] ");
+            }
             timerHandler.postDelayed(this, 500);
         }
     };
@@ -116,6 +115,7 @@ public class TrainingFragment extends Fragment implements
     private TrainingAdapter adapter;
     private FAB fabSave, fabBack, fabForward;
     private boolean isInActionMode = false;
+    private boolean resumed = false;
     private ActionMode.Callback mActionModeCallback = new ActionMode.Callback() {
 
         @Override
@@ -156,7 +156,7 @@ public class TrainingFragment extends Fragment implements
                 listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 
                 if (listView.getCount() > 0) {
-                    onSelected(0);
+                    onSelected(0, true);
                     listView.setItemChecked(0, true);
                     llBottom.setVisibility(View.VISIBLE);
                 }
@@ -175,7 +175,7 @@ public class TrainingFragment extends Fragment implements
             blockedSelection = false;
             listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
             if (listView.getCount() > 0) {
-                onSelected(0);
+                onSelected(0, true);
                 listView.setItemChecked(0, true);
                 llBottom.setVisibility(View.VISIBLE);
             }
@@ -264,11 +264,11 @@ public class TrainingFragment extends Fragment implements
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View itemClicked, int position, long id) {
-                onSelected(position);
+                onSelected(position, true);
             }
         });
         listView.setItemChecked(Prefs.get().getCheckedPosition(), true);
-        onSelected(Prefs.get().getCheckedPosition());
+        onSelected(Prefs.get().getCheckedPosition(), true);
         SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
         date = sdf.format(new Date(System.currentTimeMillis()));
         boolean isTimerOn = Prefs.get().getTimerOn();
@@ -301,7 +301,7 @@ public class TrainingFragment extends Fragment implements
         }
     }
 
-    private void onSelected(int position) {
+    private void onSelected(int position, boolean withScroll) {
         if (blockedSelection)
             return;
         if (adapter.getData().size() == 0) {
@@ -314,7 +314,9 @@ public class TrainingFragment extends Fragment implements
         Prefs.get().setCheckedPosition(position);
         currentExerciseName = adapter.getData().get(position).getExerciseName();
         listView.setItemChecked(position,true);
-        listView.smoothScrollToPosition(position);
+        if (withScroll){
+            listView.smoothScrollToPosition(position);
+        }
         currentCheckedPosition = position;
         set = adapter.getData().get(currentCheckedPosition).getSetsCount();
         try {
@@ -342,6 +344,7 @@ public class TrainingFragment extends Fragment implements
     @Override
     public void onResume() {
         super.onResume();
+        resumed = true;
         actionBar.setTitle(trainingName);
         listView.setKeepScreenOn(!Prefs.get().getTurnScreenOff());
         vibrate = Prefs.get().getVibrateOn();
@@ -357,10 +360,10 @@ public class TrainingFragment extends Fragment implements
             restoreSetsFromPreferences();
             try {
                 listView.setItemChecked(Prefs.get().getCheckedPosition(), true);
-                onSelected(Prefs.get().getCheckedPosition());
+                onSelected(Prefs.get().getCheckedPosition(), true);
             } catch (Exception e) {
                 listView.setItemChecked(0, true);
-                onSelected(0);
+                onSelected(0, true);
             }
         }
         timerHandler.postDelayed(timerRunnable, 0);
@@ -430,6 +433,7 @@ public class TrainingFragment extends Fragment implements
     @Override
     public void onPause() {
         super.onPause();
+        resumed = false;
         timerHandler.removeCallbacks(timerRunnable);
         saveSetsToPreferences();
         isTrainingAtProgress = true;
@@ -558,7 +562,7 @@ public class TrainingFragment extends Fragment implements
             db.updateRec_Main(currentId, 5, null, rep_s);
             Toast.makeText(getActivity(), R.string.resaved, Toast.LENGTH_SHORT).show();
             currentSet = set;
-            onSelected(currentCheckedPosition);
+            onSelected(currentCheckedPosition, true);
 
         } else if (id == R.id.fabBack) {
             if (currentSet > 0) {
@@ -585,7 +589,7 @@ public class TrainingFragment extends Fragment implements
                         R.string.resaved_text) + " " + (weitghsS + 1) + "x" + (repsS + 1) + " (" + (currentSet + 1) + ")");
             } else if (currentSet == set - 1) {
                 llBottom.startAnimation(anim);
-                onSelected(currentCheckedPosition);
+                onSelected(currentCheckedPosition, true);
             }
         }
         initSetButtons();
@@ -718,7 +722,8 @@ public class TrainingFragment extends Fragment implements
             JSONArray jsonArray = new JSONArray(Prefs.get().getSavedSets());
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject tmp = (JSONObject) jsonArray.get(i);
-                adapter.getData().get(i).setSetsCount(tmp.getInt("setCount"));
+                    adapter.getData().get(i).setSetsCount(tmp.getInt("setCount"));
+
             }
             adapter.notifyDataSetChanged();
         } catch (JSONException e) {
@@ -782,7 +787,7 @@ public class TrainingFragment extends Fragment implements
         } else if (currentCheckedPosition == i2) {
             currentCheckedPosition = i1;
         }
-        onSelected(currentCheckedPosition);
+        onSelected(currentCheckedPosition ,false);
         adapter.notifyDataSetChanged();
     }
 
@@ -799,6 +804,7 @@ public class TrainingFragment extends Fragment implements
         for (Integer anIdList : idList) {
             TrainingRow row = new TrainingRow();
             Exercise exercise = db.getExercise(anIdList);
+            if (adapter.containsId((int) exercise.getId())) continue;
             row.setExerciseName(exercise.getName());
             row.setExerciseId(anIdList);
             row.setSuperset(false);
@@ -820,7 +826,7 @@ public class TrainingFragment extends Fragment implements
             int supersetPosition = adapter.getData().get(currentCheckedPosition).getPositionAtSuperset();
             int next = getNextSuperSetExercise(supersetId, supersetPosition);
             if (next >= 0){
-                onSelected(next);
+                onSelected(next, true);
             } else {
                 checkFirstSupersetExercise(supersetId);
                 showProgressDialog(true);
@@ -850,7 +856,7 @@ public class TrainingFragment extends Fragment implements
 
         for (int i = 0; i < adapter.getData().size(); i++){
             if (adapter.getData().get(i).getSupersetId() == supersetId && adapter.getData().get(i).getPositionAtSuperset() == minSupersetPosition){
-                onSelected(i);
+                onSelected(i, true);
             }
         }
     }
@@ -931,6 +937,13 @@ public class TrainingFragment extends Fragment implements
         public void deleteItem(int position) {
             data.remove(position);
             notifyDataSetChanged();
+        }
+
+        public boolean containsId(int exerciseId){
+            for (TrainingRow aData : data) {
+                if (aData.getExerciseId() == exerciseId) return true;
+            }
+            return false;
         }
 
         public List<TrainingRow> getData() {

@@ -421,6 +421,7 @@ public class BaseActivity extends AnalyticsActivity implements
 
     @Override
     public void onChoose() {
+        getActionBar().setSubtitle(null);
         setTrainingAlreadyStarted(false);
         DB db = new DB(this);
         db.open();

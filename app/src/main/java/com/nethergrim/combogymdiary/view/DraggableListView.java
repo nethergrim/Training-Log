@@ -32,7 +32,7 @@ public class DraggableListView extends ListView {
 
     private final int SMOOTH_SCROLL_AMOUNT_AT_EDGE = 15;
     private final int MOVE_DURATION = 150;
-    private final int LINE_THICKNESS = 15;
+    private final int LINE_THICKNESS = 10;
 
 
     private int mLastEventY = -1;
@@ -293,7 +293,13 @@ public class DraggableListView extends ListView {
 
             final long switchItemID = isBelow ? mBelowItemId : mAboveItemId;
             View switchView = isBelow ? belowView : aboveView;
-            final int originalItem = getPositionForView(mobileView);
+            int tmp = 0;
+            try {
+                tmp = getPositionForView(mobileView);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            final int originalItem = tmp;
 
             if (switchView == null) {
                 updateNeighborViewsForID(mMobileItemId);
