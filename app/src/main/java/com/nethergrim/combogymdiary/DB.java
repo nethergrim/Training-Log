@@ -417,20 +417,24 @@ public class DB {
         String[] args = {String.valueOf(trainingID)};
         Cursor c = mDB.query(DB_TABLE_TRAINING_EXERCISE, null, TRAINING_PROGRAM_ID + "=?", args,null,null,POSITION_AT_TRAINING);
         List<TrainingRow> result = new ArrayList<TrainingRow>();
-        if (c.moveToFirst()){
-            do {
-                TrainingRow trainingRow = new TrainingRow();
-                trainingRow.setId(c.getInt(0));
-                trainingRow.setTrainingProgramId(trainingID);
-                trainingRow.setExerciseId(c.getInt(2));
-                trainingRow.setPositionAtTraining(c.getInt(3));
-                trainingRow.setSuperset(c.getInt(4) == 1 ? true : false);
-                trainingRow.setPositionAtSuperset(c.getInt(5));
-                trainingRow.setSupersetId(c.getInt(6));
-                trainingRow.setSupersetColor(c.getInt(7));
-                trainingRow.setExerciseName(this.getExercise(trainingRow.getExerciseId()).getName());
-                result.add(trainingRow);
-            } while (c.moveToNext());
+        try {
+            if (c.moveToFirst()){
+                do {
+                    TrainingRow trainingRow = new TrainingRow();
+                    trainingRow.setId(c.getInt(0));
+                    trainingRow.setTrainingProgramId(trainingID);
+                    trainingRow.setExerciseId(c.getInt(2));
+                    trainingRow.setPositionAtTraining(c.getInt(3));
+                    trainingRow.setSuperset(c.getInt(4) == 1 ? true : false);
+                    trainingRow.setPositionAtSuperset(c.getInt(5));
+                    trainingRow.setSupersetId(c.getInt(6));
+                    trainingRow.setSupersetColor(c.getInt(7));
+                    trainingRow.setExerciseName(this.getExercise(c.getInt(2)).getName());
+                    result.add(trainingRow);
+                } while (c.moveToNext());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return result;
     }

@@ -22,7 +22,6 @@ public abstract class BaseDriveActivity extends Activity implements
     protected static final String EXTRA_ACCOUNT_NAME = "account_name";
     protected static final int REQUEST_CODE_RESOLUTION = 1;
     protected static final int NEXT_AVAILABLE_REQUEST_CODE = 2;
-    private static final String TAG = "BaseDriveActivity";
     private GoogleApiClient mGoogleApiClient;
 
     @Override
@@ -58,17 +57,14 @@ public abstract class BaseDriveActivity extends Activity implements
 
     @Override
     public void onConnected(Bundle connectionHint) {
-        Log.i(TAG, "GoogleApiClient connected");
     }
 
     @Override
     public void onConnectionSuspended(int cause) {
-        Log.i(TAG, "GoogleApiClient connection suspended");
     }
 
     @Override
     public void onConnectionFailed(ConnectionResult result) {
-        Log.i(TAG, "GoogleApiClient connection failed: " + result.toString());
         if (!result.hasResolution()) {
             // show the localized error dialog.
             try {
@@ -82,8 +78,7 @@ public abstract class BaseDriveActivity extends Activity implements
         }
         try {
             result.startResolutionForResult(this, REQUEST_CODE_RESOLUTION);
-        } catch (SendIntentException e) {
-            Log.e(TAG, "Exception while starting resolution activity", e);
+        } catch (SendIntentException ignored) {
         }
     }
 

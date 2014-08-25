@@ -48,6 +48,7 @@ import com.nethergrim.combogymdiary.googledrive.DriveBackupActivity;
 import com.nethergrim.combogymdiary.model.Exercise;
 import com.nethergrim.combogymdiary.service.TrainingService;
 import com.nethergrim.combogymdiary.tools.Backuper;
+import com.nethergrim.combogymdiary.tools.GoogleDriveHelper;
 import com.nethergrim.combogymdiary.tools.Prefs;
 import com.purplebrain.adbuddiz.sdk.AdBuddiz;
 import com.yandex.metrica.Counter;
@@ -455,9 +456,17 @@ public class BaseActivity extends AnalyticsActivity implements
         notificationManager.cancelAll();
 
         if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean(AUTO_BACKUP_TO_DRIVE, true)) {
-            Intent backup = new Intent(this, DriveBackupActivity.class);
-            backup.putExtra(BaseDriveActivity.KEY_AUTOBACKUP, true);
-            startActivity(backup);
+            Thread thread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    GoogleDriveHelper googleDriveHelper = new GoogleDriveHelper(BaseActivity.this);
+                    googleDriveHelper.autoBackup();
+                }
+            });
+            thread.start();
+//            Intent backup = new Intent(this, DriveBackupActivity.class);
+//            backup.putExtra(BaseDriveActivity.KEY_AUTOBACKUP, true);
+//            startActivity(backup);
         }
 
         Prefs.get().setTrainingsCount(Prefs.get().getTrainingsCount() + 1);

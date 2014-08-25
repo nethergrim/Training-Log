@@ -202,8 +202,12 @@ public class TrainingFragment extends Fragment implements
         actionBar = getActivity().getActionBar();
         actionBar.setTitle(trainingName);
         getActivity().startService(new Intent(getActivity(), TrainingService.class));
-        startTime = System.currentTimeMillis();
-        Prefs.get().setStartTime(startTime);
+        if (isTrainingAtProgress){
+            startTime = Prefs.get().getStartTime();
+        } else {
+            startTime = System.currentTimeMillis();
+            Prefs.get().setStartTime(startTime);
+        }
     }
 
     @Override
@@ -438,6 +442,7 @@ public class TrainingFragment extends Fragment implements
         saveSetsToPreferences();
         isTrainingAtProgress = true;
         saveExercicesToDatabase();
+        getActivity().getActionBar().setSubtitle(null);
     }
 
     @Override
@@ -464,8 +469,7 @@ public class TrainingFragment extends Fragment implements
             dialogAddExercises.setListener(this);
         } else if (itemId == R.id.itemSeePreviousTraining) {
             String[] args = {trainingName};
-            Cursor tmpCursor = db.getDataMain(null, DB.TRAINING_NAME + "=?", args,
-                    DB.DATE, null, null);
+            Cursor tmpCursor = db.getDataMain(null, DB.TRAINING_NAME + "=?", args, DB.DATE, null, null);
             if (tmpCursor.moveToLast()
                     && (tmpCursor.getCount() > 1 || !tmpCursor.getString(3)
                     .equals(date))) {
@@ -474,12 +478,9 @@ public class TrainingFragment extends Fragment implements
                     tmpCursor.moveToPrevious();
                 }
 
-                Intent intent_history_detailed = new Intent(getActivity(),
-                        HistoryDetailedActivity.class);
-                intent_history_detailed
-                        .putExtra("date", tmpCursor.getString(3));
-                intent_history_detailed.putExtra("trName",
-                        tmpCursor.getString(1));
+                Intent intent_history_detailed = new Intent(getActivity(), HistoryDetailedActivity.class);
+                intent_history_detailed.putExtra(HistoryDetailedActivity.BUNDLE_KEY_DATE, tmpCursor.getString(3));
+                intent_history_detailed.putExtra(HistoryDetailedActivity.BUNDLE_KEY_TRAINING_NAME, tmpCursor.getString(1));
                 startActivity(intent_history_detailed);
                 tmpCursor.close();
 
@@ -722,6 +723,7 @@ public class TrainingFragment extends Fragment implements
             JSONArray jsonArray = new JSONArray(Prefs.get().getSavedSets());
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject tmp = (JSONObject) jsonArray.get(i);
+                if (i < adapter.getCount())
                     adapter.getData().get(i).setSetsCount(tmp.getInt("setCount"));
 
             }
