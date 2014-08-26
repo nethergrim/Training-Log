@@ -25,12 +25,8 @@ import java.io.IOException;
  */
 public class MyBackupAgent extends BackupAgent {
 
-
-    // /data/data/com.nethergrim.combogymdiary/databases
     public static final String HEADER_SETTINGS = "settings_header";
     public static final String HEADER_DB = "db_header";
-//    private static final String DB_NAME = "mydb";
-//    private static final String PREFS_NAME = "com.nethergrim.combogymdiary_preferences";
 
     @Override
     public void onBackup(ParcelFileDescriptor oldState, BackupDataOutput data, ParcelFileDescriptor newState) throws IOException {
@@ -73,7 +69,6 @@ public class MyBackupAgent extends BackupAgent {
 
         data.writeEntityData(prefsBytes,prefsSize);
 
-
     }
 
     @Override
@@ -81,39 +76,24 @@ public class MyBackupAgent extends BackupAgent {
         while (data.readNextHeader()) {
             String key = data.getKey();
             int dataSize = data.getDataSize();
-
             // If the key is ours (for saving top score). Note this key was used when
             // we wrote the backup entity header
             if (HEADER_DB.equals(key)) {
-                // Create an input stream for the BackupDataInput
+                Log.e("log", "restoring DB file " + dataSize);
                 byte[] dataBuf = new byte[dataSize];
                 data.readEntityData(dataBuf, 0, dataSize);
-
                 BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(Backuper.getDbFile()));
                 bos.write(dataBuf);
                 bos.flush();
                 bos.close();
-
-//
-//                ByteArrayInputStream baStream = new ByteArrayInputStream(dataBuf);
-//                DataInputStream in = new DataInputStream(baStream);
-//
-//                // Read the player name and score from the backup data
-//                mPlayerName = in.readUTF();
-//                mPlayerScore = in.readInt();
-//
-//                // Record the score on the device (to a file or something)
-//                recordScore(mPlayerName, mPlayerScore);
             } else if (HEADER_SETTINGS.equals(key)){
+                Log.e("log", "restoring SETTINGS file " + dataSize);
                 byte[] dataBuf = new byte[dataSize];
                 data.readEntityData(dataBuf, 0, dataSize);
                 BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(Backuper.getPreferencesFile()));
                 bos.write(dataBuf);
                 bos.flush();
                 bos.close();
-
-
-
             } else {
                 // We don't know this entity key. Skip it. (Shouldn't happen.)
                 data.skipEntityData();

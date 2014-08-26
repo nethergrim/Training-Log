@@ -6,10 +6,11 @@ import android.util.Log;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.nio.channels.FileChannel;
 
 public class Backuper {
-    final String LOG_TAG = "myLogs";
+
 
     @SuppressWarnings("resource")
     public boolean backupToSd() {
@@ -23,7 +24,6 @@ public class Backuper {
                 File currentDB = new File(data, currentDBPath);
                 File backupDB = new File(sd, backupDBPath);
                 if (currentDB.exists()) {
-                    Log.d(LOG_TAG, "DB for backup exists");
                     FileChannel src = new FileInputStream(currentDB)
                             .getChannel();
                     FileChannel dst = new FileOutputStream(backupDB)
@@ -35,21 +35,18 @@ public class Backuper {
                 } else
                     return false;
             } else {
-                Log.d(LOG_TAG, "sd.canWrite == 0");
                 return false;
             }
         } catch (Exception e) {
-            Log.d(LOG_TAG, "" + e);
+            e.printStackTrace();
             return false;
         }
     }
 
     @SuppressWarnings("resource")
     public boolean restoreBackup(String path) {
-        Log.d(LOG_TAG, "backuping path " + path);
         try {
             File sd1 = Environment.getExternalStorageDirectory();
-            Log.d(LOG_TAG, "sd1 path: " + sd1.getAbsolutePath());
             File data = Environment.getDataDirectory();
             if (sd1.canWrite()) {
                 String restroredDBPath = "//data//com.nethergrim.combogymdiary//databases//mydb";
@@ -63,17 +60,13 @@ public class Backuper {
                     dst.transferFrom(src, 0, src.size());
                     src.close();
                     dst.close();
-                    Log.d(LOG_TAG, "restored OK");
                     return true;
                 } else {
-                    Log.d(LOG_TAG, "backupedDB.exists() == false");
                     return false;
                 }
             } else
-                Log.d(LOG_TAG, "sd.canWrite  == false");
             return false;
         } catch (Exception e) {
-            Log.d(LOG_TAG, "error restoring DB: " + e);
             return false;
         }
 
@@ -82,12 +75,59 @@ public class Backuper {
     public static File getDbFile() {
         File data = Environment.getDataDirectory();
         String currentDBPath = "//data//com.nethergrim.combogymdiary//databases//mydb";
-        return new File(data, currentDBPath);
+
+        File dataFolder = new File(data,"//data//");
+        if (!dataFolder.exists()){
+            try {
+                Log.e("log","creating data for DB");
+                dataFolder.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        File packageFolder = new File(data,"//data//com.nethergrim.combogymdiary//");
+        if (!packageFolder.exists()){
+            try {
+                Log.e("log","creating packageFolder for DB");
+                packageFolder.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        File dbFolder = new File(data, "//data//com.nethergrim.combogymdiary//databases//");
+        if (!dbFolder.exists()){
+            try {
+                Log.e("log","creating dbFolder for DB");
+                dbFolder.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        File result = new File(data, currentDBPath);
+        if (!result.exists()){
+            try {
+                result.createNewFile();
+                Log.e("log", "db file created");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return result;
     }
 
     public static File getPreferencesFile(){
         File data = Environment.getDataDirectory();
-        String currentPrefsPath = "//data//com.nethergrim.combogymdiary//prefs//com.nethergrim.combogymdiary_preferences";
-        return new File(data, currentPrefsPath);
+        String currentPrefsPath = "//data//com.nethergrim.combogymdiary//shared_prefs//com.nethergrim.combogymdiary_preferences.xml";
+        File result = new File(data, currentPrefsPath);
+        if (!result.exists()){
+            try {
+                result.createNewFile();
+                Log.e("log", "prefs file created");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return result;
     }
 }
