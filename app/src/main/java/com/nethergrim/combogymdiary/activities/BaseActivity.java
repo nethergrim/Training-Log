@@ -21,6 +21,7 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -50,7 +51,6 @@ import com.nethergrim.combogymdiary.service.TrainingService;
 import com.nethergrim.combogymdiary.tools.Backuper;
 import com.nethergrim.combogymdiary.tools.GoogleDriveHelper;
 import com.nethergrim.combogymdiary.tools.Prefs;
-import com.purplebrain.adbuddiz.sdk.AdBuddiz;
 import com.yandex.metrica.Counter;
 
 import org.json.JSONException;
@@ -97,7 +97,7 @@ public class BaseActivity extends AnalyticsActivity implements
     private TrainingFragment trainingFragment = new TrainingFragment();
     private Fragment currentFragment;
     private ServiceConnection mServiceConn;
-    private int adCounter = 0;
+   private int adCounter = 0;
 
     static {
         for (int idx = 0; idx < 10; ++idx)
@@ -183,8 +183,7 @@ public class BaseActivity extends AnalyticsActivity implements
         if (savedInstanceState == null) {
             onItemSelected(0);
         }
-        AdBuddiz.setPublisherKey("106f6ef1-f60b-4df9-b2f9-058c2c527776");
-        AdBuddiz.cacheAds(this);
+
     }
 
     private boolean checkAd() {
@@ -261,12 +260,12 @@ public class BaseActivity extends AnalyticsActivity implements
     }
 
     private void initStrings() {
-        if (!Prefs.get().getAdsRemoved()) {
+        /*if (!Prefs.get().getAdsRemoved()) {
             listButtons = new String[9];
             listButtons[8] = getString(R.string.remove_ads);
-        } else {
+        } else {*/
             listButtons = new String[8];
-        }
+//        }
         listButtons[0] = getResources().getString(
                 R.string.startTrainingButtonString);
         listButtons[1] = getResources().getString(
@@ -291,7 +290,8 @@ public class BaseActivity extends AnalyticsActivity implements
             adCounter++;
             if (adCounter >= 4) {
                 adCounter = 0;
-                AdBuddiz.showAd(this);
+                // FIXME show ad
+
             }
         }
 
@@ -464,9 +464,6 @@ public class BaseActivity extends AnalyticsActivity implements
                 }
             });
             thread.start();
-//            Intent backup = new Intent(this, DriveBackupActivity.class);
-//            backup.putExtra(BaseDriveActivity.KEY_AUTOBACKUP, true);
-//            startActivity(backup);
         }
 
         Prefs.get().setTrainingsCount(Prefs.get().getTrainingsCount() + 1);
@@ -477,7 +474,8 @@ public class BaseActivity extends AnalyticsActivity implements
         adapter.notifyDataSetChanged();
         getActionBar().setSubtitle(null);
         if (!Prefs.get().getAdsRemoved()){
-            AdBuddiz.showAd(this);
+            //FIXME show ad
+
         }
     }
 

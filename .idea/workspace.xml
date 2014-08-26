@@ -50,13 +50,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1ae25ada-db98-44c3-aaa8-db4b3954c501" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/tools/GoogleDriveHelper.java" />
-      <change type="DELETED" beforePath="D:\GitHub\Training-Log\app\app.iml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/app/libs/AdBuddiz-2.3.3.jar" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/activities/BaseActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/activities/BaseActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/googledrive/BaseDriveActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/googledrive/BaseDriveActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/DB.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/DB.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/fragments/TrainingFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/fragments/TrainingFragment.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/app.iml" afterPath="$PROJECT_DIR$/app/app.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build.gradle" afterPath="$PROJECT_DIR$/app/build.gradle" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
@@ -90,9 +88,11 @@
       <file leaf-file-name="AndroidManifest.xml" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="4758">
-              <caret line="5" column="28" selection-start-line="5" selection-start-column="28" selection-end-line="5" selection-end-column="28" />
-              <folding />
+            <state vertical-scroll-proportion="0.0" vertical-offset="459" max-vertical-offset="3111">
+              <caret line="30" column="0" selection-start-line="30" selection-start-column="0" selection-end-line="30" selection-end-column="0" />
+              <folding>
+                <element signature="e#1499#1538#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -100,11 +100,18 @@
       <file leaf-file-name="BaseActivity.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/activities/BaseActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.7878788" vertical-offset="9542" max-vertical-offset="12480">
-              <caret line="462" column="51" selection-start-line="462" selection-start-column="51" selection-end-line="462" selection-end-column="51" />
+            <state vertical-scroll-proportion="-3.2682405" vertical-offset="7381" max-vertical-offset="9129">
+              <caret line="268" column="11" selection-start-line="268" selection-start-column="11" selection-end-line="268" selection-end-column="11" />
               <folding>
-                <element signature="e#18515#18777#0" expanded="true" />
-                <element signature="e#18762#18763#0" expanded="true" />
+                <element signature="imports" expanded="true" />
+                <element signature="e#11149#11226#0" expanded="true" />
+                <element signature="e#11253#11332#0" expanded="true" />
+                <element signature="e#11359#11410#0" expanded="true" />
+                <element signature="e#11437#11484#0" expanded="true" />
+                <element signature="e#11511#11557#0" expanded="true" />
+                <element signature="e#11584#11629#0" expanded="true" />
+                <element signature="e#11656#11728#0" expanded="true" />
+                <element signature="e#11755#11793#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -113,57 +120,9 @@
       <file leaf-file-name="TrainingFragment.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/fragments/TrainingFragment.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="944" max-vertical-offset="3302">
+            <state vertical-scroll-proportion="0.0" vertical-offset="7463" max-vertical-offset="17272">
               <caret line="439" column="24" selection-start-line="439" selection-start-column="24" selection-end-line="439" selection-end-column="24" />
-              <folding>
-                <element signature="class#4775:7331" expanded="false" />
-                <element signature="method#onCreateActionMode#0;class#4775:7331" expanded="false" />
-                <element signature="method#onPrepareActionMode#0;class#4775:7331" expanded="false" />
-                <element signature="method#onActionItemClicked#0;class#4775:7331" expanded="false" />
-                <element signature="method#onDestroyActionMode#0;class#4775:7331" expanded="false" />
-                <element signature="method#onCreate#0;class#TrainingFragment#0" expanded="false" />
-                <element signature="method#onCreateView#0;class#TrainingFragment#0" expanded="false" />
-                <element signature="class#10062:10478" expanded="false" />
-                <element signature="method#onTextChanged#0;class#10062:10478" expanded="false" />
-                <element signature="method#beforeTextChanged#0;class#10062:10478" expanded="false" />
-                <element signature="method#initSetButtons#0;class#TrainingFragment#0" expanded="false" />
-                <element signature="method#onSelected#0;class#TrainingFragment#0" expanded="false" />
-                <element signature="method#onResume#0;class#TrainingFragment#0" expanded="false" />
-                <element signature="method#showProgressDialog#0;class#TrainingFragment#0" expanded="false" />
-                <element signature="method#onCreateOptionsMenu#0;class#TrainingFragment#0" expanded="false" />
-                <element signature="method#onOptionsItemSelected#0;class#TrainingFragment#0" expanded="false" />
-                <element signature="method#updateTimer#0;class#TrainingFragment#0" expanded="false" />
-                <element signature="method#onClick#0;class#TrainingFragment#0" expanded="false" />
-                <element signature="method#showPopup#0;class#TrainingFragment#0" expanded="false" />
-                <element signature="method#hidePopup#0;class#TrainingFragment#0" expanded="false" />
-                <element signature="method#onCheckedChanged#0;class#TrainingFragment#0" expanded="false" />
-                <element signature="method#saveSetsToPreferences#0;class#TrainingFragment#0" expanded="false" />
-                <element signature="method#restoreSetsFromPreferences#0;class#TrainingFragment#0" expanded="false" />
-                <element signature="method#saveExercicesToDatabase#0;class#TrainingFragment#0" expanded="false" />
-                <element signature="method#playSound#0;class#TrainingFragment#0" expanded="false" />
-                <element signature="method#dpFromPx#0;class#TrainingFragment#0" expanded="false" />
-                <element signature="method#pxFromDp#0;class#TrainingFragment#0" expanded="false" />
-                <element signature="method#onListItemSwapped#0;class#TrainingFragment#0" expanded="false" />
-                <element signature="method#swapElements#0;class#TrainingFragment#0" expanded="false" />
-                <element signature="method#onExerciseAddedCallback#0;class#TrainingFragment#0" expanded="false" />
-                <element signature="method#goToNextExerciseInSuperset#0;class#TrainingFragment#0" expanded="false" />
-                <element signature="method#getNextSuperSetExercise#0;class#TrainingFragment#0" expanded="false" />
-                <element signature="method#checkFirstSupersetExercise#0;class#TrainingFragment#0" expanded="false" />
-                <element signature="class#RepsAdapter#0;class#TrainingFragment#0" expanded="false" />
-                <element signature="method#RepsAdapter#0;class#RepsAdapter#0;class#TrainingFragment#0" expanded="false" />
-                <element signature="method#getItem#0;class#RepsAdapter#0;class#TrainingFragment#0" expanded="false" />
-                <element signature="class#WeightsAdapter#0;class#TrainingFragment#0" expanded="false" />
-                <element signature="method#WeightsAdapter#0;class#WeightsAdapter#0;class#TrainingFragment#0" expanded="false" />
-                <element signature="method#getItem#0;class#WeightsAdapter#0;class#TrainingFragment#0" expanded="false" />
-                <element signature="class#TrainingAdapter#0;class#TrainingFragment#0" expanded="false" />
-                <element signature="method#TrainingAdapter#0;class#TrainingAdapter#0;class#TrainingFragment#0" expanded="false" />
-                <element signature="method#addData#0;class#TrainingAdapter#0;class#TrainingFragment#0" expanded="false" />
-                <element signature="method#deleteItem#0;class#TrainingAdapter#0;class#TrainingFragment#0" expanded="false" />
-                <element signature="method#containsId#0;class#TrainingAdapter#0;class#TrainingFragment#0" expanded="false" />
-                <element signature="method#getItemId#0;class#TrainingAdapter#0;class#TrainingFragment#0" expanded="false" />
-                <element signature="method#getView#0;class#TrainingAdapter#0;class#TrainingFragment#0" expanded="false" />
-                <element signature="class#ViewHolder#0;class#TrainingAdapter#0;class#TrainingFragment#0" expanded="false" />
-              </folding>
+              <folding />
             </state>
           </provider>
         </entry>
@@ -171,23 +130,9 @@
       <file leaf-file-name="GoogleDriveHelper.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/tools/GoogleDriveHelper.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="844" max-vertical-offset="4888">
+            <state vertical-scroll-proportion="0.0" vertical-offset="952" max-vertical-offset="3196">
               <caret line="56" column="13" selection-start-line="56" selection-start-column="13" selection-end-line="56" selection-end-column="13" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#1418#1419#0" expanded="true" />
-                <element signature="e#1456#1457#0" expanded="true" />
-                <element signature="e#2193#2194#0" expanded="true" />
-                <element signature="e#2237#2238#0" expanded="true" />
-                <element signature="e#3130#4035#0" expanded="true" />
-                <element signature="e#4028#4029#0" expanded="true" />
-                <element signature="e#4126#4501#0" expanded="true" />
-                <element signature="e#4494#4495#0" expanded="true" />
-                <element signature="e#4881#6480#0" expanded="true" />
-                <element signature="e#6473#6474#0" expanded="true" />
-                <element signature="e#6567#6762#0" expanded="true" />
-                <element signature="e#6755#6756#0" expanded="true" />
-              </folding>
+              <folding />
             </state>
           </provider>
         </entry>
@@ -631,7 +576,7 @@
     </option>
     <option name="modificationStamps">
       <map>
-        <entry key="$PROJECT_DIR$" value="4226859114198" />
+        <entry key="$PROJECT_DIR$" value="4224730429547" />
       </map>
     </option>
     <option name="projectBuildClasspath">
@@ -785,9 +730,9 @@
                             <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.bouncycastle/bcpkix-jdk15on/1.48/28b7614b908a47844bb27e3c94b45b6893656265/bcpkix-jdk15on-1.48.jar" />
                             <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.android.tools.build/builder/0.12.2/cbbbe556e0103ceb734ac7a269ecb9a9e2f33d4c/builder-0.12.2-sources.jar" />
                             <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.android.tools.build/builder/0.12.2/3673e1c415b054caccc3231dcdff959cfcb315f6/builder-0.12.2.jar" />
-                            <option value="$APPLICATION_HOME_DIR$/sdk/extras/google/m2repository/com/google/android/gms/play-services/4.4.52/play-services-4.4.52.aar" />
-                            <option value="$APPLICATION_HOME_DIR$/sdk/extras/android/m2repository/com/android/support/support-v4/19.1.0/support-v4-19.1.0-sources.jar" />
-                            <option value="$APPLICATION_HOME_DIR$/sdk/extras/android/m2repository/com/android/support/support-v4/19.1.0/support-v4-19.1.0.jar" />
+                            <option value="$USER_HOME$/android/android-sdk-linux/extras/google/m2repository/com/google/android/gms/play-services/4.4.52/play-services-4.4.52.aar" />
+                            <option value="$USER_HOME$/android/android-sdk-linux/extras/android/m2repository/com/android/support/support-v4/19.1.0/support-v4-19.1.0-sources.jar" />
+                            <option value="$USER_HOME$/android/android-sdk-linux/extras/android/m2repository/com/android/support/support-v4/19.1.0/support-v4-19.1.0.jar" />
                             <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.http-client/google-http-client-gson/1.17.0-rc/621fda0333023617a3cdc3fd331fc174a5f815a1/google-http-client-gson-1.17.0-rc-sources.jar" />
                             <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.http-client/google-http-client-gson/1.17.0-rc/3696033c14cc5ce68fe3ac818bade2707df9c2cd/google-http-client-gson-1.17.0-rc.jar" />
                             <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.code.gson/gson/2.1/5c2e6207e9abf9a18bde012371a821196dd18e13/gson-2.1-sources.jar" />
@@ -811,7 +756,6 @@
                             <option value="$MODULE_DIR$/libs/jackson-core-2.1.3.jar" />
                             <option value="$MODULE_DIR$/libs/jackson-core-asl-1.9.11.jar" />
                             <option value="$MODULE_DIR$/libs/jsr305-1.3.9.jar" />
-                            <option value="$MODULE_DIR$/libs/AdBuddiz-2.3.3.jar" />
                             <option value="$MODULE_DIR$/libs/wheel.jar" />
                             <option value="$MODULE_DIR$/libs/libGoogleAnalyticsServices.jar" />
                             <option value="$MODULE_DIR$/libs/yandex-mobmetrica-lib-android-1.2-wlibs.jar" />
@@ -827,86 +771,86 @@
               <option name="name" value="app" />
               <option name="projectBuildClasspath">
                 <list>
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/src/announce" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/src/sonar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/src/ui" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/src/ivy" />
                   <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/src/antlr" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/src/base-services" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/src/base-services-groovy" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/src/build-comparison" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/src/build-init" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/src/jacoco" />
                   <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/src/cli" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/src/code-quality" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/src/core" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/src/core-impl" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/src/ear" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/src/wrapper" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/src/tooling-api" />
                   <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/src/cpp" />
                   <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/src/diagnostics" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/src/ear" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/src/signing" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/src/language-jvm" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/src/base-services" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/src/core" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/src/build-init" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/src/reporting" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/src/code-quality" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/src/resources" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/src/maven" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/src/plugins" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/src/core-impl" />
                   <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/src/ide" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/src/publish" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/src/launcher" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/src/javascript" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/src/scala" />
                   <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/src/internal-integ-testing" />
                   <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/src/internal-testing" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/src/ivy" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/src/jacoco" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/src/javascript" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/src/jetty" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/src/language-base" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/src/language-jvm" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/src/launcher" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/src/maven" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/src/announce" />
                   <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/src/messaging" />
                   <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/src/native" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/src/base-services-groovy" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/src/language-base" />
                   <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/src/open-api" />
                   <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/src/osgi" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/src/plugins" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/src/publish" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/src/reporting" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/src/resources" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/src/scala" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/src/signing" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/src/sonar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/src/tooling-api" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/src/ui" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/src/wrapper" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/lib/ant-1.9.3.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/lib/ant-launcher-1.9.3.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/lib/gradle-base-services-1.12.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/lib/gradle-base-services-groovy-1.12.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/lib/gradle-cli-1.12.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/lib/gradle-core-1.12.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/lib/gradle-docs-1.12.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/lib/gradle-launcher-1.12.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/lib/gradle-messaging-1.12.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/lib/gradle-native-1.12.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/src/jetty" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/src/build-comparison" />
                   <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/lib/gradle-open-api-1.12.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/lib/gradle-resources-1.12.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/lib/gradle-tooling-api-1.12.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/lib/gradle-ui-1.12.jar" />
                   <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/lib/gradle-wrapper-1.12.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/lib/gradle-native-1.12.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/lib/gradle-messaging-1.12.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/lib/gradle-launcher-1.12.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/lib/ant-launcher-1.9.3.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/lib/gradle-resources-1.12.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/lib/ant-1.9.3.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/lib/gradle-base-services-groovy-1.12.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/lib/gradle-docs-1.12.jar" />
                   <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/lib/groovy-all-1.8.6.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/lib/gradle-ui-1.12.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/lib/gradle-cli-1.12.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/lib/gradle-base-services-1.12.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/lib/gradle-core-1.12.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/lib/gradle-tooling-api-1.12.jar" />
                   <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/lib/ivy-2.2.0.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/lib/plugins/ant-antlr-1.9.3.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/lib/plugins/gradle-announce-1.12.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/lib/plugins/gradle-antlr-1.12.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/lib/plugins/gradle-build-comparison-1.12.jar" />
                   <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/lib/plugins/gradle-build-init-1.12.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/lib/plugins/gradle-code-quality-1.12.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/lib/plugins/gradle-core-impl-1.12.jar" />
                   <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/lib/plugins/gradle-cpp-1.12.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/lib/plugins/gradle-diagnostics-1.12.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/lib/plugins/gradle-ear-1.12.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/lib/plugins/gradle-ide-1.12.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/lib/plugins/gradle-ivy-1.12.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/lib/plugins/gradle-jacoco-1.12.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/lib/plugins/gradle-javascript-1.12.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/lib/plugins/gradle-jetty-1.12.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/lib/plugins/gradle-language-base-1.12.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/lib/plugins/gradle-language-jvm-1.12.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/lib/plugins/gradle-maven-1.12.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/lib/plugins/gradle-osgi-1.12.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/lib/plugins/gradle-plugins-1.12.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/lib/plugins/gradle-publish-1.12.jar" />
                   <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/lib/plugins/gradle-reporting-1.12.jar" />
                   <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/lib/plugins/gradle-scala-1.12.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/lib/plugins/gradle-ivy-1.12.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/lib/plugins/gradle-antlr-1.12.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/lib/plugins/gradle-language-base-1.12.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/lib/plugins/gradle-ear-1.12.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/lib/plugins/gradle-ide-1.12.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/lib/plugins/gradle-language-jvm-1.12.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/lib/plugins/gradle-build-comparison-1.12.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/lib/plugins/gradle-osgi-1.12.jar" />
                   <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/lib/plugins/gradle-signing-1.12.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/lib/plugins/gradle-plugins-1.12.jar" />
                   <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/lib/plugins/gradle-sonar-1.12.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/lib/plugins/gradle-maven-1.12.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/lib/plugins/gradle-jetty-1.12.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/lib/plugins/gradle-diagnostics-1.12.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/lib/plugins/gradle-core-impl-1.12.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/lib/plugins/gradle-announce-1.12.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/lib/plugins/gradle-jacoco-1.12.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/lib/plugins/gradle-publish-1.12.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/lib/plugins/gradle-code-quality-1.12.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/lib/plugins/gradle-javascript-1.12.jar" />
+                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-1.12-all/2apkk7d25miauqf1pdjp1bm0uo/gradle-1.12/lib/plugins/ant-antlr-1.9.3.jar" />
                   <option value="$PROJECT_DIR$/buildSrc/src/main/java" />
                   <option value="$PROJECT_DIR$/buildSrc/src/main/groovy" />
                 </list>
@@ -926,7 +870,6 @@
         <option value="$PROJECT_DIR$/app/src/main/res/values-uk/strings.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/values/styles_material_blue.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/values-v20/styles.xml" />
-        <option value="$PROJECT_DIR$/app/build.gradle" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/my_list_item.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/activities/NewCreatingTrainingDayActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/Statistics.java" />
@@ -966,19 +909,19 @@
         <option value="$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/activities/EditingProgramAtTrainingActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/view/DraggableListView.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/DB.java" />
-        <option value="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/fragments/TrainingFragment.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/googledrive/BaseDriveActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/tools/GoogleDriveHelper.java" />
+        <option value="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
+        <option value="$PROJECT_DIR$/app/build.gradle" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/activities/BaseActivity.java" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="85" />
-    <option name="y" value="-8" />
-    <option name="width" value="1843" />
-    <option name="height" value="1096" />
+    <option name="y" value="-1056" />
+    <option name="width" value="1920" />
+    <option name="height" value="1056" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
@@ -1022,7 +965,7 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="AndroidView" />
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -1293,10 +1236,28 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Training-Log" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Training-Log" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="libs" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
       <pane id="Scope" />
+      <pane id="AndroidView" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -1311,7 +1272,7 @@
     <property name="options.splitter.details.proportions" value="0.2" />
     <property name="options.searchVisible" value="true" />
     <property name="recentsLimit" value="5" />
-    <property name="ANDROID_EXTENDED_DEVICE_CHOOSER_SERIALS" value="03a15e6b006b9441" />
+    <property name="ANDROID_EXTENDED_DEVICE_CHOOSER_SERIALS" value="070b0900" />
     <property name="restartRequiresConfirmation" value="true" />
     <property name="OverrideImplement.combined" value="true" />
     <property name="OverrideImplement.overriding.sorted" value="false" />
@@ -1319,8 +1280,8 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/view" />
       <recent name="$PROJECT_DIR$/app/libs" />
+      <recent name="$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/view" />
       <recent name="$PROJECT_DIR$/app/src/main/res/drawable-xxhdpi" />
       <recent name="$PROJECT_DIR$/app/src/main/res/drawable-xhdpi" />
       <recent name="$PROJECT_DIR$/app/src/main/res/drawable-mdpi" />
@@ -1362,19 +1323,6 @@
       <option name="PORT" value="5005" />
       <method />
     </configuration>
-    <configuration default="true" type="Applet" factoryName="Applet">
-      <module name="" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="HTML_FILE_NAME" />
-      <option name="HTML_USED" value="false" />
-      <option name="WIDTH" value="400" />
-      <option name="HEIGHT" value="300" />
-      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
-      <option name="VM_PARAMETERS" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <method />
-    </configuration>
     <configuration default="true" type="TestNG" factoryName="TestNG">
       <module name="" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
@@ -1400,6 +1348,19 @@
       <envs />
       <properties />
       <listeners />
+      <method />
+    </configuration>
+    <configuration default="true" type="Applet" factoryName="Applet">
+      <module name="" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="HTML_FILE_NAME" />
+      <option name="HTML_USED" value="false" />
+      <option name="WIDTH" value="400" />
+      <option name="HEIGHT" value="300" />
+      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
+      <option name="VM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
       <method />
     </configuration>
     <configuration default="true" type="Application" factoryName="Application">
@@ -1472,7 +1433,7 @@
       <option name="NETWORK_SPEED" value="full" />
       <option name="NETWORK_LATENCY" value="none" />
       <option name="CLEAR_LOGCAT" value="true" />
-      <option name="SHOW_LOGCAT_AUTOMATICALLY" value="true" />
+      <option name="SHOW_LOGCAT_AUTOMATICALLY" value="false" />
       <option name="FILTER_LOGCAT_AUTOMATICALLY" value="true" />
       <RunnerSettings RunnerId="AndroidDebugRunner" />
       <ConfigurationWrapper RunnerId="AndroidDebugRunner" />
@@ -1504,37 +1465,37 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="85" y="-8" width="1843" height="1096" extended-state="6" />
-    <editor active="false" />
+    <frame x="0" y="-1056" width="1920" height="1056" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32771337" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.32960325" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.31362197" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2897787" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.31354168" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.28958333" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.22222222" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.32604167" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.221875" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="true" weight="0.32604167" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Thumbnails" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32982087" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.159375" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32771337" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
     <layout-to-restore>
@@ -1542,11 +1503,11 @@
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.3298647" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
-      <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
-      <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="true" content_ui="tabs" />
+      <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2616311" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
@@ -1564,8 +1525,8 @@
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.31633714" sideWeight="0.5" order="14" side_tool="false" content_ui="tabs" />
       <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3340358" sideWeight="0.5" order="15" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
     </layout-to-restore>
   </component>
@@ -1591,75 +1552,11 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="4758">
-          <caret line="6" column="31" selection-start-line="6" selection-start-column="31" selection-end-line="6" selection-end-column="31" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/activities/BaseActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="10972" max-vertical-offset="14352">
-          <caret line="422" column="27" selection-start-line="422" selection-start-column="27" selection-end-line="422" selection-end-column="27" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/fragments/TrainingFragment.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="2704" max-vertical-offset="3406">
           <caret line="790" column="30" selection-start-line="790" selection-start-column="30" selection-end-line="790" selection-end-column="30" />
-          <folding>
-            <element signature="class#4775:7331" expanded="false" />
-            <element signature="method#onCreateActionMode#0;class#4775:7331" expanded="false" />
-            <element signature="method#onPrepareActionMode#0;class#4775:7331" expanded="false" />
-            <element signature="method#onActionItemClicked#0;class#4775:7331" expanded="false" />
-            <element signature="method#onDestroyActionMode#0;class#4775:7331" expanded="false" />
-            <element signature="method#onCreate#0;class#TrainingFragment#0" expanded="false" />
-            <element signature="method#onCreateView#0;class#TrainingFragment#0" expanded="false" />
-            <element signature="class#10062:10478" expanded="false" />
-            <element signature="method#onTextChanged#0;class#10062:10478" expanded="false" />
-            <element signature="method#beforeTextChanged#0;class#10062:10478" expanded="false" />
-            <element signature="method#initSetButtons#0;class#TrainingFragment#0" expanded="false" />
-            <element signature="method#onSelected#0;class#TrainingFragment#0" expanded="false" />
-            <element signature="method#onResume#0;class#TrainingFragment#0" expanded="false" />
-            <element signature="method#showProgressDialog#0;class#TrainingFragment#0" expanded="false" />
-            <element signature="method#onCreateOptionsMenu#0;class#TrainingFragment#0" expanded="false" />
-            <element signature="method#onOptionsItemSelected#0;class#TrainingFragment#0" expanded="false" />
-            <element signature="method#updateTimer#0;class#TrainingFragment#0" expanded="false" />
-            <element signature="method#onClick#0;class#TrainingFragment#0" expanded="false" />
-            <element signature="method#showPopup#0;class#TrainingFragment#0" expanded="false" />
-            <element signature="method#hidePopup#0;class#TrainingFragment#0" expanded="false" />
-            <element signature="method#onCheckedChanged#0;class#TrainingFragment#0" expanded="false" />
-            <element signature="method#saveSetsToPreferences#0;class#TrainingFragment#0" expanded="false" />
-            <element signature="method#restoreSetsFromPreferences#0;class#TrainingFragment#0" expanded="false" />
-            <element signature="method#saveExercicesToDatabase#0;class#TrainingFragment#0" expanded="false" />
-            <element signature="method#playSound#0;class#TrainingFragment#0" expanded="false" />
-            <element signature="method#dpFromPx#0;class#TrainingFragment#0" expanded="false" />
-            <element signature="method#pxFromDp#0;class#TrainingFragment#0" expanded="false" />
-            <element signature="method#onListItemSwapped#0;class#TrainingFragment#0" expanded="false" />
-            <element signature="method#swapElements#0;class#TrainingFragment#0" expanded="false" />
-            <element signature="method#onExerciseAddedCallback#0;class#TrainingFragment#0" expanded="false" />
-            <element signature="method#goToNextExerciseInSuperset#0;class#TrainingFragment#0" expanded="false" />
-            <element signature="method#getNextSuperSetExercise#0;class#TrainingFragment#0" expanded="false" />
-            <element signature="method#checkFirstSupersetExercise#0;class#TrainingFragment#0" expanded="false" />
-            <element signature="class#RepsAdapter#0;class#TrainingFragment#0" expanded="false" />
-            <element signature="method#RepsAdapter#0;class#RepsAdapter#0;class#TrainingFragment#0" expanded="false" />
-            <element signature="method#getItem#0;class#RepsAdapter#0;class#TrainingFragment#0" expanded="false" />
-            <element signature="class#WeightsAdapter#0;class#TrainingFragment#0" expanded="false" />
-            <element signature="method#WeightsAdapter#0;class#WeightsAdapter#0;class#TrainingFragment#0" expanded="false" />
-            <element signature="method#getItem#0;class#WeightsAdapter#0;class#TrainingFragment#0" expanded="false" />
-            <element signature="class#TrainingAdapter#0;class#TrainingFragment#0" expanded="false" />
-            <element signature="method#TrainingAdapter#0;class#TrainingAdapter#0;class#TrainingFragment#0" expanded="false" />
-            <element signature="method#addData#0;class#TrainingAdapter#0;class#TrainingFragment#0" expanded="false" />
-            <element signature="method#deleteItem#0;class#TrainingAdapter#0;class#TrainingFragment#0" expanded="false" />
-            <element signature="method#containsId#0;class#TrainingAdapter#0;class#TrainingFragment#0" expanded="false" />
-            <element signature="method#getItemId#0;class#TrainingAdapter#0;class#TrainingFragment#0" expanded="false" />
-            <element signature="method#getView#0;class#TrainingAdapter#0;class#TrainingFragment#0" expanded="false" />
-            <element signature="class#ViewHolder#0;class#TrainingAdapter#0;class#TrainingFragment#0" expanded="false" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1856,7 +1753,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="476">
           <caret line="9" column="0" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2004,14 +1900,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="4758">
-          <caret line="5" column="28" selection-start-line="5" selection-start-column="28" selection-end-line="5" selection-end-column="28" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/googledrive/DriveBackupActivity.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="2035" max-vertical-offset="4914">
@@ -2036,55 +1924,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="1334" max-vertical-offset="3302">
           <caret line="439" column="24" selection-start-line="439" selection-start-column="24" selection-end-line="439" selection-end-column="24" />
-          <folding>
-            <element signature="class#4775:7331" expanded="false" />
-            <element signature="method#onCreateActionMode#0;class#4775:7331" expanded="false" />
-            <element signature="method#onPrepareActionMode#0;class#4775:7331" expanded="false" />
-            <element signature="method#onActionItemClicked#0;class#4775:7331" expanded="false" />
-            <element signature="method#onDestroyActionMode#0;class#4775:7331" expanded="false" />
-            <element signature="method#onCreate#0;class#TrainingFragment#0" expanded="false" />
-            <element signature="method#onCreateView#0;class#TrainingFragment#0" expanded="false" />
-            <element signature="class#10062:10478" expanded="false" />
-            <element signature="method#onTextChanged#0;class#10062:10478" expanded="false" />
-            <element signature="method#beforeTextChanged#0;class#10062:10478" expanded="false" />
-            <element signature="method#initSetButtons#0;class#TrainingFragment#0" expanded="false" />
-            <element signature="method#onSelected#0;class#TrainingFragment#0" expanded="false" />
-            <element signature="method#onResume#0;class#TrainingFragment#0" expanded="false" />
-            <element signature="method#showProgressDialog#0;class#TrainingFragment#0" expanded="false" />
-            <element signature="method#onCreateOptionsMenu#0;class#TrainingFragment#0" expanded="false" />
-            <element signature="method#onOptionsItemSelected#0;class#TrainingFragment#0" expanded="false" />
-            <element signature="method#updateTimer#0;class#TrainingFragment#0" expanded="false" />
-            <element signature="method#onClick#0;class#TrainingFragment#0" expanded="false" />
-            <element signature="method#showPopup#0;class#TrainingFragment#0" expanded="false" />
-            <element signature="method#hidePopup#0;class#TrainingFragment#0" expanded="false" />
-            <element signature="method#onCheckedChanged#0;class#TrainingFragment#0" expanded="false" />
-            <element signature="method#saveSetsToPreferences#0;class#TrainingFragment#0" expanded="false" />
-            <element signature="method#restoreSetsFromPreferences#0;class#TrainingFragment#0" expanded="false" />
-            <element signature="method#saveExercicesToDatabase#0;class#TrainingFragment#0" expanded="false" />
-            <element signature="method#playSound#0;class#TrainingFragment#0" expanded="false" />
-            <element signature="method#dpFromPx#0;class#TrainingFragment#0" expanded="false" />
-            <element signature="method#pxFromDp#0;class#TrainingFragment#0" expanded="false" />
-            <element signature="method#onListItemSwapped#0;class#TrainingFragment#0" expanded="false" />
-            <element signature="method#swapElements#0;class#TrainingFragment#0" expanded="false" />
-            <element signature="method#onExerciseAddedCallback#0;class#TrainingFragment#0" expanded="false" />
-            <element signature="method#goToNextExerciseInSuperset#0;class#TrainingFragment#0" expanded="false" />
-            <element signature="method#getNextSuperSetExercise#0;class#TrainingFragment#0" expanded="false" />
-            <element signature="method#checkFirstSupersetExercise#0;class#TrainingFragment#0" expanded="false" />
-            <element signature="class#RepsAdapter#0;class#TrainingFragment#0" expanded="false" />
-            <element signature="method#RepsAdapter#0;class#RepsAdapter#0;class#TrainingFragment#0" expanded="false" />
-            <element signature="method#getItem#0;class#RepsAdapter#0;class#TrainingFragment#0" expanded="false" />
-            <element signature="class#WeightsAdapter#0;class#TrainingFragment#0" expanded="false" />
-            <element signature="method#WeightsAdapter#0;class#WeightsAdapter#0;class#TrainingFragment#0" expanded="false" />
-            <element signature="method#getItem#0;class#WeightsAdapter#0;class#TrainingFragment#0" expanded="false" />
-            <element signature="class#TrainingAdapter#0;class#TrainingFragment#0" expanded="false" />
-            <element signature="method#TrainingAdapter#0;class#TrainingAdapter#0;class#TrainingFragment#0" expanded="false" />
-            <element signature="method#addData#0;class#TrainingAdapter#0;class#TrainingFragment#0" expanded="false" />
-            <element signature="method#deleteItem#0;class#TrainingAdapter#0;class#TrainingFragment#0" expanded="false" />
-            <element signature="method#containsId#0;class#TrainingAdapter#0;class#TrainingFragment#0" expanded="false" />
-            <element signature="method#getItemId#0;class#TrainingAdapter#0;class#TrainingFragment#0" expanded="false" />
-            <element signature="method#getView#0;class#TrainingAdapter#0;class#TrainingFragment#0" expanded="false" />
-            <element signature="class#ViewHolder#0;class#TrainingAdapter#0;class#TrainingFragment#0" expanded="false" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -2100,31 +1940,42 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="844" max-vertical-offset="4888">
           <caret line="56" column="13" selection-start-line="56" selection-start-column="13" selection-end-line="56" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/build.gradle">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.50606394" vertical-offset="0" max-vertical-offset="907">
+          <caret line="27" column="0" selection-start-line="27" selection-start-column="0" selection-end-line="27" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="459" max-vertical-offset="3111">
+          <caret line="30" column="0" selection-start-line="30" selection-start-column="0" selection-end-line="30" selection-end-column="0" />
           <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#1418#1419#0" expanded="true" />
-            <element signature="e#1456#1457#0" expanded="true" />
-            <element signature="e#2193#2194#0" expanded="true" />
-            <element signature="e#2237#2238#0" expanded="true" />
-            <element signature="e#3130#4035#0" expanded="true" />
-            <element signature="e#4028#4029#0" expanded="true" />
-            <element signature="e#4126#4501#0" expanded="true" />
-            <element signature="e#4494#4495#0" expanded="true" />
-            <element signature="e#4881#6480#0" expanded="true" />
-            <element signature="e#6473#6474#0" expanded="true" />
-            <element signature="e#6567#6762#0" expanded="true" />
-            <element signature="e#6755#6756#0" expanded="true" />
+            <element signature="e#1499#1538#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/activities/BaseActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.7878788" vertical-offset="9542" max-vertical-offset="12480">
-          <caret line="462" column="51" selection-start-line="462" selection-start-column="51" selection-end-line="462" selection-end-column="51" />
+        <state vertical-scroll-proportion="-3.2682405" vertical-offset="7381" max-vertical-offset="9129">
+          <caret line="268" column="11" selection-start-line="268" selection-start-column="11" selection-end-line="268" selection-end-column="11" />
           <folding>
-            <element signature="e#18515#18777#0" expanded="true" />
-            <element signature="e#18762#18763#0" expanded="true" />
+            <element signature="imports" expanded="true" />
+            <element signature="e#11149#11226#0" expanded="true" />
+            <element signature="e#11253#11332#0" expanded="true" />
+            <element signature="e#11359#11410#0" expanded="true" />
+            <element signature="e#11437#11484#0" expanded="true" />
+            <element signature="e#11511#11557#0" expanded="true" />
+            <element signature="e#11584#11629#0" expanded="true" />
+            <element signature="e#11656#11728#0" expanded="true" />
+            <element signature="e#11755#11793#0" expanded="true" />
           </folding>
         </state>
       </provider>

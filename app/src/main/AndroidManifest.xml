@@ -19,6 +19,8 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
+
+
     <application
         android:name=".MyApp"
         android:allowBackup="false"
@@ -166,8 +168,6 @@
                 android:resource="@xml/widget_info" />
         </receiver>
 
-        <activity android:name="com.purplebrain.adbuddiz.sdk.AdBuddizActivity"
-            android:theme="@android:style/Theme.Translucent" />
         <activity
             android:name=".activities.CreatingTrainingDayActivity"
             android:windowSoftInputMode="stateHidden"
