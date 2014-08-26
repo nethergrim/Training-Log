@@ -67,11 +67,6 @@ import java.util.Random;
 public class BaseActivity extends AnalyticsActivity implements
         OnSelectedListener, MyInterface, OnStartTrainingAccept, DialogUniversalApprove.OnDeleteExerciseCallback, AdapterView.OnItemClickListener {
 
-    public final static String TOTAL_WEIGHT = "total_weight";
-    public final static String COMMENT_TO_TRAINING = "comment_to_training";
-    public final static String START_TIME = "start_time";
-    public final static String AUTO_BACKUP_TO_DRIVE = "settingAutoBackup";
-    public final static String USER_CLICKED_POSITION = "user_clicked_position";
     public final static String SECONDS = "seconds";
     private final static String FRAGMENT_ID = "fragment_id";
     private static final char[] SYMBOLS = new char[36];
@@ -188,7 +183,7 @@ public class BaseActivity extends AnalyticsActivity implements
             onItemSelected(0);
         }
 
-        StartAppSDK.init(this, "108133674", "208084744", false);
+        StartAppSDK.init(this, "108133674", "208084744", !Prefs.get().getAdsRemoved());
 
     }
 
@@ -294,7 +289,7 @@ public class BaseActivity extends AnalyticsActivity implements
         mDrawerLayout.closeDrawer(mDrawerList);
         if (!Prefs.get().getAdsRemoved()) {
             adCounter++;
-            if (adCounter >= 4) {
+            if (adCounter >= 3) {
                 adCounter = 0;
                 // FIXME show ad
                 startAppAd.showAd();
@@ -386,13 +381,6 @@ public class BaseActivity extends AnalyticsActivity implements
         mDrawerToggle.syncState();
     }
 
-    protected boolean isNetworkAvailable() {
-        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager
-                .getActiveNetworkInfo();
-        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
-    }
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -442,7 +430,6 @@ public class BaseActivity extends AnalyticsActivity implements
         }
         tmpCursor.close();
         Prefs.get().setTrainingAtProgress(false);
-        sp.edit().putInt(USER_CLICKED_POSITION, 0).apply();
         Prefs.get().setCheckedPosition(0);
         SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
         String date = sdf.format(new Date(System.currentTimeMillis()));
@@ -450,21 +437,17 @@ public class BaseActivity extends AnalyticsActivity implements
         int tmpMin = tmpSec / 60;
         tmpSec = tmpSec - (tmpMin * 60);
         String time = tmpMin + ":" + tmpSec;
-        if (!sp.getString(COMMENT_TO_TRAINING, "").equals("")) {
-            db.addRecComment(date, sp.getString(COMMENT_TO_TRAINING, ""), 0, time);
-        } else {
-            db.addRecComment(date, null, 0, time);
-        }
-        sp.edit().putString(COMMENT_TO_TRAINING, "").apply();
-        sp.edit().putInt(TOTAL_WEIGHT, 0).apply();
-        sp.edit().putLong(START_TIME, 0).apply();
+        db.addRecComment(date, Prefs.get().getCommentToTraining(), 0, time);
+
+        Prefs.get().setCommentToTraining("");
+
+        Prefs.get().setStartTime(0);
 
         stopService(new Intent(this, TrainingService.class));
-
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.cancelAll();
 
-        if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean(AUTO_BACKUP_TO_DRIVE, true)) {
+        if (Prefs.get().getAutoBackupToDrive()) {
             Thread thread = new Thread(new Runnable() {
                 @Override
                 public void run() {
@@ -507,6 +490,9 @@ public class BaseActivity extends AnalyticsActivity implements
     @Override
     public void onBackPressed() {
         if (doubleBackToExitPressedOnce) {
+            if (!Prefs.get().getAdsRemoved()){
+                startAppAd.onBackPressed();
+            }
             super.onBackPressed();
             return;
         }

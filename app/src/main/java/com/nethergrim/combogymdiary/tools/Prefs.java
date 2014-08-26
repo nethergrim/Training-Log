@@ -28,6 +28,8 @@ public class Prefs {
     private static final String KEY_TIMER_ON = "timerIsOn";
     private static final String KEY_RINGTONE_ALARM = "ringtone";
     private static final String KEY_SETS = "sets";
+    private static final String KEY_COMMENT_TO_TRAINING = "comment_to_training";
+    private static final String KEY_AUTOBACKUP_TO_DRIVE = "settingAutoBackup";
 
     private static SharedPreferences prefs;
     private static Prefs pref;
@@ -199,5 +201,21 @@ public class Prefs {
 
     public String getSavedSets(){
         return prefs.getString(KEY_SETS, "");
+    }
+
+    public void setCommentToTraining(String text){
+        prefs.edit().putString(KEY_COMMENT_TO_TRAINING, text).apply();
+    }
+
+    public String getCommentToTraining(){
+        return prefs.getString(KEY_COMMENT_TO_TRAINING, "");
+    }
+
+    public void setAutoBackupToDrive(boolean auto){
+        prefs.edit().putBoolean(KEY_AUTOBACKUP_TO_DRIVE, auto).apply();
+    }
+
+    public boolean getAutoBackupToDrive(){
+        return prefs.getBoolean(KEY_AUTOBACKUP_TO_DRIVE, true);
     }
 }

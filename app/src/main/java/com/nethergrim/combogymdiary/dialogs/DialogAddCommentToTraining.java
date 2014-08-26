@@ -14,27 +14,23 @@ import android.widget.EditText;
 
 import com.nethergrim.combogymdiary.R;
 import com.nethergrim.combogymdiary.activities.BaseActivity;
+import com.nethergrim.combogymdiary.tools.Prefs;
 
 public class DialogAddCommentToTraining extends DialogFragment implements
         OnClickListener {
 
-    private SharedPreferences sp;
     private EditText et;
-    private Button btn;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         getDialog().setTitle(R.string.add_comment_to_training);
         View v = inflater
                 .inflate(R.layout.dialog_add_comment_to_training, null);
-        sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
         et = (EditText) v.findViewById(R.id.editText1AddComment);
-        btn = (Button) v.findViewById(R.id.buttonSave);
+        Button btn = (Button) v.findViewById(R.id.buttonSave);
         btn.setOnClickListener(this);
-        if (!sp.getString(BaseActivity.COMMENT_TO_TRAINING, "").equals(
-                "")) {
-            et.setText(sp.getString(BaseActivity.COMMENT_TO_TRAINING,
-                    ""));
+        if (Prefs.get().getCommentToTraining().length() > 0) {
+            et.setText(Prefs.get().getCommentToTraining());
         }
         return v;
     }
@@ -43,9 +39,7 @@ public class DialogAddCommentToTraining extends DialogFragment implements
     public void onClick(View v) {
         int id = v.getId();
         if (id == R.id.buttonSave) {
-            sp.edit()
-                    .putString(BaseActivity.COMMENT_TO_TRAINING,
-                            et.getText().toString()).apply();
+            Prefs.get().setCommentToTraining(et.getText().toString());
             dismiss();
         }
     }
