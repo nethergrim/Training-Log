@@ -88,6 +88,7 @@
     <orderEntry type="library" exported="" name="yandex-mobmetrica-lib-android-1.2-wlibs" level="project" />
     <orderEntry type="library" exported="" name="GraphView-3.1.1" level="project" />
     <orderEntry type="library" exported="" name="google-oauth-client-1.16.0-rc" level="project" />
+    <orderEntry type="library" exported="" name="StartAppInApp-2.4.1" level="project" />
     <orderEntry type="library" exported="" name="google-api-client-android-1.16.0-rc" level="project" />
     <orderEntry type="library" exported="" name="jackson-core-asl-1.9.11" level="project" />
     <orderEntry type="library" exported="" name="play-services-4.4.52" level="project" />

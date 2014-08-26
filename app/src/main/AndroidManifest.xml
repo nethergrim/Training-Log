@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.nethergrim.combogymdiary"
     android:installLocation="auto"
-    android:versionCode="120"
-    android:versionName="1.4.39" >
+    android:versionCode="122"
+    android:versionName="1.4.41" >
 
     <uses-sdk
         android:minSdkVersion="15"
@@ -162,6 +162,17 @@
             android:windowSoftInputMode="stateHidden"
             android:screenOrientation="portrait" >
         </activity>
+
+
+        <!--  ADS  -->
+        <activity android:name="com.startapp.android.publish.list3d.List3DActivity"
+            android:theme="@android:style/Theme" />
+
+        <activity android:name="com.startapp.android.publish.AppWallActivity"
+            android:theme="@android:style/Theme.Translucent"
+            android:configChanges="orientation|keyboardHidden|screenSize" />
+
+
     </application>
 
 </manifest>

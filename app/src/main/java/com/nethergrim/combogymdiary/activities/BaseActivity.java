@@ -52,6 +52,8 @@ import com.nethergrim.combogymdiary.service.TrainingService;
 import com.nethergrim.combogymdiary.tools.Backuper;
 import com.nethergrim.combogymdiary.tools.GoogleDriveHelper;
 import com.nethergrim.combogymdiary.tools.Prefs;
+import com.startapp.android.publish.StartAppAd;
+import com.startapp.android.publish.StartAppSDK;
 import com.yandex.metrica.Counter;
 
 import org.json.JSONException;
@@ -99,6 +101,7 @@ public class BaseActivity extends AnalyticsActivity implements
     private Fragment currentFragment;
     private ServiceConnection mServiceConn;
    private int adCounter = 0;
+    private StartAppAd startAppAd = new StartAppAd(this);
 
     static {
         for (int idx = 0; idx < 10; ++idx)
@@ -185,6 +188,8 @@ public class BaseActivity extends AnalyticsActivity implements
             onItemSelected(0);
         }
 
+        StartAppSDK.init(this, "108133674", "208084744", false);
+
     }
 
     private boolean checkAd() {
@@ -261,12 +266,12 @@ public class BaseActivity extends AnalyticsActivity implements
     }
 
     private void initStrings() {
-        /*if (!Prefs.get().getAdsRemoved()) {
+        if (!Prefs.get().getAdsRemoved()) {
             listButtons = new String[9];
             listButtons[8] = getString(R.string.remove_ads);
-        } else {*/
+        } else {
             listButtons = new String[8];
-//        }
+        }
         listButtons[0] = getResources().getString(
                 R.string.startTrainingButtonString);
         listButtons[1] = getResources().getString(
@@ -292,7 +297,8 @@ public class BaseActivity extends AnalyticsActivity implements
             if (adCounter >= 4) {
                 adCounter = 0;
                 // FIXME show ad
-
+                startAppAd.showAd();
+                startAppAd.loadAd();
             }
         }
 
@@ -392,12 +398,14 @@ public class BaseActivity extends AnalyticsActivity implements
         super.onResume();
         Counter.sharedInstance().onResumeActivity(this);
         initStrings();
+        startAppAd.onResume();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         Counter.sharedInstance().onPauseActivity(this);
+        startAppAd.onPause();
     }
 
     @Override
@@ -478,7 +486,8 @@ public class BaseActivity extends AnalyticsActivity implements
         bm.dataChanged();
         if (!Prefs.get().getAdsRemoved()){
             //FIXME show ad
-
+            startAppAd.showAd();
+            startAppAd.loadAd();
         }
     }
 
