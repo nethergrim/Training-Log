@@ -3,6 +3,7 @@ package com.nethergrim.combogymdiary.activities;
 import android.app.Fragment;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.app.backup.BackupManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -473,6 +474,8 @@ public class BaseActivity extends AnalyticsActivity implements
                 R.string.startTrainingButtonString);
         adapter.notifyDataSetChanged();
         getActionBar().setSubtitle(null);
+        BackupManager bm = new BackupManager(this);
+        bm.dataChanged();
         if (!Prefs.get().getAdsRemoved()){
             //FIXME show ad
 

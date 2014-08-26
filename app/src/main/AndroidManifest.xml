@@ -23,7 +23,8 @@
 
     <application
         android:name=".MyApp"
-        android:allowBackup="false"
+        android:allowBackup="true"
+        android:backupAgent=".tools.MyBackupAgent"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:largeHeap="true"
@@ -52,12 +53,6 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name=".activities.AddingProgramActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden" >
-        </activity>
-        <activity
             android:name=".activities.HistoryDetailedActivity"
             android:screenOrientation="portrait" >
         </activity>
@@ -73,12 +68,6 @@
         <activity
             android:name=".activities.MeasurementsDetailedActivity"
             android:screenOrientation="portrait" >
-        </activity>
-        <activity
-            android:name=".activities.EditingProgramAtTrainingActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden" >
         </activity>
 
         <service

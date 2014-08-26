@@ -79,10 +79,15 @@ public class Backuper {
 
     }
 
-    public File getDbFile() {
+    public static File getDbFile() {
         File data = Environment.getDataDirectory();
         String currentDBPath = "//data//com.nethergrim.combogymdiary//databases//mydb";
         return new File(data, currentDBPath);
+    }
 
+    public static File getPreferencesFile(){
+        File data = Environment.getDataDirectory();
+        String currentPrefsPath = "//data//com.nethergrim.combogymdiary//prefs//com.nethergrim.combogymdiary_preferences";
+        return new File(data, currentPrefsPath);
     }
 }
