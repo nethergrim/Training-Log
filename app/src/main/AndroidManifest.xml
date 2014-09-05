@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.nethergrim.combogymdiary"
     android:installLocation="auto"
-    android:versionCode="123"
-    android:versionName="1.4.42" >
+    android:versionCode="124"
+    android:versionName="1.4.43" >
 
     <uses-sdk
         android:minSdkVersion="15"
