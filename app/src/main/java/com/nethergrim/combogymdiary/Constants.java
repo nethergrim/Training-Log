@@ -21,6 +21,7 @@ public class Constants {
     public final static String TYPE_OF_DIALOG = "type_of_dialog";
     public static final String MARKET_LINK = "market://details?id=com.nethergrim.combogymdiary";
     public static final String MARKET_LINK_HTTP = "http://play.google.com/store/apps/details?id=com.nethergrim.combogymdiary";
+    public static final String INMOBI_PROPERTY_ID = "d87bc812659c45b39c7c5ad79ea043fa";
     public static String[] partsOfBody;
 
 

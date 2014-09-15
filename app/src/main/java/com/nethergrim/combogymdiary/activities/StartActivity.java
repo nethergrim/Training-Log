@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
+import com.inmobi.commons.InMobi;
 import com.nethergrim.combogymdiary.Constants;
 import com.nethergrim.combogymdiary.DB;
 import com.nethergrim.combogymdiary.R;
@@ -45,6 +46,8 @@ public class StartActivity extends AnalyticsActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        InMobi.initialize(this, Constants.INMOBI_PROPERTY_ID);
+        InMobi.setLogLevel(InMobi.LOG_LEVEL.DEBUG);
     }
 
     @Override

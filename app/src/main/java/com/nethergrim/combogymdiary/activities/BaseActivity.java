@@ -31,6 +31,8 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.android.vending.billing.IInAppBillingService;
+import com.inmobi.commons.InMobi;
+import com.inmobi.monetization.IMInterstitial;
 import com.nethergrim.combogymdiary.Constants;
 import com.nethergrim.combogymdiary.DB;
 import com.nethergrim.combogymdiary.R;
@@ -52,8 +54,6 @@ import com.nethergrim.combogymdiary.service.TrainingService;
 import com.nethergrim.combogymdiary.tools.Backuper;
 import com.nethergrim.combogymdiary.tools.GoogleDriveHelper;
 import com.nethergrim.combogymdiary.tools.Prefs;
-import com.startapp.android.publish.StartAppAd;
-import com.startapp.android.publish.StartAppSDK;
 import com.yandex.metrica.Counter;
 
 import org.json.JSONException;
@@ -96,7 +96,7 @@ public class BaseActivity extends AnalyticsActivity implements
     private Fragment currentFragment;
     private ServiceConnection mServiceConn;
    private int adCounter = 0;
-    private StartAppAd startAppAd = new StartAppAd(this);
+    private IMInterstitial interstitial;
 
     static {
         for (int idx = 0; idx < 10; ++idx)
@@ -122,6 +122,8 @@ public class BaseActivity extends AnalyticsActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_base);
+        interstitial = new IMInterstitial(this, Constants.INMOBI_PROPERTY_ID);
         db = new DB(this);
         db.open();
         mServiceConn = new ServiceConnection() {
@@ -137,7 +139,7 @@ public class BaseActivity extends AnalyticsActivity implements
             }
         };
         bindService(new Intent("com.android.vending.billing.InAppBillingService.BIND"), mServiceConn, Context.BIND_AUTO_CREATE);
-        setContentView(R.layout.activity_base);
+
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
         mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
@@ -182,9 +184,6 @@ public class BaseActivity extends AnalyticsActivity implements
         if (savedInstanceState == null) {
             onItemSelected(0);
         }
-
-        StartAppSDK.init(this, "108133674", "208084744", !Prefs.get().getAdsRemoved());
-
     }
 
     private boolean checkAd() {
@@ -291,9 +290,7 @@ public class BaseActivity extends AnalyticsActivity implements
             adCounter++;
             if (adCounter >= 3) {
                 adCounter = 0;
-                // FIXME show ad
-                startAppAd.showAd();
-                startAppAd.loadAd();
+                showAd();
             }
         }
 
@@ -386,14 +383,22 @@ public class BaseActivity extends AnalyticsActivity implements
         super.onResume();
         Counter.sharedInstance().onResumeActivity(this);
         initStrings();
-        startAppAd.onResume();
+        try {
+            if (interstitial != null){
+                interstitial.loadInterstitial();
+            } else {
+                interstitial = new IMInterstitial(this, Constants.INMOBI_PROPERTY_ID);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         Counter.sharedInstance().onPauseActivity(this);
-        startAppAd.onPause();
     }
 
     @Override
@@ -467,10 +472,19 @@ public class BaseActivity extends AnalyticsActivity implements
         getActionBar().setSubtitle(null);
         BackupManager bm = new BackupManager(this);
         bm.dataChanged();
+        showAd();
+    }
+
+    private void showAd() { //TODO AD
+        Log.e("log", "state: " + interstitial.getState().toString());
         if (!Prefs.get().getAdsRemoved()){
-            //FIXME show ad
-            startAppAd.showAd();
-            startAppAd.loadAd();
+            if (interstitial.getState() ==IMInterstitial.State.READY){
+                interstitial.show();
+                interstitial.loadInterstitial();
+            } else if (interstitial.getState() != IMInterstitial.State.LOADING) {
+                interstitial.loadInterstitial();
+            }
+
         }
     }
 
@@ -490,9 +504,6 @@ public class BaseActivity extends AnalyticsActivity implements
     @Override
     public void onBackPressed() {
         if (doubleBackToExitPressedOnce) {
-            if (!Prefs.get().getAdsRemoved()){
-                startAppAd.onBackPressed();
-            }
             super.onBackPressed();
             return;
         }
