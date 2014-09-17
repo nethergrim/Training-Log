@@ -5,7 +5,6 @@ import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
-import com.inmobi.commons.InMobi;
 import com.nethergrim.combogymdiary.Constants;
 import com.nethergrim.combogymdiary.DB;
 import com.nethergrim.combogymdiary.R;
@@ -46,8 +45,6 @@ public class StartActivity extends AnalyticsActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        InMobi.initialize(this, Constants.INMOBI_PROPERTY_ID);
-        InMobi.setLogLevel(InMobi.LOG_LEVEL.DEBUG);
     }
 
     @Override
@@ -56,13 +53,13 @@ public class StartActivity extends AnalyticsActivity {
         if (!Prefs.get().getDatabaseFilled()) {
             InitTask task = new InitTask();
             task.execute();
-        } else if (!Prefs.get().getDbUpdatedToV5()){
+        } else if (!Prefs.get().getDbUpdatedToV5()) {
             UpdateTask task = new UpdateTask();
             task.execute();
         } else goNext();
     }
 
-    private void initTableForFirstTime(String partOfBody, String trainingName, String[] exerciseList){
+    private void initTableForFirstTime(String partOfBody, String trainingName, String[] exerciseList) {
         int trainingId = (int) db.addTrainings(trainingName);
         for (int i = 0; i < exerciseList.length; i++) {
             int exeId = (int) db.addExercise(exerciseList[i], "60", partOfBody);
@@ -78,7 +75,7 @@ public class StartActivity extends AnalyticsActivity {
     }
 
     private void initTableForFirstTime() {
-        if (!db.hasTrainingPrograms()){
+        if (!db.hasTrainingPrograms()) {
             initTableForFirstTime(Constants.PART_OF_BODY_LEGS, getString(R.string.traLegs), exeLegs);
             initTableForFirstTime(Constants.PART_OF_BODY_CHEST, getString(R.string.traChest), exeChest);
             initTableForFirstTime(Constants.PART_OF_BODY_BICEPS, getString(R.string.traBiceps), exeBiceps);
@@ -90,7 +87,7 @@ public class StartActivity extends AnalyticsActivity {
     }
 
     private void updateTableForVersion5() {
-        if (!db.hasExerciseTrainingObjects()){
+        if (!db.hasExerciseTrainingObjects()) {
             Cursor c = db.getDataExe(null, null, null, null, null, DB._ID);
             if (c.moveToFirst()) {
                 do {
@@ -158,11 +155,11 @@ public class StartActivity extends AnalyticsActivity {
                 } while (c.moveToNext());
             }
             c.close();
-            c = db.getDataTrainings(null,null,null,null,null,null);
-            if (c.moveToFirst()){
+            c = db.getDataTrainings(null, null, null, null, null, null);
+            if (c.moveToFirst()) {
                 do {
                     String[] exercises = db.convertStringToArray(c.getString(2));
-                    for (int i = 0; i < exercises.length; i++){
+                    for (int i = 0; i < exercises.length; i++) {
                         ExerciseTrainingObject exerciseTrainingObject = new ExerciseTrainingObject();
                         exerciseTrainingObject.setTrainingProgramId(c.getInt(0));
                         exerciseTrainingObject.setExerciseId(db.getExerciseId(exercises[i]));

@@ -10,6 +10,8 @@ import android.os.Environment;
 import android.os.ParcelFileDescriptor;
 import android.util.Log;
 
+import com.nethergrim.combogymdiary.DB;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
@@ -73,6 +75,8 @@ public class MyBackupAgent extends BackupAgent {
 
     @Override
     public void onRestore(BackupDataInput data, int appVersionCode, ParcelFileDescriptor newState) throws IOException {
+        DB db = new DB(getApplicationContext());
+        db.open();
         while (data.readNextHeader()) {
             String key = data.getKey();
             int dataSize = data.getDataSize();
@@ -99,6 +103,7 @@ public class MyBackupAgent extends BackupAgent {
                 data.skipEntityData();
             }
         }
+        db.close();
     }
 
 

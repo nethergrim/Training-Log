@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.nethergrim.combogymdiary"
     android:installLocation="auto"
-    android:versionCode="124"
-    android:versionName="1.4.43" >
+    android:versionCode="125"
+    android:versionName="1.4.44" >
 
     <uses-sdk
         android:minSdkVersion="15"
@@ -20,13 +20,6 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="com.google.android.gms.permission.ACTIVITY_RECOGNITION" />
 
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
-    <uses-permission android:name="android.permission.READ_LOGS" />
-    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
-    <uses-permission android:name="android.permission.READ_CALENDAR"/>
-    <uses-permission android:name="android.permission.WRITE_CALENDAR"/>
 
     <application
         android:name=".MyApp"
@@ -139,9 +132,6 @@
             >
         </activity>
         <activity
-            android:name="com.google.android.gms.ads.AdActivity"
-            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize" />
-        <activity
             android:name=".googledrive.DriveBackupActivity"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.DeviceDefault.Light.NoActionBar" >
@@ -171,24 +161,6 @@
             android:screenOrientation="portrait" >
         </activity>
 
-
-        <!--  ADS  -->
-        <activity android:name="com.inmobi.androidsdk.IMBrowserActivity"
-            android:configChanges="keyboardHidden|orientation|keyboard|smallestScreenSize|screenSize"    android:theme="@android:style/Theme.Translucent.NoTitleBar"
-            android:hardwareAccelerated="true" />
-
-        <receiver
-            android:name="com.inmobi.commons.analytics.androidsdk.IMAdTrackerReceiver"
-            android:enabled="true"
-            android:exported="true" >
-            <intent-filter>
-                <action android:name="com.android.vending.INSTALL_REFERRER" />
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
-                <action android:name="com.inmobi.share.id" />
-            </intent-filter>
-        </receiver>
-
-        <service android:enabled="true" android:name="com.inmobi.commons.internal.ActivityRecognitionManager" />
 
 
     </application>

@@ -54,7 +54,8 @@ public class Prefs {
     }
 
     public boolean getAdsRemoved() {
-        return prefs.getBoolean(KEY_ADS_REMOVED, false);
+//        return prefs.getBoolean(KEY_ADS_REMOVED, false);
+        return true;
     }
 
     public void setSuperSetInfoShowed(int times) {

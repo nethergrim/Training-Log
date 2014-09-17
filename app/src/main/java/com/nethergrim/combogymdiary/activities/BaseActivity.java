@@ -12,8 +12,6 @@ import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.database.Cursor;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -22,7 +20,6 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -31,8 +28,6 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.android.vending.billing.IInAppBillingService;
-import com.inmobi.commons.InMobi;
-import com.inmobi.monetization.IMInterstitial;
 import com.nethergrim.combogymdiary.Constants;
 import com.nethergrim.combogymdiary.DB;
 import com.nethergrim.combogymdiary.R;
@@ -52,7 +47,6 @@ import com.nethergrim.combogymdiary.googledrive.DriveBackupActivity;
 import com.nethergrim.combogymdiary.model.Exercise;
 import com.nethergrim.combogymdiary.service.TrainingService;
 import com.nethergrim.combogymdiary.tools.Backuper;
-import com.nethergrim.combogymdiary.tools.GoogleDriveHelper;
 import com.nethergrim.combogymdiary.tools.Prefs;
 import com.yandex.metrica.Counter;
 
@@ -83,11 +77,6 @@ public class BaseActivity extends AnalyticsActivity implements
     private boolean doubleBackToExitPressedOnce = false;
     private IInAppBillingService mService;
     private CatalogFragment catalogFragment = new CatalogFragment();
-
-    public ExerciseListFragment getExerciseListFragment() {
-        return exerciseListFragment;
-    }
-
     private ExerciseListFragment exerciseListFragment = new ExerciseListFragment();
     private HistoryFragment historyFragment = new HistoryFragment();
     private MeasurementsFragment measurementsFragment = new MeasurementsFragment();
@@ -95,9 +84,6 @@ public class BaseActivity extends AnalyticsActivity implements
     private TrainingFragment trainingFragment = new TrainingFragment();
     private Fragment currentFragment;
     private ServiceConnection mServiceConn;
-   private int adCounter = 0;
-    private IMInterstitial interstitial;
-
     static {
         for (int idx = 0; idx < 10; ++idx)
             SYMBOLS[idx] = (char) ('0' + idx);
@@ -113,6 +99,10 @@ public class BaseActivity extends AnalyticsActivity implements
         startedTraining = started;
     }
 
+    public ExerciseListFragment getExerciseListFragment() {
+        return exerciseListFragment;
+    }
+
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
@@ -123,7 +113,6 @@ public class BaseActivity extends AnalyticsActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_base);
-        interstitial = new IMInterstitial(this, Constants.INMOBI_PROPERTY_ID);
         db = new DB(this);
         db.open();
         mServiceConn = new ServiceConnection() {
@@ -286,14 +275,6 @@ public class BaseActivity extends AnalyticsActivity implements
 
     public void onItemSelected(int position) {
         mDrawerLayout.closeDrawer(mDrawerList);
-        if (!Prefs.get().getAdsRemoved()) {
-            adCounter++;
-            if (adCounter >= 3) {
-                adCounter = 0;
-                showAd();
-            }
-        }
-
         if (position == 8) {
             removeAds();
             mDrawerList.setItemChecked(previouslyChecked, true);
@@ -383,16 +364,6 @@ public class BaseActivity extends AnalyticsActivity implements
         super.onResume();
         Counter.sharedInstance().onResumeActivity(this);
         initStrings();
-        try {
-            if (interstitial != null){
-                interstitial.loadInterstitial();
-            } else {
-                interstitial = new IMInterstitial(this, Constants.INMOBI_PROPERTY_ID);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
     }
 
     @Override
@@ -453,14 +424,17 @@ public class BaseActivity extends AnalyticsActivity implements
         notificationManager.cancelAll();
 
         if (Prefs.get().getAutoBackupToDrive()) {
-            Thread thread = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    GoogleDriveHelper googleDriveHelper = new GoogleDriveHelper(BaseActivity.this);
-                    googleDriveHelper.autoBackup();
-                }
-            });
-            thread.start();
+//            Thread thread = new Thread(new Runnable() {
+//                @Override
+//                public void run() {
+//                    GoogleDriveHelper googleDriveHelper = new GoogleDriveHelper(BaseActivity.this);
+//                    googleDriveHelper.autoBackup();
+//                }
+//            });
+//            thread.start();
+            Intent intent = new Intent(this, DriveBackupActivity.class);
+            intent.putExtra(BaseDriveActivity.KEY_AUTOBACKUP, true);
+            startActivity(intent);
         }
 
         Prefs.get().setTrainingsCount(Prefs.get().getTrainingsCount() + 1);
@@ -472,20 +446,6 @@ public class BaseActivity extends AnalyticsActivity implements
         getActionBar().setSubtitle(null);
         BackupManager bm = new BackupManager(this);
         bm.dataChanged();
-        showAd();
-    }
-
-    private void showAd() { //TODO AD
-        Log.e("log", "state: " + interstitial.getState().toString());
-        if (!Prefs.get().getAdsRemoved()){
-            if (interstitial.getState() ==IMInterstitial.State.READY){
-                interstitial.show();
-                interstitial.loadInterstitial();
-            } else if (interstitial.getState() != IMInterstitial.State.LOADING) {
-                interstitial.loadInterstitial();
-            }
-
-        }
     }
 
     @Override
