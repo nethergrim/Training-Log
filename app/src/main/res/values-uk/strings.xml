@@ -170,4 +170,12 @@
     <string name="backup_database_to_sd">Зробити резервну копію даних на SD картку</string>
     <string name="replace_from_backup">Відновити дані з SD картки</string>
 
+    <string name="monday">Понеділок</string>
+    <string name="tuesday">Вівторок</string>
+    <string name="wednesday">Середа</string>
+    <string name="thursday">Четвер</string>
+    <string name="friday">П\'ятниця</string>
+    <string name="saturday">Субота</string>
+    <string name="sunday">Неділя</string>
+
 </resources>

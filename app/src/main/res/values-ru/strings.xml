@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources >
+<resources>
     <string name="add_superset">Добавить суперсет</string>
     <string name="add_exercises_to_workout">Добавьте упражнения!</string>
     <string name="enter_training_name">Введите название тренировки!</string>
@@ -172,5 +172,13 @@
     <string name="set_number">Подход №</string>
     <string name="backup_database_to_sd">Сделать резервную копию данных на SD карточку</string>
     <string name="replace_from_backup">Восстановить данные с SD карточки</string>
+
+    <string name="monday">Понедельник</string>
+    <string name="tuesday">Вторник</string>
+    <string name="wednesday">Среда</string>
+    <string name="thursday">Четверг</string>
+    <string name="friday">Пятница</string>
+    <string name="saturday">Суббота</string>
+    <string name="sunday">Воскресенье</string>
 
 </resources>

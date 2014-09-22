@@ -3,24 +3,26 @@
     android:id="@+id/rl1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:background="@color/gray_light_background"
+    android:orientation="vertical">
 
     <ListView
         android:id="@+id/lvStartTraining"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentTop="true"
-        android:layout_margin="8dp" >
-    </ListView>
+        android:layout_margin="8dp"
+        android:divider="@color/transparent"
+        android:dividerHeight="@dimen/medium_padding"></ListView>
 
     <com.nethergrim.combogymdiary.view.FAB
         android:id="@+id/fabAddTrainings"
         android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:layout_marginRight="16dp"
         android:layout_marginBottom="16dp"
-        android:src="@drawable/ic_action_new"
-        android:layout_height="wrap_content" />
+        android:layout_marginRight="16dp"
+        android:src="@drawable/ic_action_new" />
 
 </RelativeLayout>

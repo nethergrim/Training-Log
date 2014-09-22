@@ -7,6 +7,8 @@ import com.yandex.metrica.Counter;
 
 public class MyApp extends Application {
 
+    public static int density;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -14,5 +16,6 @@ public class MyApp extends Application {
         Counter.sharedInstance().setTrackLocationEnabled(false);
         Prefs.init(getApplicationContext());
         Constants.getPartsOfBodyRealNames(this);
+        density = (int) getResources().getDisplayMetrics().density;
     }
 }

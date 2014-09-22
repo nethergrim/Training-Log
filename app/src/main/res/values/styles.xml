@@ -1,16 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-
-    <style name="textColor">
+    <style name="MenuTextColor">
         <item name="android:textColor">@drawable/text_color_selector</item>
     </style>
-
 
     <style name="AppTheme.Fab" parent="FloatingActionButton">
         <item name="floatingActionButtonColor">@color/material_cyan_a400</item>
     </style>
-
 
     <style name="HabraThemeButton" parent="@android:style/Widget.Button">
         <item name="android:background">@drawable/button</item>
@@ -22,22 +19,5 @@
         <item name="@android:windowEnterAnimation">@anim/popup_show</item>
         <item name="@android:windowExitAnimation">@anim/popup_hide</item>
     </style>
-
-    <style name="FullscreenTheme" parent="android:Theme.NoTitleBar">
-        <item name="android:windowContentOverlay">@null</item>
-        <item name="android:windowBackground">@null</item>
-        <item name="metaButtonBarStyle">@style/ButtonBar</item>
-        <item name="metaButtonBarButtonStyle">@style/ButtonBarButton</item>
-    </style>
-
-    <style name="ButtonBar">
-        <item name="android:paddingLeft">2dp</item>
-        <item name="android:paddingTop">5dp</item>
-        <item name="android:paddingRight">2dp</item>
-        <item name="android:paddingBottom">0dp</item>
-        <item name="android:background">@android:drawable/bottom_bar</item>
-    </style>
-
-    <style name="ButtonBarButton" />
 
 </resources>

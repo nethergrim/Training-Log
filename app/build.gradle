@@ -25,6 +25,7 @@ dependencies {
     compile 'com.google.code.gson:gson:2.2.4'
     compile 'com.shamanland:fab:0.0.3'
     // FAB
+    compile files('libs/android-smart-image-view-1.0.0.jar')
     compile files('libs/listviewanimations_lib-core-slh_3.1.0.jar')
     compile files('libs/listviewanimations_lib-core_3.1.0.jar')
     compile files('libs/listviewanimations_lib-manipulation_3.1.0.jar')

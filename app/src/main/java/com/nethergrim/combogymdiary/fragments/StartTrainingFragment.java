@@ -2,15 +2,8 @@ package com.nethergrim.combogymdiary.fragments;
 
 import android.app.Activity;
 import android.app.Fragment;
-import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.LoaderManager.LoaderCallbacks;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
-import android.support.v4.widget.SimpleCursorAdapter;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
@@ -28,21 +21,28 @@ import android.widget.Toast;
 import com.nethergrim.combogymdiary.DB;
 import com.nethergrim.combogymdiary.R;
 import com.nethergrim.combogymdiary.activities.CreatingTrainingDayActivity;
+import com.nethergrim.combogymdiary.adapter.ListViewAdapter;
 import com.nethergrim.combogymdiary.dialogs.DialogGoToMarket;
+import com.nethergrim.combogymdiary.model.DayOfWeek;
+import com.nethergrim.combogymdiary.model.TrainingDay;
+import com.nethergrim.combogymdiary.row.ExpandableRow;
+import com.nethergrim.combogymdiary.row.TrainingDayRow;
 import com.nethergrim.combogymdiary.tools.Prefs;
 import com.nethergrim.combogymdiary.view.FAB;
+import com.nhaarman.listviewanimations.appearance.simple.SwingBottomInAnimationAdapter;
 import com.shamanland.fab.ShowHideOnScroll;
 
-public class StartTrainingFragment extends Fragment implements
-        LoaderCallbacks<Cursor> {
+public class StartTrainingFragment extends Fragment /*implements
+        LoaderCallbacks<Cursor>*/ {
 
     private static final int CM_DELETE_ID = 3;
     private static final int CM_EDIT_ID = 4;
     private ListView lvMain;
     private DB db;
-    private SimpleCursorAdapter scAdapter;
+    //    private SimpleCursorAdapter scAdapter;
     private OnSelectedListener mCallback;
-    private int LOADER_ID = 0;
+    //    private int LOADER_ID = 0;
+    private ListViewAdapter adapter;
 
     @Override
     public void onAttach(Activity activity) {
@@ -60,9 +60,9 @@ public class StartTrainingFragment extends Fragment implements
         setHasOptionsMenu(true);
         db = new DB(getActivity());
         db.open();
-        String[] from = new String[]{DB.TRAINING_NAME};
-        int[] to = new int[]{R.id.tvText};
-        scAdapter = new SimpleCursorAdapter(getActivity(), R.layout.my_list_item, null, from, to, 0);
+//        String[] from = new String[]{DB.TRAINING_NAME};
+//        int[] to = new int[]{R.id.tvText};
+//        scAdapter = new SimpleCursorAdapter(getActivity(), R.layout.my_list_item, null, from, to, 0);
     }
 
     @Override
@@ -75,15 +75,33 @@ public class StartTrainingFragment extends Fragment implements
         View v = inflater.inflate(R.layout.start_training, null);
         lvMain = (ListView) v.findViewById(R.id.lvStartTraining);
         getActivity().getActionBar().setTitle(R.string.startTrainingButtonString);
-        lvMain.setAdapter(scAdapter);
+        adapter = new ListViewAdapter(getActivity());
+
+        SwingBottomInAnimationAdapter animationAdapter = new SwingBottomInAnimationAdapter(adapter);
+        animationAdapter.setAbsListView(lvMain);
+        lvMain.setAdapter(animationAdapter);
         lvMain.setOnItemClickListener(new OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
-                goToTraining((int) id);
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                if (adapter.getItem(i) instanceof ExpandableRow) {
+                    ExpandableRow expandableRow = (ExpandableRow) adapter.getItem(i);
+                    expandableRow.toggle();
+                }
             }
         });
-        ((FragmentActivity) getActivity()).getSupportLoaderManager().initLoader(LOADER_ID, null, this);
 
+        for (int i = 0; i < 5; i++) {
+            TrainingDay trainingDay = new TrainingDay();
+            trainingDay.setTrainingName("Training Day " + i);
+            trainingDay.setId(i);
+            trainingDay.setDayOfWeek(DayOfWeek.MONDAY);
+            adapter.addRow(new TrainingDayRow(trainingDay, new TrainingDayRow.OnTrainingDayRowPressed() {
+                @Override
+                public void onTrainingDayPressed(TrainingDay trainingDay1) {
+//                    mCallback.onTrainingSelected((int) trainingDay1.getId());
+                }
+            }));
+        }
         FAB fabAdd = (FAB) v.findViewById(R.id.fabAddTrainings);
         fabAdd.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,7 +116,6 @@ public class StartTrainingFragment extends Fragment implements
 
     public void onResume() {
         super.onResume();
-        ((FragmentActivity) getActivity()).getSupportLoaderManager().getLoader(LOADER_ID).forceLoad();
         if (Prefs.get().getTrainingsCount() > 4   && !Prefs.get().getMarketAlreadyLeavedFeedback()) {
             DialogGoToMarket dialog = new DialogGoToMarket();
             dialog.show(getActivity().getFragmentManager(), DialogGoToMarket.class.getName());
@@ -121,7 +138,7 @@ public class StartTrainingFragment extends Fragment implements
         AdapterContextMenuInfo acmi = (AdapterContextMenuInfo) item.getMenuInfo();
         if (item.getItemId() == CM_DELETE_ID) {
             db.deleteTrainingProgram((int) acmi.id, false);
-            ((FragmentActivity) getActivity()).getSupportLoaderManager().getLoader(LOADER_ID).forceLoad();
+//            ((FragmentActivity) getActivity()).getSupportLoaderManager().getLoader(LOADER_ID).forceLoad();
             Toast.makeText(getActivity(), getResources().getString(R.string.deleted), Toast.LENGTH_SHORT).show();
         } else if (item.getItemId() == CM_EDIT_ID) {
             Intent intent = new Intent(getActivity(), CreatingTrainingDayActivity.class);
@@ -132,42 +149,42 @@ public class StartTrainingFragment extends Fragment implements
         return super.onContextItemSelected(item);
     }
 
-    public void goToTraining(int id) {
-        mCallback.onTrainingSelected(id);
-    }
+//    public void goToTraining(int id) {
+//        mCallback.onTrainingSelected(id);
+//    }
 
-    @Override
-    public Loader<Cursor> onCreateLoader(int id, Bundle bndl) {
-        return new MyCursorLoader(getActivity(), db);
-    }
+//    @Override
+//    public Loader<Cursor> onCreateLoader(int id, Bundle bndl) {
+//        return new MyCursorLoader(getActivity(), db);
+//    }
+//
+//    @Override
+//    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+//        scAdapter.swapCursor(cursor);
+//    }
 
-    @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
-        scAdapter.swapCursor(cursor);
-    }
-
-    @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
-        scAdapter.swapCursor(null);
-    }
+//    @Override
+//    public void onLoaderReset(Loader<Cursor> loader) {
+//        scAdapter.swapCursor(null);
+//    }
 
     public interface OnSelectedListener {
         public void onTrainingSelected(int id);
     }
 
-    static class MyCursorLoader extends CursorLoader {
-        DB db;
-        Cursor cursor;
-
-        public MyCursorLoader(Context context, DB db) {
-            super(context);
-            this.db = db;
-        }
-
-        @Override
-        public Cursor loadInBackground() {
-            cursor = db.getDataTrainings(null, null, null, null, null, null);
-            return cursor;
-        }
-    }
+//    static class MyCursorLoader extends CursorLoader {
+//        DB db;
+//        Cursor cursor;
+//
+//        public MyCursorLoader(Context context, DB db) {
+//            super(context);
+//            this.db = db;
+//        }
+//
+//        @Override
+//        public Cursor loadInBackground() {
+//            cursor = db.getDataTrainings(null, null, null, null, null, null);
+//            return cursor;
+//        }
+//    }
 }

@@ -4,7 +4,6 @@
 
     <color name="transparent">#00000000</color>
     <color name="black_overlay">#66000000</color>
-    <color name="full_alpha">#0033B5E5</color>
     <color name="holo_green_light">#99CC00</color>
     <color name="holo_green_dark">#669900</color>
     <!--<color name="holo_blue_light_half_alpha">#CC33B5E5</color>-->
@@ -41,6 +40,8 @@
     <color name="material_green_a400">#14e715</color>
     <color name="material_lime_a400">#c6ff00</color>
     <color name="material_light_yellow_a400">#ffea00</color>
+    <color name="text_color">#ff3b3b3b</color>
+    <color name="text_color_light">#ff6a6a6a</color>
 
 
 </resources>

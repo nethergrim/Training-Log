@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/card"
+    android:descendantFocusability="blocksDescendants"
+    android:padding="@dimen/big_padding">
+
+    <com.nethergrim.combogymdiary.view.TextViewLight
+        android:id="@+id/text_training_day_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="name"
+        android:textColor="@color/text_color"
+        android:textSize="@dimen/big_text" />
+
+    <com.nethergrim.combogymdiary.view.TextViewLight
+        android:id="@+id/text_day_of_week"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/text_training_day_name"
+        android:layout_marginTop="@dimen/medium_padding"
+        android:text="monday"
+        android:textColor="@color/text_color_light"
+        android:textSize="@dimen/normal_text" />
+
+    <RelativeLayout
+        android:id="@+id/layout_expandable"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_below="@+id/text_day_of_week"
+        android:visibility="visible">
+
+        <com.loopj.android.image.SmartImageView
+            android:id="@+id/image"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_marginTop="@dimen/medium_padding" />
+
+        <Button
+            android:id="@+id/btn_start_training"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/image"
+            android:layout_marginTop="@dimen/medium_padding"
+            android:background="?android:attr/selectableItemBackground"
+            android:gravity="right|center_vertical"
+            android:text="@string/start_training"
+            android:textColor="@color/material_pink_a400"
+            android:textSize="@dimen/normal_text" />
+
+    </RelativeLayout>
+
+
+</RelativeLayout>

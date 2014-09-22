@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.nethergrim.combogymdiary.view.TextViewLight xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/tvText"
-    style="@style/textColor"
+    style="@style/MenuTextColor"
     android:layout_width="match_parent"
     android:layout_height="36dp"
     android:background="@drawable/list_training_selector"
     android:duplicateParentState="false"
     android:gravity="center"
     android:padding="5dp"
-    android:textSize="14sp" >
+    android:textSize="14sp">
 
 </com.nethergrim.combogymdiary.view.TextViewLight>
