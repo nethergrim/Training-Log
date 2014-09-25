@@ -19,6 +19,25 @@ public enum DayOfWeek {
         return code;
     }
 
+    public static DayOfWeek getByCode(int code){
+        switch (code){
+            case 1:
+                return MONDAY;
+            case 2:
+                return TUESDAY;
+            case 3:
+                return WEDNESDAY;
+            case 4:
+                return THURSDAY;
+            case 5:
+                return FRIDAY;
+            case 6:
+                return SATURDAY;
+            default:
+                return SUNDAY;
+        }
+    }
+
     public String getName(Context ctx) {
         switch (code) {
             case 1:

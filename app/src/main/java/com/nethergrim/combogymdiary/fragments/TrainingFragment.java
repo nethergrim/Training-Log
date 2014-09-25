@@ -19,7 +19,6 @@ import android.os.Message;
 import android.os.Vibrator;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.ActionMode;
 import android.view.Display;
@@ -54,7 +53,7 @@ import com.nethergrim.combogymdiary.dialogs.DialogAddExercises;
 import com.nethergrim.combogymdiary.dialogs.DialogExitFromTraining;
 import com.nethergrim.combogymdiary.model.Exercise;
 import com.nethergrim.combogymdiary.model.ExerciseTrainingObject;
-import com.nethergrim.combogymdiary.model.TrainingRow;
+import com.nethergrim.combogymdiary.model.Set;
 import com.nethergrim.combogymdiary.service.TrainingService;
 import com.nethergrim.combogymdiary.tools.Prefs;
 import com.nethergrim.combogymdiary.view.DraggableListView;
@@ -530,7 +529,7 @@ public class TrainingFragment extends Fragment implements
         if (id == R.id.fabSaveSet && currentSet == set && !btnBlocked) {
             int wei = (weightWheel.getCurrentItem() + 1);
             int rep_s = (repsWheel.getCurrentItem() + 1);
-            TrainingRow row = adapter.getData().get(currentCheckedPosition);
+            Set row = adapter.getData().get(currentCheckedPosition);
             adapter.getData().get(currentCheckedPosition).incrementSetsCount();
             set = adapter.getData().get(currentCheckedPosition).getSetsCount();
             db.addRecMainTable(trainingName, currentExerciseName, date, wei, rep_s, set,row.isSuperset(),row.getSupersetId(), row.getSupersetColor(), trainingId, row.getExerciseId());
@@ -704,9 +703,9 @@ public class TrainingFragment extends Fragment implements
 
     public void saveSetsToPreferences() {// FIXME make at background
 
-        List<TrainingRow> currentData = adapter.getData();
+        List<Set> currentData = adapter.getData();
         JSONArray jsonArray = new JSONArray();
-        for (TrainingRow aCurrentData : currentData) {
+        for (Set aCurrentData : currentData) {
             JSONObject jsonObject = new JSONObject();
             try {
                 jsonObject.put("setCount", aCurrentData.getSetsCount());
@@ -734,11 +733,11 @@ public class TrainingFragment extends Fragment implements
     }
 
     private void saveExercicesToDatabase() { // FIXME make at background
-        List<TrainingRow> currentData = adapter.getData();
+        List<Set> currentData = adapter.getData();
         db.deleteTrainingProgram(trainingId, true);
         for (int i = 0; i < currentData.size(); i++) {
             ExerciseTrainingObject exerciseTrainingObject = new ExerciseTrainingObject();
-            TrainingRow row = currentData.get(i);
+            Set row = currentData.get(i);
             exerciseTrainingObject.setTrainingProgramId(trainingId);
             exerciseTrainingObject.setExerciseId(row.getExerciseId());
             exerciseTrainingObject.setPositionAtTraining(i);
@@ -801,10 +800,10 @@ public class TrainingFragment extends Fragment implements
 
     @Override
     public void onExerciseAddedCallback(List<Integer> idList) {// TODO make at background
-        List<TrainingRow> newData = new ArrayList<TrainingRow>();
+        List<Set> newData = new ArrayList<Set>();
         Random random = new Random();
         for (Integer anIdList : idList) {
-            TrainingRow row = new TrainingRow();
+            Set row = new Set();
             Exercise exercise = db.getExercise(anIdList);
             if (adapter.containsId((int) exercise.getId())) continue;
             row.setExerciseName(exercise.getName());
@@ -924,14 +923,14 @@ public class TrainingFragment extends Fragment implements
 
         private final static int INVALID_ID = -1;
         private LayoutInflater inflater;
-        private List<TrainingRow> data;
+        private List<Set> data;
 
         public TrainingAdapter(Context context) {
             this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            data = new ArrayList<TrainingRow>();
+            data = new ArrayList<Set>();
         }
 
-        public void addData(List<TrainingRow> newData) {
+        public void addData(List<Set> newData) {
             data.addAll(newData);
             notifyDataSetChanged();
         }
@@ -942,13 +941,13 @@ public class TrainingFragment extends Fragment implements
         }
 
         public boolean containsId(int exerciseId){
-            for (TrainingRow aData : data) {
+            for (Set aData : data) {
                 if (aData.getExerciseId() == exerciseId) return true;
             }
             return false;
         }
 
-        public List<TrainingRow> getData() {
+        public List<Set> getData() {
             return this.data;
         }
 
@@ -958,7 +957,7 @@ public class TrainingFragment extends Fragment implements
         }
 
         @Override
-        public TrainingRow getItem(int position) {
+        public Set getItem(int position) {
             return data.get(position);
         }
 

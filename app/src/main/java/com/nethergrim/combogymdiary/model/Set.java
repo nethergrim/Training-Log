@@ -1,14 +1,15 @@
 package com.nethergrim.combogymdiary.model;
 
+
 /**
  * Created by andrey_drobyazko on 21.08.14.
  */
-public class TrainingRow extends ExerciseTrainingObject {
+public class Set extends TrainingExercise {
 
     private String exerciseName;
     private int setsCount;
 
-    public TrainingRow(){
+    public Set(){
         this.setsCount = 0;
     }
 

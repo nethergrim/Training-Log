@@ -3,7 +3,9 @@ package com.nethergrim.combogymdiary.fragments;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
@@ -27,28 +29,26 @@ import com.nethergrim.combogymdiary.model.DayOfWeek;
 import com.nethergrim.combogymdiary.model.TrainingDay;
 import com.nethergrim.combogymdiary.row.ExpandableRow;
 import com.nethergrim.combogymdiary.row.TrainingDayRow;
+import com.nethergrim.combogymdiary.tools.BaseActivityInterface;
 import com.nethergrim.combogymdiary.tools.Prefs;
 import com.nethergrim.combogymdiary.view.FAB;
 import com.nhaarman.listviewanimations.appearance.simple.SwingBottomInAnimationAdapter;
 import com.shamanland.fab.ShowHideOnScroll;
 
-public class StartTrainingFragment extends Fragment /*implements
-        LoaderCallbacks<Cursor>*/ {
+import java.util.List;
 
-    private static final int CM_DELETE_ID = 3;
-    private static final int CM_EDIT_ID = 4;
+public class StartTrainingFragment extends Fragment implements TrainingDayRow.OnTrainingDayRowPressed {
+
     private ListView lvMain;
     private DB db;
-    //    private SimpleCursorAdapter scAdapter;
-    private OnSelectedListener mCallback;
-    //    private int LOADER_ID = 0;
+    private BaseActivityInterface baseActivityInterface;
     private ListViewAdapter adapter;
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
-            mCallback = (OnSelectedListener) activity;
+            baseActivityInterface = (BaseActivityInterface) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString() + " must implement OnHeadlineSelectedListener");
         }
@@ -59,16 +59,6 @@ public class StartTrainingFragment extends Fragment /*implements
         setRetainInstance(true);
         setHasOptionsMenu(true);
         db = new DB(getActivity());
-        db.open();
-//        String[] from = new String[]{DB.TRAINING_NAME};
-//        int[] to = new int[]{R.id.tvText};
-//        scAdapter = new SimpleCursorAdapter(getActivity(), R.layout.my_list_item, null, from, to, 0);
-    }
-
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        registerForContextMenu(lvMain);
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -76,7 +66,6 @@ public class StartTrainingFragment extends Fragment /*implements
         lvMain = (ListView) v.findViewById(R.id.lvStartTraining);
         getActivity().getActionBar().setTitle(R.string.startTrainingButtonString);
         adapter = new ListViewAdapter(getActivity());
-
         SwingBottomInAnimationAdapter animationAdapter = new SwingBottomInAnimationAdapter(adapter);
         animationAdapter.setAbsListView(lvMain);
         lvMain.setAdapter(animationAdapter);
@@ -89,19 +78,6 @@ public class StartTrainingFragment extends Fragment /*implements
                 }
             }
         });
-
-        for (int i = 0; i < 5; i++) {
-            TrainingDay trainingDay = new TrainingDay();
-            trainingDay.setTrainingName("Training Day " + i);
-            trainingDay.setId(i);
-            trainingDay.setDayOfWeek(DayOfWeek.MONDAY);
-            adapter.addRow(new TrainingDayRow(trainingDay, new TrainingDayRow.OnTrainingDayRowPressed() {
-                @Override
-                public void onTrainingDayPressed(TrainingDay trainingDay1) {
-//                    mCallback.onTrainingSelected((int) trainingDay1.getId());
-                }
-            }));
-        }
         FAB fabAdd = (FAB) v.findViewById(R.id.fabAddTrainings);
         fabAdd.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -111,16 +87,15 @@ public class StartTrainingFragment extends Fragment /*implements
             }
         });
         lvMain.setOnTouchListener(new ShowHideOnScroll(fabAdd));
+        new GetTrainingDaysTask().execute();
         return v;
     }
 
-    public void onResume() {
-        super.onResume();
-        if (Prefs.get().getTrainingsCount() > 4   && !Prefs.get().getMarketAlreadyLeavedFeedback()) {
-            DialogGoToMarket dialog = new DialogGoToMarket();
-            dialog.show(getActivity().getFragmentManager(), DialogGoToMarket.class.getName());
-            dialog.setCancelable(false);
+    private void showData(List<TrainingDay> trainingDays){
+        for (TrainingDay trainingDay : trainingDays){
+            adapter.addRow(new TrainingDayRow(trainingDay, this));
         }
+        adapter.notifyDataSetChanged();
     }
 
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -128,63 +103,22 @@ public class StartTrainingFragment extends Fragment /*implements
         super.onCreateOptionsMenu(menu, inflater);
     }
 
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
-        super.onCreateContextMenu(menu, v, menuInfo);
-        menu.add(0, CM_DELETE_ID, 0, R.string.delete_record);
-        menu.add(1, CM_EDIT_ID, 0, R.string.edit);
+    @Override
+    public void onTrainingDayPressed(TrainingDay trainingDay1) {
+
     }
 
-    public boolean onContextItemSelected(MenuItem item) {
-        AdapterContextMenuInfo acmi = (AdapterContextMenuInfo) item.getMenuInfo();
-        if (item.getItemId() == CM_DELETE_ID) {
-            db.deleteTrainingProgram((int) acmi.id, false);
-//            ((FragmentActivity) getActivity()).getSupportLoaderManager().getLoader(LOADER_ID).forceLoad();
-            Toast.makeText(getActivity(), getResources().getString(R.string.deleted), Toast.LENGTH_SHORT).show();
-        } else if (item.getItemId() == CM_EDIT_ID) {
-            Intent intent = new Intent(getActivity(), CreatingTrainingDayActivity.class);
-            intent.putExtra(CreatingTrainingDayActivity.BUNDLE_ID_KEY, (int) acmi.id);
-            startActivity(intent);
-            return true;
+    private class GetTrainingDaysTask extends AsyncTask<Void,Void,List<TrainingDay>>{
+
+        @Override
+        protected List<TrainingDay> doInBackground(Void... voids) {
+            return db.getTrainingDays();
         }
-        return super.onContextItemSelected(item);
+
+        @Override
+        protected void onPostExecute(List<TrainingDay> trainingDays) {
+            super.onPostExecute(trainingDays);
+            showData(trainingDays);
+        }
     }
-
-//    public void goToTraining(int id) {
-//        mCallback.onTrainingSelected(id);
-//    }
-
-//    @Override
-//    public Loader<Cursor> onCreateLoader(int id, Bundle bndl) {
-//        return new MyCursorLoader(getActivity(), db);
-//    }
-//
-//    @Override
-//    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
-//        scAdapter.swapCursor(cursor);
-//    }
-
-//    @Override
-//    public void onLoaderReset(Loader<Cursor> loader) {
-//        scAdapter.swapCursor(null);
-//    }
-
-    public interface OnSelectedListener {
-        public void onTrainingSelected(int id);
-    }
-
-//    static class MyCursorLoader extends CursorLoader {
-//        DB db;
-//        Cursor cursor;
-//
-//        public MyCursorLoader(Context context, DB db) {
-//            super(context);
-//            this.db = db;
-//        }
-//
-//        @Override
-//        public Cursor loadInBackground() {
-//            cursor = db.getDataTrainings(null, null, null, null, null, null);
-//            return cursor;
-//        }
-//    }
 }

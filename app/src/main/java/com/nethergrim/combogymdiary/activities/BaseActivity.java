@@ -32,6 +32,7 @@ import com.nethergrim.combogymdiary.Constants;
 import com.nethergrim.combogymdiary.DB;
 import com.nethergrim.combogymdiary.R;
 import com.nethergrim.combogymdiary.dialogs.DialogExitFromTraining.MyInterface;
+import com.nethergrim.combogymdiary.dialogs.DialogGoToMarket;
 import com.nethergrim.combogymdiary.dialogs.DialogInfo;
 import com.nethergrim.combogymdiary.dialogs.DialogUniversalApprove;
 import com.nethergrim.combogymdiary.dialogs.DialogUniversalApprove.OnStartTrainingAccept;
@@ -40,13 +41,13 @@ import com.nethergrim.combogymdiary.fragments.ExerciseListFragment;
 import com.nethergrim.combogymdiary.fragments.HistoryFragment;
 import com.nethergrim.combogymdiary.fragments.MeasurementsFragment;
 import com.nethergrim.combogymdiary.fragments.StartTrainingFragment;
-import com.nethergrim.combogymdiary.fragments.StartTrainingFragment.OnSelectedListener;
 import com.nethergrim.combogymdiary.fragments.TrainingFragment;
 import com.nethergrim.combogymdiary.googledrive.BaseDriveActivity;
 import com.nethergrim.combogymdiary.googledrive.DriveBackupActivity;
 import com.nethergrim.combogymdiary.model.Exercise;
 import com.nethergrim.combogymdiary.service.TrainingService;
 import com.nethergrim.combogymdiary.tools.Backuper;
+import com.nethergrim.combogymdiary.tools.BaseActivityInterface;
 import com.nethergrim.combogymdiary.tools.Prefs;
 import com.yandex.metrica.Counter;
 
@@ -58,8 +59,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Random;
 
-public class BaseActivity extends AnalyticsActivity implements
-        OnSelectedListener, MyInterface, OnStartTrainingAccept, DialogUniversalApprove.OnDeleteExerciseCallback, AdapterView.OnItemClickListener {
+public class BaseActivity extends AnalyticsActivity implements BaseActivityInterface,MyInterface,DialogUniversalApprove.OnDeleteExerciseCallback, AdapterView.OnItemClickListener {
 
     public final static String SECONDS = "seconds";
     private final static String FRAGMENT_ID = "fragment_id";
@@ -102,6 +102,20 @@ public class BaseActivity extends AnalyticsActivity implements
     public ExerciseListFragment getExerciseListFragment() {
         return exerciseListFragment;
     }
+
+    @Override
+    public void onStartTrainingPressed(long trainingDayId) { // FIXME manke new implementation
+        trainingFragment = new TrainingFragment();
+        currentFragment = trainingFragment;
+        Bundle args = new Bundle();
+        args.putInt(TrainingFragment.BUNDLE_KEY_TRAINING_ID, (int) trainingDayId);
+        currentFragment.setArguments(args);
+        getFragmentManager().beginTransaction().replace(R.id.content, currentFragment).commit();
+        setTrainingAlreadyStarted(true);
+        listButtons[0] = getResources().getString(R.string.continue_training);
+        adapter.notifyDataSetChanged();
+    }
+
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
@@ -364,6 +378,11 @@ public class BaseActivity extends AnalyticsActivity implements
         super.onResume();
         Counter.sharedInstance().onResumeActivity(this);
         initStrings();
+        if (Prefs.get().getTrainingsCount() > 4   && !Prefs.get().getMarketAlreadyLeavedFeedback()) {
+            DialogGoToMarket dialog = new DialogGoToMarket();
+            dialog.show(getFragmentManager(), DialogGoToMarket.class.getName());
+            dialog.setCancelable(false);
+        }
     }
 
     @Override
@@ -381,16 +400,6 @@ public class BaseActivity extends AnalyticsActivity implements
     public void onRestoreInstanceState(Bundle restore) {
         onItemSelected(restore.getInt(FRAGMENT_ID));
         super.onRestoreInstanceState(restore);
-    }
-
-    @Override
-    public void onTrainingSelected(int id) {
-        DialogUniversalApprove approve = new DialogUniversalApprove();
-        Bundle args = new Bundle();
-        args.putInt(Constants.TYPE_OF_DIALOG, DialogUniversalApprove.TYPE_START_WORKOUT);
-        args.putInt(Constants._ID, id);
-        approve.setArguments(args);
-        approve.show(getFragmentManager(), "");
     }
 
     @Override
@@ -446,19 +455,6 @@ public class BaseActivity extends AnalyticsActivity implements
         getActionBar().setSubtitle(null);
         BackupManager bm = new BackupManager(this);
         bm.dataChanged();
-    }
-
-    @Override
-    public void onStartTrainingAccepted(int id) {
-        trainingFragment = new TrainingFragment();
-        currentFragment = trainingFragment;
-        Bundle args = new Bundle();
-        args.putInt(TrainingFragment.BUNDLE_KEY_TRAINING_ID, id);
-        currentFragment.setArguments(args);
-        getFragmentManager().beginTransaction().replace(R.id.content, currentFragment).commit();
-        setTrainingAlreadyStarted(true);
-        listButtons[0] = getResources().getString(R.string.continue_training);
-        adapter.notifyDataSetChanged();
     }
 
     @Override

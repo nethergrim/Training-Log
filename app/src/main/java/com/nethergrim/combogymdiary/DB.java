@@ -1,6 +1,5 @@
 package com.nethergrim.combogymdiary;
 
-import android.app.backup.BackupManager;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -9,10 +8,12 @@ import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import com.nethergrim.combogymdiary.model.DayOfWeek;
 import com.nethergrim.combogymdiary.model.Exercise;
 import com.nethergrim.combogymdiary.model.ExerciseGroup;
 import com.nethergrim.combogymdiary.model.ExerciseTrainingObject;
-import com.nethergrim.combogymdiary.model.TrainingRow;
+import com.nethergrim.combogymdiary.model.Set;
+import com.nethergrim.combogymdiary.model.TrainingDay;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -23,7 +24,6 @@ import java.util.List;
 
 public class DB {
 
-    public static final String LOG_TAG = "myLogs";
     public static final String DB_NAME = "mydb";
     public static final String _ID = "_id";
     public static final String EXERCISE_NAME = "exercise_name";
@@ -53,7 +53,8 @@ public class DB {
     public static final String POSITION_AT_TRAINING = "position_at_training";
     public static final String EXERCISE_ID = "training_exercise_id";
     public static final String TRAINING_PROGRAM_ID = "training_program_id";
-    private static final int DB_VERSION = 5;
+
+    private static final int DB_VERSION = 6;
     private static final String DB_TABLE_EXERCISES = "exe_tab";
     private Context mCtx;
     private DBHelper mDBHelper;
@@ -92,7 +93,11 @@ public class DB {
     private static final String DB_TRAININGS_CREATE = "create table "  + DB_TRAININGS_TABLE + "("
             + _ID + " integer primary key autoincrement, "
             + TRAINING_NAME + " text, "
-            + EXERCISE_NAME + " text"             // UNUSED, DEPRECATED!
+            + EXERCISE_NAME + " text, "             // UNUSED, DEPRECATED!
+            + TrainingDay.Columns.FIELD_DAY_OF_WEEK + " integer, "
+            + TrainingDay.Columns.FIELD_IMAGE_URL + " text, "
+            + TrainingDay.Columns.FIELD_COLOR + " integer, "
+            + TrainingDay.Columns.FIELD_CREATED_AT + " integer"
             + ");";
 
     private static final String DB_TRAINING_EXERCISE_CREATE = "create table "  + DB_TABLE_TRAINING_EXERCISE + "("
@@ -117,6 +122,7 @@ public class DB {
 
     public DB(Context ctx) {
         mCtx = ctx;
+        open();
     }
 
     public long addExerciseTrainingObject(ExerciseTrainingObject object){
@@ -352,17 +358,6 @@ public class DB {
         return mDB.insert(DB_TABLE_EXERCISES, null, cv);
     }
 
-    public List<Exercise> getExercises() {
-        Cursor c = mDB.query(DB_TABLE_EXERCISES, null, null, null, null, null, null);
-        List<Exercise> exercises = new ArrayList<Exercise>();
-        if (c.moveToFirst()) {
-            do {
-                exercises.add(new Exercise(c.getInt(0), c.getString(2), c.getString(3), c.getString(4)));
-            } while (c.moveToNext());
-        }
-        return exercises;
-    }
-
     public List<ExerciseGroup> getExerciseGroups() {  // returns groups of exercises, sorted by part_of_body
         List<ExerciseGroup> result = new ArrayList<ExerciseGroup>();
         for (int i = 0; i < Constants.PARTS_OF_BODY.length; i++) {
@@ -413,14 +408,14 @@ public class DB {
         return result;
     }
 
-    public List<TrainingRow> getTrainingRows(int trainingID){
+    public List<Set> getTrainingRows(int trainingID){
         String[] args = {String.valueOf(trainingID)};
         Cursor c = mDB.query(DB_TABLE_TRAINING_EXERCISE, null, TRAINING_PROGRAM_ID + "=?", args,null,null,POSITION_AT_TRAINING);
-        List<TrainingRow> result = new ArrayList<TrainingRow>();
+        List<Set> result = new ArrayList<Set>();
         try {
             if (c.moveToFirst()){
                 do {
-                    TrainingRow trainingRow = new TrainingRow();
+                    Set trainingRow = new Set();
                     trainingRow.setId(c.getInt(0));
                     trainingRow.setTrainingProgramId(trainingID);
                     trainingRow.setExerciseId(c.getInt(2));
@@ -456,6 +451,37 @@ public class DB {
         }
         return 0;
     }
+
+    public List<TrainingDay> getTrainingDays(){
+        List<TrainingDay> trainingDays = new ArrayList<TrainingDay>();
+        Cursor c = mDB.query(TrainingDay.Columns.TABLE, null,null,null,null,null,TrainingDay.Columns.FIELD_ID);
+        if (c.moveToFirst()){
+            do {
+                TrainingDay trainingDay = new TrainingDay();
+                trainingDay.setId(c.getLong(0));
+                trainingDay.setCreatedAt(c.getLong(c.getColumnIndex(TrainingDay.Columns.FIELD_CREATED_AT)));
+                trainingDay.setDayOfWeek(DayOfWeek.getByCode(c.getInt(c.getColumnIndex(TrainingDay.Columns.FIELD_DAY_OF_WEEK))));
+                trainingDay.setTrainingName(c.getString(c.getColumnIndex(TrainingDay.Columns.FIELD_TRAINING_NAME)));
+                trainingDay.setImageUrl(c.getString(c.getColumnIndex(TrainingDay.Columns.FIELD_IMAGE_URL)));
+                trainingDay.setColor(c.getInt(c.getColumnIndex(TrainingDay.Columns.FIELD_COLOR)));
+                trainingDays.add(trainingDay);
+            } while(c.moveToNext());
+        }
+        c.close();
+        return  trainingDays;
+    }
+
+    public void persistTrainingDay(TrainingDay trainingDay){
+        ContentValues cv = new ContentValues();
+        cv.put(TrainingDay.Columns.FIELD_CREATED_AT, System.currentTimeMillis());
+        cv.put(TrainingDay.Columns.FIELD_TRAINING_NAME, trainingDay.getTrainingName());
+        cv.put(TrainingDay.Columns.FIELD_COLOR, trainingDay.getColor());
+        cv.put(TrainingDay.Columns.FIELD_DAY_OF_WEEK, trainingDay.getDayOfWeek().getCode());
+        cv.put(TrainingDay.Columns.FIELD_IMAGE_URL, trainingDay.getImageUrl());
+        mDB.insert(TrainingDay.Columns.TABLE, null, cv);
+    }
+
+//    public void deleteTrainingDay(Trainin
 
     public String getTrainingName(int id) {
         String[] args = {id + ""};
@@ -588,6 +614,13 @@ public class DB {
                 db.execSQL("ALTER TABLE " + DB_TABLE_MAIN + " ADD COLUMN " + SUPERSET_COLOR + " TEXT");
                 db.execSQL("ALTER TABLE " + DB_TABLE_MAIN + " ADD COLUMN " + TRAINING_PROGRAM_ID + " TEXT");
                 db.execSQL("ALTER TABLE " + DB_TABLE_MAIN + " ADD COLUMN " + EXERCISE_ID + " TEXT");
+            }
+            if (oldVersion == 5 && newVersion == 6){
+                db.execSQL("ALTER TABLE " + TrainingDay.Columns.TABLE + " ADD COLUMN " + TrainingDay.Columns.FIELD_DAY_OF_WEEK + " INTEGER");
+                db.execSQL("ALTER TABLE " + TrainingDay.Columns.TABLE + " ADD COLUMN " + TrainingDay.Columns.FIELD_IMAGE_URL + " TEXT");
+                db.execSQL("ALTER TABLE " + TrainingDay.Columns.TABLE + " ADD COLUMN " + TrainingDay.Columns.FIELD_COLOR + " INTEGER");
+                db.execSQL("ALTER TABLE " + TrainingDay.Columns.TABLE + " ADD COLUMN " + TrainingDay.Columns.FIELD_CREATED_AT + " INTEGER");
+
             }
         }
     }
