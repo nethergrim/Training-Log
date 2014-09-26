@@ -78,9 +78,9 @@ public class ExpandableListViewAdapter extends BaseAdapter {
     }
 
     public void toggle(int position){
-        for (ExpandableRow row : rows) {
-            if (row.isOpened()) {
-                row.toggle();
+        for (int i = 0; i < rows.size();i++){
+            if (rows.get(i).isOpened() && i != position){
+                rows.get(i).toggle();
             }
         }
         if (rows.size() > position){

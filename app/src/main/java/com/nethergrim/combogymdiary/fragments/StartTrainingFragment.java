@@ -57,9 +57,9 @@ public class StartTrainingFragment extends AbstractFragment implements OnTrainin
         lvMain = (ListView) v.findViewById(R.id.lvStartTraining);
         getActivity().getActionBar().setTitle(R.string.startTrainingButtonString);
         adapter = new ExpandableListViewAdapter(getActivity());
-        SwingBottomInAnimationAdapter animationAdapter = new SwingBottomInAnimationAdapter(adapter);
-        animationAdapter.setAbsListView(lvMain);
-        lvMain.setAdapter(animationAdapter);
+//        SwingBottomInAnimationAdapter animationAdapter = new SwingBottomInAnimationAdapter(adapter);
+//        animationAdapter.setAbsListView(lvMain);
+        lvMain.setAdapter(adapter);
         lvMain.setOnItemClickListener(this);
         FAB fabAdd = (FAB) v.findViewById(R.id.fabAddTrainings);
         fabAdd.setOnClickListener(this);
