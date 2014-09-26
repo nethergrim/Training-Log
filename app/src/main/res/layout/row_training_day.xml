@@ -28,7 +28,7 @@
     <RelativeLayout
         android:id="@+id/layout_expandable"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="200dp"
         android:layout_below="@+id/text_day_of_week"
         android:visibility="visible">
 
@@ -45,12 +45,35 @@
             android:layout_height="48dp"
             android:layout_alignParentRight="true"
             android:layout_alignParentBottom="true"
-            android:layout_marginTop="@dimen/medium_padding"
             android:background="?android:attr/selectableItemBackground"
             android:gravity="right|center_vertical"
             android:text="@string/start_training"
             android:textColor="@color/material_pink_a400"
             android:textSize="@dimen/normal_text" />
+
+        <ImageButton
+            android:id="@+id/btn_delete"
+            android:layout_width="wrap_content"
+            android:background="?android:attr/selectableItemBackground"
+            android:src="@drawable/ic_trash"
+            android:paddingLeft="@dimen/big_padding"
+            android:paddingRight="@dimen/big_padding"
+            android:layout_alignTop="@+id/btn_start_training"
+            android:layout_alignBottom="@id/btn_start_training"
+            android:layout_height="wrap_content" />
+
+        <ImageButton
+            android:id="@+id/btn_edit"
+            android:paddingRight="@dimen/big_padding"
+            android:paddingLeft="@dimen/big_padding"
+            android:src="@drawable/ic_pencil"
+            android:layout_toRightOf="@+id/btn_delete"
+            android:layout_marginLeft="@dimen/big_padding"
+            android:layout_width="wrap_content"
+            android:background="?android:attr/selectableItemBackground"
+            android:layout_alignTop="@id/btn_start_training"
+            android:layout_alignBottom="@id/btn_start_training"
+            android:layout_height="wrap_content" />
 
     </RelativeLayout>
 

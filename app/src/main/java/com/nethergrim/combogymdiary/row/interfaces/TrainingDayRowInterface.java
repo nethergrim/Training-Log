@@ -5,7 +5,9 @@ import com.nethergrim.combogymdiary.model.TrainingDay;
 /**
  * Created by andrey_drobyazko on 26.09.14.
  */
-public interface OnTrainingDayRowPressed {
+public interface TrainingDayRowInterface {
 
     public void onTrainingStartPressed(TrainingDay trainingDay);
+    public void onDeletePressed(TrainingDay trainingDay);
+    public void onEditPressed(TrainingDay trainingDay);
 }

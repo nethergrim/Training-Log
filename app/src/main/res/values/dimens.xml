@@ -13,7 +13,7 @@
     <dimen name="big_text">18sp</dimen>
     <dimen name="small_text">14sp</dimen>
 
-    <integer name="animation_expand_time">350</integer>
+    <integer name="animation_expand_time">500</integer>
     <integer name="animation_appear_time">200</integer>
 
     <integer name="training_day_row_expanded_height">248</integer>

@@ -1,7 +1,9 @@
 package com.nethergrim.combogymdiary.fragments;
 
 import android.app.Activity;
-import android.app.Fragment;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -20,15 +22,14 @@ import com.nethergrim.combogymdiary.activities.CreatingTrainingDayActivity;
 import com.nethergrim.combogymdiary.adapter.ExpandableListViewAdapter;
 import com.nethergrim.combogymdiary.model.TrainingDay;
 import com.nethergrim.combogymdiary.row.TrainingDayRow;
-import com.nethergrim.combogymdiary.row.interfaces.OnTrainingDayRowPressed;
+import com.nethergrim.combogymdiary.row.interfaces.TrainingDayRowInterface;
 import com.nethergrim.combogymdiary.tools.BaseActivityInterface;
 import com.nethergrim.combogymdiary.view.FAB;
-import com.nhaarman.listviewanimations.appearance.simple.SwingBottomInAnimationAdapter;
 import com.shamanland.fab.ShowHideOnScroll;
 
 import java.util.List;
 
-public class StartTrainingFragment extends AbstractFragment implements OnTrainingDayRowPressed, OnItemClickListener, View.OnClickListener {
+public class StartTrainingFragment extends AbstractFragment implements TrainingDayRowInterface, OnItemClickListener, View.OnClickListener {
 
     private ListView lvMain;
     private DB db;
@@ -57,15 +58,18 @@ public class StartTrainingFragment extends AbstractFragment implements OnTrainin
         lvMain = (ListView) v.findViewById(R.id.lvStartTraining);
         getActivity().getActionBar().setTitle(R.string.startTrainingButtonString);
         adapter = new ExpandableListViewAdapter(getActivity());
-//        SwingBottomInAnimationAdapter animationAdapter = new SwingBottomInAnimationAdapter(adapter);
-//        animationAdapter.setAbsListView(lvMain);
         lvMain.setAdapter(adapter);
         lvMain.setOnItemClickListener(this);
         FAB fabAdd = (FAB) v.findViewById(R.id.fabAddTrainings);
         fabAdd.setOnClickListener(this);
         lvMain.setOnTouchListener(new ShowHideOnScroll(fabAdd));
-        new GetTrainingDaysTask().execute();
         return v;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        new GetTrainingDaysTask().execute();
     }
 
     private void showData(List<TrainingDay> trainingDays) {
@@ -81,7 +85,31 @@ public class StartTrainingFragment extends AbstractFragment implements OnTrainin
     }
 
     @Override
-    public void onTrainingStartPressed(TrainingDay trainingDay1) {
+    public void onTrainingStartPressed(TrainingDay trainingDay) {
+
+    }
+
+    @Override
+    public void onDeletePressed(TrainingDay trainingDay) {
+        AlertDialog.Builder customBuilder = new AlertDialog.Builder(getActivity());
+        customBuilder.setTitle(getString(R.string.delete));
+        customBuilder.setMessage(getString(R.string.delete) + " " + trainingDay.getTrainingName() + " ?")
+                .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                })
+                .setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+        Dialog dialog = customBuilder.create();
+        dialog.show();
+    }
+
+    @Override
+    public void onEditPressed(TrainingDay trainingDay) {
 
     }
 
@@ -89,7 +117,7 @@ public class StartTrainingFragment extends AbstractFragment implements OnTrainin
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         adapter.toggle(position);
         if (!adapter.getRows().get(position).isOpened())
-        lvMain.smoothScrollToPosition(position);
+            lvMain.smoothScrollToPosition(position);
     }
 
     @Override
