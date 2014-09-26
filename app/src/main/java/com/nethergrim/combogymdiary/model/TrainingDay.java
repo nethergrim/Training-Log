@@ -11,6 +11,7 @@ public class TrainingDay extends BaseDbObject {
     private DayOfWeek dayOfWeek = DayOfWeek.MONDAY;
     private String imageUrl = "";
     private Integer color;
+    private Long trainingProgramId;
 
     public interface Columns extends BaseDbObjectInterface{
         public static final String TABLE = "trainings_tab";
@@ -19,6 +20,7 @@ public class TrainingDay extends BaseDbObject {
         public static final String FIELD_DAY_OF_WEEK = "day_of_week";
         public static final String FIELD_IMAGE_URL = "image_url";
         public static final String FIELD_COLOR = "color";
+        public static final String FIELD_TRAINING_PROGRAM_ID = "training_program_id";
     }
 
     public String getTrainingName() {
@@ -51,5 +53,13 @@ public class TrainingDay extends BaseDbObject {
 
     public void setColor(Integer color) {
         this.color = color;
+    }
+
+    public Long getTrainingProgramId() {
+        return trainingProgramId;
+    }
+
+    public void setTrainingProgramId(Long trainingProgramId) {
+        this.trainingProgramId = trainingProgramId;
     }
 }

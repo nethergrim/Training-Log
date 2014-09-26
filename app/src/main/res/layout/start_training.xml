@@ -13,7 +13,7 @@
         android:layout_alignParentTop="true"
         android:layout_margin="8dp"
         android:divider="@color/transparent"
-        android:dividerHeight="@dimen/medium_padding"></ListView>
+        android:dividerHeight="@dimen/medium_padding"/>
 
     <com.nethergrim.combogymdiary.view.FAB
         android:id="@+id/fabAddTrainings"

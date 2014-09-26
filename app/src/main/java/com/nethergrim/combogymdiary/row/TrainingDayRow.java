@@ -1,6 +1,7 @@
 package com.nethergrim.combogymdiary.row;
 
 import android.animation.ValueAnimator;
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
@@ -12,6 +13,7 @@ import com.loopj.android.image.SmartImageView;
 import com.nethergrim.combogymdiary.MyApp;
 import com.nethergrim.combogymdiary.R;
 import com.nethergrim.combogymdiary.model.TrainingDay;
+import com.nethergrim.combogymdiary.row.interfaces.OnTrainingDayRowPressed;
 
 /**
  * Created by Andrey Drobyazko on 22.09.2014.
@@ -21,22 +23,6 @@ public class TrainingDayRow implements ExpandableRow {
     private TrainingDay trainingDay;
     private OnTrainingDayRowPressed listener;
     private ViewHolder holder;
-    private boolean expanded = false;
-    private ValueAnimator.AnimatorUpdateListener animatorUpdateListener = new ValueAnimator.AnimatorUpdateListener() {
-        @Override
-        public void onAnimationUpdate(ValueAnimator valueAnimator) {
-            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) holder.layoutExpandable.getLayoutParams();
-            Float value = (Float) valueAnimator.getAnimatedValue();
-            params.height = (int) (value * 256 * MyApp.density);
-            holder.layoutExpandable.setLayoutParams(params);
-        }
-    };
-    private View.OnClickListener expandListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-
-        }
-    };
 
     public TrainingDayRow(TrainingDay trainingDay, OnTrainingDayRowPressed callback) {
         this.trainingDay = trainingDay;
@@ -65,38 +51,50 @@ public class TrainingDayRow implements ExpandableRow {
         holder.btnStartTraining.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                listener.onTrainingDayPressed(TrainingDayRow.this.trainingDay);
+                listener.onTrainingStartPressed(TrainingDayRow.this.trainingDay);
             }
         });
         holder.textName.setText(trainingDay.getTrainingName());
         holder.textDayOfWeek.setText(trainingDay.getDayOfWeek().getName(holder.textDayOfWeek.getContext()));
-
-        holder.image.setImageUrl("http://www.bodybuilding.com/exercises/exerciseImages/sequences/64/Male/m/64_2.jpg");
+        holder.image.setImageUrl(trainingDay.getImageUrl());
         return view;
     }
 
     @Override
     public void toggle() {
+        ValueAnimator.AnimatorUpdateListener animatorUpdateListener = new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) holder.layoutExpandable.getLayoutParams();
+                Float value = (Float) valueAnimator.getAnimatedValue();
+                params.height = (int) (value * MyApp.context.getResources().getInteger(R.integer.training_day_row_expanded_height) * MyApp.density);
+                holder.layoutExpandable.setLayoutParams(params);
+            }
+        };
         ValueAnimator valueAnimator;
-        if (expanded) {
+        if (holder.layoutExpandable.getLayoutParams().height > 10) {
             valueAnimator = ValueAnimator.ofFloat(1f, 0f);
         } else {
             valueAnimator = ValueAnimator.ofFloat(0f, 1f);
         }
-        valueAnimator.setDuration(350);
+        valueAnimator.setDuration(MyApp.context.getResources().getInteger(R.integer.animation_expand_time));
         valueAnimator.addUpdateListener(animatorUpdateListener);
         valueAnimator.setInterpolator(new AccelerateDecelerateInterpolator());
         valueAnimator.start();
-        expanded = !expanded;
+    }
+
+    @Override
+    public boolean isOpened() {
+        if (holder != null && holder.layoutExpandable != null){
+            return holder.layoutExpandable.getLayoutParams().height > 10;
+        } else {
+            return false;
+        }
     }
 
     @Override
     public long getId() {
         return trainingDay.getId();
-    }
-
-    public interface OnTrainingDayRowPressed {
-        public void onTrainingDayPressed(TrainingDay trainingDay1);
     }
 
     private class ViewHolder {
@@ -106,6 +104,4 @@ public class TrainingDayRow implements ExpandableRow {
         Button btnStartTraining;
         RelativeLayout layoutExpandable;
     }
-
-
 }

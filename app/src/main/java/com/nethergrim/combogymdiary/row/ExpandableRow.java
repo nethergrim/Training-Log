@@ -6,5 +6,6 @@ package com.nethergrim.combogymdiary.row;
 public interface ExpandableRow extends Row {
 
     public void toggle();
+    public boolean isOpened();
 
 }

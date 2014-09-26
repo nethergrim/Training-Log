@@ -1,30 +1,20 @@
 package com.nethergrim.combogymdiary.model;
 
+import com.nethergrim.combogymdiary.tools.BaseDbObjectInterface;
+
 import java.io.Serializable;
 
 
-public class TrainingProgram implements Serializable {
+public class TrainingProgram extends BaseDbObject {
 
-    private static final long serialVersionUID = 0L;
-    private long id;
     private String name;
+    private Boolean isPaid;
 
-    public TrainingProgram(int id, String name){
-        setId(id);
-        setName(name);
-    }
+    public interface Columns extends BaseDbObjectInterface {
+        public static final String TABLE = "training_program";
 
-    public TrainingProgram(int id){
-        setId(id);
-        setName("");
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
+        public static final String FIELD_NAME = "name";
+        public static final String FIELD_PAID = "is_paid";
     }
 
     public String getName() {
@@ -35,5 +25,11 @@ public class TrainingProgram implements Serializable {
         this.name = name;
     }
 
+    public Boolean getIsPaid() {
+        return isPaid;
+    }
 
+    public void setIsPaid(Boolean isPaid) {
+        this.isPaid = isPaid;
+    }
 }

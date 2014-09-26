@@ -74,7 +74,7 @@ import java.util.Random;
 import kankan.wheel.widget.WheelView;
 import kankan.wheel.widget.adapters.AbstractWheelTextAdapter;
 
-public class TrainingFragment extends Fragment implements
+public class TrainingFragment extends AbstractFragment implements
         OnCheckedChangeListener, OnClickListener, DraggableListView.OnListItemSwapListener, DialogAddExercises.OnExerciseAddCallback {
 
     public static final String BUNDLE_KEY_TRAINING_ID = "com.nethergrim.combogymdiary.TRAINING_ID";
@@ -530,8 +530,10 @@ public class TrainingFragment extends Fragment implements
             int wei = (weightWheel.getCurrentItem() + 1);
             int rep_s = (repsWheel.getCurrentItem() + 1);
             Set row = adapter.getData().get(currentCheckedPosition);
-            adapter.getData().get(currentCheckedPosition).incrementSetsCount();
-            set = adapter.getData().get(currentCheckedPosition).getSetsCount();
+            if (adapter.getData().size() > currentCheckedPosition){
+                adapter.getData().get(currentCheckedPosition).incrementSetsCount();
+                set = adapter.getData().get(currentCheckedPosition).getSetsCount();
+            }
             db.addRecMainTable(trainingName, currentExerciseName, date, wei, rep_s, set,row.isSuperset(),row.getSupersetId(), row.getSupersetColor(), trainingId, row.getExerciseId());
             currentSet = set;
             initSetButtons();

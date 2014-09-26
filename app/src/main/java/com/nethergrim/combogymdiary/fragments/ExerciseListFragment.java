@@ -29,7 +29,7 @@ import com.shamanland.fab.ShowHideOnScroll;
 
 import java.util.List;
 
-public class ExerciseListFragment extends Fragment {
+public class ExerciseListFragment extends AbstractFragment {
 
 
     private ExpandableListView elv;

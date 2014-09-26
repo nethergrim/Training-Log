@@ -9,33 +9,29 @@ import android.view.animation.AnimationUtils;
 import android.widget.BaseAdapter;
 
 import com.nethergrim.combogymdiary.R;
+import com.nethergrim.combogymdiary.row.ExpandableRow;
 import com.nethergrim.combogymdiary.row.Row;
-import com.nhaarman.listviewanimations.util.Insertable;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Andrey Drobyazko on 22.09.2014.
+ * Created by andrey_drobyazko on 26.09.14.
  */
-public class ListViewAdapter extends BaseAdapter {
+public class ExpandableListViewAdapter extends BaseAdapter {
 
-    protected List<Row> rows;
+    protected List<ExpandableRow> rows;
     protected LayoutInflater inflater;
     protected Context ctx;
     protected int lastPosition = -1;
 
-    public ListViewAdapter(Context context) {
-        this.rows = new ArrayList<Row>();
+    public ExpandableListViewAdapter(Context context) {
+        this.rows = new ArrayList<ExpandableRow>();
         this.inflater = LayoutInflater.from(context);
         this.ctx = context;
     }
 
-    public List<Row> getRows() {
-        return rows;
-    }
-
-    public void addRow(Row row) {
+    public void addRow(ExpandableRow row) {
         rows.add(row);
     }
 
@@ -44,14 +40,14 @@ public class ListViewAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
-    public void clearAdapter(){
-        for (int i = rows.size() - 1; i >= 0; i--){
+    public void clearAdapter() {
+        for (int i = rows.size() - 1; i >= 0; i--) {
             rows.remove(i);
         }
     }
 
     public void switchItems(int i1, int i2) {
-        Row row = rows.get(i1);
+        ExpandableRow row = rows.get(i1);
         rows.set(i1, rows.get(i2));
         rows.set(i2, row);
         notifyDataSetChanged();
@@ -81,4 +77,18 @@ public class ListViewAdapter extends BaseAdapter {
         return v;
     }
 
+    public void toggle(int position){
+        for (ExpandableRow row : rows) {
+            if (row.isOpened()) {
+                row.toggle();
+            }
+        }
+        if (rows.size() > position){
+            rows.get(position).toggle();
+        }
+    }
+
+    public List<ExpandableRow> getRows() {
+        return rows;
+    }
 }

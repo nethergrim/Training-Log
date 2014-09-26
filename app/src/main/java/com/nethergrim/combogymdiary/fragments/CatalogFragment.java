@@ -19,7 +19,7 @@ import com.nethergrim.combogymdiary.R;
 import com.nethergrim.combogymdiary.activities.CatalogDetailedActivity;
 import com.nethergrim.combogymdiary.tools.AdapterHelper;
 
-public class CatalogFragment extends Fragment {
+public class CatalogFragment extends AbstractFragment {
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

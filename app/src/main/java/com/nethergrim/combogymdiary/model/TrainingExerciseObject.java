@@ -3,7 +3,7 @@ package com.nethergrim.combogymdiary.model;
 
 import java.io.Serializable;
 
-public class TrainingExercise implements Serializable{
+public class TrainingExerciseObject implements Serializable{
 
     private static final long serialVersionUID = 0L;
 
@@ -16,7 +16,7 @@ public class TrainingExercise implements Serializable{
     private int supersetId;
     private int supersetColor;
 
-    public TrainingExercise(){}
+    public TrainingExerciseObject(){}
 
     public int getId() {
         return id;

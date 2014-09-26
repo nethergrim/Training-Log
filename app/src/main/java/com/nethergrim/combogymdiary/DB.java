@@ -6,7 +6,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 import com.nethergrim.combogymdiary.model.DayOfWeek;
 import com.nethergrim.combogymdiary.model.Exercise;
@@ -14,6 +13,7 @@ import com.nethergrim.combogymdiary.model.ExerciseGroup;
 import com.nethergrim.combogymdiary.model.ExerciseTrainingObject;
 import com.nethergrim.combogymdiary.model.Set;
 import com.nethergrim.combogymdiary.model.TrainingDay;
+import com.nethergrim.combogymdiary.model.TrainingProgram;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -97,7 +97,8 @@ public class DB {
             + TrainingDay.Columns.FIELD_DAY_OF_WEEK + " integer, "
             + TrainingDay.Columns.FIELD_IMAGE_URL + " text, "
             + TrainingDay.Columns.FIELD_COLOR + " integer, "
-            + TrainingDay.Columns.FIELD_CREATED_AT + " integer"
+            + TrainingDay.Columns.FIELD_CREATED_AT + " integer, "
+            + TrainingDay.Columns.FIELD_TRAINING_PROGRAM_ID + " integer"
             + ");";
 
     private static final String DB_TRAINING_EXERCISE_CREATE = "create table "  + DB_TABLE_TRAINING_EXERCISE + "("
@@ -117,6 +118,13 @@ public class DB {
             + EXERCISE_NAME + " text, "
             + TIMER_VALUE + " text, "
             + PART_OF_BODY + " text"
+            + ");";
+
+    private static final String DB_TRAINING_PROGRAMS_CREATE = "create table " + TrainingProgram.Columns.TABLE + "("
+            + TrainingProgram.Columns.FIELD_ID + " integer primary key autoincrement, "
+            + TrainingProgram.Columns.FIELD_CREATED_AT + " integer, "
+            + TrainingProgram.Columns.FIELD_NAME + " text, "
+            + TrainingProgram.Columns.FIELD_PAID + " integer"
             + ");";
 
 
@@ -165,17 +173,6 @@ public class DB {
             e.printStackTrace();
         }
         return null;
-    }
-
-    public String convertArrayToString(String[] array) {
-        String str = "";
-        for (int i = 0; i < array.length; i++) {
-            str = str + array[i];
-            if (i < array.length - 1) {
-                str = str + strSeparator;
-            }
-        }
-        return str;
     }
 
     public String[] convertStringToArray(String str) {
@@ -593,6 +590,7 @@ public class DB {
             db.execSQL(DB_TRAININGS_CREATE);
             db.execSQL(DB_COMMENT_CREATE);
             db.execSQL(DB_TRAINING_EXERCISE_CREATE);
+            db.execSQL(DB_TRAINING_PROGRAMS_CREATE);
         }
 
         @Override
@@ -616,11 +614,12 @@ public class DB {
                 db.execSQL("ALTER TABLE " + DB_TABLE_MAIN + " ADD COLUMN " + EXERCISE_ID + " TEXT");
             }
             if (oldVersion == 5 && newVersion == 6){
+                db.execSQL(DB_TRAINING_PROGRAMS_CREATE);
                 db.execSQL("ALTER TABLE " + TrainingDay.Columns.TABLE + " ADD COLUMN " + TrainingDay.Columns.FIELD_DAY_OF_WEEK + " INTEGER");
                 db.execSQL("ALTER TABLE " + TrainingDay.Columns.TABLE + " ADD COLUMN " + TrainingDay.Columns.FIELD_IMAGE_URL + " TEXT");
                 db.execSQL("ALTER TABLE " + TrainingDay.Columns.TABLE + " ADD COLUMN " + TrainingDay.Columns.FIELD_COLOR + " INTEGER");
                 db.execSQL("ALTER TABLE " + TrainingDay.Columns.TABLE + " ADD COLUMN " + TrainingDay.Columns.FIELD_CREATED_AT + " INTEGER");
-
+                db.execSQL("ALTER TABLE " + TrainingDay.Columns.TABLE + " ADD COLUMN " + TrainingDay.Columns.FIELD_TRAINING_PROGRAM_ID + " INTEGER");
             }
         }
     }

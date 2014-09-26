@@ -32,7 +32,7 @@ import com.nethergrim.combogymdiary.activities.MeasurementsDetailedActivity;
 import com.nethergrim.combogymdiary.view.FAB;
 import com.shamanland.fab.ShowHideOnScroll;
 
-public class MeasurementsFragment extends Fragment implements
+public class MeasurementsFragment extends AbstractFragment implements
         LoaderCallbacks<Cursor> {
 
     private static final int CM_DELETE_ID = 8;

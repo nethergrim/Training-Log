@@ -35,7 +35,8 @@
         <com.loopj.android.image.SmartImageView
             android:id="@+id/image"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_above="@+id/btn_start_training"
+            android:layout_height="match_parent"
             android:layout_marginTop="@dimen/medium_padding" />
 
         <Button
@@ -43,7 +44,7 @@
             android:layout_width="wrap_content"
             android:layout_height="48dp"
             android:layout_alignParentRight="true"
-            android:layout_below="@+id/image"
+            android:layout_alignParentBottom="true"
             android:layout_marginTop="@dimen/medium_padding"
             android:background="?android:attr/selectableItemBackground"
             android:gravity="right|center_vertical"

@@ -19,7 +19,6 @@ public class DialogUniversalApprove extends DialogFragment implements
     private int type_of_dialog = 0;
     private int id = 0;
     private OnDeleteExerciseCallback listener;
-    private OnStartTrainingAccept mListener;
     public static final int TYPE_DELETE_EXERCISE = 1;
     public static final int TYPE_START_WORKOUT = 0;
     private Exercise exercise;
@@ -65,7 +64,7 @@ public class DialogUniversalApprove extends DialogFragment implements
         switch (which) {
             case Dialog.BUTTON_POSITIVE:
                 if (type_of_dialog == TYPE_START_WORKOUT) {
-                    mListener.onStartTrainingAccepted(id);
+//                    mListener.onStartTrainingAccepted(id);
                 } else if (type_of_dialog == TYPE_DELETE_EXERCISE) {
                     listener.onExerciseDeleteAccepted(exercise);
                 }
@@ -83,14 +82,13 @@ public class DialogUniversalApprove extends DialogFragment implements
 
     @Override
     public void onAttach(Activity activity) {
-        mListener = (OnStartTrainingAccept) activity;
         listener = (OnDeleteExerciseCallback) activity;
         super.onAttach(activity);
     }
 
     @Override
     public void onDetach() {
-        mListener = null;
+//        mListener = null;
         listener = null;
         super.onDetach();
     }

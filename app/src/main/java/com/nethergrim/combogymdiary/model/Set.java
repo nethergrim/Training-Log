@@ -4,7 +4,7 @@ package com.nethergrim.combogymdiary.model;
 /**
  * Created by andrey_drobyazko on 21.08.14.
  */
-public class Set extends TrainingExercise {
+public class Set extends TrainingExerciseObject {
 
     private String exerciseName;
     private int setsCount;

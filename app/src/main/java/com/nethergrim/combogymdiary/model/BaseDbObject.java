@@ -1,9 +1,11 @@
 package com.nethergrim.combogymdiary.model;
 
+import java.io.Serializable;
+
 /**
  * Created by Andrey Drobyazko on 25.09.2014.
  */
-public class BaseDbObject {
+public class BaseDbObject implements Serializable {
 
     private Long id;
     private Long createdAt;
