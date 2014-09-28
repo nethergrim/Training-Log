@@ -218,11 +218,23 @@ public class DB {
         return tmp > 0;
     }
 
-    public void deleteTrainingProgram(Long id, boolean onlyFromExerciseTable){
+    public void deleteTrainingDay(Long id, boolean onlyFromExerciseTable){
         if (!onlyFromExerciseTable){
             mDB.delete(DB_TRAININGS_TABLE, _ID + " = " + id, null);
         }
         mDB.delete(DB_TABLE_TRAINING_EXERCISE, TRAINING_PROGRAM_ID + " = " + id, null);
+    }
+
+    public void updateTrainingDay(TrainingDay trainingDay){
+        long id = trainingDay.getId();
+        ContentValues cv = new ContentValues();
+        cv.put(TrainingDay.Columns.FIELD_CREATED_AT, System.currentTimeMillis());
+        cv.put(TrainingDay.Columns.FIELD_COLOR, trainingDay.getColor());
+        cv.put(TrainingDay.Columns.FIELD_IMAGE_URL, trainingDay.getImageUrl());
+        cv.put(TrainingDay.Columns.FIELD_DAY_OF_WEEK, trainingDay.getDayOfWeek().getCode());
+        cv.put(TrainingDay.Columns.FIELD_TRAINING_NAME, trainingDay.getTrainingName());
+        cv.put(TrainingDay.Columns.FIELD_TRAINING_PROGRAM_ID, trainingDay.getTrainingProgramId());
+        mDB.update(TrainingDay.Columns.TABLE, cv, TrainingDay.Columns.FIELD_ID + " = " + String.valueOf(id), null);
     }
 
     public int getLastWeightOrReps(String _exeName, int _set, boolean ifWeight) {
@@ -451,7 +463,7 @@ public class DB {
 
     public List<TrainingDay> getTrainingDays(){
         List<TrainingDay> trainingDays = new ArrayList<TrainingDay>();
-        Cursor c = mDB.query(TrainingDay.Columns.TABLE, null,null,null,null,null,TrainingDay.Columns.FIELD_ID);
+        Cursor c = mDB.query(TrainingDay.Columns.TABLE, null,null,null,null,null,TrainingDay.Columns.FIELD_DAY_OF_WEEK);
         if (c.moveToFirst()){
             do {
                 TrainingDay trainingDay = new TrainingDay();
@@ -466,6 +478,21 @@ public class DB {
         }
         c.close();
         return  trainingDays;
+    }
+
+    public TrainingDay getTrainingDay(long id){
+        TrainingDay trainingDay = new TrainingDay();
+        Cursor c = mDB.query(TrainingDay.Columns.TABLE, null,TrainingDay.Columns.FIELD_ID + "=" + String.valueOf(id),null,null,null,TrainingDay.Columns.FIELD_ID);
+        if (c.moveToFirst()){
+            trainingDay.setId(c.getLong(0));
+            trainingDay.setCreatedAt(c.getLong(c.getColumnIndex(TrainingDay.Columns.FIELD_CREATED_AT)));
+            trainingDay.setDayOfWeek(DayOfWeek.getByCode(c.getInt(c.getColumnIndex(TrainingDay.Columns.FIELD_DAY_OF_WEEK))));
+            trainingDay.setTrainingName(c.getString(c.getColumnIndex(TrainingDay.Columns.FIELD_TRAINING_NAME)));
+            trainingDay.setImageUrl(c.getString(c.getColumnIndex(TrainingDay.Columns.FIELD_IMAGE_URL)));
+            trainingDay.setColor(c.getInt(c.getColumnIndex(TrainingDay.Columns.FIELD_COLOR)));
+        }
+        c.close();
+        return trainingDay;
     }
 
     public void persistTrainingDay(TrainingDay trainingDay){

@@ -103,6 +103,7 @@
     <orderEntry type="library" exported="" name="google-play-services" level="project" />
     <orderEntry type="library" exported="" name="google-api-services-drive-v2-rev126-1.16.0-rc" level="project" />
     <orderEntry type="library" exported="" name="google-http-client-jackson-1.16.0-rc" level="project" />
+    <orderEntry type="module" module-name="view_pager_indicator" exported="" />
   </component>
 </module>
 

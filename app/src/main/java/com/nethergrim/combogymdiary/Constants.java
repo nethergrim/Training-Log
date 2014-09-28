@@ -3,6 +3,12 @@ package com.nethergrim.combogymdiary;
 
 import android.content.Context;
 
+import com.loopj.android.image.SmartImageView;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
 public class Constants {
 
     public static final String TYPEFACE_LIGHT = "fonts/Roboto-Light.ttf";
@@ -21,10 +27,8 @@ public class Constants {
     public final static String TYPE_OF_DIALOG = "type_of_dialog";
     public static final String MARKET_LINK = "market://details?id=com.nethergrim.combogymdiary";
     public static final String MARKET_LINK_HTTP = "http://play.google.com/store/apps/details?id=com.nethergrim.combogymdiary";
-    public static final String INMOBI_PROPERTY_ID = "d87bc812659c45b39c7c5ad79ea043fa";
     public static String[] partsOfBody;
-
-
+    public static List<String> partsOfBodyURLs = new ArrayList<String>();
 
     public static String[] getPartsOfBodyRealNames(Context context) {
         String[] array = context.getResources().getStringArray(R.array.MuscleGroupsArray);
@@ -38,6 +42,25 @@ public class Constants {
         result[6] = array[6];
         result[7] = context.getResources().getString(R.string.without_category);
         partsOfBody = result;
+        partsOfBodyURLs.add("http://www.criticalbench.com/exercises/pics/exercises-chest.gif");
+        partsOfBodyURLs.add("http://www.criticalbench.com/exercises/pics/exercises-biceps.gif");
+        partsOfBodyURLs.add("http://www.criticalbench.com/exercises/pics/exercises-triceps.gif");
+        partsOfBodyURLs.add("http://www.criticalbench.com/exercises/pics/exercises-shoulders.gif");
+        partsOfBodyURLs.add("http://www.criticalbench.com/exercises/pics/exercises-obliques.gif");
+        partsOfBodyURLs.add("http://www.criticalbench.com/exercises/pics/exercises-all-abs.gif");
+        partsOfBodyURLs.add("http://www.criticalbench.com/exercises/pics/exercises-quads.gif");
+        partsOfBodyURLs.add("http://www.criticalbench.com/exercises/pics/exercises-traps.gif");
+        partsOfBodyURLs.add("http://www.criticalbench.com/exercises/pics/exercises-arms.gif");
+        partsOfBodyURLs.add("http://www.criticalbench.com/exercises/pics/exercises-back-traps.gif");
+        partsOfBodyURLs.add("http://www.criticalbench.com/exercises/pics/exercises-lowerback.gif");
+        partsOfBodyURLs.add("http://www.criticalbench.com/exercises/pics/exercises-glutes.gif");
+        partsOfBodyURLs.add("http://www.criticalbench.com/exercises/pics/exercises-legs.gif");
+        partsOfBodyURLs.add("http://www.criticalbench.com/exercises/pics/exercises-hamstrings.gif");
+        partsOfBodyURLs.add("http://www.criticalbench.com/exercises/pics/exercises-calves.gif");
+        for (String partsOfBodyURL : partsOfBodyURLs) { // caching images from web!
+            SmartImageView smartImageView = new SmartImageView(context);
+            smartImageView.setImageUrl(partsOfBodyURL);
+        }
         return result;
     }
 

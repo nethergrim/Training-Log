@@ -2,75 +2,91 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingRight="16dp"
-    android:paddingLeft="16dp"
-    android:paddingBottom="4dp"
     android:background="@color/white"
     tools:context="com.nethergrim.combogymdiary.activities.CreatingTrainingDayActivity">
 
-    <EditText
-        android:layout_alignParentTop="true"
-        android:textSize="16sp"
-        android:ellipsize="end"
-        android:singleLine="true"
-        android:hint="@string/add_training_program_to_list"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:inputType="textCapWords"
-        android:id="@+id/etTrainingName"
-        android:layout_height="48dp" />
+        android:id="@+id/content"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:id="@+id/content_first"
+            android:layout_width="match_parent"
+            android:paddingRight="16dp"
+            android:paddingLeft="16dp"
+            android:paddingBottom="4dp"
+            android:layout_height="match_parent">
+
+            <EditText
+                android:layout_alignParentTop="true"
+                android:textSize="16sp"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:hint="@string/add_training_program_to_list"
+                android:layout_width="match_parent"
+                android:inputType="textCapWords"
+                android:id="@+id/etTrainingName"
+                android:layout_height="48dp" />
+
+            <com.nethergrim.combogymdiary.view.TextViewLight
+                android:layout_centerInParent="true"
+                android:textSize="17sp"
+                android:textColor="@color/gray_dark"
+                android:visibility="visible"
+                android:gravity="center"
+                android:text="@string/to_add_exercise_press_plus"
+                android:id="@+id/text_add_exersices"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <com.nethergrim.combogymdiary.view.DraggableListView
+                android:id="@+id/listView"
+                android:choiceMode="multipleChoice"
+                android:layout_below="@+id/etTrainingName"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
 
 
+            <com.nethergrim.combogymdiary.view.FAB
+                android:id="@+id/btnAdd"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_action_new"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:layout_marginBottom="16dp"
+                android:layout_marginLeft="16dp"
+                />
 
-    <com.nethergrim.combogymdiary.view.TextViewLight
-        android:layout_centerInParent="true"
-        android:textSize="17sp"
-        android:textColor="@color/gray_dark"
-        android:visibility="visible"
-        android:gravity="center"
-        android:text="@string/to_add_exercise_press_plus"
-        android:id="@+id/text_add_exersices"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+            <com.nethergrim.combogymdiary.view.FAB
+                android:id="@+id/fabSave"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_navigation_forward"
+                android:layout_alignParentBottom="true"
+                android:layout_marginRight="16dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginBottom="16dp"
+                />
 
-    <com.nethergrim.combogymdiary.view.DraggableListView
-        android:id="@+id/listView"
-        android:choiceMode="multipleChoice"
-        android:layout_below="@+id/etTrainingName"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+            <com.nethergrim.combogymdiary.view.FAB
+                android:id="@+id/fabSs"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_action_ss"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="16dp"
+                />
 
 
-    <com.nethergrim.combogymdiary.view.FAB
-        android:id="@+id/btnAdd"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_action_new"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_marginBottom="16dp"
-        android:layout_marginLeft="16dp"
-        />
+            </RelativeLayout>
 
-    <com.nethergrim.combogymdiary.view.FAB
-        android:id="@+id/fabSave"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_action_save"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="16dp"
-        />
 
-    <com.nethergrim.combogymdiary.view.FAB
-        android:id="@+id/fabSs"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_action_ss"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="16dp"
-        android:layout_marginBottom="16dp"
-        />
+        </FrameLayout>
+
+
 
 
 

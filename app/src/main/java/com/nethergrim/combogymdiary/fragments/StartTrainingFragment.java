@@ -93,7 +93,7 @@ public class StartTrainingFragment extends AbstractFragment implements TrainingD
         customBuilder.setMessage(getString(R.string.delete) + " " + trainingDay.getTrainingName() + " ?")
                 .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        db.deleteTrainingProgram(trainingDay.getId(), false);
+                        db.deleteTrainingDay(trainingDay.getId(), false);
                         loadData();
                         dialog.cancel();
                     }

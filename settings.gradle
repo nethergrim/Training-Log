@@ -1,1 +1,2 @@
 include ':app'
+include ':view_pager_indicator'

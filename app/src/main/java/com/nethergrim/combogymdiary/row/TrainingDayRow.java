@@ -10,6 +10,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.loopj.android.image.SmartImageView;
+import com.nethergrim.combogymdiary.Constants;
 import com.nethergrim.combogymdiary.MyApp;
 import com.nethergrim.combogymdiary.R;
 import com.nethergrim.combogymdiary.model.TrainingDay;
@@ -56,7 +57,11 @@ public class TrainingDayRow implements ExpandableRow, View.OnClickListener {
         holder.btnEdit.setOnClickListener(this);
         holder.textName.setText(trainingDay.getTrainingName());
         holder.textDayOfWeek.setText(trainingDay.getDayOfWeek().getName(holder.textDayOfWeek.getContext()));
-        holder.image.setImageUrl(trainingDay.getImageUrl());
+        if (trainingDay.getImageUrl() != null && trainingDay.getImageUrl().length() > 5){
+            holder.image.setImageUrl(trainingDay.getImageUrl());
+        } else {
+            holder.image.setImageResource(R.drawable.body_question);
+        }
         if (expanded){
             changeLayoutHeight(1);
         } else {
@@ -119,6 +124,7 @@ public class TrainingDayRow implements ExpandableRow, View.OnClickListener {
                 listener.onDeletePressed(trainingDay);
                 break;
             case R.id.btn_edit:
+                toggle();
                 listener.onEditPressed(trainingDay);
                 break;
             case R.id.btn_start_training:

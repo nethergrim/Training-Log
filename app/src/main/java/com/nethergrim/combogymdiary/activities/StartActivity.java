@@ -1,6 +1,8 @@
 package com.nethergrim.combogymdiary.activities;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -25,6 +27,7 @@ public class StartActivity extends AnalyticsActivity {
 
     private void goNext() {
         Intent gotoStartTraining = new Intent(this, BaseActivity.class);
+        gotoStartTraining.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(gotoStartTraining);
         finish();
     }
@@ -44,7 +47,16 @@ public class StartActivity extends AnalyticsActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        } else setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         setContentView(R.layout.activity_main);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
     }
 
     @Override

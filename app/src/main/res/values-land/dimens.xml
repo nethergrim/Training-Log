@@ -1,19 +1,4 @@
 <resources>
 
-    <!-- Default screen margins, per the Android Design guidelines. -->
-    <dimen name="activity_horizontal_margin">16dp</dimen>
-    <dimen name="activity_vertical_margin">16dp</dimen>
-
-    <dimen name="medium_padding">8dp</dimen>
-    <dimen name="big_padding">16dp</dimen>
-    <dimen name="small_padding">4dp</dimen>
-
-    <dimen name="normal_text">16sp</dimen>
-    <dimen name="big_text">18sp</dimen>
-    <dimen name="small_text">14sp</dimen>
-
-    <integer name="animation_expand_time">350</integer>
-    <integer name="animation_appear_time">200</integer>
-
-    <integer name="training_day_row_expanded_height">150</integer>
+    <integer name="training_day_row_expanded_height">200</integer>
 </resources>

@@ -2,7 +2,6 @@ package com.nethergrim.combogymdiary.fragments;
 
 import android.app.ActionBar;
 import android.app.DialogFragment;
-import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -736,7 +735,7 @@ public class TrainingFragment extends AbstractFragment implements
 
     private void saveExercicesToDatabase() { // FIXME make at background
         List<Set> currentData = adapter.getData();
-        db.deleteTrainingProgram((long) trainingId, true);
+        db.deleteTrainingDay((long) trainingId, true);
         for (int i = 0; i < currentData.size(); i++) {
             ExerciseTrainingObject exerciseTrainingObject = new ExerciseTrainingObject();
             Set row = currentData.get(i);

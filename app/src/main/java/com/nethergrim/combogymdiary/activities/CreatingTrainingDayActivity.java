@@ -1,6 +1,8 @@
 package com.nethergrim.combogymdiary.activities;
 
 import android.content.Context;
+import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.SparseBooleanArray;
@@ -22,6 +24,7 @@ import com.nethergrim.combogymdiary.DB;
 import com.nethergrim.combogymdiary.R;
 import com.nethergrim.combogymdiary.dialogs.DialogAddExercises;
 import com.nethergrim.combogymdiary.dialogs.DialogInfo;
+import com.nethergrim.combogymdiary.fragments.CreateTrainingDayFragment;
 import com.nethergrim.combogymdiary.model.Exercise;
 import com.nethergrim.combogymdiary.model.ExerciseTrainingObject;
 import com.nethergrim.combogymdiary.tools.Prefs;
@@ -36,7 +39,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class CreatingTrainingDayActivity extends AnalyticsActivity implements DialogAddExercises.OnExerciseAddCallback, DraggableListView.OnListItemSwapListener {
+public class CreatingTrainingDayActivity extends AnalyticsActivity implements DialogAddExercises.OnExerciseAddCallback, DraggableListView.OnListItemSwapListener, CreateTrainingDayFragment.OnFragmentInteractionListener {
 
 
     public static final String BUNDLE_ID_KEY = "com.nethergrim.combogymdiary.ID";
@@ -111,6 +114,9 @@ public class CreatingTrainingDayActivity extends AnalyticsActivity implements Di
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        } else setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         setContentView(R.layout.activity_new_creating_training_day);
         if (getIntent().getIntExtra(BUNDLE_ID_KEY, -1) >= 0) {
             oldId = getIntent().getIntExtra(BUNDLE_ID_KEY, 0);
@@ -284,7 +290,7 @@ public class CreatingTrainingDayActivity extends AnalyticsActivity implements Di
         fabSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!isInActionMode) {
+                if (!isInActionMode) { // FIXME go next!
                     save();
                 }
             }
@@ -308,15 +314,14 @@ public class CreatingTrainingDayActivity extends AnalyticsActivity implements Di
         } else if (list.getCount() == 0) {
             Toast.makeText(this, R.string.add_exercises_to_workout, Toast.LENGTH_SHORT).show();
         } else {
-            if (editing) db.deleteTrainingProgram((long) oldId, false);
+            if (editing) db.deleteTrainingDay((long) oldId, false);
             List<Row> rows = adapter.getRows();
-            int trainingId = (int) db.addTrainings(etName.getText().toString());
-
+            long trainingId = db.addTrainings(etName.getText().toString());
             for (int i = 0; i < rows.size(); i++) {
                 ExerciseTrainingObject exerciseTrainingObject = new ExerciseTrainingObject();
                 Row row = rows.get(i);
 
-                exerciseTrainingObject.setTrainingProgramId(trainingId);
+                exerciseTrainingObject.setTrainingProgramId((int) trainingId);
                 exerciseTrainingObject.setExerciseId((int) row.getExercise().getId());
                 exerciseTrainingObject.setPositionAtTraining(i);
 
@@ -335,8 +340,9 @@ public class CreatingTrainingDayActivity extends AnalyticsActivity implements Di
                 db.addExerciseTrainingObject(exerciseTrainingObject);
 
             }
-            Toast.makeText(this, R.string.saved, Toast.LENGTH_SHORT).show();
-            finish();
+            findViewById(R.id.content_first).setVisibility(View.GONE);
+
+            getSupportFragmentManager().beginTransaction().replace(R.id.content, CreateTrainingDayFragment.newInstance(trainingId)).commit();
         }
     }
 
@@ -367,6 +373,12 @@ public class CreatingTrainingDayActivity extends AnalyticsActivity implements Di
     protected void onDestroy() {
         super.onDestroy();
         db.close();
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
+    }
+
+    @Override
+    public void onTrainingDaySaved(Long id) {
+        finish();
     }
 
     private class TrainingDayAdapter extends BaseAdapter {
@@ -568,4 +580,6 @@ public class CreatingTrainingDayActivity extends AnalyticsActivity implements Di
             this.supersetPosition = supersetPosition;
         }
     }
+
+
 }
