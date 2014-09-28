@@ -128,7 +128,6 @@ public class CreatingTrainingDayActivity extends AnalyticsActivity implements Di
             }
         }
         db = new DB(this);
-        db.open();
         etName = (EditText) findViewById(R.id.etTrainingName);
         if (!editing) {
             setTitle(R.string.creating_program);
@@ -316,7 +315,7 @@ public class CreatingTrainingDayActivity extends AnalyticsActivity implements Di
         } else {
             if (editing) db.deleteTrainingDay((long) oldId, false);
             List<Row> rows = adapter.getRows();
-            long trainingId = db.addTrainings(etName.getText().toString());
+            long trainingId = new DB(this).addTrainings(etName.getText().toString());
             for (int i = 0; i < rows.size(); i++) {
                 ExerciseTrainingObject exerciseTrainingObject = new ExerciseTrainingObject();
                 Row row = rows.get(i);
@@ -337,11 +336,10 @@ public class CreatingTrainingDayActivity extends AnalyticsActivity implements Di
                     exerciseTrainingObject.setPositionAtSuperset(0);
                 }
 
-                db.addExerciseTrainingObject(exerciseTrainingObject);
+                new DB(this).addExerciseTrainingObject(exerciseTrainingObject);
 
             }
             findViewById(R.id.content_first).setVisibility(View.GONE);
-
             getSupportFragmentManager().beginTransaction().replace(R.id.content, CreateTrainingDayFragment.newInstance(trainingId)).commit();
         }
     }
@@ -372,7 +370,6 @@ public class CreatingTrainingDayActivity extends AnalyticsActivity implements Di
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        db.close();
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
     }
 

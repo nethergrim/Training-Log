@@ -42,7 +42,7 @@ public class TrainingService extends Service {
                 System.currentTimeMillis());
 
         Intent intent = new Intent(this, StartActivity.class);
-        // intent.putExtra("trainingName", trainingNAME);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pIntent = PendingIntent.getActivity(this, 0, intent, 0);
 
         notif.setLatestEventInfo(this,

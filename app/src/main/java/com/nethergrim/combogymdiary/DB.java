@@ -43,7 +43,7 @@ public class DB {
     public static final String DB_MEASURE_TABLE = "measurements_tab";
     public static final String PART_OF_BODY_FOR_MEASURING = "part_of_body";
     public static final String MEASURE_VALUE = "measure_value";
-    public static final String DB_TRAININGS_TABLE = "trainings_tab";
+    public static final String TRAINING_DAYS = "trainings_tab";
     public static final String strSeparator = "__,__";
     public static final String SIMPLE_DATE_FORMAT = "dd.MM.yyyy";
     public static final String SUPERSET_EXISTS = "superset";
@@ -90,7 +90,7 @@ public class DB {
             PART_OF_BODY_FOR_MEASURING + " text, " +
             MEASURE_VALUE + " text" + ");";
 
-    private static final String DB_TRAININGS_CREATE = "create table "  + DB_TRAININGS_TABLE + "("
+    private static final String DB_TRAINING_DAYS_CREATE = "create table "  + TRAINING_DAYS + "("
             + _ID + " integer primary key autoincrement, "
             + TRAINING_NAME + " text, "
             + EXERCISE_NAME + " text, "             // UNUSED, DEPRECATED!
@@ -151,7 +151,7 @@ public class DB {
     }
 
     public boolean hasTrainingPrograms(){
-        Cursor c = mDB.query(DB_TRAININGS_TABLE,null,null,null,null,null,null);
+        Cursor c = mDB.query(TRAINING_DAYS,null,null,null,null,null,null);
         return c.moveToFirst();
     }
 
@@ -220,9 +220,10 @@ public class DB {
 
     public void deleteTrainingDay(Long id, boolean onlyFromExerciseTable){
         if (!onlyFromExerciseTable){
-            mDB.delete(DB_TRAININGS_TABLE, _ID + " = " + id, null);
+            mDB.delete(TRAINING_DAYS, _ID + " = " + id, null);
         }
         mDB.delete(DB_TABLE_TRAINING_EXERCISE, TRAINING_PROGRAM_ID + " = " + id, null);
+        close();
     }
 
     public void updateTrainingDay(TrainingDay trainingDay){
@@ -346,7 +347,7 @@ public class DB {
     }
 
     public Cursor getDataTrainings(String[] column, String selection, String[] selectionArgs, String groupBy, String having, String orderedBy) {
-        return mDB.query(DB_TRAININGS_TABLE, column, selection, selectionArgs, groupBy, having, orderedBy);
+        return mDB.query(TRAINING_DAYS, column, selection, selectionArgs, groupBy, having, orderedBy);
     }
 
     public Cursor getCommentData(String date) {
@@ -505,11 +506,9 @@ public class DB {
         mDB.insert(TrainingDay.Columns.TABLE, null, cv);
     }
 
-//    public void deleteTrainingDay(Trainin
-
     public String getTrainingName(int id) {
         String[] args = {id + ""};
-        Cursor c = mDB.query(DB_TRAININGS_TABLE, null, _ID + "=?", args, null, null, null);
+        Cursor c = mDB.query(TRAINING_DAYS, null, _ID + "=?", args, null, null, null);
         if (c.moveToFirst()) {
             return c.getString(1);
         } else
@@ -519,7 +518,7 @@ public class DB {
     public long addTrainings(String traName) {
         ContentValues cv = new ContentValues();
         cv.put(TRAINING_NAME, traName);
-        return mDB.insert(DB_TRAININGS_TABLE, null, cv);
+        return mDB.insert(TRAINING_DAYS, null, cv);
     }
 
     public void addRecMeasure(String date, String part_of_body, String value) {
@@ -583,16 +582,6 @@ public class DB {
         mDB.update(DB_TABLE_MAIN, cv, _ID + " = " + Id, null);
     }
 
-    public void updateRec_Training(int Id, int colId, String data_str) {
-        ContentValues cv = new ContentValues();
-        if (colId == 1) {
-            cv.put(TRAINING_NAME, data_str);
-        } else if (colId == 2) {
-            cv.put(EXERCISE_NAME, data_str);
-        }
-        mDB.update(DB_TRAININGS_TABLE, cv, _ID + " = " + Id, null);
-    }
-
     public void deleteExercise(long id) {
         mDB.delete(DB_TABLE_TRAINING_EXERCISE, _ID + " = " + id, null);
         mDB.delete(DB_TABLE_EXERCISES, _ID + " = " + id, null);
@@ -614,7 +603,7 @@ public class DB {
             db.execSQL(DB_EXE_CREATE);
             db.execSQL(DB_MAIN_CREATE);
             db.execSQL(DB_MEASURE_CREATE);
-            db.execSQL(DB_TRAININGS_CREATE);
+            db.execSQL(DB_TRAINING_DAYS_CREATE);
             db.execSQL(DB_COMMENT_CREATE);
             db.execSQL(DB_TRAINING_EXERCISE_CREATE);
             db.execSQL(DB_TRAINING_PROGRAMS_CREATE);
@@ -626,7 +615,7 @@ public class DB {
                 db.execSQL(DB_MEASURE_CREATE);
             }
             if (oldVersion == 2 && newVersion == 3) {
-                db.execSQL(DB_TRAININGS_CREATE);
+                db.execSQL(DB_TRAINING_DAYS_CREATE);
             }
             if (oldVersion == 3 && newVersion == 4) {
                 db.execSQL(DB_COMMENT_CREATE);
@@ -647,6 +636,32 @@ public class DB {
                 db.execSQL("ALTER TABLE " + TrainingDay.Columns.TABLE + " ADD COLUMN " + TrainingDay.Columns.FIELD_COLOR + " INTEGER");
                 db.execSQL("ALTER TABLE " + TrainingDay.Columns.TABLE + " ADD COLUMN " + TrainingDay.Columns.FIELD_CREATED_AT + " INTEGER");
                 db.execSQL("ALTER TABLE " + TrainingDay.Columns.TABLE + " ADD COLUMN " + TrainingDay.Columns.FIELD_TRAINING_PROGRAM_ID + " INTEGER");
+                Cursor c = db.query(TrainingDay.Columns.TABLE, null,null, null,null,null,null);
+                if (c.moveToFirst()){
+                    int dayOkWeek = 1;
+                    do {
+                        TrainingDay trainingDay = new TrainingDay();
+                        trainingDay.setId(c.getLong(0));
+                        trainingDay.setCreatedAt(System.currentTimeMillis());
+                        trainingDay.setDayOfWeek(DayOfWeek.getByCode(dayOkWeek));
+                        trainingDay.setTrainingName(c.getString(c.getColumnIndex(TrainingDay.Columns.FIELD_TRAINING_NAME)));
+                        trainingDay.setImageUrl("");
+                        trainingDay.setColor(c.getInt(c.getColumnIndex(TrainingDay.Columns.FIELD_COLOR)));
+
+                        ContentValues cv = new ContentValues();
+                        cv.put(TrainingDay.Columns.FIELD_CREATED_AT, System.currentTimeMillis());
+                        cv.put(TrainingDay.Columns.FIELD_COLOR, trainingDay.getColor());
+                        cv.put(TrainingDay.Columns.FIELD_IMAGE_URL, trainingDay.getImageUrl());
+                        cv.put(TrainingDay.Columns.FIELD_DAY_OF_WEEK, trainingDay.getDayOfWeek().getCode());
+                        cv.put(TrainingDay.Columns.FIELD_TRAINING_NAME, trainingDay.getTrainingName());
+                        cv.put(TrainingDay.Columns.FIELD_TRAINING_PROGRAM_ID, trainingDay.getTrainingProgramId());
+                        db.update(TrainingDay.Columns.TABLE, cv, TrainingDay.Columns.FIELD_ID + " = " + String.valueOf(trainingDay.getId()), null);
+                        dayOkWeek++;
+                        if (dayOkWeek > 7){
+                            dayOkWeek = 1;
+                        }
+                    } while(c.moveToNext());
+                }
             }
         }
     }

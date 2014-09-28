@@ -35,7 +35,6 @@ public class StartTrainingFragment extends AbstractFragment implements TrainingD
         OnItemClickListener, View.OnClickListener, LoaderManager.LoaderCallbacks<List<TrainingDay>> {
 
     private HeaderFooterListVIew list;
-    private DB db;
     private BaseActivityInterface baseActivityInterface;
     private ExpandableListViewAdapter adapter;
     private static final int LOADER_TRAINING_DAYS = 11;
@@ -56,7 +55,6 @@ public class StartTrainingFragment extends AbstractFragment implements TrainingD
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
         setHasOptionsMenu(true);
-        db = new DB(getActivity());
         getLoaderManager().initLoader(LOADER_TRAINING_DAYS, null, this);
     }
 
@@ -110,7 +108,7 @@ public class StartTrainingFragment extends AbstractFragment implements TrainingD
         customBuilder.setMessage(getString(R.string.delete) + " " + trainingDay.getTrainingName() + " ?")
                 .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        db.deleteTrainingDay(trainingDay.getId(), false);
+                        new DB(getActivity()).deleteTrainingDay(trainingDay.getId(), false);
                         loadData();
                         dialog.cancel();
                     }
