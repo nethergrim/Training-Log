@@ -35,6 +35,10 @@ public class ExpandableListViewAdapter extends BaseAdapter {
         rows.add(row);
     }
 
+    public void addRows(List<ExpandableRow> rows1){
+        this.rows.addAll(rows1);
+    }
+
     public void removeRow(int i) {
         rows.remove(i);
         notifyDataSetChanged();

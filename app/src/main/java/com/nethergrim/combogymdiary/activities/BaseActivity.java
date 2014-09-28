@@ -69,7 +69,6 @@ public class BaseActivity extends AnalyticsActivity implements BaseActivityInter
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
-    private String[] listButtons;
     private int FRAGMENT_NUMBER = 0;
     private SharedPreferences sp;
     private ArrayAdapter<String> adapter;
@@ -105,7 +104,7 @@ public class BaseActivity extends AnalyticsActivity implements BaseActivityInter
     }
 
     @Override
-    public void onStartTrainingPressed(long trainingDayId) { // FIXME manke new implementation
+    public void onStartTrainingPressed(long trainingDayId) {
         trainingFragment = new TrainingFragment();
         currentFragment = trainingFragment;
         Bundle args = new Bundle();
@@ -113,8 +112,7 @@ public class BaseActivity extends AnalyticsActivity implements BaseActivityInter
         currentFragment.setArguments(args);
         getFragmentManager().beginTransaction().replace(R.id.content, currentFragment).commit();
         setTrainingAlreadyStarted(true);
-        listButtons[0] = getResources().getString(R.string.continue_training);
-        adapter.notifyDataSetChanged();
+        initStrings();
     }
 
 
@@ -148,8 +146,6 @@ public class BaseActivity extends AnalyticsActivity implements BaseActivityInter
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
         mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
         initStrings();
-        adapter = new ArrayAdapter<String>(this, R.layout.menu_list_item, listButtons);
-        mDrawerList.setAdapter(adapter);
         mDrawerList.setOnItemClickListener(this);
         mDrawerToggle = new ActionBarDrawerToggle(this, /* host Activity */
                 mDrawerLayout, /* DrawerLayout object */
@@ -174,10 +170,8 @@ public class BaseActivity extends AnalyticsActivity implements BaseActivityInter
             Bundle args = new Bundle();
             args.putInt(TrainingFragment.BUNDLE_KEY_TRAINING_ID, Prefs.get().getCurrentTrainingId());
             currentFragment.setArguments(args);
-            listButtons[0] = getResources().getString(
-                    R.string.continue_training);
-            adapter.notifyDataSetChanged();
             setTrainingAlreadyStarted(true);
+            initStrings();
         } else {
             currentFragment = startTrainingFragment;
         }
@@ -264,28 +258,35 @@ public class BaseActivity extends AnalyticsActivity implements BaseActivityInter
     }
 
     private void initStrings() {
+        String[] listButtons;
         if (!Prefs.get().getAdsRemoved()) {
             listButtons = new String[9];
             listButtons[8] = getString(R.string.remove_ads);
         } else {
             listButtons = new String[8];
         }
-        listButtons[0] = getResources().getString(
-                R.string.startTrainingButtonString);
-        listButtons[1] = getResources().getString(
-                R.string.excersisiesListButtonString);
+        if (isTrainingAlreadyStarted()){
+            listButtons[0] = getResources().getString(R.string.continue_training);
+        } else {
+            listButtons[0] = getResources().getString(R.string.startTrainingButtonString);
+        }
+
+        listButtons[1] = getResources().getString(R.string.excersisiesListButtonString);
         listButtons[2] = getResources().getString(R.string.training_history);
         listButtons[3] = getResources().getString(R.string.measurements);
         listButtons[4] = getResources().getString(R.string.exe_catalog);
         listButtons[5] = getResources().getString(R.string.statistics);
-        listButtons[6] = getResources()
-                .getString(R.string.settingsButtonString);
+        listButtons[6] = getResources().getString(R.string.settingsButtonString);
         listButtons[7] = getResources().getString(R.string.faq);
         try {
             adapter.notifyDataSetChanged();
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        adapter = new ArrayAdapter<String>(this, R.layout.menu_list_item, listButtons);
+        mDrawerList.setAdapter(adapter);
+        mDrawerList.setItemChecked(previouslyChecked, true);
     }
 
     public void onItemSelected(int position) {
@@ -310,9 +311,7 @@ public class BaseActivity extends AnalyticsActivity implements BaseActivityInter
                     else
                         return;
                     currentFragment.setArguments(args);
-                    listButtons[0] = getResources().getString(
-                            R.string.continue_training);
-                    adapter.notifyDataSetChanged();
+                    initStrings();
                 } else {
                     currentFragment = startTrainingFragment;
                 }
@@ -408,6 +407,7 @@ public class BaseActivity extends AnalyticsActivity implements BaseActivityInter
     public void onChoose() {
         getActionBar().setSubtitle(null);
         setTrainingAlreadyStarted(false);
+        initStrings();
         MyBackupAgent.requestBackup(this);
         DB db = new DB(this);
         db.open();
@@ -436,14 +436,6 @@ public class BaseActivity extends AnalyticsActivity implements BaseActivityInter
         notificationManager.cancelAll();
 
         if (Prefs.get().getAutoBackupToDrive()) {
-//            Thread thread = new Thread(new Runnable() {
-//                @Override
-//                public void run() {
-//                    GoogleDriveHelper googleDriveHelper = new GoogleDriveHelper(BaseActivity.this);
-//                    googleDriveHelper.autoBackup();
-//                }
-//            });
-//            thread.start();
             Intent intent = new Intent(this, DriveBackupActivity.class);
             intent.putExtra(BaseDriveActivity.KEY_AUTOBACKUP, true);
             startActivity(intent);
@@ -452,12 +444,7 @@ public class BaseActivity extends AnalyticsActivity implements BaseActivityInter
         Prefs.get().setTrainingsCount(Prefs.get().getTrainingsCount() + 1);
         getFragmentManager().beginTransaction().replace(R.id.content, new StartTrainingFragment()).commit();
         db.close();
-        listButtons[0] = getResources().getString(
-                R.string.startTrainingButtonString);
-        adapter.notifyDataSetChanged();
         getActionBar().setSubtitle(null);
-        BackupManager bm = new BackupManager(this);
-        bm.dataChanged();
     }
 
     @Override

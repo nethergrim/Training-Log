@@ -736,7 +736,7 @@ public class TrainingFragment extends AbstractFragment implements
 
     private void saveExercicesToDatabase() { // FIXME make at background
         List<Set> currentData = adapter.getData();
-        db.deleteTrainingProgram(trainingId, true);
+        db.deleteTrainingProgram((long) trainingId, true);
         for (int i = 0; i < currentData.size(); i++) {
             ExerciseTrainingObject exerciseTrainingObject = new ExerciseTrainingObject();
             Set row = currentData.get(i);

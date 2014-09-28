@@ -9,6 +9,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.BaseAdapter;
 
 import com.nethergrim.combogymdiary.R;
+import com.nethergrim.combogymdiary.row.ExpandableRow;
 import com.nethergrim.combogymdiary.row.Row;
 import com.nhaarman.listviewanimations.util.Insertable;
 
@@ -33,6 +34,10 @@ public class ListViewAdapter extends BaseAdapter {
 
     public List<Row> getRows() {
         return rows;
+    }
+
+    public void addRows(List<Row> rows1){
+        this.rows.addAll(rows1);
     }
 
     public void addRow(Row row) {

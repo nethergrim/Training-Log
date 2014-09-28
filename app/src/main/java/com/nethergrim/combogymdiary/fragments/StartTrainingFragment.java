@@ -69,14 +69,11 @@ public class StartTrainingFragment extends AbstractFragment implements TrainingD
     @Override
     public void onStart() {
         super.onStart();
-        new GetTrainingDaysTask().execute();
+        loadData();
     }
 
-    private void showData(List<TrainingDay> trainingDays) {
-        for (TrainingDay trainingDay : trainingDays) {
-            adapter.addRow(new TrainingDayRow(trainingDay, this));
-        }
-        adapter.notifyDataSetChanged();
+    public void loadData(){
+        new GetTrainingDaysTask().execute();
     }
 
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -86,16 +83,18 @@ public class StartTrainingFragment extends AbstractFragment implements TrainingD
 
     @Override
     public void onTrainingStartPressed(TrainingDay trainingDay) {
-
+        baseActivityInterface.onStartTrainingPressed(trainingDay.getId());
     }
 
     @Override
-    public void onDeletePressed(TrainingDay trainingDay) {
+    public void onDeletePressed(final TrainingDay trainingDay) {
         AlertDialog.Builder customBuilder = new AlertDialog.Builder(getActivity());
         customBuilder.setTitle(getString(R.string.delete));
         customBuilder.setMessage(getString(R.string.delete) + " " + trainingDay.getTrainingName() + " ?")
                 .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
+                        db.deleteTrainingProgram(trainingDay.getId(), false);
+                        loadData();
                         dialog.cancel();
                     }
                 })
@@ -110,7 +109,9 @@ public class StartTrainingFragment extends AbstractFragment implements TrainingD
 
     @Override
     public void onEditPressed(TrainingDay trainingDay) {
-
+        Intent intent = new Intent(getActivity(), CreatingTrainingDayActivity.class);
+        intent.putExtra(CreatingTrainingDayActivity.BUNDLE_ID_KEY,trainingDay.getId());
+        startActivity(intent);
     }
 
     @Override
@@ -130,13 +131,17 @@ public class StartTrainingFragment extends AbstractFragment implements TrainingD
 
         @Override
         protected List<TrainingDay> doInBackground(Void... voids) {
+            adapter.clearAdapter();
+            for (TrainingDay trainingDay : db.getTrainingDays()) {
+                adapter.addRow(new TrainingDayRow(trainingDay, StartTrainingFragment.this));
+            }
             return db.getTrainingDays();
         }
 
         @Override
         protected void onPostExecute(List<TrainingDay> trainingDays) {
             super.onPostExecute(trainingDays);
-            showData(trainingDays);
+            adapter.notifyDataSetChanged();
         }
     }
 }

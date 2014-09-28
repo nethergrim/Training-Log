@@ -218,7 +218,7 @@ public class DB {
         return tmp > 0;
     }
 
-    public void deleteTrainingProgram(int id, boolean onlyFromExerciseTable){
+    public void deleteTrainingProgram(Long id, boolean onlyFromExerciseTable){
         if (!onlyFromExerciseTable){
             mDB.delete(DB_TRAININGS_TABLE, _ID + " = " + id, null);
         }
