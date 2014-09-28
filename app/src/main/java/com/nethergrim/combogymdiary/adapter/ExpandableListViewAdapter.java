@@ -75,8 +75,10 @@ public class ExpandableListViewAdapter extends BaseAdapter {
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
         View v = rows.get(i).getView(view, inflater);
-        Animation animation = AnimationUtils.loadAnimation(ctx, (i > lastPosition) ? R.anim.up_from_bottom : R.anim.down_from_top);
-        v.startAnimation(animation);
+        if (i > lastPosition){
+            Animation animation = AnimationUtils.loadAnimation(ctx, R.anim.up_from_bottom);
+            v.startAnimation(animation);
+        }
         lastPosition = i;
         return v;
     }

@@ -10,7 +10,9 @@ import android.os.Bundle;
 import com.nethergrim.combogymdiary.Constants;
 import com.nethergrim.combogymdiary.DB;
 import com.nethergrim.combogymdiary.R;
+import com.nethergrim.combogymdiary.model.DayOfWeek;
 import com.nethergrim.combogymdiary.model.ExerciseTrainingObject;
+import com.nethergrim.combogymdiary.model.TrainingDay;
 import com.nethergrim.combogymdiary.tools.Prefs;
 import com.yandex.metrica.Counter;
 
@@ -71,8 +73,12 @@ public class StartActivity extends AnalyticsActivity {
         } else goNext();
     }
 
-    private void initTableForFirstTime(String partOfBody, String trainingName, String[] exerciseList) {
+    private void initTableForFirstTime(String partOfBody, String trainingName, String[] exerciseList, DayOfWeek dayOfWeek, String url) {
         int trainingId = (int) db.addTrainings(trainingName);
+        TrainingDay trainingDay = db.getTrainingDay(trainingId);
+        trainingDay.setDayOfWeek(dayOfWeek);
+        trainingDay.setImageUrl(url);
+        db.updateTrainingDay(trainingDay);
         for (int i = 0; i < exerciseList.length; i++) {
             int exeId = (int) db.addExercise(exerciseList[i], "60", partOfBody);
             ExerciseTrainingObject exerciseTrainingObject = new ExerciseTrainingObject();
@@ -88,13 +94,13 @@ public class StartActivity extends AnalyticsActivity {
 
     private void initTableForFirstTime() {
         if (!db.hasTrainingPrograms()) {
-            initTableForFirstTime(Constants.PART_OF_BODY_LEGS, getString(R.string.traLegs), exeLegs);
-            initTableForFirstTime(Constants.PART_OF_BODY_CHEST, getString(R.string.traChest), exeChest);
-            initTableForFirstTime(Constants.PART_OF_BODY_BICEPS, getString(R.string.traBiceps), exeBiceps);
-            initTableForFirstTime(Constants.PART_OF_BODY_TRICEPS, getString(R.string.traTriceps), exeTriceps);
-            initTableForFirstTime(Constants.PART_OF_BODY_BACK, getString(R.string.traBack), exeBack);
-            initTableForFirstTime(Constants.PART_OF_BODY_SHOULDERS, getString(R.string.traShoulders), exeShoulders);
-            initTableForFirstTime(Constants.PART_OF_BODY_ABS, getString(R.string.traAbs), exeAbs);
+            initTableForFirstTime(Constants.PART_OF_BODY_LEGS, getString(R.string.traLegs), exeLegs, DayOfWeek.MONDAY, Constants.partsOfBodyURLs.get(12));
+            initTableForFirstTime(Constants.PART_OF_BODY_CHEST, getString(R.string.traChest), exeChest, DayOfWeek.TUESDAY, Constants.partsOfBodyURLs.get(0));
+            initTableForFirstTime(Constants.PART_OF_BODY_BICEPS, getString(R.string.traBiceps), exeBiceps, DayOfWeek.WEDNESDAY, Constants.partsOfBodyURLs.get(1));
+            initTableForFirstTime(Constants.PART_OF_BODY_TRICEPS, getString(R.string.traTriceps), exeTriceps, DayOfWeek.THURSDAY, Constants.partsOfBodyURLs.get(2));
+            initTableForFirstTime(Constants.PART_OF_BODY_BACK, getString(R.string.traBack), exeBack, DayOfWeek.FRIDAY, Constants.partsOfBodyURLs.get(9));
+            initTableForFirstTime(Constants.PART_OF_BODY_SHOULDERS, getString(R.string.traShoulders), exeShoulders, DayOfWeek.SATURDAY, Constants.partsOfBodyURLs.get(3));
+            initTableForFirstTime(Constants.PART_OF_BODY_ABS, getString(R.string.traAbs), exeAbs, DayOfWeek.SUNDAY, Constants.partsOfBodyURLs.get(5));
         }
     }
 

@@ -4,14 +4,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/gray_light_background"
+    android:paddingLeft="@dimen/medium_padding"
+    android:paddingRight="@dimen/medium_padding"
     android:orientation="vertical">
 
-    <ListView
+    <com.nethergrim.combogymdiary.view.HeaderFooterListVIew
         android:id="@+id/lvStartTraining"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentTop="true"
-        android:layout_margin="8dp"
         android:divider="@color/transparent"
         android:dividerHeight="@dimen/medium_padding"/>
 
@@ -21,8 +22,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:layout_marginBottom="16dp"
-        android:layout_marginRight="16dp"
+        android:layout_marginBottom="@dimen/big_padding"
+        android:layout_marginRight="@dimen/big_padding"
         android:src="@drawable/ic_action_new" />
 
 </RelativeLayout>

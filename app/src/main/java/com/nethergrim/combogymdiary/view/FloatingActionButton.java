@@ -20,6 +20,7 @@ import android.widget.FrameLayout;
 
 import com.nethergrim.combogymdiary.R;
 
+@Deprecated
 public class FloatingActionButton extends View {
 
     final static OvershootInterpolator overshootInterpolator = new OvershootInterpolator();

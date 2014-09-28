@@ -42,21 +42,21 @@ public class Constants {
         result[6] = array[6];
         result[7] = context.getResources().getString(R.string.without_category);
         partsOfBody = result;
-        partsOfBodyURLs.add("http://www.criticalbench.com/exercises/pics/exercises-chest.gif");
-        partsOfBodyURLs.add("http://www.criticalbench.com/exercises/pics/exercises-biceps.gif");
-        partsOfBodyURLs.add("http://www.criticalbench.com/exercises/pics/exercises-triceps.gif");
-        partsOfBodyURLs.add("http://www.criticalbench.com/exercises/pics/exercises-shoulders.gif");
-        partsOfBodyURLs.add("http://www.criticalbench.com/exercises/pics/exercises-obliques.gif");
-        partsOfBodyURLs.add("http://www.criticalbench.com/exercises/pics/exercises-all-abs.gif");
-        partsOfBodyURLs.add("http://www.criticalbench.com/exercises/pics/exercises-quads.gif");
-        partsOfBodyURLs.add("http://www.criticalbench.com/exercises/pics/exercises-traps.gif");
-        partsOfBodyURLs.add("http://www.criticalbench.com/exercises/pics/exercises-arms.gif");
-        partsOfBodyURLs.add("http://www.criticalbench.com/exercises/pics/exercises-back-traps.gif");
-        partsOfBodyURLs.add("http://www.criticalbench.com/exercises/pics/exercises-lowerback.gif");
-        partsOfBodyURLs.add("http://www.criticalbench.com/exercises/pics/exercises-glutes.gif");
-        partsOfBodyURLs.add("http://www.criticalbench.com/exercises/pics/exercises-legs.gif");
-        partsOfBodyURLs.add("http://www.criticalbench.com/exercises/pics/exercises-hamstrings.gif");
-        partsOfBodyURLs.add("http://www.criticalbench.com/exercises/pics/exercises-calves.gif");
+        partsOfBodyURLs.add("http://www.criticalbench.com/exercises/pics/exercises-chest.gif");         //0
+        partsOfBodyURLs.add("http://www.criticalbench.com/exercises/pics/exercises-biceps.gif");         //1
+        partsOfBodyURLs.add("http://www.criticalbench.com/exercises/pics/exercises-triceps.gif");         //2
+        partsOfBodyURLs.add("http://www.criticalbench.com/exercises/pics/exercises-shoulders.gif");         //3
+        partsOfBodyURLs.add("http://www.criticalbench.com/exercises/pics/exercises-obliques.gif");         //4
+        partsOfBodyURLs.add("http://www.criticalbench.com/exercises/pics/exercises-all-abs.gif");         //5
+        partsOfBodyURLs.add("http://www.criticalbench.com/exercises/pics/exercises-quads.gif");         //6
+        partsOfBodyURLs.add("http://www.criticalbench.com/exercises/pics/exercises-traps.gif");         //7
+        partsOfBodyURLs.add("http://www.criticalbench.com/exercises/pics/exercises-arms.gif");         //8
+        partsOfBodyURLs.add("http://www.criticalbench.com/exercises/pics/exercises-back-traps.gif");         //9
+        partsOfBodyURLs.add("http://www.criticalbench.com/exercises/pics/exercises-lowerback.gif");         //10
+        partsOfBodyURLs.add("http://www.criticalbench.com/exercises/pics/exercises-glutes.gif");         //11
+        partsOfBodyURLs.add("http://www.criticalbench.com/exercises/pics/exercises-legs.gif");         //12
+        partsOfBodyURLs.add("http://www.criticalbench.com/exercises/pics/exercises-hamstrings.gif");             //13
+        partsOfBodyURLs.add("http://www.criticalbench.com/exercises/pics/exercises-calves.gif");                //14
         for (String partsOfBodyURL : partsOfBodyURLs) { // caching images from web!
             SmartImageView smartImageView = new SmartImageView(context);
             smartImageView.setImageUrl(partsOfBodyURL);

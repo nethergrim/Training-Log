@@ -16,7 +16,9 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
+import com.nethergrim.combogymdiary.Constants;
 import com.nethergrim.combogymdiary.DB;
+import com.nethergrim.combogymdiary.MyApp;
 import com.nethergrim.combogymdiary.R;
 import com.nethergrim.combogymdiary.activities.CreatingTrainingDayActivity;
 import com.nethergrim.combogymdiary.adapter.ExpandableListViewAdapter;
@@ -25,14 +27,14 @@ import com.nethergrim.combogymdiary.row.TrainingDayRow;
 import com.nethergrim.combogymdiary.row.interfaces.TrainingDayRowInterface;
 import com.nethergrim.combogymdiary.tools.BaseActivityInterface;
 import com.nethergrim.combogymdiary.view.FAB;
+import com.nethergrim.combogymdiary.view.HeaderFooterListVIew;
 import com.shamanland.fab.ShowHideOnScroll;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class StartTrainingFragment extends AbstractFragment implements TrainingDayRowInterface, OnItemClickListener, View.OnClickListener {
 
-    private ListView lvMain;
+    private HeaderFooterListVIew list;
     private DB db;
     private BaseActivityInterface baseActivityInterface;
     private ExpandableListViewAdapter adapter;
@@ -56,14 +58,14 @@ public class StartTrainingFragment extends AbstractFragment implements TrainingD
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.start_training, null);
-        lvMain = (ListView) v.findViewById(R.id.lvStartTraining);
+        list = (HeaderFooterListVIew) v.findViewById(R.id.lvStartTraining);
         getActivity().getActionBar().setTitle(R.string.startTrainingButtonString);
         adapter = new ExpandableListViewAdapter(getActivity());
-        lvMain.setAdapter(adapter);
-        lvMain.setOnItemClickListener(this);
+        list.setAdapter(adapter);
+        list.setOnItemClickListener(this);
         FAB fabAdd = (FAB) v.findViewById(R.id.fabAddTrainings);
         fabAdd.setOnClickListener(this);
-        lvMain.setOnTouchListener(new ShowHideOnScroll(fabAdd));
+        list.setOnTouchListener(new ShowHideOnScroll(fabAdd));
         return v;
     }
 
@@ -73,7 +75,7 @@ public class StartTrainingFragment extends AbstractFragment implements TrainingD
         loadData();
     }
 
-    public void loadData(){
+    public void loadData() {
         new GetTrainingDaysTask().execute();
     }
 
@@ -111,15 +113,31 @@ public class StartTrainingFragment extends AbstractFragment implements TrainingD
     @Override
     public void onEditPressed(TrainingDay trainingDay) {
         Intent intent = new Intent(getActivity(), CreatingTrainingDayActivity.class);
-        intent.putExtra(CreatingTrainingDayActivity.BUNDLE_ID_KEY,trainingDay.getId());
+        intent.putExtra(CreatingTrainingDayActivity.BUNDLE_ID_KEY, trainingDay.getId());
         startActivity(intent);
     }
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        position--;
+        if (!adapter.getRows().get(position).isOpened())        {
+            list.smoothScrollToPosition(position);
+            final int finalPosition = position;
+            list.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if (finalPosition >= list.getLastVisiblePosition() - 1){
+                        try {
+                            list.smoothScrollToPosition(finalPosition + 1);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }, getResources().getInteger(R.integer.animation_expand_time));
+        }
+
         adapter.toggle(position);
-        if (!adapter.getRows().get(position).isOpened())
-            lvMain.smoothScrollToPosition(position);
     }
 
     @Override
@@ -128,24 +146,25 @@ public class StartTrainingFragment extends AbstractFragment implements TrainingD
         startActivity(gotoAddingProgramActivity);
     }
 
-    private class GetTrainingDaysTask extends AsyncTask<Void, Void, Void> {
+    private class GetTrainingDaysTask extends AsyncTask<Void, Void, List<TrainingDay>> {
 
         @Override
-        protected Void doInBackground(Void... voids) {
+        protected List<TrainingDay> doInBackground(Void... voids) {
             try {
                 adapter.clearAdapter();
-                for (TrainingDay trainingDay : db.getTrainingDays()) {
-                    adapter.addRow(new TrainingDayRow(trainingDay, StartTrainingFragment.this));
-                }
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            return null;
+            return db.getTrainingDays();
         }
 
         @Override
-        protected void onPostExecute(Void aVoid) {
+        protected void onPostExecute(List<TrainingDay> aVoid) {
             super.onPostExecute(aVoid);
+            for (TrainingDay trainingDay : aVoid) {
+                adapter.addRow(new TrainingDayRow(trainingDay, StartTrainingFragment.this));
+            }
             adapter.notifyDataSetChanged();
         }
     }
