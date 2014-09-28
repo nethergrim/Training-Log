@@ -3,9 +3,10 @@ package com.nethergrim.combogymdiary.fragments;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.LoaderManager;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.AsyncTask;
+import android.content.Loader;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -14,14 +15,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ListView;
 
-import com.nethergrim.combogymdiary.Constants;
 import com.nethergrim.combogymdiary.DB;
-import com.nethergrim.combogymdiary.MyApp;
 import com.nethergrim.combogymdiary.R;
 import com.nethergrim.combogymdiary.activities.CreatingTrainingDayActivity;
 import com.nethergrim.combogymdiary.adapter.ExpandableListViewAdapter;
+import com.nethergrim.combogymdiary.loaders.TrainingDayLoader;
 import com.nethergrim.combogymdiary.model.TrainingDay;
 import com.nethergrim.combogymdiary.row.TrainingDayRow;
 import com.nethergrim.combogymdiary.row.interfaces.TrainingDayRowInterface;
@@ -32,12 +31,15 @@ import com.shamanland.fab.ShowHideOnScroll;
 
 import java.util.List;
 
-public class StartTrainingFragment extends AbstractFragment implements TrainingDayRowInterface, OnItemClickListener, View.OnClickListener {
+public class StartTrainingFragment extends AbstractFragment implements TrainingDayRowInterface,
+        OnItemClickListener, View.OnClickListener, LoaderManager.LoaderCallbacks<List<TrainingDay>> {
 
     private HeaderFooterListVIew list;
     private DB db;
     private BaseActivityInterface baseActivityInterface;
     private ExpandableListViewAdapter adapter;
+    private static final int LOADER_TRAINING_DAYS = 11;
+
 
     @Override
     public void onAttach(Activity activity) {
@@ -49,13 +51,16 @@ public class StartTrainingFragment extends AbstractFragment implements TrainingD
         }
     }
 
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
         setHasOptionsMenu(true);
         db = new DB(getActivity());
+        getLoaderManager().initLoader(LOADER_TRAINING_DAYS, null, this);
     }
 
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.start_training, null);
         list = (HeaderFooterListVIew) v.findViewById(R.id.lvStartTraining);
@@ -76,9 +81,18 @@ public class StartTrainingFragment extends AbstractFragment implements TrainingD
     }
 
     public void loadData() {
-        new GetTrainingDaysTask().execute();
+        getLoaderManager().getLoader(LOADER_TRAINING_DAYS).forceLoad();
     }
 
+    public void showData(List<TrainingDay> trainingDays) {
+        adapter.clearAdapter();
+        for (TrainingDay trainingDay : trainingDays) {
+            adapter.addRow(new TrainingDayRow(trainingDay, StartTrainingFragment.this));
+        }
+        adapter.notifyDataSetChanged();
+    }
+
+    @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         menu.clear();
         super.onCreateOptionsMenu(menu, inflater);
@@ -120,13 +134,13 @@ public class StartTrainingFragment extends AbstractFragment implements TrainingD
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         position--;
-        if (!adapter.getRows().get(position).isOpened())        {
+        if (!adapter.getRows().get(position).isOpened()) {
             list.smoothScrollToPosition(position);
             final int finalPosition = position;
             list.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    if (finalPosition >= list.getLastVisiblePosition() - 1){
+                    if (finalPosition >= list.getLastVisiblePosition() - 1) {
                         try {
                             list.smoothScrollToPosition(finalPosition + 1);
                         } catch (Exception e) {
@@ -146,26 +160,18 @@ public class StartTrainingFragment extends AbstractFragment implements TrainingD
         startActivity(gotoAddingProgramActivity);
     }
 
-    private class GetTrainingDaysTask extends AsyncTask<Void, Void, List<TrainingDay>> {
+    @Override
+    public Loader<List<TrainingDay>> onCreateLoader(int i, Bundle bundle) {
+        return new TrainingDayLoader(getActivity());
+    }
 
-        @Override
-        protected List<TrainingDay> doInBackground(Void... voids) {
-            try {
-                adapter.clearAdapter();
+    @Override
+    public void onLoadFinished(Loader<List<TrainingDay>> listLoader, List<TrainingDay> trainingDays) {
+        showData(trainingDays);
+    }
 
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return db.getTrainingDays();
-        }
-
-        @Override
-        protected void onPostExecute(List<TrainingDay> aVoid) {
-            super.onPostExecute(aVoid);
-            for (TrainingDay trainingDay : aVoid) {
-                adapter.addRow(new TrainingDayRow(trainingDay, StartTrainingFragment.this));
-            }
-            adapter.notifyDataSetChanged();
-        }
+    @Override
+    public void onLoaderReset(Loader<List<TrainingDay>> listLoader) {
+        adapter.clearAdapter();
     }
 }

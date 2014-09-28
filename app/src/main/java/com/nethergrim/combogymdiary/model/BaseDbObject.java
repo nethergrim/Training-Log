@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * Created by Andrey Drobyazko on 25.09.2014.
  */
-public class BaseDbObject implements Serializable {
+public abstract class BaseDbObject implements Serializable {
 
     private Long id;
     private Long createdAt;
