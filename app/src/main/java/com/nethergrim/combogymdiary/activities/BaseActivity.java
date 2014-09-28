@@ -48,6 +48,7 @@ import com.nethergrim.combogymdiary.model.Exercise;
 import com.nethergrim.combogymdiary.service.TrainingService;
 import com.nethergrim.combogymdiary.tools.Backuper;
 import com.nethergrim.combogymdiary.tools.BaseActivityInterface;
+import com.nethergrim.combogymdiary.tools.MyBackupAgent;
 import com.nethergrim.combogymdiary.tools.Prefs;
 import com.yandex.metrica.Counter;
 
@@ -377,6 +378,7 @@ public class BaseActivity extends AnalyticsActivity implements BaseActivityInter
     protected void onResume() {
         super.onResume();
         Counter.sharedInstance().onResumeActivity(this);
+        MyBackupAgent.requestBackup(this);
         initStrings();
         if (Prefs.get().getTrainingsCount() > 4   && !Prefs.get().getMarketAlreadyLeavedFeedback()) {
             DialogGoToMarket dialog = new DialogGoToMarket();
@@ -406,6 +408,7 @@ public class BaseActivity extends AnalyticsActivity implements BaseActivityInter
     public void onChoose() {
         getActionBar().setSubtitle(null);
         setTrainingAlreadyStarted(false);
+        MyBackupAgent.requestBackup(this);
         DB db = new DB(this);
         db.open();
         Cursor tmpCursor = db.getDataMain(null, null, null, null, null, null);

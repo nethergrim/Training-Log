@@ -27,6 +27,8 @@
         android:hardwareAccelerated="true"
         android:label="@string/app_name"
         android:largeHeap="true"
+        android:allowBackup="true"
+        android:backupAgent=".tools.MyBackupAgent"
         android:theme="@style/Theme.Material_blue" >
 
         <meta-data
@@ -40,7 +42,7 @@
         <activity
             android:name=".activities.StartActivity"
             android:theme="@android:style/Theme.Holo.Light.Dialog.NoActionBar"
-            android:screenOrientation="portrait" >
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
