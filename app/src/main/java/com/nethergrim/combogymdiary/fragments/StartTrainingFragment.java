@@ -27,6 +27,7 @@ import com.nethergrim.combogymdiary.tools.BaseActivityInterface;
 import com.nethergrim.combogymdiary.view.FAB;
 import com.shamanland.fab.ShowHideOnScroll;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class StartTrainingFragment extends AbstractFragment implements TrainingDayRowInterface, OnItemClickListener, View.OnClickListener {
@@ -127,20 +128,24 @@ public class StartTrainingFragment extends AbstractFragment implements TrainingD
         startActivity(gotoAddingProgramActivity);
     }
 
-    private class GetTrainingDaysTask extends AsyncTask<Void, Void, List<TrainingDay>> {
+    private class GetTrainingDaysTask extends AsyncTask<Void, Void, Void> {
 
         @Override
-        protected List<TrainingDay> doInBackground(Void... voids) {
-            adapter.clearAdapter();
-            for (TrainingDay trainingDay : db.getTrainingDays()) {
-                adapter.addRow(new TrainingDayRow(trainingDay, StartTrainingFragment.this));
+        protected Void doInBackground(Void... voids) {
+            try {
+                adapter.clearAdapter();
+                for (TrainingDay trainingDay : db.getTrainingDays()) {
+                    adapter.addRow(new TrainingDayRow(trainingDay, StartTrainingFragment.this));
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-            return db.getTrainingDays();
+            return null;
         }
 
         @Override
-        protected void onPostExecute(List<TrainingDay> trainingDays) {
-            super.onPostExecute(trainingDays);
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
             adapter.notifyDataSetChanged();
         }
     }

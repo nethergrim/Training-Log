@@ -144,6 +144,7 @@ public class DriveRestoreActivity extends BaseDriveActivity {
             showMessage(getResources().getString(R.string.restored));
             Intent intent = new Intent(DriveRestoreActivity.this, StartActivity.class);
             Prefs.get().setDbUpdatedToV5(false);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
             finish();
 

@@ -225,6 +225,7 @@ public class SettingsActivity extends PreferenceActivity implements MyInterface 
             db.open();
             db.close();
             Intent intent = new Intent(this, StartActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
             Prefs.get().setDbUpdatedToV5(false);
             startActivity(intent);
             finish();

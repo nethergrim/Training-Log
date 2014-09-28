@@ -56,106 +56,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1ae25ada-db98-44c3-aaa8-db4b3954c501" name="Default" comment="implemented new start training screen with layout animations">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/libs/view_pager_indicator/libs/android-support-v4.jar" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/body.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/body_question.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-hdpi/ic_navigation_forward.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-mdpi/ic_navigation_forward.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-xhdpi/ic_navigation_forward.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-xxhdpi/ic_navigation_forward.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/libs/view_pager_indicator/res/drawable-hdpi/vpi__tab_selected_focused_holo.9.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/libs/view_pager_indicator/res/drawable-mdpi/vpi__tab_selected_focused_holo.9.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/libs/view_pager_indicator/res/drawable-xhdpi/vpi__tab_selected_focused_holo.9.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/view_pager_indicator/src/main/res/drawable-hdpi/vpi__tab_selected_focused_holo.9.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/view_pager_indicator/src/main/res/drawable-mdpi/vpi__tab_selected_focused_holo.9.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/view_pager_indicator/src/main/res/drawable-xhdpi/vpi__tab_selected_focused_holo.9.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/libs/view_pager_indicator/res/drawable-hdpi/vpi__tab_selected_holo.9.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/libs/view_pager_indicator/res/drawable-mdpi/vpi__tab_selected_holo.9.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/libs/view_pager_indicator/res/drawable-xhdpi/vpi__tab_selected_holo.9.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/view_pager_indicator/src/main/res/drawable-hdpi/vpi__tab_selected_holo.9.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/view_pager_indicator/src/main/res/drawable-mdpi/vpi__tab_selected_holo.9.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/view_pager_indicator/src/main/res/drawable-xhdpi/vpi__tab_selected_holo.9.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/libs/view_pager_indicator/res/drawable-hdpi/vpi__tab_selected_pressed_holo.9.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/libs/view_pager_indicator/res/drawable-mdpi/vpi__tab_selected_pressed_holo.9.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/libs/view_pager_indicator/res/drawable-xhdpi/vpi__tab_selected_pressed_holo.9.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/view_pager_indicator/src/main/res/drawable-hdpi/vpi__tab_selected_pressed_holo.9.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/view_pager_indicator/src/main/res/drawable-mdpi/vpi__tab_selected_pressed_holo.9.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/view_pager_indicator/src/main/res/drawable-xhdpi/vpi__tab_selected_pressed_holo.9.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/libs/view_pager_indicator/res/drawable-hdpi/vpi__tab_unselected_focused_holo.9.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/libs/view_pager_indicator/res/drawable-mdpi/vpi__tab_unselected_focused_holo.9.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/libs/view_pager_indicator/res/drawable-xhdpi/vpi__tab_unselected_focused_holo.9.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/view_pager_indicator/src/main/res/drawable-hdpi/vpi__tab_unselected_focused_holo.9.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/view_pager_indicator/src/main/res/drawable-mdpi/vpi__tab_unselected_focused_holo.9.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/view_pager_indicator/src/main/res/drawable-xhdpi/vpi__tab_unselected_focused_holo.9.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/libs/view_pager_indicator/res/drawable-hdpi/vpi__tab_unselected_holo.9.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/libs/view_pager_indicator/res/drawable-mdpi/vpi__tab_unselected_holo.9.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/libs/view_pager_indicator/res/drawable-xhdpi/vpi__tab_unselected_holo.9.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/view_pager_indicator/src/main/res/drawable-hdpi/vpi__tab_unselected_holo.9.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/view_pager_indicator/src/main/res/drawable-mdpi/vpi__tab_unselected_holo.9.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/view_pager_indicator/src/main/res/drawable-xhdpi/vpi__tab_unselected_holo.9.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/libs/view_pager_indicator/res/drawable-hdpi/vpi__tab_unselected_pressed_holo.9.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/libs/view_pager_indicator/res/drawable-mdpi/vpi__tab_unselected_pressed_holo.9.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/libs/view_pager_indicator/res/drawable-xhdpi/vpi__tab_unselected_pressed_holo.9.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/view_pager_indicator/src/main/res/drawable-hdpi/vpi__tab_unselected_pressed_holo.9.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/view_pager_indicator/src/main/res/drawable-mdpi/vpi__tab_unselected_pressed_holo.9.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/view_pager_indicator/src/main/res/drawable-xhdpi/vpi__tab_unselected_pressed_holo.9.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/libs/view_pager_indicator/AndroidManifest.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/view_pager_indicator/src/main/AndroidManifest.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/libs/view_pager_indicator/src/com/viewpagerindicator/CirclePageIndicator.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/view_pager_indicator/src/main/java/com/viewpagerindicator/CirclePageIndicator.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/fragments/CreateTrainingDayFragment.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/libs/view_pager_indicator/src/com/viewpagerindicator/IconPageIndicator.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/view_pager_indicator/src/main/java/com/viewpagerindicator/IconPageIndicator.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/libs/view_pager_indicator/src/com/viewpagerindicator/IconPagerAdapter.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/view_pager_indicator/src/main/java/com/viewpagerindicator/IconPagerAdapter.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/libs/view_pager_indicator/src/com/viewpagerindicator/IcsLinearLayout.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/view_pager_indicator/src/main/java/com/viewpagerindicator/IcsLinearLayout.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/libs/view_pager_indicator/src/com/viewpagerindicator/LinePageIndicator.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/view_pager_indicator/src/main/java/com/viewpagerindicator/LinePageIndicator.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/libs/view_pager_indicator/src/com/viewpagerindicator/PageIndicator.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/view_pager_indicator/src/main/java/com/viewpagerindicator/PageIndicator.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/model/PartOfBody.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/libs/view_pager_indicator/src/com/viewpagerindicator/TabPageIndicator.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/view_pager_indicator/src/main/java/com/viewpagerindicator/TabPageIndicator.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/libs/view_pager_indicator/src/com/viewpagerindicator/TitlePageIndicator.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/view_pager_indicator/src/main/java/com/viewpagerindicator/TitlePageIndicator.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/libs/view_pager_indicator/src/com/viewpagerindicator/UnderlinePageIndicator.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/view_pager_indicator/src/main/java/com/viewpagerindicator/UnderlinePageIndicator.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/view_pager_indicator/build.gradle" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_create_training_day.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_spinner.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/libs/view_pager_indicator/pom.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/libs/view_pager_indicator/project.properties" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/libs/view_pager_indicator/res/values/vpi__attrs.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/view_pager_indicator/src/main/res/values/vpi__attrs.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/libs/view_pager_indicator/res/values/vpi__colors.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/view_pager_indicator/src/main/res/values/vpi__colors.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/libs/view_pager_indicator/res/color/vpi__dark_theme.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/view_pager_indicator/src/main/res/color/vpi__dark_theme.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/libs/view_pager_indicator/res/values/vpi__defaults.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/view_pager_indicator/src/main/res/values/vpi__defaults.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/libs/view_pager_indicator/res/color/vpi__light_theme.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/view_pager_indicator/src/main/res/color/vpi__light_theme.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/libs/view_pager_indicator/res/values/vpi__styles.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/view_pager_indicator/src/main/res/values/vpi__styles.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/libs/view_pager_indicator/res/drawable/vpi__tab_indicator.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/view_pager_indicator/src/main/res/drawable/vpi__tab_indicator.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/Constants.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/Constants.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/activities/CreatingTrainingDayActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/activities/CreatingTrainingDayActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/DB.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/DB.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/activities/StartActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/activities/StartActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/googledrive/DriveRestoreActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/googledrive/DriveRestoreActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/activities/SettingsActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/activities/SettingsActivity.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/fragments/StartTrainingFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/fragments/StartTrainingFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/row/TrainingDayRow.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/row/TrainingDayRow.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/fragments/TrainingFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/fragments/TrainingFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_new_creating_training_day.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_new_creating_training_day.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/app.iml" afterPath="$PROJECT_DIR$/app/app.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build.gradle" afterPath="$PROJECT_DIR$/app/build.gradle" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/values-land/dimens.xml" afterPath="$PROJECT_DIR$/app/src/main/res/values-land/dimens.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/gradle.xml" afterPath="$PROJECT_DIR$/.idea/gradle.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/import-summary.txt" afterPath="$PROJECT_DIR$/import-summary.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/modules.xml" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/settings.gradle" afterPath="$PROJECT_DIR$/settings.gradle" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" afterPath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="GymDiary.iws" />
@@ -185,42 +88,22 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="StartTrainingFragment.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/fragments/StartTrainingFragment.java">
+      <file leaf-file-name="DriveRestoreActivity.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/googledrive/DriveRestoreActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="399" max-vertical-offset="2366">
-              <caret line="112" column="87" selection-start-line="112" selection-start-column="87" selection-end-line="112" selection-end-column="87" />
-              <folding>
-                <element signature="method#onAttach#0;class#StartTrainingFragment#0" expanded="false" />
-                <element signature="method#onCreate#0;class#StartTrainingFragment#0" expanded="false" />
-                <element signature="method#onCreateView#0;class#StartTrainingFragment#0" expanded="false" />
-                <element signature="method#onCreateOptionsMenu#0;class#StartTrainingFragment#0" expanded="false" />
-                <element signature="method#onClick#0;class#StartTrainingFragment#0" expanded="false" />
-              </folding>
+            <state vertical-scroll-proportion="0.0" vertical-offset="2570" max-vertical-offset="3484">
+              <caret line="145" column="48" selection-start-line="145" selection-start-column="48" selection-end-line="146" selection-end-column="61" />
+              <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="CreateTrainingDayFragment.java" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/fragments/CreateTrainingDayFragment.java">
+      <file leaf-file-name="SettingsActivity.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/activities/SettingsActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-0.31756756" vertical-offset="1088" max-vertical-offset="1976">
-              <caret line="78" column="9" selection-start-line="78" selection-start-column="9" selection-end-line="78" selection-end-column="9" />
-              <folding>
-                <element signature="method#newInstance#0;class#CreateTrainingDayFragment#0" expanded="false" />
-                <element signature="method#onCreate#0;class#CreateTrainingDayFragment#0" expanded="false" />
-                <element signature="method#onCreateView#0;class#CreateTrainingDayFragment#0" expanded="false" />
-                <element signature="method#onAttach#0;class#CreateTrainingDayFragment#0" expanded="false" />
-                <element signature="method#onDetach#0;class#CreateTrainingDayFragment#0" expanded="false" />
-                <element signature="method#initSpinner#0;class#CreateTrainingDayFragment#0" expanded="false" />
-                <element signature="class#MyPagerAdapter#0;class#CreateTrainingDayFragment#0" expanded="false" />
-                <element signature="method#getItem#0;class#MyPagerAdapter#0;class#CreateTrainingDayFragment#0" expanded="false" />
-                <element signature="class#SpinnerFragment#0;class#CreateTrainingDayFragment#0" expanded="false" />
-                <element signature="method#getInstance#0;class#SpinnerFragment#0;class#CreateTrainingDayFragment#0" expanded="false" />
-                <element signature="method#onCreate#0;class#SpinnerFragment#0;class#CreateTrainingDayFragment#0" expanded="false" />
-                <element signature="method#onCreateView#0;class#SpinnerFragment#0;class#CreateTrainingDayFragment#0" expanded="false" />
-                <element signature="method#onViewCreated#0;class#SpinnerFragment#0;class#CreateTrainingDayFragment#0" expanded="false" />
-              </folding>
+            <state vertical-scroll-proportion="0.6880631" vertical-offset="4017" max-vertical-offset="5928">
+              <caret line="226" column="66" selection-start-line="226" selection-start-column="66" selection-end-line="226" selection-end-column="66" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -1828,8 +1711,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/app/src/main/res/values/colors.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/activities/BaseActivityImpl.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/tools/BaseActivityInterface.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/row/TrainingRow.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/row/Set.java" />
@@ -1864,7 +1745,6 @@
         <option value="$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/fragments/TrainingFragment.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/adapter/ExpandableListViewAdapter.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/adapter/ListViewAdapter.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/fragments/StartTrainingFragment.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/activities/BaseActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/model/PartOfBody.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/values-land/dimens.xml" />
@@ -1879,6 +1759,9 @@
         <option value="$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/row/TrainingDayRow.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/fragments/CreateTrainingDayFragment.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/DB.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/fragments/StartTrainingFragment.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/googledrive/DriveRestoreActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/activities/SettingsActivity.java" />
       </list>
     </option>
   </component>
@@ -2138,6 +2021,40 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="model" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Training-Log" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Training-Log" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="combogymdiary" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="googledrive" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -2534,26 +2451,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/row/ExpandableRow.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.12253829" vertical-offset="0" max-vertical-offset="914">
-          <caret line="7" column="25" selection-start-line="7" selection-start-column="25" selection-end-line="7" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/start_training.xml">
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.27027026" vertical-offset="0" max-vertical-offset="888">
-          <caret line="15" column="55" selection-start-line="15" selection-start-column="55" selection-end-line="15" selection-end-column="55" />
-          <folding>
-            <element signature="e#613#636#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/values/attrs.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="914">
@@ -2817,26 +2714,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/activities/StartActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.49774775" vertical-offset="0" max-vertical-offset="1560">
-          <caret line="29" column="68" selection-start-line="29" selection-start-column="68" selection-end-line="29" selection-end-column="68" />
-          <folding>
-            <element signature="method#initialize#0;class#StartActivity#0" expanded="false" />
-            <element signature="method#onPostCreate#0;class#StartActivity#0" expanded="false" />
-            <element signature="method#initTableForFirstTime#0;class#StartActivity#0" expanded="false" />
-            <element signature="method#initTableForFirstTime#1;class#StartActivity#0" expanded="false" />
-            <element signature="method#updateTableForVersion5#0;class#StartActivity#0" expanded="false" />
-            <element signature="class#InitTask#0;class#StartActivity#0" expanded="false" />
-            <element signature="method#doInBackground#0;class#InitTask#0;class#StartActivity#0" expanded="false" />
-            <element signature="method#onPostExecute#0;class#InitTask#0;class#StartActivity#0" expanded="false" />
-            <element signature="class#UpdateTask#0;class#StartActivity#0" expanded="false" />
-            <element signature="method#doInBackground#0;class#UpdateTask#0;class#StartActivity#0" expanded="false" />
-            <element signature="method#onPostExecute#0;class#UpdateTask#0;class#StartActivity#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_new_creating_training_day.xml">
       <provider editor-type-id="android-designer">
         <state />
@@ -3013,20 +2890,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/fragments/StartTrainingFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="399" max-vertical-offset="2366">
-          <caret line="112" column="87" selection-start-line="112" selection-start-column="87" selection-end-line="112" selection-end-column="87" />
-          <folding>
-            <element signature="method#onAttach#0;class#StartTrainingFragment#0" expanded="false" />
-            <element signature="method#onCreate#0;class#StartTrainingFragment#0" expanded="false" />
-            <element signature="method#onCreateView#0;class#StartTrainingFragment#0" expanded="false" />
-            <element signature="method#onCreateOptionsMenu#0;class#StartTrainingFragment#0" expanded="false" />
-            <element signature="method#onClick#0;class#StartTrainingFragment#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/model/DayOfWeek.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.20495495" vertical-offset="0" max-vertical-offset="1534">
@@ -3056,10 +2919,52 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/fragments/CreateTrainingDayFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.2972973" vertical-offset="1088" max-vertical-offset="1976">
+          <caret line="99" column="20" selection-start-line="99" selection-start-column="20" selection-end-line="99" selection-end-column="20" />
+          <folding>
+            <element signature="method#newInstance#0;class#CreateTrainingDayFragment#0" expanded="false" />
+            <element signature="method#onCreate#0;class#CreateTrainingDayFragment#0" expanded="false" />
+            <element signature="method#onCreateView#0;class#CreateTrainingDayFragment#0" expanded="false" />
+            <element signature="method#onAttach#0;class#CreateTrainingDayFragment#0" expanded="false" />
+            <element signature="method#onDetach#0;class#CreateTrainingDayFragment#0" expanded="false" />
+            <element signature="method#initSpinner#0;class#CreateTrainingDayFragment#0" expanded="false" />
+            <element signature="class#MyPagerAdapter#0;class#CreateTrainingDayFragment#0" expanded="false" />
+            <element signature="method#getItem#0;class#MyPagerAdapter#0;class#CreateTrainingDayFragment#0" expanded="false" />
+            <element signature="class#SpinnerFragment#0;class#CreateTrainingDayFragment#0" expanded="false" />
+            <element signature="method#getInstance#0;class#SpinnerFragment#0;class#CreateTrainingDayFragment#0" expanded="false" />
+            <element signature="method#onCreate#0;class#SpinnerFragment#0;class#CreateTrainingDayFragment#0" expanded="false" />
+            <element signature="method#onCreateView#0;class#SpinnerFragment#0;class#CreateTrainingDayFragment#0" expanded="false" />
+            <element signature="method#onViewCreated#0;class#SpinnerFragment#0;class#CreateTrainingDayFragment#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/activities/StartActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="624" max-vertical-offset="1560">
+          <caret line="29" column="68" selection-start-line="29" selection-start-column="68" selection-end-line="29" selection-end-column="68" />
+          <folding>
+            <element signature="method#initialize#0;class#StartActivity#0" expanded="false" />
+            <element signature="method#onPostCreate#0;class#StartActivity#0" expanded="false" />
+            <element signature="method#initTableForFirstTime#0;class#StartActivity#0" expanded="false" />
+            <element signature="method#initTableForFirstTime#1;class#StartActivity#0" expanded="false" />
+            <element signature="method#updateTableForVersion5#0;class#StartActivity#0" expanded="false" />
+            <element signature="class#InitTask#0;class#StartActivity#0" expanded="false" />
+            <element signature="method#doInBackground#0;class#InitTask#0;class#StartActivity#0" expanded="false" />
+            <element signature="method#onPostExecute#0;class#InitTask#0;class#StartActivity#0" expanded="false" />
+            <element signature="class#UpdateTask#0;class#StartActivity#0" expanded="false" />
+            <element signature="method#doInBackground#0;class#UpdateTask#0;class#StartActivity#0" expanded="false" />
+            <element signature="method#onPostExecute#0;class#UpdateTask#0;class#StartActivity#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/DB.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.416" vertical-offset="4680" max-vertical-offset="7046">
-          <caret line="465" column="118" selection-start-line="465" selection-start-column="118" selection-end-line="465" selection-end-column="118" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="4910" max-vertical-offset="7046">
+          <caret line="466" column="0" selection-start-line="466" selection-start-column="0" selection-end-line="466" selection-end-column="0" />
           <folding>
             <element signature="method#DB#0;class#DB#0" expanded="false" />
             <element signature="method#addExerciseTrainingObject#0;class#DB#0" expanded="false" />
@@ -3106,25 +3011,33 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/fragments/CreateTrainingDayFragment.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/fragments/StartTrainingFragment.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.31756756" vertical-offset="1088" max-vertical-offset="1976">
-          <caret line="78" column="9" selection-start-line="78" selection-start-column="9" selection-end-line="78" selection-end-column="9" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="1465" max-vertical-offset="2470">
+          <caret line="148" column="43" selection-start-line="148" selection-start-column="43" selection-end-line="148" selection-end-column="43" />
           <folding>
-            <element signature="method#newInstance#0;class#CreateTrainingDayFragment#0" expanded="false" />
-            <element signature="method#onCreate#0;class#CreateTrainingDayFragment#0" expanded="false" />
-            <element signature="method#onCreateView#0;class#CreateTrainingDayFragment#0" expanded="false" />
-            <element signature="method#onAttach#0;class#CreateTrainingDayFragment#0" expanded="false" />
-            <element signature="method#onDetach#0;class#CreateTrainingDayFragment#0" expanded="false" />
-            <element signature="method#initSpinner#0;class#CreateTrainingDayFragment#0" expanded="false" />
-            <element signature="class#MyPagerAdapter#0;class#CreateTrainingDayFragment#0" expanded="false" />
-            <element signature="method#getItem#0;class#MyPagerAdapter#0;class#CreateTrainingDayFragment#0" expanded="false" />
-            <element signature="class#SpinnerFragment#0;class#CreateTrainingDayFragment#0" expanded="false" />
-            <element signature="method#getInstance#0;class#SpinnerFragment#0;class#CreateTrainingDayFragment#0" expanded="false" />
-            <element signature="method#onCreate#0;class#SpinnerFragment#0;class#CreateTrainingDayFragment#0" expanded="false" />
-            <element signature="method#onCreateView#0;class#SpinnerFragment#0;class#CreateTrainingDayFragment#0" expanded="false" />
-            <element signature="method#onViewCreated#0;class#SpinnerFragment#0;class#CreateTrainingDayFragment#0" expanded="false" />
+            <element signature="method#onAttach#0;class#StartTrainingFragment#0" expanded="false" />
+            <element signature="method#onCreate#0;class#StartTrainingFragment#0" expanded="false" />
+            <element signature="method#onCreateView#0;class#StartTrainingFragment#0" expanded="false" />
+            <element signature="method#onCreateOptionsMenu#0;class#StartTrainingFragment#0" expanded="false" />
+            <element signature="method#onClick#0;class#StartTrainingFragment#0" expanded="false" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/googledrive/DriveRestoreActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="2570" max-vertical-offset="3484">
+          <caret line="145" column="48" selection-start-line="145" selection-start-column="48" selection-end-line="146" selection-end-column="61" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/activities/SettingsActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.6880631" vertical-offset="4017" max-vertical-offset="5928">
+          <caret line="226" column="66" selection-start-line="226" selection-start-column="66" selection-end-line="226" selection-end-column="66" />
+          <folding />
         </state>
       </provider>
     </entry>
