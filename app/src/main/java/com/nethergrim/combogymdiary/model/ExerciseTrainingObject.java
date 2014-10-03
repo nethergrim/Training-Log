@@ -3,11 +3,11 @@ package com.nethergrim.combogymdiary.model;
 
 import java.io.Serializable;
 
-public class TrainingExerciseObject extends BaseDbObject implements Serializable{
+public class ExerciseTrainingObject extends BaseDbObject implements Serializable {
 
 
     private Integer trainingProgramId;
-    private Integer exerciseid;
+    private Integer exerciseId;
     private Integer positionAtTraining;
     private Boolean superset;
     private Integer positionAtSuperset;
@@ -22,12 +22,12 @@ public class TrainingExerciseObject extends BaseDbObject implements Serializable
         this.trainingProgramId = trainingProgramId;
     }
 
-    public Integer getExerciseid() {
-        return exerciseid;
+    public Integer getExerciseId() {
+        return exerciseId;
     }
 
-    public void setExerciseid(Integer exerciseid) {
-        this.exerciseid = exerciseid;
+    public void setExerciseId(Integer exerciseId) {
+        this.exerciseId = exerciseId;
     }
 
     public Integer getPositionAtTraining() {
