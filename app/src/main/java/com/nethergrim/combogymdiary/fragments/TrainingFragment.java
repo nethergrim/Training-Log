@@ -192,7 +192,7 @@ public class TrainingFragment extends AbstractFragment implements
         db.open();
         trainingId = getArguments().getInt(BUNDLE_KEY_TRAINING_ID);
         adapter = new TrainingAdapter(getActivity());
-        adapter.addData(db.getTrainingRows(trainingId));
+        adapter.addData(db.getSets(trainingId));
         isTrainingAtProgress = Prefs.get().getTrainingAtProgress();
         Prefs.get().setTrainingAtProgress(true);
         Prefs.get().setCurrentTrainingId(trainingId);
@@ -322,7 +322,8 @@ public class TrainingFragment extends AbstractFragment implements
         currentCheckedPosition = position;
         set = adapter.getData().get(currentCheckedPosition).getSetsCount();
         try {
-            timerValue = Integer.parseInt(db.getTimerValueByExerciseName(currentExerciseName));
+//            timerValue = Integer.parseInt(db.getTimerValueByExerciseName(currentExerciseName));
+            adapter
         } catch (NumberFormatException e) {
             Toast.makeText(getActivity(), R.string.parsing_error, Toast.LENGTH_LONG).show();
             timerValue = 60;
@@ -533,7 +534,7 @@ public class TrainingFragment extends AbstractFragment implements
                 adapter.getData().get(currentCheckedPosition).incrementSetsCount();
                 set = adapter.getData().get(currentCheckedPosition).getSetsCount();
             }
-            db.addRecMainTable(trainingName, currentExerciseName, date, wei, rep_s, set,row.isSuperset(),row.getSupersetId(), row.getSupersetColor(), trainingId, row.getExerciseId());
+            db.persistSet(trainingName, currentExerciseName, date, wei, rep_s, set, row.isSuperset(), row.getSupersetId(), row.getSupersetColor(), trainingId, row.getExerciseId());
             currentSet = set;
             initSetButtons();
             try {

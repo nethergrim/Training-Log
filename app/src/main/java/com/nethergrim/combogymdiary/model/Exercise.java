@@ -1,15 +1,24 @@
 package com.nethergrim.combogymdiary.model;
 
 
+import com.nethergrim.combogymdiary.tools.BaseDbObjectInterface;
+
 import java.io.Serializable;
 
-public class Exercise implements Serializable {
+public class Exercise extends BaseDbObject implements Serializable {
 
-    private long id;
     private String name;
     private String timer;
     private String partOfBody;
-    private boolean checked = false;
+    private Boolean checked = false;
+
+    public interface Columns extends BaseDbObjectInterface{
+        public static final String TABLE = "exe_tab";
+
+        public static final String FIELD_EXERCISE_NAME = "exercise_name";
+        public static final String FIELD_TIMER_VALUE = "timer_value";
+        public static final String FIELD_PART_OF_BODY = "part_of_body";
+    }
 
     public boolean isChecked() {
         return checked;
@@ -17,24 +26,6 @@ public class Exercise implements Serializable {
 
     public void setChecked(boolean checked) {
         this.checked = checked;
-    }
-
-    public Exercise() {
-    }
-
-    public Exercise(long id, String name, String timer, String partOfBody) {
-        this.id = id;
-        this.name = name;
-        this.timer = timer;
-        this.partOfBody = partOfBody;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public String getName() {

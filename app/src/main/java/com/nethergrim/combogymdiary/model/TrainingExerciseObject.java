@@ -3,82 +3,70 @@ package com.nethergrim.combogymdiary.model;
 
 import java.io.Serializable;
 
-public class TrainingExerciseObject implements Serializable{
+public class TrainingExerciseObject extends BaseDbObject implements Serializable{
 
-    private static final long serialVersionUID = 0L;
 
-    private int id;
-    private int trainingProgramId;
-    private int exerciseid;
-    private int positionAtTraining;
-    private boolean superset;
-    private int positionAtSuperset;
-    private int supersetId;
-    private int supersetColor;
+    private Integer trainingProgramId;
+    private Integer exerciseid;
+    private Integer positionAtTraining;
+    private Boolean superset;
+    private Integer positionAtSuperset;
+    private Integer supersetId;
+    private Integer supersetColor;
 
-    public TrainingExerciseObject(){}
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public int getTrainingProgramId() {
+    public Integer getTrainingProgramId() {
         return trainingProgramId;
     }
 
-    public void setTrainingProgramId(int trainingProgramId) {
+    public void setTrainingProgramId(Integer trainingProgramId) {
         this.trainingProgramId = trainingProgramId;
     }
 
-    public int getExerciseId() {
+    public Integer getExerciseid() {
         return exerciseid;
     }
 
-    public void setExerciseId(int exercise) {
-        this.exerciseid = exercise;
+    public void setExerciseid(Integer exerciseid) {
+        this.exerciseid = exerciseid;
     }
 
-    public int getPositionAtTraining() {
+    public Integer getPositionAtTraining() {
         return positionAtTraining;
     }
 
-    public void setPositionAtTraining(int positionAtTraining) {
+    public void setPositionAtTraining(Integer positionAtTraining) {
         this.positionAtTraining = positionAtTraining;
     }
 
-    public boolean isSuperset() {
+    public Boolean getSuperset() {
         return superset;
     }
 
-    public void setSuperset(boolean superset) {
+    public void setSuperset(Boolean superset) {
         this.superset = superset;
     }
 
-    public int getPositionAtSuperset() {
+    public Integer getPositionAtSuperset() {
         return positionAtSuperset;
     }
 
-    public void setPositionAtSuperset(int positionAtSuperset) {
+    public void setPositionAtSuperset(Integer positionAtSuperset) {
         this.positionAtSuperset = positionAtSuperset;
     }
 
-    public int getSupersetId() {
+    public Integer getSupersetId() {
         return supersetId;
     }
 
-    public void setSupersetId(int supersetId) {
+    public void setSupersetId(Integer supersetId) {
         this.supersetId = supersetId;
     }
 
-    public int getSupersetColor() {
+    public Integer getSupersetColor() {
         return supersetColor;
     }
 
-    public void setSupersetColor(int supersetColor) {
+    public void setSupersetColor(Integer supersetColor) {
         this.supersetColor = supersetColor;
     }
 }

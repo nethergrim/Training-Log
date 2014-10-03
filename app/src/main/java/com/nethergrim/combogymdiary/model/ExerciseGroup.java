@@ -8,7 +8,7 @@ import java.util.List;
 public class ExerciseGroup implements Serializable {
 
     private String name;
-    private int positionInGlobalArray = 0;
+    private Integer positionInGlobalArray = 0;
     private List<Exercise> list = new ArrayList<Exercise>();
 
     public String getName() {

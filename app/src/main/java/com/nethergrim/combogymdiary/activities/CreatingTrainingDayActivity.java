@@ -315,7 +315,7 @@ public class CreatingTrainingDayActivity extends AnalyticsActivity implements Di
         } else {
             if (editing) db.deleteTrainingDay((long) oldId, false);
             List<Row> rows = adapter.getRows();
-            long trainingId = new DB(this).addTrainings(etName.getText().toString());
+            long trainingId = new DB(this).persistTrainings(etName.getText().toString());
             for (int i = 0; i < rows.size(); i++) {
                 ExerciseTrainingObject exerciseTrainingObject = new ExerciseTrainingObject();
                 Row row = rows.get(i);

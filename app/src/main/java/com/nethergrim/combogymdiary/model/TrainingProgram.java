@@ -32,4 +32,5 @@ public class TrainingProgram extends BaseDbObject {
     public void setIsPaid(Boolean isPaid) {
         this.isPaid = isPaid;
     }
+
 }

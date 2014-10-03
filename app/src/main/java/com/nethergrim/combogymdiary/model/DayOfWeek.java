@@ -4,10 +4,12 @@ import android.content.Context;
 
 import com.nethergrim.combogymdiary.R;
 
+import java.io.Serializable;
+
 /**
  * Created by Andrey Drobyazko on 22.09.2014.
  */
-public enum DayOfWeek {
+public enum DayOfWeek implements Serializable {
     MONDAY(1), TUESDAY(2), WEDNESDAY(3), THURSDAY(4), FRIDAY(5), SATURDAY(6), SUNDAY(7);
     private int code;
 
