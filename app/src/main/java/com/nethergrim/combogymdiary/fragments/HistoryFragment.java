@@ -1,7 +1,6 @@
 package com.nethergrim.combogymdiary.fragments;
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -25,7 +24,7 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.nethergrim.combogymdiary.DB;
+import com.nethergrim.combogymdiary.storage.DB;
 import com.nethergrim.combogymdiary.R;
 import com.nethergrim.combogymdiary.activities.HistoryDetailedActivity;
 import com.yandex.metrica.Counter;

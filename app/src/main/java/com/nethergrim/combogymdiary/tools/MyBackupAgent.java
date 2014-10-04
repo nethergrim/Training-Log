@@ -6,7 +6,7 @@ import android.app.backup.FileBackupHelper;
 import android.app.backup.SharedPreferencesBackupHelper;
 import android.content.Context;
 
-import com.nethergrim.combogymdiary.DB;
+import com.nethergrim.combogymdiary.storage.DB;
 
 /**
  * Created by andrey_drobyazko on 22.08.14.

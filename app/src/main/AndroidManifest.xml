@@ -138,7 +138,7 @@
         </activity>
 
         <receiver
-            android:name=".WidgetStatistics"
+            android:name=".tools.WidgetStatistics"
             android:icon="@drawable/ic_launcher"
             android:label="Widget for Training Log" >
             <intent-filter>

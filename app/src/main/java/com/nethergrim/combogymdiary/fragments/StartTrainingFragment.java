@@ -16,7 +16,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 
-import com.nethergrim.combogymdiary.DB;
+import com.nethergrim.combogymdiary.storage.DB;
 import com.nethergrim.combogymdiary.R;
 import com.nethergrim.combogymdiary.activities.CreatingTrainingDayActivity;
 import com.nethergrim.combogymdiary.adapter.ExpandableListViewAdapter;

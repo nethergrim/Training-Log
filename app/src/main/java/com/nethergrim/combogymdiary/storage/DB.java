@@ -1,4 +1,4 @@
-package com.nethergrim.combogymdiary;
+package com.nethergrim.combogymdiary.storage;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.nethergrim.combogymdiary.Constants;
 import com.nethergrim.combogymdiary.model.DayOfWeek;
 import com.nethergrim.combogymdiary.model.Exercise;
 import com.nethergrim.combogymdiary.model.ExerciseGroup;
@@ -62,19 +63,22 @@ public class DB {
     private SQLiteDatabase mDB;
 
 
-    private static final String TABLE_SET_CREATE = "create table " + DB_TABLE_SET + "("
-            + _ID + " integer primary key autoincrement, "
-            + TRAINING_NAME + " text, "
-            + EXERCISE_NAME + " text, "
-            + DATE + " text, "
-            + WEIGHT + " integer, "
-            + REPS + " integer, "
-            + SET + " integer, "
-            + SUPERSET_EXISTS + " boolean, "
-            + SUPERSET_ID + " integer, "
-            + SUPERSET_COLOR + " integer, "
-            + TRAINING_PROGRAM_ID + " integer, "
-            + EXERCISE_ID + " integer"
+    private static final String TABLE_SET_CREATE = "create table " + Set.Columns.TABLE + "("
+            + Set.Columns.FIELD_ID + " integer primary key autoincrement, "
+            + Set.Columns.FIELD_TRAINING_NAME + " text, "
+            + Set.Columns.FIELD_EXERCISE_NAME + " text, "
+            + Set.Columns.FIELD_DATE + " text, "
+            + Set.Columns.FIELD_WEIGHT + " integer, "
+            + Set.Columns.FIELD_REPS + " integer, "
+            + Set.Columns.FIELD_SET_COUNT + " integer, "
+            + Set.Columns.FIELD_SUPERSET_PRESENTS + " boolean, "
+            + Set.Columns.FIELD_SUPERSET_ID + " integer, "
+            + Set.Columns.FIELD_SUPERSET_COLOR + " integer, "
+            + Set.Columns.FIELD_TRAINING_PROGRAM_ID + " integer, "
+            + Set.Columns.FIELD_EXERCISE_ID + " integer. "
+            + Set.Columns.FIELD_CREATED_AT + " INTEGER, "
+            + Set.Columns.FIELD_POSITION_AT_TRAINING + " INTEGER, "
+            + Set.Columns.FIELD_SUPERSET_POSITION + " INTEGER"
             + ");";
 
     private static final String TABLE_TRAINING_CREATE = "create table " + Training.Columns.TABLE + "("
@@ -95,7 +99,7 @@ public class DB {
             PART_OF_BODY_FOR_MEASURING + " text, " +
             MEASURE_VALUE + " text" + ");";
 
-    private static final String TABLE_TRAINING_DAY_CREATE = "create table "  + TRAINING_DAYS + "("
+    private static final String TABLE_TRAINING_DAY_CREATE = "create table "  + TrainingDay.Columns.TABLE + "("
             + TrainingDay.Columns.FIELD_ID + " integer primary key autoincrement, "
             + TrainingDay.Columns.FIELD_TRAINING_NAME + " text, "
             + TrainingDay.Columns.FIELD_DAY_OF_WEEK + " integer, "
@@ -105,15 +109,16 @@ public class DB {
             + TrainingDay.Columns.FIELD_TRAINING_PROGRAM_ID + " integer"
             + ");";
 
-    private static final String TABLE_TRAINING_EXERCISE_CREATE = "create table "  + DB_TABLE_TRAINING_EXERCISE + "("
-            + _ID + " integer primary key autoincrement, "
-            + TRAINING_PROGRAM_ID + " integer, "
-            + EXERCISE_ID + " integer, "
-            + POSITION_AT_TRAINING + " integer, "
-            + SUPERSET_EXISTS + " boolean, "
-            + SUPERSET_POSITION + " integer, "
-            + SUPERSET_ID + " integer, "
-            + SUPERSET_COLOR + " integer"
+    private static final String TABLE_EXERCISE_TRAINING_CREATE = "create table "  + ExerciseTrainingObject.Columns.TABLE + "("
+            + ExerciseTrainingObject.Columns.FIELD_ID + " integer primary key autoincrement, "
+            + ExerciseTrainingObject.Columns.FIELD_TRAINING_PROGRAM_ID+ " integer, "
+            + ExerciseTrainingObject.Columns.FIELD_EXERCISE_ID + " integer, "
+            + ExerciseTrainingObject.Columns.FIELD_POSITION_AT_TRAINING + " integer, "
+            + ExerciseTrainingObject.Columns.FIELD_SUPERSET_PRESENTS + " boolean, "
+            + ExerciseTrainingObject.Columns.FIELD_SUPERSET_POSITION + " integer, "
+            + ExerciseTrainingObject.Columns.FIELD_SUPERSET_ID + " integer, "
+            + ExerciseTrainingObject.Columns.FIELD_SUPERSET_COLOR + " integer, "
+            + ExerciseTrainingObject.Columns.FIELD_CREATED_AT + " INTEGER"
             + ");";
 
     private static final String TABLE_EXERCISE_CREATE = "create table " + Exercise.Columns.TABLE + "("
@@ -187,6 +192,10 @@ public class DB {
     public void open() {
         mDBHelper = new DBHelper(mCtx, DB_NAME, null, DB_VERSION);
         mDB = mDBHelper.getWritableDatabase();
+    }
+
+    public SQLiteDatabase getmDB() {
+        return mDB;
     }
 
     public void close() {
@@ -605,6 +614,63 @@ public class DB {
         mDB.delete(DB_TABLE_SET, _ID + " = " + id, null);
     }
 
+
+    /*---------------------------  Set  -------------------------------------*/
+    public void persistSet(Set set){
+        ContentValues cv = new ContentValues();
+        cv.put(Set.Columns.FIELD_CREATED_AT, System.currentTimeMillis());
+        cv.put(Set.Columns.FIELD_DATE, set.getDate());
+        cv.put(Set.Columns.FIELD_EXERCISE_ID, set.getExerciseId());
+        cv.put(Set.Columns.FIELD_EXERCISE_NAME, set.getExerciseName());
+        cv.put(Set.Columns.FIELD_POSITION_AT_TRAINING, set.getPositionAtTraining());
+        cv.put(Set.Columns.FIELD_EXERCISE_ID, set.getExerciseId());
+        cv.put(Set.Columns.FIELD_REPS, set.getReps());
+        cv.put(Set.Columns.FIELD_SET_COUNT, set.getSetCount());
+        cv.put(Set.Columns.FIELD_SUPERSET_COLOR, set.getSupersetColor());
+        cv.put(Set.Columns.FIELD_SUPERSET_ID, set.getSupersetId());
+        cv.put(Set.Columns.FIELD_SUPERSET_POSITION, set.getPositionAtSuperset());
+        cv.put(Set.Columns.FIELD_SUPERSET_PRESENTS, set.getSuperset());
+        cv.put(Set.Columns.FIELD_TRAINING_NAME, set.getTrainingName());
+        cv.put(Set.Columns.FIELD_TRAINING_PROGRAM_ID, set.getTrainingProgramId());
+        cv.put(Set.Columns.FIELD_WEIGHT, set.getWeight());
+        mDB.insert(Set.Columns.TABLE, null, cv);
+    }
+
+    public void updateSet(Set set){
+        ContentValues cv = new ContentValues();
+        cv.put(Set.Columns.FIELD_CREATED_AT, System.currentTimeMillis());
+        cv.put(Set.Columns.FIELD_DATE, set.getDate());
+        cv.put(Set.Columns.FIELD_EXERCISE_ID, set.getExerciseId());
+        cv.put(Set.Columns.FIELD_EXERCISE_NAME, set.getExerciseName());
+        cv.put(Set.Columns.FIELD_POSITION_AT_TRAINING, set.getPositionAtTraining());
+        cv.put(Set.Columns.FIELD_EXERCISE_ID, set.getExerciseId());
+        cv.put(Set.Columns.FIELD_REPS, set.getReps());
+        cv.put(Set.Columns.FIELD_SET_COUNT, set.getSetCount());
+        cv.put(Set.Columns.FIELD_SUPERSET_COLOR, set.getSupersetColor());
+        cv.put(Set.Columns.FIELD_SUPERSET_ID, set.getSupersetId());
+        cv.put(Set.Columns.FIELD_SUPERSET_POSITION, set.getPositionAtSuperset());
+        cv.put(Set.Columns.FIELD_SUPERSET_PRESENTS, set.getSuperset());
+        cv.put(Set.Columns.FIELD_TRAINING_NAME, set.getTrainingName());
+        cv.put(Set.Columns.FIELD_TRAINING_PROGRAM_ID, set.getTrainingProgramId());
+        cv.put(Set.Columns.FIELD_WEIGHT, set.getWeight());
+        if(set.getId() > 0){
+            mDB.update(Set.Columns.TABLE, cv, Set.Columns.FIELD_ID + "=" + String.valueOf(set.getId()), null);
+        } else {
+            mDB.update(Set.Columns.TABLE, cv, Set.Columns.FIELD_DATE + "=" + set.getDate()
+                    + " AND " + Set.Columns.FIELD_TRAINING_NAME + "=" + set.getTrainingName()
+                    + " AND " + Set.Columns.FIELD_EXERCISE_ID + "=" + String.valueOf(set.getExerciseId())
+                    , null);
+        }
+    }
+
+    public void persistSet(List<Set> sets){
+        for (Set set : sets) {
+            persistSet(set);
+        }
+    }
+
+    /*------------------------------------------------------------------------------*/
+
     private class DBHelper extends SQLiteOpenHelper {
 
         public DBHelper(Context context, String name, CursorFactory factory,
@@ -619,7 +685,7 @@ public class DB {
             db.execSQL(TABLE_MEASURE_CREATE);
             db.execSQL(TABLE_TRAINING_DAY_CREATE);
             db.execSQL(TABLE_TRAINING_CREATE);
-            db.execSQL(TABLE_TRAINING_EXERCISE_CREATE);
+            db.execSQL(TABLE_EXERCISE_TRAINING_CREATE);
             db.execSQL(TABLE_TRAINING_PROGRAM_CREATE);
         }
 
@@ -635,7 +701,7 @@ public class DB {
                 db.execSQL(TABLE_TRAINING_CREATE);
             }
             if (oldVersion == 4 && newVersion == 5) {
-                db.execSQL(TABLE_TRAINING_EXERCISE_CREATE);
+                db.execSQL(TABLE_EXERCISE_TRAINING_CREATE);
                 db.execSQL("ALTER TABLE " + DB_TABLE_EXERCISES + " ADD COLUMN " + PART_OF_BODY + " TEXT");
                 db.execSQL("ALTER TABLE " + DB_TABLE_SET + " ADD COLUMN " + SUPERSET_EXISTS + " TEXT");
                 db.execSQL("ALTER TABLE " + DB_TABLE_SET + " ADD COLUMN " + SUPERSET_ID + " TEXT");
@@ -655,6 +721,7 @@ public class DB {
                 db.execSQL("ALTER TABLE " + Training.Columns.TABLE + " ADD COLUMN " + Training.Columns.FIELD_TRAINING_DAY_ID + " INTEGER");
                 db.execSQL("ALTER TABLE " + Training.Columns.TABLE + " ADD COLUMN " + Training.Columns.FIELD_TRAINING_DAY_NAME + " TEXT");
                 db.execSQL("ALTER TABLE " + Exercise.Columns.TABLE + " ADD COLUMN " + Exercise.Columns.FIELD_CREATED_AT + " INTEGER");
+                db.execSQL("ALTER TABLE " + ExerciseTrainingObject.Columns.TABLE + " ADD COLUMN " + ExerciseTrainingObject.Columns.FIELD_CREATED_AT + " INTEGER");
 
 
                 /*  Training Days moving to new version */

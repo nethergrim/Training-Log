@@ -3,7 +3,7 @@ package com.nethergrim.combogymdiary.loaders;
 import android.content.AsyncTaskLoader;
 import android.content.Context;
 
-import com.nethergrim.combogymdiary.DB;
+import com.nethergrim.combogymdiary.storage.DB;
 import com.nethergrim.combogymdiary.model.TrainingDay;
 
 import java.util.List;

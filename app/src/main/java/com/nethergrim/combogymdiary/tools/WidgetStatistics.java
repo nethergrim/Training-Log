@@ -1,4 +1,4 @@
-package com.nethergrim.combogymdiary;
+package com.nethergrim.combogymdiary.tools;
 
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
@@ -9,7 +9,9 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.widget.RemoteViews;
 
+import com.nethergrim.combogymdiary.R;
 import com.nethergrim.combogymdiary.activities.StatisticsActivity;
+import com.nethergrim.combogymdiary.tools.Statistics;
 
 public class WidgetStatistics extends AppWidgetProvider {
 

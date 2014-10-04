@@ -14,7 +14,7 @@ import android.widget.Spinner;
 
 import com.loopj.android.image.SmartImageView;
 import com.nethergrim.combogymdiary.Constants;
-import com.nethergrim.combogymdiary.DB;
+import com.nethergrim.combogymdiary.storage.DB;
 import com.nethergrim.combogymdiary.R;
 import com.nethergrim.combogymdiary.model.DayOfWeek;
 import com.nethergrim.combogymdiary.model.TrainingDay;

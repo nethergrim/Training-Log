@@ -1,8 +1,10 @@
-package com.nethergrim.combogymdiary;
+package com.nethergrim.combogymdiary.tools;
 
 import android.content.Context;
 import android.database.Cursor;
 
+import com.nethergrim.combogymdiary.R;
+import com.nethergrim.combogymdiary.storage.DB;
 import com.nethergrim.combogymdiary.tools.Prefs;
 
 import java.util.ArrayList;

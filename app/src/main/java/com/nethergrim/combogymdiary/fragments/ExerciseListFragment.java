@@ -1,11 +1,9 @@
 package com.nethergrim.combogymdiary.fragments;
 
-import android.app.Fragment;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.TypedValue;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -16,14 +14,13 @@ import android.widget.ExpandableListView;
 import android.widget.TextView;
 
 import com.nethergrim.combogymdiary.Constants;
-import com.nethergrim.combogymdiary.DB;
+import com.nethergrim.combogymdiary.storage.DB;
 import com.nethergrim.combogymdiary.R;
 import com.nethergrim.combogymdiary.dialogs.DialogEditExercise;
 import com.nethergrim.combogymdiary.dialogs.DialogUniversalApprove;
 import com.nethergrim.combogymdiary.model.Exercise;
 import com.nethergrim.combogymdiary.model.ExerciseGroup;
 import com.nethergrim.combogymdiary.view.FAB;
-import com.nethergrim.combogymdiary.view.FloatingActionButton;
 import com.nethergrim.combogymdiary.view.TextViewLight;
 import com.shamanland.fab.ShowHideOnScroll;
 
