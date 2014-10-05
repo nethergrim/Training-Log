@@ -44,7 +44,7 @@ public class DialogUniversalApprove extends DialogFragment implements
                     );
         } else if (type_of_dialog == TYPE_DELETE_EXERCISE) {
             id = args.getInt(Constants._ID);
-            exercise = db.getExercise(id);
+            exercise = db.fetchtExercise(id);
             adb = new AlertDialog.Builder(getActivity())
                     .setTitle(R.string.delete_exe)
                     .setPositiveButton(R.string.yes, this)

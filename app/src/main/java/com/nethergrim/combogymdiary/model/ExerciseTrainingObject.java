@@ -8,12 +8,12 @@ import java.io.Serializable;
 public class ExerciseTrainingObject extends BaseDbObject implements Serializable {
 
 
-    private Integer trainingProgramId;
-    private Integer exerciseId;
+    private Long trainingProgramId;
+    private Long exerciseId;
     private Integer positionAtTraining;
     private Boolean superset;
     private Integer positionAtSuperset;
-    private Integer supersetId;
+    private Long supersetId;
     private Integer supersetColor;
 
     public interface Columns extends BaseDbObjectInterface{
@@ -28,19 +28,19 @@ public class ExerciseTrainingObject extends BaseDbObject implements Serializable
         public static final String FIELD_SUPERSET_COLOR = "superset_color";
     }
 
-    public Integer getTrainingProgramId() {
+    public Long getTrainingProgramId() {
         return trainingProgramId;
     }
 
-    public void setTrainingProgramId(Integer trainingProgramId) {
+    public void setTrainingProgramId(Long trainingProgramId) {
         this.trainingProgramId = trainingProgramId;
     }
 
-    public Integer getExerciseId() {
+    public Long getExerciseId() {
         return exerciseId;
     }
 
-    public void setExerciseId(Integer exerciseId) {
+    public void setExerciseId(Long exerciseId) {
         this.exerciseId = exerciseId;
     }
 
@@ -68,11 +68,11 @@ public class ExerciseTrainingObject extends BaseDbObject implements Serializable
         this.positionAtSuperset = positionAtSuperset;
     }
 
-    public Integer getSupersetId() {
+    public Long getSupersetId() {
         return supersetId;
     }
 
-    public void setSupersetId(Integer supersetId) {
+    public void setSupersetId(Long supersetId) {
         this.supersetId = supersetId;
     }
 
@@ -83,5 +83,4 @@ public class ExerciseTrainingObject extends BaseDbObject implements Serializable
     public void setSupersetColor(Integer supersetColor) {
         this.supersetColor = supersetColor;
     }
-
 }

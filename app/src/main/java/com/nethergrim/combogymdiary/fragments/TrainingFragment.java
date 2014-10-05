@@ -806,7 +806,7 @@ public class TrainingFragment extends AbstractFragment implements
         Random random = new Random();
         for (Integer anIdList : idList) {
             Set row = new Set();
-            Exercise exercise = db.getExercise(anIdList);
+            Exercise exercise = db.fetchtExercise(anIdList);
             if (adapter.containsId((int) exercise.getId())) continue;
             row.setExerciseName(exercise.getName());
             row.setExerciseId(anIdList);

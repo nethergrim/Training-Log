@@ -77,7 +77,7 @@ public class CreateTrainingDayFragment extends Fragment implements View.OnClickL
     @Override
     public void onClick(View view) {
         DB db = new DB(getActivity());
-        TrainingDay trainingDay = db.getTrainingDay(id);
+        TrainingDay trainingDay = db.fetchTrainingDay(id);
         trainingDay.setDayOfWeek(DayOfWeek.getByCode(spinner.getSelectedItemPosition() + 1));
         trainingDay.setImageUrl(Constants.partsOfBodyURLs.get(viewPager.getCurrentItem()));
         db.updateTrainingDay(trainingDay);

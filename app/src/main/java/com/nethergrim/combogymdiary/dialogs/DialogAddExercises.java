@@ -93,7 +93,7 @@ public class DialogAddExercises extends DialogFragment implements DialogInterfac
             this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             DB db = new DB(context);
             db.open();
-            this.data = db.getExerciseGroups();
+            this.data = db.fetchExerciseGroups();
             db.close();
         }
 

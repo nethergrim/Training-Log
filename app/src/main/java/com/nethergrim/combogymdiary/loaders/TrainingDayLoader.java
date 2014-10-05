@@ -19,7 +19,7 @@ public class TrainingDayLoader extends AsyncTaskLoader<List<TrainingDay>> {
 
     @Override
     public List<TrainingDay> loadInBackground() {
-        return new DB(getContext()).getTrainingDays();
+        return new DB(getContext()).fetchTrainingDays();
     }
 
 

@@ -175,7 +175,7 @@ public class CreatingTrainingDayActivity extends AnalyticsActivity implements Di
         if (idList != null && idList.size() > 0) {
             textNoExe.setVisibility(View.GONE);
             for (Integer anIdList : idList) {
-                newExercises.add(db.getExercise(anIdList));
+                newExercises.add(db.fetchtExercise(anIdList));
             }
             adapter.addNewData(newExercises);
             clearSelection();
@@ -256,7 +256,7 @@ public class CreatingTrainingDayActivity extends AnalyticsActivity implements Di
         List<ExerciseTrainingObject> trainingObjects = db.getExerciseTrainingObjects(oldId);
         List<Row> rows = new ArrayList<Row>();
         for (ExerciseTrainingObject trainingObject : trainingObjects) {
-            Row row = new Row(db.getExercise(trainingObject.getExerciseId()));
+            Row row = new Row(db.fetchtExercise(trainingObject.getExerciseId()));
             row.setSupersetPosition(trainingObject.getPositionAtSuperset());
             row.setSupersetColor(trainingObject.getSupersetColor());
             row.setInSuperset(trainingObject.isSuperset());

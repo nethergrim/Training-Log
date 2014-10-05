@@ -79,7 +79,7 @@ public class ExerciseListFragment extends AbstractFragment {
             this.context = context;
             DB db = new DB(context);
             db.open();
-            this.data = db.getExerciseGroups();
+            this.data = db.fetchExerciseGroups();
             db.close();
         }
 
@@ -87,7 +87,7 @@ public class ExerciseListFragment extends AbstractFragment {
             this.context = context;
             DB db = new DB(context);
             db.open();
-            this.data = db.getExerciseGroups();
+            this.data = db.fetchExerciseGroups();
             db.close();
             notifyDataSetChanged();
         }

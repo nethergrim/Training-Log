@@ -75,12 +75,12 @@ public class StartActivity extends AnalyticsActivity {
 
     private void initTableForFirstTime(String partOfBody, String trainingName, String[] exerciseList, DayOfWeek dayOfWeek, String url) {
         int trainingId = (int) db.persistTrainings(trainingName);
-        TrainingDay trainingDay = db.getTrainingDay(trainingId);
+        TrainingDay trainingDay = db.fetchTrainingDay(trainingId);
         trainingDay.setDayOfWeek(dayOfWeek);
         trainingDay.setImageUrl(url);
         db.updateTrainingDay(trainingDay);
         for (int i = 0; i < exerciseList.length; i++) {
-            int exeId = (int) db.addExercise(exerciseList[i], "60", partOfBody);
+            int exeId = (int) db.persistExercise(exerciseList[i], "60", partOfBody);
             ExerciseTrainingObject exerciseTrainingObject = new ExerciseTrainingObject();
             exerciseTrainingObject.setTrainingProgramId(trainingId);
             exerciseTrainingObject.setExerciseId(exeId);
