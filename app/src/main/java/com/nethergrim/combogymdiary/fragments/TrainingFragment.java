@@ -183,6 +183,7 @@ public class TrainingFragment extends AbstractFragment implements
         }
     };
     private int trainingId;
+    private List<ExerciseTrainingObject> exerciseTrainingObjects;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -192,6 +193,8 @@ public class TrainingFragment extends AbstractFragment implements
         db.open();
         trainingId = getArguments().getInt(BUNDLE_KEY_TRAINING_ID);
         adapter = new TrainingAdapter(getActivity());
+        List<Set> sets = new ArrayList<Set>();
+        db.fetc
         adapter.addData(db.getSets(trainingId));
         isTrainingAtProgress = Prefs.get().getTrainingAtProgress();
         Prefs.get().setTrainingAtProgress(true);

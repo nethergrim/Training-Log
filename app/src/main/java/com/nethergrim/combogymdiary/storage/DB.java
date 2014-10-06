@@ -398,26 +398,7 @@ public class DB {
         return null;
     }
 
-//    public List<ExerciseTrainingObject> getExerciseTrainingObjects(int trainingId){
-//        String[] args = {String.valueOf(trainingId)};
-//        Cursor c = mDB.query(DB_TABLE_TRAINING_EXERCISE, null, TRAINING_PROGRAM_ID + "=?", args,null,null,POSITION_AT_TRAINING);
-//        List<ExerciseTrainingObject> result = new ArrayList<ExerciseTrainingObject>();
-//        if (c.moveToFirst()){
-//            do {
-//                ExerciseTrainingObject exerciseTrainingObject = new ExerciseTrainingObject();
-//                exerciseTrainingObject.setId(c.getInt(0));
-//                exerciseTrainingObject.setTrainingProgramId(trainingId);
-//                exerciseTrainingObject.setExerciseId(c.getInt(2));
-//                exerciseTrainingObject.setPositionAtTraining(c.getInt(3));
-//                exerciseTrainingObject.setSuperset(c.getInt(4) == 1 ? true : false);
-//                exerciseTrainingObject.setPositionAtSuperset(c.getInt(5));
-//                exerciseTrainingObject.setSupersetId(c.getInt(6));
-//                exerciseTrainingObject.setSupersetColor(c.getInt(7));
-//                result.add(exerciseTrainingObject);
-//            } while (c.moveToNext());
-//        }
-//        return result;
-//    }
+
 
 //    public List<Set> getSets(int trainingID){
 //        String[] args = {String.valueOf(trainingID)};
@@ -647,7 +628,26 @@ public class DB {
 
     /*-------------------------Exercise Training Object----------------------*/
 
-
+    public List<ExerciseTrainingObject> fetchExerciseTrainingObjects(long trainingId){
+        String[] args = {String.valueOf(trainingId)};
+        Cursor c = mDB.query(ExerciseTrainingObject.Columns.TABLE, null, ExerciseTrainingObject.Columns.FIELD_TRAINING_PROGRAM_ID + "=?", args,null,null,POSITION_AT_TRAINING);
+        List<ExerciseTrainingObject> result = new ArrayList<ExerciseTrainingObject>();
+        if (c.moveToFirst()){
+            do {
+                ExerciseTrainingObject exerciseTrainingObject = new ExerciseTrainingObject();
+                exerciseTrainingObject.setId(c.getLong(0));
+                exerciseTrainingObject.setTrainingProgramId(trainingId);
+                exerciseTrainingObject.setExerciseId(c.getLong(c.getColumnIndex(ExerciseTrainingObject.Columns.FIELD_EXERCISE_ID)));
+                exerciseTrainingObject.setPositionAtTraining(c.getInt(c.getColumnIndex(ExerciseTrainingObject.Columns.FIELD_POSITION_AT_TRAINING)));
+                exerciseTrainingObject.setSuperset(c.getInt(c.getColumnIndex(ExerciseTrainingObject.Columns.FIELD_SUPERSET_PRESENTS)) == 1);
+                exerciseTrainingObject.setPositionAtSuperset(c.getInt(5));
+                exerciseTrainingObject.setSupersetId(c.getInt(6));
+                exerciseTrainingObject.setSupersetColor(c.getInt(7));
+                result.add(exerciseTrainingObject);
+            } while (c.moveToNext());
+        }
+        return result;
+    }
 
 
     /*-----------------------------------------------------------------------*/

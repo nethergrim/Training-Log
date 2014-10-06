@@ -253,7 +253,7 @@ public class CreatingTrainingDayActivity extends AnalyticsActivity implements Di
     }
 
     private void loadTrainingsFromDbAndAdd() {
-        List<ExerciseTrainingObject> trainingObjects = db.getExerciseTrainingObjects(oldId);
+        List<ExerciseTrainingObject> trainingObjects = db.fetchExerciseTrainingObjects(oldId);
         List<Row> rows = new ArrayList<Row>();
         for (ExerciseTrainingObject trainingObject : trainingObjects) {
             Row row = new Row(db.fetchtExercise(trainingObject.getExerciseId()));
