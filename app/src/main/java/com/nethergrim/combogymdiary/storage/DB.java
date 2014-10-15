@@ -626,14 +626,14 @@ public class DB {
         if (c.moveToFirst()){
             do {
                 ExerciseTrainingObject exerciseTrainingObject = new ExerciseTrainingObject();
-                exerciseTrainingObject.setId(c.getLong(0));
+                exerciseTrainingObject.setId(c.getLong(c.getColumnIndex(ExerciseTrainingObject.Columns.FIELD_ID)));
                 exerciseTrainingObject.setTrainingProgramId(trainingId);
                 exerciseTrainingObject.setExerciseId(c.getLong(c.getColumnIndex(ExerciseTrainingObject.Columns.FIELD_EXERCISE_ID)));
                 exerciseTrainingObject.setPositionAtTraining(c.getInt(c.getColumnIndex(ExerciseTrainingObject.Columns.FIELD_POSITION_AT_TRAINING)));
                 exerciseTrainingObject.setSuperset(c.getInt(c.getColumnIndex(ExerciseTrainingObject.Columns.FIELD_SUPERSET_PRESENTS)) == 1);
-                exerciseTrainingObject.setPositionAtSuperset(c.getInt(5));
-                exerciseTrainingObject.setSupersetId(c.getInt(6));
-                exerciseTrainingObject.setSupersetColor(c.getInt(7));
+                exerciseTrainingObject.setPositionAtSuperset(c.getInt(c.getColumnIndex(ExerciseTrainingObject.Columns.FIELD_SUPERSET_POSITION)));
+                exerciseTrainingObject.setSupersetId(c.getLong(c.getColumnIndex(ExerciseTrainingObject.Columns.FIELD_SUPERSET_ID)));
+                exerciseTrainingObject.setSupersetColor(c.getInt(c.getColumnIndex(ExerciseTrainingObject.Columns.FIELD_SUPERSET_COLOR)));
                 result.add(exerciseTrainingObject);
             } while (c.moveToNext());
         }
