@@ -163,7 +163,8 @@ public class ExerciseListFragment extends AbstractFragment {
                     DialogUniversalApprove dialogUniversalApprove = new DialogUniversalApprove();
                     Bundle args = new Bundle();
                     args.putInt(Constants.TYPE_OF_DIALOG, DialogUniversalApprove.TYPE_DELETE_EXERCISE);
-                    args.putInt(Constants._ID, (int) data.get(groupPosition).getExercisesList().get(childPosition).getId());
+                    // FIXME DELETE
+//                    args.putInt(Constants._ID, (int) data.get(groupPosition).getExercisesList().get(childPosition).getId());
                     dialogUniversalApprove.setArguments(args);
                     dialogUniversalApprove.show(getFragmentManager(), DialogUniversalApprove.class.getName());
                 }

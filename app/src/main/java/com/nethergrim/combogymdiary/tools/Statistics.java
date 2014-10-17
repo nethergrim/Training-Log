@@ -26,40 +26,40 @@ public class Statistics {
 
     public String getMainExercise() {
         String result = context.getResources().getString(R.string.none);
-        Cursor exercises = db.getDataMain(DB.EXERCISE_NAME);
-        ArrayList<String> alExercises = new ArrayList<String>();
-        if (exercises.moveToFirst()) {
-            do {
-                alExercises.add(exercises.getString(2));
-            } while (exercises.moveToNext());
-        }
-        ArrayList<Integer> alCount = new ArrayList<Integer>();
-        for (int i = 0; i < alExercises.size(); i++) {
-            alCount.add(0);
-        }
-        Cursor allCursor = db.getDataMain(null, null, null, null, null,
-                DB.EXERCISE_NAME);
-        if (allCursor.moveToFirst()) {
-            do {
-                for (int i = 0; i < alExercises.size(); i++) {
-                    if (allCursor.getString(2).equals(alExercises.get(i))) {
-                        alCount.set(i, (alCount.get(i) + 1));
-                    }
-                }
-            } while (allCursor.moveToNext());
-        }
-
-        int max = 0;
-        int maxIndex = 0;
-        for (int i = 0; i < alCount.size(); i++) {
-            if (alCount.get(i) > max) {
-                max = alCount.get(i);
-                maxIndex = i;
-            }
-        }
-        if (max > 0) {
-            result = alExercises.get(maxIndex);
-        }
+//        Cursor exercises = db.getDataMain(DB.EXERCISE_NAME);
+//        ArrayList<String> alExercises = new ArrayList<String>();
+//        if (exercises.moveToFirst()) {
+//            do {
+//                alExercises.add(exercises.getString(2));
+//            } while (exercises.moveToNext());
+//        }
+//        ArrayList<Integer> alCount = new ArrayList<Integer>();
+//        for (int i = 0; i < alExercises.size(); i++) {
+//            alCount.add(0);
+//        }
+//        Cursor allCursor = db.getDataMain(null, null, null, null, null,
+//                DB.EXERCISE_NAME);
+//        if (allCursor.moveToFirst()) {
+//            do {
+//                for (int i = 0; i < alExercises.size(); i++) {
+//                    if (allCursor.getString(2).equals(alExercises.get(i))) {
+//                        alCount.set(i, (alCount.get(i) + 1));
+//                    }
+//                }
+//            } while (allCursor.moveToNext());
+//        }
+//
+//        int max = 0;
+//        int maxIndex = 0;
+//        for (int i = 0; i < alCount.size(); i++) {
+//            if (alCount.get(i) > max) {
+//                max = alCount.get(i);
+//                maxIndex = i;
+//            }
+//        }
+//        if (max > 0) {
+//            result = alExercises.get(maxIndex);
+//        }
 
         return result;
     }
