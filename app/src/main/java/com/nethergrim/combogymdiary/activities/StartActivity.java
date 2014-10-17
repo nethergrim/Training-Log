@@ -93,7 +93,7 @@ public class StartActivity extends AnalyticsActivity {
     }
 
     private void initTableForFirstTime() {
-        if (!db.hasTrainingPrograms()) {
+        if (!db.hasTrainingDays()) {
             initTableForFirstTime(Constants.PART_OF_BODY_LEGS, getString(R.string.traLegs), exeLegs, DayOfWeek.MONDAY, Constants.partsOfBodyURLs.get(12));
             initTableForFirstTime(Constants.PART_OF_BODY_CHEST, getString(R.string.traChest), exeChest, DayOfWeek.TUESDAY, Constants.partsOfBodyURLs.get(0));
             initTableForFirstTime(Constants.PART_OF_BODY_BICEPS, getString(R.string.traBiceps), exeBiceps, DayOfWeek.WEDNESDAY, Constants.partsOfBodyURLs.get(1));

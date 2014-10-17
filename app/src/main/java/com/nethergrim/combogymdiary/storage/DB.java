@@ -45,11 +45,6 @@ public class DB {
     public static final String DB_MEASURE_TABLE = "measurements_tab";
     public static final String PART_OF_BODY_FOR_MEASURING = "part_of_body";
     public static final String MEASURE_VALUE = "measure_value";
-    private static final String TABLE_MEASURE_CREATE = "create table " + DB_MEASURE_TABLE + "(" +
-            _ID + " integer primary key autoincrement, " +
-            DATE + " text, " +
-            PART_OF_BODY_FOR_MEASURING + " text, " +
-            MEASURE_VALUE + " text" + ");";
     public static final String TRAINING_DAYS = "trainings_tab";
     public static final String strSeparator = "__,__";
     public static final String SIMPLE_DATE_FORMAT = "dd.MM.yyyy";
@@ -62,6 +57,17 @@ public class DB {
     public static final String TRAINING_PROGRAM_ID = "training_program_id";
     private static final int DB_VERSION = 6;
     private static final String DB_TABLE_EXERCISES = "exe_tab";
+    private static Context mCtx;
+    private static DB db;
+    private DBHelper mDBHelper;
+    private SQLiteDatabase mDB;
+
+    private static final String TABLE_MEASURE_CREATE = "create table " + DB_MEASURE_TABLE + "(" +
+            _ID + " integer primary key autoincrement, " +
+            DATE + " text, " +
+            PART_OF_BODY_FOR_MEASURING + " text, " +
+            MEASURE_VALUE + " text" + ");";
+
     private static final String TABLE_SET_CREATE = "create table " + Set.Columns.TABLE + "("
             + Set.Columns.FIELD_ID + " integer primary key autoincrement, "
             + Set.Columns.FIELD_TRAINING_NAME + " text, "
@@ -73,7 +79,7 @@ public class DB {
             + Set.Columns.FIELD_SUPERSET_PRESENTS + " boolean, "
             + Set.Columns.FIELD_SUPERSET_ID + " integer, "
             + Set.Columns.FIELD_SUPERSET_COLOR + " integer, "
-            + Set.Columns.FIELD_TRAINING_PROGRAM_ID + " integer, "
+            + Set.Columns.FIELD_TRAINING_DAY_ID + " integer, "
             + Set.Columns.FIELD_EXERCISE_ID + " integer. "
             + Set.Columns.FIELD_CREATED_AT + " INTEGER, "
             + Set.Columns.FIELD_POSITION_AT_TRAINING + " INTEGER, "
@@ -101,7 +107,7 @@ public class DB {
             + ");";
     private static final String TABLE_EXERCISE_TRAINING_CREATE = "create table " + ExerciseTrainingObject.Columns.TABLE + "("
             + ExerciseTrainingObject.Columns.FIELD_ID + " integer primary key autoincrement, "
-            + ExerciseTrainingObject.Columns.FIELD_TRAINING_PROGRAM_ID + " integer, "
+            + ExerciseTrainingObject.Columns.FIELD_TRAINING_DAY_ID + " integer, "
             + ExerciseTrainingObject.Columns.FIELD_EXERCISE_ID + " integer, "
             + ExerciseTrainingObject.Columns.FIELD_POSITION_AT_TRAINING + " integer, "
             + ExerciseTrainingObject.Columns.FIELD_SUPERSET_PRESENTS + " boolean, "
@@ -123,36 +129,32 @@ public class DB {
             + TrainingProgram.Columns.FIELD_NAME + " text, "
             + TrainingProgram.Columns.FIELD_PAID + " integer"
             + ");";
-    private Context mCtx;
-    private DBHelper mDBHelper;
-    private SQLiteDatabase mDB;
 
+    public static void init(Context context){
+        db = new DB(context);
+    }
+
+    public static DB get(){
+        return db;
+    }
 
     public DB(Context ctx) {
         mCtx = ctx;
         open();
     }
 
-    public long addExerciseTrainingObject(ExerciseTrainingObject exerciseTrainingObject) {
-        ContentValues cv = new ContentValues();
-        cv.put(TRAINING_PROGRAM_ID, exerciseTrainingObject.getTrainingProgramId());
-        cv.put(EXERCISE_ID, exerciseTrainingObject.getExerciseId());
-        cv.put(POSITION_AT_TRAINING, exerciseTrainingObject.getPositionAtTraining());
-        cv.put(SUPERSET_EXISTS, exerciseTrainingObject.getSuperset());
-        cv.put(SUPERSET_POSITION, exerciseTrainingObject.getPositionAtSuperset());
-        cv.put(SUPERSET_ID, exerciseTrainingObject.getSupersetId());
-        cv.put(SUPERSET_COLOR, exerciseTrainingObject.getSupersetColor());
-        return mDB.insert(DB_TABLE_TRAINING_EXERCISE, null, cv);
+    public void open() {
+        mDBHelper = new DBHelper(mCtx, DB_NAME, null, DB_VERSION);
+        mDB = mDBHelper.getWritableDatabase();
     }
 
-    public boolean hasExerciseTrainingObjects() {
-        Cursor c = mDB.query(DB_TABLE_TRAINING_EXERCISE, null, null, null, null, null, null);
-        return c.moveToFirst();
-    }
-
-    public boolean hasTrainingPrograms() {
-        Cursor c = mDB.query(TRAINING_DAYS, null, null, null, null, null, null);
-        return c.moveToFirst();
+    public void close() {
+        try {
+            if (mDBHelper != null)
+                mDBHelper.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public String convertDateToString(Date date) {
@@ -180,163 +182,18 @@ public class DB {
         return arr;
     }
 
-    public void open() {
-        mDBHelper = new DBHelper(mCtx, DB_NAME, null, DB_VERSION);
-        mDB = mDBHelper.getWritableDatabase();
-    }
-
-    public void close() {
-        try {
-            if (mDBHelper != null)
-                mDBHelper.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-//    public int getExeIdByName(String name) {
-//        String[] args = {name};
-//        String[] cols = {DB._ID};
-//        Cursor c = mDB.query(DB_TABLE_EXERCISES, cols, DB.EXERCISE_NAME + "=?", args,  null, null,  null);
-//        if (c.moveToFirst()) {
-//            return c.getInt(0);
-//        } else {
-//            return 0;
-//        }
-//    }
-
-//    public Cursor getDataMain(String groupBy) {
-//        return mDB.query(DB_TABLE_SET, null, null, null, groupBy, null, null);
-//    }
-
     public boolean delRecordMeasurement(String date) {
         String[] args = {date};
         int tmp = mDB.delete(DB_MEASURE_TABLE, DATE + "=?", args);
         return tmp > 0;
     }
 
-
-    public int getLastWeightOrReps(String _exeName, int _set, boolean ifWeight) { // FIXME fix exercise name - > exercise id
-        String[] cols = {DB.WEIGHT, DB.SET};
-        if (ifWeight) {
-            cols[0] = DB.WEIGHT;
-        } else {
-            cols[0] = DB.REPS;
-        }
-
-        String[] tags = {_exeName};
-        Cursor c = mDB.query(DB_TABLE_SET, cols, DB.EXERCISE_NAME + "=?", tags,
-                null, null, null);
-
-        int size = c.getCount();
-        if (size > 1) {
-            if (c.moveToLast() && (size > (_set + 1))) {
-
-                if (_set > 0) {
-                    for (int i = 0; i < _set; i++) {
-                        c.moveToPrevious();
-                        size--;
-                    }
-                }
-
-                int setNumberAtLastTraining = c.getInt(1);
-                int delta = setNumberAtLastTraining - _set - 1;
-                if (size > delta) {
-                    if (setNumberAtLastTraining > _set) {
-                        for (int j = 0; j < delta; j++) {
-                            c.moveToPrevious();
-                        }
-                        return c.getInt(0);
-                    } else if (setNumberAtLastTraining == _set) {
-                        return 0;
-                    } else
-                        return 0;
-                } else
-                    return 0;
-            } else
-                return 0;
-        } else
-            return 0;
-    }
-
-//    public String getTimerValueByExerciseName(String exeName) {
-//        String result = "60";
-//        String[] cols = {DB.TIMER_VALUE};
-//        String[] tags = {exeName};
-//        Cursor c1 = mDB.query(DB_TABLE_EXERCISES, cols, DB.EXERCISE_NAME + "=?", tags, null, null, null, null);
-//        if (c1.moveToFirst()) {
-//            result = c1.getString(0);
-//        }
-//        return result;
-//    }
-
-//    public int getThisWeight(int currentSet, String exeName) {
-//        int result = 0;
-//        String[] args = {exeName};
-//        Cursor c = mDB.query(DB_TABLE_SET, null, EXERCISE_NAME + "=?", args, null, null, null);
-//        if (c.moveToLast()) {
-//            do {
-//                if (c.getInt(6) == currentSet) {
-//                    result = c.getInt(4);
-//                    break;
-//                }
-//            } while (c.moveToPrevious());
-//        }
-//        return result;
-//    }
-
-//    public int getThisReps(int currentSet, String exeName) {
-//        int result = 0;
-//        String[] args = {exeName};
-//        Cursor c = mDB.query(DB_TABLE_SET, null, EXERCISE_NAME + "=?", args, null, null, null);
-//        if (c.moveToLast()) {
-//            do {
-//                if (c.getInt(6) == currentSet) {
-//                    result = c.getInt(5);
-//                    break;
-//                }
-//            } while (c.moveToPrevious());
-//        }
-//        return result;
-//    }
-
-//    public int getThisId(int currentSet, String exeName) {
-//        int result = 0;
-//        String[] args = {exeName};
-//        Cursor c = mDB.query(DB_TABLE_SET, null, EXERCISE_NAME + "=?", args, null,
-//                null, null);
-//        if (c.moveToLast()) {
-//            do {
-//                if (c.getInt(6) == currentSet) {
-//                    result = c.getInt(0);
-//                    break;
-//                }
-//            } while (c.moveToPrevious());
-//        }
-//        return result;
-//    }
-
-//    public Cursor getDataMain(String[] column, String selection, String[] selectionArgs, String groupBy, String having, String orderedBy) {
-//        return mDB.query(DB_TABLE_SET, column, selection, selectionArgs, groupBy, having, orderedBy);
-//    }
-
-//    public Cursor getDataExe(String[] column, String selection, String[] selectionArgs, String groupBy, String having, String orderedBy) {
-//        return mDB.query(DB_TABLE_EXERCISES, column, selection, selectionArgs,  groupBy, having, orderedBy);
-//    }
-
-//    public Cursor getDataTrainings(String[] column, String selection, String[] selectionArgs, String groupBy, String having, String orderedBy) {
-//        return mDB.query(TRAINING_DAYS, column, selection, selectionArgs, groupBy, having, orderedBy);
-//    }
-
-//    public Cursor getCommentData(String date) {
-//        String[] args = {date};
-//        Cursor c = mDB.query(DB_TABLE_TRAINING, null, DATE + "=?", args, null, null, null);
-//        return c;
-//    }
-
     public Cursor getDataMeasures(String[] column, String selection, String[] selectionArgs, String groupBy, String having, String orderedBy) {
         return mDB.query(DB_MEASURE_TABLE, column, selection, selectionArgs, groupBy, having, orderedBy);
     }
+
+
+    /*-------------------------- Exercise ------------------------------------*/
 
     public long persistExercise(Exercise exercise) {
         ContentValues cv = new ContentValues();
@@ -345,6 +202,26 @@ public class DB {
         cv.put(Exercise.Columns.FIELD_PART_OF_BODY, exercise.getPartOfBody());
         cv.put(Exercise.Columns.FIELD_CREATED_AT, exercise.getCreatedAt());
         return mDB.insert(Exercise.Columns.TABLE, null, cv);
+    }
+
+    public void deleteExercise(long id) {
+        mDB.delete(DB_TABLE_TRAINING_EXERCISE, _ID + " = " + id, null);
+        mDB.delete(DB_TABLE_EXERCISES, _ID + " = " + id, null);
+    }
+
+    public Exercise fetchtExercise(long id) {
+        String[] args = {id + ""};
+        Cursor c = mDB.query(DB_TABLE_EXERCISES, null, _ID + "=?", args, null, null, null);
+        if (c.moveToFirst()) {
+            Exercise exercise = new Exercise();
+            exercise.setName(c.getString(c.getColumnIndex(Exercise.Columns.FIELD_EXERCISE_NAME)));
+            exercise.setPartOfBody(c.getString(c.getColumnIndex(Exercise.Columns.FIELD_PART_OF_BODY)));
+            exercise.setId(c.getLong(0));
+            exercise.setTimer(c.getString(c.getColumnIndex(Exercise.Columns.FIELD_TIMER_VALUE)));
+            exercise.setCreatedAt(c.getLong(c.getColumnIndex(Exercise.Columns.FIELD_CREATED_AT)));
+            return exercise;
+        }
+        return null;
     }
 
     public List<ExerciseGroup> fetchExerciseGroups() {  // returns groups of exercises, sorted by part_of_body
@@ -373,149 +250,7 @@ public class DB {
         return result;
     }
 
-    public Exercise fetchtExercise(long id) {
-        String[] args = {id + ""};
-        Cursor c = mDB.query(DB_TABLE_EXERCISES, null, _ID + "=?", args, null, null, null);
-        if (c.moveToFirst()) {
-            Exercise exercise = new Exercise();
-            exercise.setName(c.getString(c.getColumnIndex(Exercise.Columns.FIELD_EXERCISE_NAME)));
-            exercise.setPartOfBody(c.getString(c.getColumnIndex(Exercise.Columns.FIELD_PART_OF_BODY)));
-            exercise.setId(c.getLong(0));
-            exercise.setTimer(c.getString(c.getColumnIndex(Exercise.Columns.FIELD_TIMER_VALUE)));
-            exercise.setCreatedAt(c.getLong(c.getColumnIndex(Exercise.Columns.FIELD_CREATED_AT)));
-            return exercise;
-        }
-        return null;
-    }
-
-
-//    public List<Set> getSets(int trainingID){
-//        String[] args = {String.valueOf(trainingID)};
-//        Cursor c = mDB.query(DB_TABLE_TRAINING_EXERCISE, null, TRAINING_PROGRAM_ID + "=?", args,null,null,POSITION_AT_TRAINING);
-//        List<Set> result = new ArrayList<Set>();
-//        try {
-//            if (c.moveToFirst()){
-//                do {
-//                    Set set = new Set();
-//                    set.setId(c.getInt(0));
-//                    set.setTrainingProgramId(trainingID);
-//                    set.setExerciseId(c.getInt(2));
-//                    set.setPositionAtTraining(c.getInt(3));
-//                    set.setSuperset(c.getInt(4) == 1 ? true : false);
-//                    set.setPositionAtSuperset(c.getInt(5));
-//                    set.setSupersetId(c.getInt(6));
-//                    set.setSupersetColor(c.getInt(7));
-//                    set.setExerciseName(this.fetchtExercise(c.getInt(2)).getName());
-//                    result.add(set);
-//                } while (c.moveToNext());
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        return result;
-//    }
-
-    public boolean isAlreadyThisIdInSupersets(int supersetId) {
-        String[] args = {String.valueOf(supersetId)};
-        Cursor c = mDB.query(DB_TABLE_TRAINING_EXERCISE, null, SUPERSET_ID + "=?", args, null, null, null);
-        return c.moveToFirst() && c.getCount() > 0;
-    }
-
-//    public int getExerciseId(String exerciseName){
-//        String[] args = {exerciseName};
-//        Cursor c = mDB.query(DB_TABLE_EXERCISES, null, EXERCISE_NAME + "=?", args, null, null, null);
-//        if (c.moveToFirst()){
-//            return c.getInt(0);
-//        }
-//        return 0;
-//    }
-
-
-//    public String getTrainingName(int id) {
-//        String[] args = {id + ""};
-//        Cursor c = mDB.query(TRAINING_DAYS, null, _ID + "=?", args, null, null, null);
-//        if (c.moveToFirst()) {
-//            return c.getString(1);
-//        } else
-//            return "";
-//    }
-//
-//    public long persistTrainings(String traName) {
-//        ContentValues cv = new ContentValues();
-//        cv.put(TRAINING_NAME, traName);
-//        return mDB.insert(TRAINING_DAYS, null, cv);
-//    }
-
-//    public void persistMeasure(String date, String part_of_body, String value) {
-//        ContentValues cv = new ContentValues();
-//        cv.put(DATE, date);
-//        cv.put(PART_OF_BODY_FOR_MEASURING, part_of_body);
-//        cv.put(MEASURE_VALUE, value);
-//        mDB.insert(DB_MEASURE_TABLE, null, cv);
-//    }
-
-//    public void persistSet(String traName, String exeName, String date, int weight, int reps, int set, boolean isInSuperset, int supersetId, int supersetColor, int trainingId, int exerciseID) {
-//        ContentValues cv = new ContentValues();
-//        cv.put(EXERCISE_NAME, exeName);
-//        cv.put(TRAINING_NAME, traName);
-//        cv.put(DATE, date);
-//        cv.put(WEIGHT, weight);
-//        cv.put(REPS, reps);
-//        cv.put(SET, set);
-//        cv.put(SUPERSET_EXISTS, isInSuperset);
-//        cv.put(SUPERSET_ID, supersetId);
-//        cv.put(SUPERSET_COLOR, supersetColor);
-//        cv.put(TRAINING_PROGRAM_ID, trainingId);
-//        cv.put(EXERCISE_ID, exerciseID);
-//        mDB.insert(DB_TABLE_SET, null, cv);
-//    }
-
-//    public void addRecComment(String date, String comment, int totalWeight, String time) {
-//        ContentValues cv = new ContentValues();
-//        cv.put(DATE, date);
-//        cv.put(COMMENT_TO_TRAINING, comment);
-//        cv.put(TOTAL_WEIGHT_OF_TRAINING, totalWeight);
-//        cv.put(TOTAL_TIME_OF_TRAINING, time);
-//        mDB.insert(DB_TABLE_TRAINING, null, cv);
-//    }
-
-//    public Cursor getDataComment(String[] cols, String selection, String[] args, String groupby, String having, String orderBy) {
-//        return mDB.query(DB_TABLE_TRAINING, cols, selection, args, groupby, having, orderBy);
-//    }
-
-//    public void updateExercise(int Id, String column, String data) {
-//        ContentValues cv1 = new ContentValues();
-//        cv1.put(column, data);
-//        mDB.update(Exercise.Columns.TABLE, cv1, Exercise.Columns.FIELD_ID + " = " + Id, null);
-//    }
-
-//    public void updateRec_Main(int Id, int colId, String data_str, int data_int) {
-//        ContentValues cv = new ContentValues();
-//        if (colId == 1) {
-//            cv.put(TRAINING_NAME, data_str);
-//        } else if (colId == 2) {
-//            cv.put(EXERCISE_NAME, data_str);
-//        } else if (colId == 3) {
-//            cv.put(DATE, data_str);
-//        } else if (colId == 4) {
-//            cv.put(WEIGHT, data_int);
-//        } else if (colId == 5) {
-//            cv.put(REPS, data_int);
-//        } else if (colId == 6) {
-//            cv.put(SET, data_int);
-//        }
-//        mDB.update(DB_TABLE_SET, cv, _ID + " = " + Id, null);
-//    }
-
-    public void deleteExercise(long id) {
-        mDB.delete(DB_TABLE_TRAINING_EXERCISE, _ID + " = " + id, null);
-        mDB.delete(DB_TABLE_EXERCISES, _ID + " = " + id, null);
-    }
-
-//    public void delRec_Main(long id) {
-//        mDB.delete(DB_TABLE_SET, _ID + " = " + id, null);
-//    }
-
+    /*------------------------------------------------------------------------*/
 
     /*---------------------------  Set  -------------------------------------*/
     public void persistSet(Set set) {
@@ -533,7 +268,7 @@ public class DB {
         cv.put(Set.Columns.FIELD_SUPERSET_POSITION, set.getPositionAtSuperset());
         cv.put(Set.Columns.FIELD_SUPERSET_PRESENTS, set.getSuperset());
         cv.put(Set.Columns.FIELD_TRAINING_NAME, set.getTrainingName());
-        cv.put(Set.Columns.FIELD_TRAINING_PROGRAM_ID, set.getTrainingProgramId());
+        cv.put(Set.Columns.FIELD_TRAINING_DAY_ID, set.getTrainingProgramId());
         cv.put(Set.Columns.FIELD_WEIGHT, set.getWeight());
         mDB.insert(Set.Columns.TABLE, null, cv);
     }
@@ -553,7 +288,7 @@ public class DB {
         cv.put(Set.Columns.FIELD_SUPERSET_POSITION, set.getPositionAtSuperset());
         cv.put(Set.Columns.FIELD_SUPERSET_PRESENTS, set.getSuperset());
         cv.put(Set.Columns.FIELD_TRAINING_NAME, set.getTrainingName());
-        cv.put(Set.Columns.FIELD_TRAINING_PROGRAM_ID, set.getTrainingProgramId());
+        cv.put(Set.Columns.FIELD_TRAINING_DAY_ID, set.getTrainingProgramId());
         cv.put(Set.Columns.FIELD_WEIGHT, set.getWeight());
         if (set.getId() > 0) {
             mDB.update(Set.Columns.TABLE, cv, Set.Columns.FIELD_ID + "=" + String.valueOf(set.getId()), null);
@@ -604,7 +339,7 @@ public class DB {
             set.setExerciseName(c.getString(c.getColumnIndex(Set.Columns.FIELD_EXERCISE_NAME)));
             set.setDate(c.getString(c.getColumnIndex(Set.Columns.FIELD_DATE)));
             set.setPositionAtTraining(c.getInt(c.getColumnIndex(Set.Columns.FIELD_POSITION_AT_TRAINING)));
-            set.setTrainingProgramId(c.getLong(c.getColumnIndex(Set.Columns.FIELD_TRAINING_PROGRAM_ID)));
+            set.setTrainingProgramId(c.getLong(c.getColumnIndex(Set.Columns.FIELD_TRAINING_DAY_ID)));
             c.close();
             return set;
         } else {
@@ -612,19 +347,62 @@ public class DB {
         }
     }
 
+    public int getLastWeightOrReps(String _exeName, int _set, boolean ifWeight) { // FIXME fix exercise name - > exercise id
+        String[] cols = {DB.WEIGHT, DB.SET};
+        if (ifWeight) {
+            cols[0] = DB.WEIGHT;
+        } else {
+            cols[0] = DB.REPS;
+        }
+
+        String[] tags = {_exeName};
+        Cursor c = mDB.query(DB_TABLE_SET, cols, DB.EXERCISE_NAME + "=?", tags,
+                null, null, null);
+
+        int size = c.getCount();
+        if (size > 1) {
+            if (c.moveToLast() && (size > (_set + 1))) {
+
+                if (_set > 0) {
+                    for (int i = 0; i < _set; i++) {
+                        c.moveToPrevious();
+                        size--;
+                    }
+                }
+
+                int setNumberAtLastTraining = c.getInt(1);
+                int delta = setNumberAtLastTraining - _set - 1;
+                if (size > delta) {
+                    if (setNumberAtLastTraining > _set) {
+                        for (int j = 0; j < delta; j++) {
+                            c.moveToPrevious();
+                        }
+                        return c.getInt(0);
+                    } else if (setNumberAtLastTraining == _set) {
+                        return 0;
+                    } else
+                        return 0;
+                } else
+                    return 0;
+            } else
+                return 0;
+        } else
+            return 0;
+    }
+
     /*-----------------------------------------------------------------------*/
 
     /*-------------------------Exercise Training Object----------------------*/
 
-    public List<ExerciseTrainingObject> fetchExerciseTrainingObjects(long trainingId) {
-        String[] args = {String.valueOf(trainingId)};
-        Cursor c = mDB.query(ExerciseTrainingObject.Columns.TABLE, null, ExerciseTrainingObject.Columns.FIELD_TRAINING_PROGRAM_ID + "=?", args, null, null, POSITION_AT_TRAINING);
+    public List<ExerciseTrainingObject> fetchExerciseTrainingObjects(long trainingDayId) {
+        String[] args = {String.valueOf(trainingDayId)};
+        Cursor c = mDB.query(ExerciseTrainingObject.Columns.TABLE, null, ExerciseTrainingObject.Columns.FIELD_TRAINING_DAY_ID + "=?", args, null, null, POSITION_AT_TRAINING);
         List<ExerciseTrainingObject> result = new ArrayList<ExerciseTrainingObject>();
         if (c.moveToFirst()) {
             do {
                 ExerciseTrainingObject exerciseTrainingObject = new ExerciseTrainingObject();
                 exerciseTrainingObject.setId(c.getLong(c.getColumnIndex(ExerciseTrainingObject.Columns.FIELD_ID)));
-                exerciseTrainingObject.setTrainingProgramId(trainingId);
+                exerciseTrainingObject.setTrainingProgramId(trainingDayId);
                 exerciseTrainingObject.setExerciseId(c.getLong(c.getColumnIndex(ExerciseTrainingObject.Columns.FIELD_EXERCISE_ID)));
                 exerciseTrainingObject.setPositionAtTraining(c.getInt(c.getColumnIndex(ExerciseTrainingObject.Columns.FIELD_POSITION_AT_TRAINING)));
                 exerciseTrainingObject.setSuperset(c.getInt(c.getColumnIndex(ExerciseTrainingObject.Columns.FIELD_SUPERSET_PRESENTS)) == 1);
@@ -642,7 +420,7 @@ public class DB {
         cv.put(ExerciseTrainingObject.Columns.FIELD_CREATED_AT, System.currentTimeMillis());
         cv.put(ExerciseTrainingObject.Columns.FIELD_SUPERSET_COLOR, exerciseTrainingObject.getSupersetColor());
         cv.put(ExerciseTrainingObject.Columns.FIELD_POSITION_AT_TRAINING, exerciseTrainingObject.getPositionAtTraining());
-        cv.put(ExerciseTrainingObject.Columns.FIELD_TRAINING_PROGRAM_ID, exerciseTrainingObject.getTrainingProgramId());
+        cv.put(ExerciseTrainingObject.Columns.FIELD_TRAINING_DAY_ID, exerciseTrainingObject.getTrainingProgramId());
         cv.put(ExerciseTrainingObject.Columns.FIELD_EXERCISE_ID, exerciseTrainingObject.getExerciseId());
         cv.put(ExerciseTrainingObject.Columns.FIELD_SUPERSET_PRESENTS, exerciseTrainingObject.getSuperset());
         cv.put(ExerciseTrainingObject.Columns.FIELD_SUPERSET_ID, exerciseTrainingObject.getSupersetId());
@@ -660,12 +438,23 @@ public class DB {
         cv.put(ExerciseTrainingObject.Columns.FIELD_CREATED_AT, System.currentTimeMillis());
         cv.put(ExerciseTrainingObject.Columns.FIELD_SUPERSET_COLOR, exerciseTrainingObject.getSupersetColor());
         cv.put(ExerciseTrainingObject.Columns.FIELD_POSITION_AT_TRAINING, exerciseTrainingObject.getPositionAtTraining());
-        cv.put(ExerciseTrainingObject.Columns.FIELD_TRAINING_PROGRAM_ID, exerciseTrainingObject.getTrainingProgramId());
+        cv.put(ExerciseTrainingObject.Columns.FIELD_TRAINING_DAY_ID, exerciseTrainingObject.getTrainingProgramId());
         cv.put(ExerciseTrainingObject.Columns.FIELD_EXERCISE_ID, exerciseTrainingObject.getExerciseId());
         cv.put(ExerciseTrainingObject.Columns.FIELD_SUPERSET_PRESENTS, exerciseTrainingObject.getSuperset());
         cv.put(ExerciseTrainingObject.Columns.FIELD_SUPERSET_ID, exerciseTrainingObject.getSupersetId());
         cv.put(ExerciseTrainingObject.Columns.FIELD_SUPERSET_POSITION, exerciseTrainingObject.getPositionAtSuperset());
         mDB.update(ExerciseTrainingObject.Columns.TABLE, cv, ExerciseTrainingObject.Columns.FIELD_ID + " = " + id, null);
+    }
+
+    public boolean isAlreadyThisIdInSupersets(int supersetId) {
+        String[] args = {String.valueOf(supersetId)};
+        Cursor c = mDB.query(DB_TABLE_TRAINING_EXERCISE, null, SUPERSET_ID + "=?", args, null, null, null);
+        return c.moveToFirst() && c.getCount() > 0;
+    }
+
+    public boolean hasExerciseTrainingObjects() {
+        Cursor c = mDB.query(DB_TABLE_TRAINING_EXERCISE, null, null, null, null, null, null);
+        return c.moveToFirst();
     }
 
 
@@ -721,7 +510,7 @@ public class DB {
         if (!onlyFromExerciseTable) {
             mDB.delete(TrainingDay.Columns.TABLE, TrainingDay.Columns.FIELD_ID + " = " + id, null);
         }
-        mDB.delete(ExerciseTrainingObject.Columns.TABLE, ExerciseTrainingObject.Columns.FIELD_TRAINING_PROGRAM_ID + " = " + id, null);
+        mDB.delete(ExerciseTrainingObject.Columns.TABLE, ExerciseTrainingObject.Columns.FIELD_TRAINING_DAY_ID + " = " + id, null);
         close();
     }
 
@@ -735,6 +524,11 @@ public class DB {
         cv.put(TrainingDay.Columns.FIELD_TRAINING_NAME, trainingDay.getTrainingName());
         cv.put(TrainingDay.Columns.FIELD_TRAINING_PROGRAM_ID, trainingDay.getTrainingProgramId());
         mDB.update(TrainingDay.Columns.TABLE, cv, TrainingDay.Columns.FIELD_ID + " = " + String.valueOf(id), null);
+    }
+
+    public boolean hasTrainingDays() {
+        Cursor c = mDB.query(TRAINING_DAYS, null, null, null, null, null, null);
+        return c.moveToFirst();
     }
 
     /*-----------------------------------------------------------------------*/

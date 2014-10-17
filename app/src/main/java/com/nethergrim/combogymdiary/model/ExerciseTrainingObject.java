@@ -19,7 +19,7 @@ public class ExerciseTrainingObject extends BaseDbObject implements Serializable
     public interface Columns extends BaseDbObjectInterface{
         public static final String TABLE = "";
 
-        public static final String FIELD_TRAINING_PROGRAM_ID = "training_program_id";
+        public static final String FIELD_TRAINING_DAY_ID = "training_program_id";
         public static final String FIELD_EXERCISE_ID = "training_exercise_id";
         public static final String FIELD_POSITION_AT_TRAINING = "position_at_training";
         public static final String FIELD_SUPERSET_PRESENTS = "superset";

@@ -2,10 +2,12 @@ package com.nethergrim.combogymdiary.model;
 
 import com.nethergrim.combogymdiary.tools.BaseDbObjectInterface;
 
+import java.io.Serializable;
+
 /**
  * Created by Andrey Drobyazko on 22.09.2014.
  */
-public class TrainingDay extends BaseDbObject {
+public class TrainingDay extends BaseDbObject implements Serializable {
 
     private String trainingName = "";
     private DayOfWeek dayOfWeek = DayOfWeek.MONDAY;
