@@ -28,3 +28,8 @@ proguard/
 *.iws
 .idea/
 
+
+.idea
+build
+GymDiary.iml
+Training-Log.iml
