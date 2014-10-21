@@ -491,14 +491,14 @@ public class DB {
         return trainingDay;
     }
 
-    public void persistTrainingDay(TrainingDay trainingDay) {
+    public long persistTrainingDay(TrainingDay trainingDay) {
         ContentValues cv = new ContentValues();
         cv.put(TrainingDay.Columns.FIELD_CREATED_AT, System.currentTimeMillis());
         cv.put(TrainingDay.Columns.FIELD_TRAINING_NAME, trainingDay.getTrainingName());
         cv.put(TrainingDay.Columns.FIELD_COLOR, trainingDay.getColor());
         cv.put(TrainingDay.Columns.FIELD_DAY_OF_WEEK, trainingDay.getDayOfWeek().getCode());
         cv.put(TrainingDay.Columns.FIELD_IMAGE_URL, trainingDay.getImageUrl());
-        mDB.insert(TrainingDay.Columns.TABLE, null, cv);
+        return mDB.insert(TrainingDay.Columns.TABLE, null, cv);
     }
 
     public void deleteTrainingDay(Long id, boolean onlyFromExerciseTable) {

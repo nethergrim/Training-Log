@@ -21,7 +21,6 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.animation.TypeEvaluator;
 import android.animation.ValueAnimator;
-import android.app.Fragment;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -39,11 +38,9 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 
 import com.nethergrim.combogymdiary.R;
-import com.nethergrim.combogymdiary.model.Exercise;
-import com.nethergrim.combogymdiary.tools.StableArrayAdapter;
+import com.nethergrim.combogymdiary.adapter.StableArrayAdapter;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * The dynamic listview is an extension of listview that supports cell dragging

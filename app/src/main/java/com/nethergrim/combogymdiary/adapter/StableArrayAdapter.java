@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.nethergrim.combogymdiary.tools;
+package com.nethergrim.combogymdiary.adapter;
 
 import android.content.Context;
 import android.widget.ArrayAdapter;
