@@ -17,7 +17,7 @@ public class DialogUniversalApprove extends DialogFragment implements
         OnClickListener {
 
     private int type_of_dialog = 0;
-    private int id = 0;
+    private long id = 0L;
     private OnDeleteExerciseCallback listener;
     public static final int TYPE_DELETE_EXERCISE = 1;
     public static final int TYPE_START_WORKOUT = 0;
@@ -32,8 +32,8 @@ public class DialogUniversalApprove extends DialogFragment implements
             type_of_dialog = args.getInt(Constants.TYPE_OF_DIALOG);
         }
         if (type_of_dialog == TYPE_START_WORKOUT) {
-            id = args.getInt(Constants._ID);
-            String tra_name = db.getTrainingName(id);
+            id = args.getLong(Constants._ID);
+            String tra_name = DB.get().fetchTrainingDay(id).getTrainingName();
             adb = new AlertDialog.Builder(getActivity())
                     .setTitle(R.string.start_training)
                     .setPositiveButton(R.string.yes, this)
@@ -43,7 +43,7 @@ public class DialogUniversalApprove extends DialogFragment implements
                                     + ": " + tra_name + " ?"
                     );
         } else if (type_of_dialog == TYPE_DELETE_EXERCISE) {
-            id = args.getInt(Constants._ID);
+            id = args.getLong(Constants._ID);
             exercise = db.fetchtExercise(id);
             adb = new AlertDialog.Builder(getActivity())
                     .setTitle(R.string.delete_exe)
