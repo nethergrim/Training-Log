@@ -31,17 +31,13 @@ public class DB {
     public static final String EXERCISE_NAME = "exercise_name";
     public static final String TRAINING_NAME = "training_name";
     public static final String TIMER_VALUE = "timer_value";
-    public static final String COMMENT_TO_TRAINING = "comment_to_training";
     public static final String DB_TABLE_SET = "main_tab";
     public static final String DB_TABLE_TRAINING_EXERCISE = "training_exercise";
     public static final String DATE = "Date";
     public static final String WEIGHT = "Weight";
     public static final String REPS = "Reps";
     public static final String SET = "SetsN";
-    public static final String TOTAL_TIME_OF_TRAINING = "time_of_training";
-    public static final String DB_TABLE_TRAINING = "comment_table";
     public static final String PART_OF_BODY = "part_of_body";
-    public static final String TOTAL_WEIGHT_OF_TRAINING = "total_weight";
     public static final String DB_MEASURE_TABLE = "measurements_tab";
     public static final String PART_OF_BODY_FOR_MEASURING = "part_of_body";
     public static final String MEASURE_VALUE = "measure_value";
@@ -49,7 +45,6 @@ public class DB {
     public static final String strSeparator = "__,__";
     public static final String SIMPLE_DATE_FORMAT = "dd.MM.yyyy";
     public static final String SUPERSET_EXISTS = "superset";
-    public static final String SUPERSET_POSITION = "superset_position";
     public static final String SUPERSET_ID = "superset_id";
     public static final String SUPERSET_COLOR = "superset_color";
     public static final String POSITION_AT_TRAINING = "position_at_training";
@@ -585,6 +580,14 @@ public class DB {
                 db.execSQL("ALTER TABLE " + Training.Columns.TABLE + " ADD COLUMN " + Training.Columns.FIELD_TRAINING_DAY_NAME + " TEXT");
                 db.execSQL("ALTER TABLE " + Exercise.Columns.TABLE + " ADD COLUMN " + Exercise.Columns.FIELD_CREATED_AT + " INTEGER");
                 db.execSQL("ALTER TABLE " + ExerciseTrainingObject.Columns.TABLE + " ADD COLUMN " + ExerciseTrainingObject.Columns.FIELD_CREATED_AT + " INTEGER");
+                db.execSQL("ALTER TABLE " + Set.Columns.TABLE + " ADD COLUMN " + Set.Columns.FIELD_SUPERSET_PRESENTS + " BOOLEAN");
+                db.execSQL("ALTER TABLE " + Set.Columns.TABLE + " ADD COLUMN " + Set.Columns.FIELD_SUPERSET_ID + " INTEGER");
+                db.execSQL("ALTER TABLE " + Set.Columns.TABLE + " ADD COLUMN " + Set.Columns.FIELD_SUPERSET_COLOR + " INTEGER");
+                db.execSQL("ALTER TABLE " + Set.Columns.TABLE + " ADD COLUMN " + Set.Columns.FIELD_TRAINING_DAY_ID + " INTEGER");
+                db.execSQL("ALTER TABLE " + Set.Columns.TABLE + " ADD COLUMN " + Set.Columns.FIELD_EXERCISE_ID + " INTEGER");
+                db.execSQL("ALTER TABLE " + Set.Columns.TABLE + " ADD COLUMN " + Set.Columns.FIELD_CREATED_AT + " INTEGER");
+                db.execSQL("ALTER TABLE " + Set.Columns.TABLE + " ADD COLUMN " + Set.Columns.FIELD_POSITION_AT_TRAINING + " INTEGER");
+                db.execSQL("ALTER TABLE " + Set.Columns.TABLE + " ADD COLUMN " + Set.Columns.FIELD_SUPERSET_POSITION + " INTEGER");
 
 
                 /*  Training Days moving to new version */
