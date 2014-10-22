@@ -210,6 +210,7 @@ public class CreatingTrainingDayActivity extends AnalyticsActivity implements Di
                 }
                 if (list.getCount() > 5) {
                     listener1.onTouch(v, event);
+
                     listener2.onTouch(v, event);
                     listener3.onTouch(v, event);
                     return false;

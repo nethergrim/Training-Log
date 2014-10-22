@@ -57,11 +57,6 @@
   <component name="ChangeListManager">
     <list default="true" id="1ae25ada-db98-44c3-aaa8-db4b3954c501" name="Default" comment="minor changes">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/activities/CreatingTrainingDayActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/activities/CreatingTrainingDayActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/dialogs/DialogAddExercises.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/dialogs/DialogAddExercises.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/app.iml" afterPath="$PROJECT_DIR$/app/app.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build.gradle" afterPath="$PROJECT_DIR$/app/build.gradle" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/group_item_layout.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/group_item_layout.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="GymDiary.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -93,13 +88,13 @@
       <file leaf-file-name="CreatingTrainingDayActivity.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/activities/CreatingTrainingDayActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-0.07023411" vertical-offset="2803" max-vertical-offset="10240">
-              <caret line="178" column="42" selection-start-line="178" selection-start-column="42" selection-end-line="178" selection-end-column="42" />
+            <state vertical-scroll-proportion="0.51282054" vertical-offset="5100" max-vertical-offset="10260">
+              <caret line="333" column="41" selection-start-line="333" selection-start-column="41" selection-end-line="333" selection-end-column="41" />
               <folding>
-                <element signature="e#10554#11002#0" expanded="true" />
-                <element signature="e#10991#10992#0" expanded="true" />
-                <element signature="e#11277#11720#0" expanded="true" />
-                <element signature="e#11709#11710#0" expanded="true" />
+                <element signature="e#10555#11003#0" expanded="true" />
+                <element signature="e#10992#10993#0" expanded="true" />
+                <element signature="e#11278#11721#0" expanded="true" />
+                <element signature="e#11710#11711#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -2220,7 +2215,7 @@
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3368247" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.47608927" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.47603834" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.32960325" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
@@ -2727,13 +2722,13 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/nethergrim/combogymdiary/activities/CreatingTrainingDayActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.07023411" vertical-offset="2803" max-vertical-offset="10240">
-          <caret line="178" column="42" selection-start-line="178" selection-start-column="42" selection-end-line="178" selection-end-column="42" />
+        <state vertical-scroll-proportion="0.51282054" vertical-offset="5100" max-vertical-offset="10260">
+          <caret line="333" column="41" selection-start-line="333" selection-start-column="41" selection-end-line="333" selection-end-column="41" />
           <folding>
-            <element signature="e#10554#11002#0" expanded="true" />
-            <element signature="e#10991#10992#0" expanded="true" />
-            <element signature="e#11277#11720#0" expanded="true" />
-            <element signature="e#11709#11710#0" expanded="true" />
+            <element signature="e#10555#11003#0" expanded="true" />
+            <element signature="e#10992#10993#0" expanded="true" />
+            <element signature="e#11278#11721#0" expanded="true" />
+            <element signature="e#11710#11711#0" expanded="true" />
           </folding>
         </state>
       </provider>
