@@ -172,11 +172,11 @@ public class CreatingTrainingDayActivity extends AnalyticsActivity implements Di
     }
 
     @Override
-    public void onExerciseAddedCallback(List<Integer> idList) {
+    public void onExerciseAddedCallback(List<Long> idList) {
         final List<Exercise> newExercises = new ArrayList<Exercise>();
         if (idList != null && idList.size() > 0) {
             textNoExe.setVisibility(View.GONE);
-            for (Integer anIdList : idList) {
+            for (Long anIdList : idList) {
                 newExercises.add(db.fetchtExercise(anIdList));
             }
             adapter.addNewData(newExercises);

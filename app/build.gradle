@@ -2,7 +2,7 @@ apply plugin: 'android'
 
 android {
     compileSdkVersion 19
-    buildToolsVersion '20.0.0'
+    buildToolsVersion '21.0.1'
     defaultConfig {
         applicationId 'com.nethergrim.combogymdiary'
         minSdkVersion 15
@@ -20,7 +20,6 @@ android {
 
 dependencies {
     compile 'com.google.android.gms:play-services:4.4.52'
-    compile 'com.android.support:support-v4:19.1.0'
     compile 'com.google.http-client:google-http-client-gson:1.17.0-rc'
     compile 'com.google.code.gson:gson:2.2.4'
     compile 'com.shamanland:fab:0.0.3'
@@ -42,4 +41,7 @@ dependencies {
     compile files('libs/yandex-mobmetrica-lib-android-1.2-wlibs.jar')
     compile files('libs/google-play-services.jar')
     compile project(':view_pager_indicator')
+    compile 'com.android.support:cardview-v7:21.0.0'
+    compile 'com.android.support:recyclerview-v7:21.0.0'
+    compile 'com.android.support:support-v4:21.0.0'
 }
