@@ -527,6 +527,20 @@ public class DB {
     }
 
     /*-----------------------------------------------------------------------*/
+    /*------------------------Training Programs------------------------------*/
+
+    public void persistTrainingPrograms(TrainingProgram trainingProgram){
+        ContentValues cv = new ContentValues();
+        // TODO
+        mDB.insert(TrainingProgram.Columns.TABLE, null, cv);
+    }
+    /*-----------------------------------------------------------------------*/
+    /*----------------------------Training-----------------------------------*/
+
+
+    // TODO
+
+    /*-----------------------------------------------------------------------*/
 
 
     private class DBHelper extends SQLiteOpenHelper {

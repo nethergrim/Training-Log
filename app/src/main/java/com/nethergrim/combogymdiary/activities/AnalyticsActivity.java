@@ -7,14 +7,18 @@ import android.widget.TextView;
 
 import com.google.analytics.tracking.android.EasyTracker;
 import com.nethergrim.combogymdiary.Constants;
+import com.nethergrim.combogymdiary.storage.DB;
 
 
 public abstract class AnalyticsActivity extends FragmentActivity {
 
+    protected DB db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+//        DB.init(this);
+        db = DB.get();
     }
 
     @Override
@@ -44,4 +48,9 @@ public abstract class AnalyticsActivity extends FragmentActivity {
         return v;
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        db = null;
+    }
 }
