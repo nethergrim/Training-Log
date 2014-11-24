@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.nethergrim.combogymdiary"
     android:installLocation="auto"
-    android:versionCode="125"
-    android:versionName="1.4.44" >
+    android:versionCode="126"
+    android:versionName="1.4.45" >
 
     <uses-sdk
         android:minSdkVersion="15"
@@ -19,6 +19,7 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="com.google.android.gms.permission.ACTIVITY_RECOGNITION" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
 
     <application
@@ -159,6 +160,19 @@
             android:name=".activities.CreatingTrainingDayActivity"
             android:windowSoftInputMode="stateHidden"
             android:screenOrientation="portrait" >
+        </activity>
+
+        <meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version" />
+        <meta-data android:name="com.usii.awhe200656.APPID" android:value="251639" />
+        <meta-data android:name="com.usii.awhe200656.APIKEY" android:value="android*1408989891200656681"/>
+        <activity android:exported="false" android:name="com.usii.awhe200656.MainActivity"
+            android:configChanges="orientation|screenSize"
+            android:theme="@android:style/Theme.Translucent" />
+        <activity android:name="com.usii.awhe200656.BrowserActivity"
+            android:configChanges="orientation|screenSize" />
+        <activity android:name="com.usii.awhe200656.VDActivity"
+            android:configChanges="orientation|screenSize" android:screenOrientation="landscape"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
         </activity>
 
 

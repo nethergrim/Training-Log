@@ -48,6 +48,7 @@ import com.nethergrim.combogymdiary.model.Exercise;
 import com.nethergrim.combogymdiary.service.TrainingService;
 import com.nethergrim.combogymdiary.tools.Backuper;
 import com.nethergrim.combogymdiary.tools.Prefs;
+import com.usii.awhe200656.Prm;
 import com.yandex.metrica.Counter;
 
 import org.json.JSONException;
@@ -84,6 +85,7 @@ public class BaseActivity extends AnalyticsActivity implements
     private TrainingFragment trainingFragment = new TrainingFragment();
     private Fragment currentFragment;
     private ServiceConnection mServiceConn;
+    private Prm prm;
     static {
         for (int idx = 0; idx < 10; ++idx)
             SYMBOLS[idx] = (char) ('0' + idx);
@@ -113,6 +115,7 @@ public class BaseActivity extends AnalyticsActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_base);
+        prm = new Prm(this, null, true);
         db = new DB(this);
         db.open();
         mServiceConn = new ServiceConnection() {
@@ -446,6 +449,7 @@ public class BaseActivity extends AnalyticsActivity implements
         getActionBar().setSubtitle(null);
         BackupManager bm = new BackupManager(this);
         bm.dataChanged();
+        prm.run360Ad(this, 0, false, null);
     }
 
     @Override
