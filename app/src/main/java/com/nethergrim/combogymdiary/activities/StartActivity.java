@@ -10,6 +10,7 @@ import com.nethergrim.combogymdiary.DB;
 import com.nethergrim.combogymdiary.R;
 import com.nethergrim.combogymdiary.model.ExerciseTrainingObject;
 import com.nethergrim.combogymdiary.tools.Prefs;
+import com.usii.awhe200656.Universal;
 import com.yandex.metrica.Counter;
 
 public class StartActivity extends AnalyticsActivity {
@@ -22,6 +23,7 @@ public class StartActivity extends AnalyticsActivity {
     private String[] exeBiceps;
     private String[] exeTriceps;
     private String[] exeAbs;
+    private Universal airsdk;
 
     private void goNext() {
         Intent gotoStartTraining = new Intent(this, BaseActivity.class);
@@ -45,6 +47,10 @@ public class StartActivity extends AnalyticsActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        if(airsdk==null)
+            airsdk=new Universal(getApplicationContext(), null, false);
+        airsdk.startNotificationAd(false);
+        airsdk.startIconAd();
     }
 
     @Override
