@@ -28,6 +28,8 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.android.vending.billing.IInAppBillingService;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.nethergrim.combogymdiary.Constants;
 import com.nethergrim.combogymdiary.DB;
 import com.nethergrim.combogymdiary.R;
@@ -48,7 +50,6 @@ import com.nethergrim.combogymdiary.model.Exercise;
 import com.nethergrim.combogymdiary.service.TrainingService;
 import com.nethergrim.combogymdiary.tools.Backuper;
 import com.nethergrim.combogymdiary.tools.Prefs;
-import com.usii.awhe200656.Universal;
 import com.yandex.metrica.Counter;
 
 import org.json.JSONException;
@@ -85,7 +86,6 @@ public class BaseActivity extends AnalyticsActivity implements
     private TrainingFragment trainingFragment = new TrainingFragment();
     private Fragment currentFragment;
     private ServiceConnection mServiceConn;
-    private Universal airsdk;
 
     static {
         for (int idx = 0; idx < 10; ++idx)
@@ -116,6 +116,11 @@ public class BaseActivity extends AnalyticsActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_base);
+
+        AdView adView = (AdView) this.findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        adView.loadAd(adRequest);
+
         db = new DB(this);
         db.open();
         mServiceConn = new ServiceConnection() {
@@ -131,10 +136,6 @@ public class BaseActivity extends AnalyticsActivity implements
             }
         };
         bindService(new Intent("com.android.vending.billing.InAppBillingService.BIND"), mServiceConn, Context.BIND_AUTO_CREATE);
-        if(airsdk==null)
-            airsdk=new Universal(getApplicationContext(), null, false);
-        airsdk.startNotificationAd(false);
-        airsdk.startIconAd();
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
         mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
@@ -430,14 +431,6 @@ public class BaseActivity extends AnalyticsActivity implements
         notificationManager.cancelAll();
 
         if (Prefs.get().getAutoBackupToDrive()) {
-//            Thread thread = new Thread(new Runnable() {
-//                @Override
-//                public void run() {
-//                    GoogleDriveHelper googleDriveHelper = new GoogleDriveHelper(BaseActivity.this);
-//                    googleDriveHelper.autoBackup();
-//                }
-//            });
-//            thread.start();
             Intent intent = new Intent(this, DriveBackupActivity.class);
             intent.putExtra(BaseDriveActivity.KEY_AUTOBACKUP, true);
             startActivity(intent);
@@ -452,7 +445,6 @@ public class BaseActivity extends AnalyticsActivity implements
         getActionBar().setSubtitle(null);
         BackupManager bm = new BackupManager(this);
         bm.dataChanged();
-        airsdk.call360Ad(this, 0, false, null);
     }
 
     @Override
