@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources >
     <string name="add_superset">Добавить суперсет</string>
+    <string name="ADMOB_BANNER_ID">ca-app-pub-1742495417819281/2105376258</string>
     <string name="add_exercises_to_workout">Добавьте упражнения!</string>
     <string name="enter_training_name">Введите название тренировки!</string>
     <string name="fav_exercise">Любимое упражнение</string>
