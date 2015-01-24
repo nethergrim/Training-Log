@@ -20,6 +20,7 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -30,6 +31,7 @@ import android.widget.Toast;
 import com.android.vending.billing.IInAppBillingService;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
 import com.nethergrim.combogymdiary.Constants;
 import com.nethergrim.combogymdiary.DB;
 import com.nethergrim.combogymdiary.R;
@@ -86,6 +88,8 @@ public class BaseActivity extends AnalyticsActivity implements
     private TrainingFragment trainingFragment = new TrainingFragment();
     private Fragment currentFragment;
     private ServiceConnection mServiceConn;
+    private AdView adView;
+    private InterstitialAd interstitial;
 
     static {
         for (int idx = 0; idx < 10; ++idx)
@@ -116,10 +120,12 @@ public class BaseActivity extends AnalyticsActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_base);
+        adView = (AdView) this.findViewById(R.id.adView);
 
-        AdView adView = (AdView) this.findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        adView.loadAd(adRequest);
+        interstitial = new InterstitialAd(this);
+        interstitial.setAdUnitId(Constants.INTERSTITIAL_BANNER_ID);
+
+        showBannerAds();
 
         db = new DB(this);
         db.open();
@@ -133,6 +139,7 @@ public class BaseActivity extends AnalyticsActivity implements
             public void onServiceConnected(ComponentName name, IBinder service) {
                 mService = IInAppBillingService.Stub.asInterface(service);
                 checkAd();
+                showBannerAds();
             }
         };
         bindService(new Intent("com.android.vending.billing.InAppBillingService.BIND"), mServiceConn, Context.BIND_AUTO_CREATE);
@@ -179,6 +186,33 @@ public class BaseActivity extends AnalyticsActivity implements
         mDrawerList.setItemChecked(0, true);
         if (savedInstanceState == null) {
             onItemSelected(0);
+        }
+    }
+
+    private void showBannerAds() {
+        if (Prefs.get().getAdsRemoved()) {
+            adView.setVisibility(View.GONE);
+        } else {
+            AdRequest adRequest = new AdRequest.Builder().build();
+            adView.loadAd(adRequest);
+        }
+    }
+
+    private void loadInterstitialAds() {
+        if (!Prefs.get().getAdsRemoved()) {
+            AdRequest adRequest = new AdRequest.Builder().build();
+            interstitial.loadAd(adRequest);
+        }
+    }
+
+    private void showInterstitialAds() {
+        if (!Prefs.get().getAdsRemoved()) {
+            if (interstitial.isLoaded()) {
+                Log.e("TAG", "interstitial loaded, showing");
+                interstitial.show();
+            } else {
+                Log.e("TAG", "interstitial not loaded now =(");
+            }
         }
     }
 
@@ -371,12 +405,15 @@ public class BaseActivity extends AnalyticsActivity implements
         super.onResume();
         Counter.sharedInstance().onResumeActivity(this);
         initStrings();
+        showBannerAds();
+        loadInterstitialAds();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         Counter.sharedInstance().onPauseActivity(this);
+        loadInterstitialAds();
     }
 
     @Override
@@ -402,6 +439,7 @@ public class BaseActivity extends AnalyticsActivity implements
 
     @Override
     public void onChoose() {
+        showInterstitialAds();
         getActionBar().setSubtitle(null);
         setTrainingAlreadyStarted(false);
         DB db = new DB(this);
@@ -445,6 +483,7 @@ public class BaseActivity extends AnalyticsActivity implements
         getActionBar().setSubtitle(null);
         BackupManager bm = new BackupManager(this);
         bm.dataChanged();
+        showInterstitialAds();
     }
 
     @Override
@@ -458,6 +497,7 @@ public class BaseActivity extends AnalyticsActivity implements
         setTrainingAlreadyStarted(true);
         listButtons[0] = getResources().getString(R.string.continue_training);
         adapter.notifyDataSetChanged();
+        loadInterstitialAds();
     }
 
     @Override
