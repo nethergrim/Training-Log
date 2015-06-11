@@ -20,7 +20,6 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -29,9 +28,8 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.android.vending.billing.IInAppBillingService;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.InterstitialAd;
+import com.appodeal.ads.Appodeal;
+import com.appodeal.ads.BannerView;
 import com.nethergrim.combogymdiary.Constants;
 import com.nethergrim.combogymdiary.DB;
 import com.nethergrim.combogymdiary.R;
@@ -69,6 +67,14 @@ public class BaseActivity extends AnalyticsActivity implements
     private final static String FRAGMENT_ID = "fragment_id";
     private static final char[] SYMBOLS = new char[36];
     private static boolean startedTraining = false;
+
+    static {
+        for (int idx = 0; idx < 10; ++idx)
+            SYMBOLS[idx] = (char) ('0' + idx);
+        for (int idx = 10; idx < 36; ++idx)
+            SYMBOLS[idx] = (char) ('a' + idx - 10);
+    }
+
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
@@ -88,15 +94,8 @@ public class BaseActivity extends AnalyticsActivity implements
     private TrainingFragment trainingFragment = new TrainingFragment();
     private Fragment currentFragment;
     private ServiceConnection mServiceConn;
-    private AdView adView;
-    private InterstitialAd interstitial;
 
-    static {
-        for (int idx = 0; idx < 10; ++idx)
-            SYMBOLS[idx] = (char) ('0' + idx);
-        for (int idx = 10; idx < 36; ++idx)
-            SYMBOLS[idx] = (char) ('a' + idx - 10);
-    }
+    private BannerView mBannerView;
 
     public static boolean isTrainingAlreadyStarted() {
         return startedTraining;
@@ -120,11 +119,13 @@ public class BaseActivity extends AnalyticsActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_base);
-        adView = (AdView) this.findViewById(R.id.adView);
 
-        interstitial = new InterstitialAd(this);
-        interstitial.setAdUnitId(Constants.INTERSTITIAL_BANNER_ID);
 
+        String appKey = "b82e45591fb64821ced4230973e853adc2f1c66d61bbe0de";
+        Appodeal.initialize(this, appKey);
+
+        mBannerView = (BannerView) findViewById(R.id.appodealBannerView);
+        Appodeal.setBannerViewId(R.id.appodealBannerView);
         showBannerAds();
 
         db = new DB(this);
@@ -191,28 +192,23 @@ public class BaseActivity extends AnalyticsActivity implements
 
     private void showBannerAds() {
         if (Prefs.get().getAdsRemoved()) {
-            adView.setVisibility(View.GONE);
+            Appodeal.hide(this, Appodeal.BANNER_VIEW);
+            mBannerView.setVisibility(View.GONE);
         } else {
-            AdRequest adRequest = new AdRequest.Builder().build();
-            adView.loadAd(adRequest);
+            Appodeal.show(this, Appodeal.BANNER_VIEW);
+            mBannerView.setVisibility(View.VISIBLE);
         }
     }
 
     private void loadInterstitialAds() {
         if (!Prefs.get().getAdsRemoved()) {
-            AdRequest adRequest = new AdRequest.Builder().build();
-            interstitial.loadAd(adRequest);
+            Appodeal.setAutoCache(Appodeal.ALL | Appodeal.ANY, false);
         }
     }
 
     private void showInterstitialAds() {
         if (!Prefs.get().getAdsRemoved()) {
-            if (interstitial.isLoaded()) {
-                Log.e("TAG", "interstitial loaded, showing");
-                interstitial.show();
-            } else {
-                Log.e("TAG", "interstitial not loaded now =(");
-            }
+            Appodeal.show(this, Appodeal.ALL | Appodeal.ANY);
         }
     }
 
