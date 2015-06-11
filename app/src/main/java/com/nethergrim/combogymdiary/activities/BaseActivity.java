@@ -94,6 +94,8 @@ public class BaseActivity extends AnalyticsActivity implements
     private TrainingFragment trainingFragment = new TrainingFragment();
     private Fragment currentFragment;
     private ServiceConnection mServiceConn;
+    private long mLastUpdateTime = 0;
+    private int UPDATE_DELAY_MS = 30000;
 
     private BannerView mBannerView;
 
@@ -195,14 +197,18 @@ public class BaseActivity extends AnalyticsActivity implements
             Appodeal.hide(this, Appodeal.BANNER_VIEW);
             mBannerView.setVisibility(View.GONE);
         } else {
-            Appodeal.show(this, Appodeal.BANNER_VIEW);
-            mBannerView.setVisibility(View.VISIBLE);
+            if (mLastUpdateTime + UPDATE_DELAY_MS < System.currentTimeMillis()) {
+                mLastUpdateTime = System.currentTimeMillis();
+                Appodeal.show(this, Appodeal.BANNER_VIEW);
+                mBannerView.setVisibility(View.VISIBLE);
+            }
+
         }
     }
 
     private void loadInterstitialAds() {
         if (!Prefs.get().getAdsRemoved()) {
-            Appodeal.setAutoCache(Appodeal.ALL | Appodeal.ANY, false);
+            Appodeal.setAutoCache(Appodeal.ALL | Appodeal.ANY, true);
         }
     }
 
@@ -311,6 +317,7 @@ public class BaseActivity extends AnalyticsActivity implements
     }
 
     public void onItemSelected(int position) {
+        showBannerAds();
         mDrawerLayout.closeDrawer(mDrawerList);
         if (position == 8) {
             removeAds();
