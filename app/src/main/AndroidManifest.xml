@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.nethergrim.combogymdiary"
     android:installLocation="auto"
-    android:versionCode="125"
-    android:versionName="1.4.44" >
+    android:versionCode="129"
+    android:versionName="1.5.0">
 
     <uses-sdk
         android:minSdkVersion="15"
@@ -18,18 +18,19 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="com.google.android.gms.permission.ACTIVITY_RECOGNITION" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
 
 
     <application
         android:name=".MyApp"
-        android:icon="@drawable/ic_launcher"
         android:hardwareAccelerated="true"
+        android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:largeHeap="true"
-        android:allowBackup="true"
-        android:backupAgent=".tools.MyBackupAgent"
-        android:theme="@style/Theme.Material_blue" >
+        android:theme="@style/Theme.Material_blue">
 
         <meta-data
             android:name="com.google.android.backup.api_key"
@@ -41,8 +42,8 @@
 
         <activity
             android:name=".activities.StartActivity"
-            android:theme="@android:style/Theme.Holo.Light.Dialog.NoActionBar"
-            >
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Holo.Light.Dialog.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -50,26 +51,25 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities.SettingsActivity">
-        </activity>
+            android:name=".activities.SettingsActivity"
+            android:screenOrientation="portrait" />
         <activity
-            android:name=".activities.HistoryDetailedActivity" >
-        </activity>
+            android:name=".activities.HistoryDetailedActivity"
+            android:screenOrientation="portrait" />
         <activity
-            android:name=".activities.CatalogDetailedActivity" >
-        </activity>
+            android:name=".activities.CatalogDetailedActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activities.AddingMeasurementActivity"
-            android:windowSoftInputMode="stateHidden" >
-        </activity>
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".activities.MeasurementsDetailedActivity" >
-        </activity>
+            android:name=".activities.MeasurementsDetailedActivity"
+            android:screenOrientation="portrait" />
 
         <service
             android:name=".service.TrainingService"
-            android:process=":myservice" >
-        </service>
+            android:process=":myservice" />
 
         <meta-data
             android:name="metrica:api:key"
@@ -94,7 +94,7 @@
 
         <receiver
             android:name="com.yandex.metrica.MetricaEventHandler"
-            tools:ignore="ExportedReceiver" >
+            tools:ignore="ExportedReceiver">
             <intent-filter>
                 <action android:name="com.yandex.metrica.intent.action.SYNC" />
             </intent-filter>
@@ -108,7 +108,7 @@
         <receiver
             android:name="com.yandex.metrica.CampaignReceiver"
             android:exported="true"
-            tools:ignore="ExportedReceiver" >
+            tools:ignore="ExportedReceiver">
             <intent-filter>
                 <action android:name="com.android.vending.INSTALL_REFERRER" />
             </intent-filter>
@@ -121,26 +121,24 @@
             tools:ignore="ExportedContentProvider" />
 
         <activity
-            android:name=".activities.BaseActivity" >
-        </activity>
-        <activity android:name=".activities.StatisticsActivity"
-            >
-        </activity>
+            android:name=".activities.BaseActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.StatisticsActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".googledrive.DriveBackupActivity"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.DeviceDefault.Light.NoActionBar" >
-        </activity>
+            android:theme="@android:style/Theme.DeviceDefault.Light.NoActionBar" />
         <activity
             android:name=".googledrive.DriveRestoreActivity"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.DeviceDefault.Light.NoActionBar" >
-        </activity>
+            android:theme="@android:style/Theme.DeviceDefault.Light.NoActionBar" />
 
         <receiver
-            android:name=".tools.WidgetStatistics"
+            android:name=".WidgetStatistics"
             android:icon="@drawable/ic_launcher"
-            android:label="Widget for Training Log" >
+            android:label="Widget for Training Log">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
@@ -152,9 +150,89 @@
 
         <activity
             android:name=".activities.CreatingTrainingDayActivity"
-            android:windowSoftInputMode="stateHidden" >
-        </activity>
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
 
+
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
+
+        <activity
+            android:name="com.appodeal.ads.InterstitialActivity"
+            android:configChanges="orientation|screenSize"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity
+            android:name="com.appodeal.ads.VideoActivity"
+            android:configChanges="orientation|screenSize"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+
+        <activity
+            android:name="com.appodeal.ads.LoaderActivity"
+            android:configChanges="orientation|screenSize"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
+        <activity
+            android:name="com.google.android.gms.ads.AdActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
+            android:theme="@android:style/Theme.Translucent" />
+
+        <activity
+            android:name="com.chartboost.sdk.CBImpressionActivity"
+            android:excludeFromRecents="true"
+            android:theme="@android:style/Theme.Translucent" />
+
+        <activity
+            android:name="com.applovin.adview.AppLovinInterstitialActivity"
+            android:theme="@android:style/Theme.Translucent" />
+
+        <activity
+            android:name="com.mopub.mobileads.MoPubActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:theme="@android:style/Theme.Translucent" />
+        <activity
+            android:name="com.mopub.common.MoPubBrowser"
+            android:configChanges="keyboardHidden|orientation|screenSize" />
+        <activity
+            android:name="com.mopub.mobileads.MraidActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize" />
+        <activity
+            android:name="com.mopub.mobileads.MraidVideoPlayerActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize" />
+
+        <activity
+            android:name="org.nexage.sourcekit.mraid.MRAIDBrowser"
+            android:configChanges="orientation|keyboard|keyboardHidden|screenSize"
+            android:theme="@android:style/Theme.Translucent" />
+
+        <activity
+            android:name="com.amazon.device.ads.AdActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize" />
+
+        <activity
+            android:name="com.supersonicads.sdk.controller.ControllerActivity"
+            android:configChanges="orientation|screenSize"
+            android:hardwareAccelerated="true" />
+        <activity
+            android:name="com.supersonicads.sdk.controller.InterstitialActivity"
+            android:configChanges="orientation|screenSize"
+            android:hardwareAccelerated="true"
+            android:theme="@android:style/Theme.Translucent" />
+        <activity
+            android:name="com.supersonicads.sdk.controller.OpenUrlActivity"
+            android:configChanges="orientation|screenSize"
+            android:hardwareAccelerated="true" />
+
+        <activity
+            android:name="com.unity3d.ads.android.view.UnityAdsFullscreenActivity"
+            android:configChanges="fontScale|keyboard|keyboardHidden|locale|mnc|mcc|navigation|orientation|screenLayout|screenSize|smallestScreenSize|uiMode|touchscreen"
+            android:hardwareAccelerated="true"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
 
 
     </application>

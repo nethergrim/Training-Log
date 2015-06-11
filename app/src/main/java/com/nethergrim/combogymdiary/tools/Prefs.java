@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 import com.nethergrim.combogymdiary.R;
-import com.nethergrim.combogymdiary.activities.BaseActivity;
 
 
 public class Prefs {
@@ -54,8 +53,7 @@ public class Prefs {
     }
 
     public boolean getAdsRemoved() {
-//        return prefs.getBoolean(KEY_ADS_REMOVED, false);
-        return true;
+        return prefs.getBoolean(KEY_ADS_REMOVED, false);
     }
 
     public void setSuperSetInfoShowed(int times) {

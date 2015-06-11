@@ -2,6 +2,7 @@
 <resources>
 
     <string name="add_superset">Додати суперсет</string>
+    <string name="ADMOB_BANNER_ID">ca-app-pub-1742495417819281/2105376258</string>
     <string name="add_exercises_to_workout">Додайте вправи!</string>
     <string name="enter_training_name">Введіть назву тренування!</string>
     <string name="fav_exercise">Улюблена вправа</string>

@@ -3,6 +3,7 @@ package com.nethergrim.combogymdiary.activities;
 import android.app.Fragment;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.app.backup.BackupManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -27,25 +28,27 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.android.vending.billing.IInAppBillingService;
-import com.nethergrim.combogymdiary.storage.DB;
+import com.appodeal.ads.Appodeal;
+import com.appodeal.ads.BannerView;
+import com.nethergrim.combogymdiary.Constants;
+import com.nethergrim.combogymdiary.DB;
 import com.nethergrim.combogymdiary.R;
 import com.nethergrim.combogymdiary.dialogs.DialogExitFromTraining.MyInterface;
-import com.nethergrim.combogymdiary.dialogs.DialogGoToMarket;
 import com.nethergrim.combogymdiary.dialogs.DialogInfo;
 import com.nethergrim.combogymdiary.dialogs.DialogUniversalApprove;
+import com.nethergrim.combogymdiary.dialogs.DialogUniversalApprove.OnStartTrainingAccept;
 import com.nethergrim.combogymdiary.fragments.CatalogFragment;
 import com.nethergrim.combogymdiary.fragments.ExerciseListFragment;
 import com.nethergrim.combogymdiary.fragments.HistoryFragment;
 import com.nethergrim.combogymdiary.fragments.MeasurementsFragment;
 import com.nethergrim.combogymdiary.fragments.StartTrainingFragment;
+import com.nethergrim.combogymdiary.fragments.StartTrainingFragment.OnSelectedListener;
 import com.nethergrim.combogymdiary.fragments.TrainingFragment;
 import com.nethergrim.combogymdiary.googledrive.BaseDriveActivity;
 import com.nethergrim.combogymdiary.googledrive.DriveBackupActivity;
 import com.nethergrim.combogymdiary.model.Exercise;
 import com.nethergrim.combogymdiary.service.TrainingService;
 import com.nethergrim.combogymdiary.tools.Backuper;
-import com.nethergrim.combogymdiary.tools.BaseActivityInterface;
-import com.nethergrim.combogymdiary.tools.MyBackupAgent;
 import com.nethergrim.combogymdiary.tools.Prefs;
 import com.yandex.metrica.Counter;
 
@@ -57,15 +60,25 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Random;
 
-public class BaseActivity extends AnalyticsActivity implements BaseActivityInterface,MyInterface,DialogUniversalApprove.OnDeleteExerciseCallback, AdapterView.OnItemClickListener {
+public class BaseActivity extends AnalyticsActivity implements
+        OnSelectedListener, MyInterface, OnStartTrainingAccept, DialogUniversalApprove.OnDeleteExerciseCallback, AdapterView.OnItemClickListener {
 
     public final static String SECONDS = "seconds";
     private final static String FRAGMENT_ID = "fragment_id";
     private static final char[] SYMBOLS = new char[36];
     private static boolean startedTraining = false;
+
+    static {
+        for (int idx = 0; idx < 10; ++idx)
+            SYMBOLS[idx] = (char) ('0' + idx);
+        for (int idx = 10; idx < 36; ++idx)
+            SYMBOLS[idx] = (char) ('a' + idx - 10);
+    }
+
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
+    private String[] listButtons;
     private int FRAGMENT_NUMBER = 0;
     private SharedPreferences sp;
     private ArrayAdapter<String> adapter;
@@ -81,12 +94,8 @@ public class BaseActivity extends AnalyticsActivity implements BaseActivityInter
     private TrainingFragment trainingFragment = new TrainingFragment();
     private Fragment currentFragment;
     private ServiceConnection mServiceConn;
-    static {
-        for (int idx = 0; idx < 10; ++idx)
-            SYMBOLS[idx] = (char) ('0' + idx);
-        for (int idx = 10; idx < 36; ++idx)
-            SYMBOLS[idx] = (char) ('a' + idx - 10);
-    }
+
+    private BannerView mBannerView;
 
     public static boolean isTrainingAlreadyStarted() {
         return startedTraining;
@@ -101,19 +110,6 @@ public class BaseActivity extends AnalyticsActivity implements BaseActivityInter
     }
 
     @Override
-    public void onStartTrainingPressed(long trainingDayId) {
-        trainingFragment = new TrainingFragment();
-        currentFragment = trainingFragment;
-        Bundle args = new Bundle();
-        args.putInt(TrainingFragment.BUNDLE_KEY_TRAINING_ID, (int) trainingDayId);
-        currentFragment.setArguments(args);
-        getFragmentManager().beginTransaction().replace(R.id.content, currentFragment).commit();
-        setTrainingAlreadyStarted(true);
-        initStrings();
-    }
-
-
-    @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         mDrawerToggle.onConfigurationChanged(newConfig);
@@ -123,6 +119,15 @@ public class BaseActivity extends AnalyticsActivity implements BaseActivityInter
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_base);
+
+
+        String appKey = "b82e45591fb64821ced4230973e853adc2f1c66d61bbe0de";
+        Appodeal.initialize(this, appKey);
+
+        mBannerView = (BannerView) findViewById(R.id.appodealBannerView);
+        Appodeal.setBannerViewId(R.id.appodealBannerView);
+        showBannerAds();
+
         db = new DB(this);
         db.open();
         mServiceConn = new ServiceConnection() {
@@ -135,14 +140,16 @@ public class BaseActivity extends AnalyticsActivity implements BaseActivityInter
             public void onServiceConnected(ComponentName name, IBinder service) {
                 mService = IInAppBillingService.Stub.asInterface(service);
                 checkAd();
+                showBannerAds();
             }
         };
         bindService(new Intent("com.android.vending.billing.InAppBillingService.BIND"), mServiceConn, Context.BIND_AUTO_CREATE);
-
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
         mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
         initStrings();
+        adapter = new ArrayAdapter<String>(this, R.layout.menu_list_item, listButtons);
+        mDrawerList.setAdapter(adapter);
         mDrawerList.setOnItemClickListener(this);
         mDrawerToggle = new ActionBarDrawerToggle(this, /* host Activity */
                 mDrawerLayout, /* DrawerLayout object */
@@ -167,8 +174,10 @@ public class BaseActivity extends AnalyticsActivity implements BaseActivityInter
             Bundle args = new Bundle();
             args.putInt(TrainingFragment.BUNDLE_KEY_TRAINING_ID, Prefs.get().getCurrentTrainingId());
             currentFragment.setArguments(args);
+            listButtons[0] = getResources().getString(
+                    R.string.continue_training);
+            adapter.notifyDataSetChanged();
             setTrainingAlreadyStarted(true);
-            initStrings();
         } else {
             currentFragment = startTrainingFragment;
         }
@@ -178,6 +187,28 @@ public class BaseActivity extends AnalyticsActivity implements BaseActivityInter
         mDrawerList.setItemChecked(0, true);
         if (savedInstanceState == null) {
             onItemSelected(0);
+        }
+    }
+
+    private void showBannerAds() {
+        if (Prefs.get().getAdsRemoved()) {
+            Appodeal.hide(this, Appodeal.BANNER_VIEW);
+            mBannerView.setVisibility(View.GONE);
+        } else {
+            Appodeal.show(this, Appodeal.BANNER_VIEW);
+            mBannerView.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void loadInterstitialAds() {
+        if (!Prefs.get().getAdsRemoved()) {
+            Appodeal.setAutoCache(Appodeal.ALL | Appodeal.ANY, false);
+        }
+    }
+
+    private void showInterstitialAds() {
+        if (!Prefs.get().getAdsRemoved()) {
+            Appodeal.show(this, Appodeal.ALL | Appodeal.ANY);
         }
     }
 
@@ -255,35 +286,28 @@ public class BaseActivity extends AnalyticsActivity implements BaseActivityInter
     }
 
     private void initStrings() {
-        String[] listButtons;
         if (!Prefs.get().getAdsRemoved()) {
             listButtons = new String[9];
             listButtons[8] = getString(R.string.remove_ads);
         } else {
             listButtons = new String[8];
         }
-        if (isTrainingAlreadyStarted()){
-            listButtons[0] = getResources().getString(R.string.continue_training);
-        } else {
-            listButtons[0] = getResources().getString(R.string.startTrainingButtonString);
-        }
-
-        listButtons[1] = getResources().getString(R.string.excersisiesListButtonString);
+        listButtons[0] = getResources().getString(
+                R.string.startTrainingButtonString);
+        listButtons[1] = getResources().getString(
+                R.string.excersisiesListButtonString);
         listButtons[2] = getResources().getString(R.string.training_history);
         listButtons[3] = getResources().getString(R.string.measurements);
         listButtons[4] = getResources().getString(R.string.exe_catalog);
         listButtons[5] = getResources().getString(R.string.statistics);
-        listButtons[6] = getResources().getString(R.string.settingsButtonString);
+        listButtons[6] = getResources()
+                .getString(R.string.settingsButtonString);
         listButtons[7] = getResources().getString(R.string.faq);
         try {
             adapter.notifyDataSetChanged();
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        adapter = new ArrayAdapter<String>(this, R.layout.menu_list_item, listButtons);
-        mDrawerList.setAdapter(adapter);
-        mDrawerList.setItemChecked(previouslyChecked, true);
     }
 
     public void onItemSelected(int position) {
@@ -308,7 +332,9 @@ public class BaseActivity extends AnalyticsActivity implements BaseActivityInter
                     else
                         return;
                     currentFragment.setArguments(args);
-                    initStrings();
+                    listButtons[0] = getResources().getString(
+                            R.string.continue_training);
+                    adapter.notifyDataSetChanged();
                 } else {
                     currentFragment = startTrainingFragment;
                 }
@@ -374,19 +400,16 @@ public class BaseActivity extends AnalyticsActivity implements BaseActivityInter
     protected void onResume() {
         super.onResume();
         Counter.sharedInstance().onResumeActivity(this);
-        MyBackupAgent.requestBackup(this);
         initStrings();
-        if (Prefs.get().getTrainingsCount() > 4   && !Prefs.get().getMarketAlreadyLeavedFeedback()) {
-            DialogGoToMarket dialog = new DialogGoToMarket();
-            dialog.show(getFragmentManager(), DialogGoToMarket.class.getName());
-            dialog.setCancelable(false);
-        }
+        showBannerAds();
+        loadInterstitialAds();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         Counter.sharedInstance().onPauseActivity(this);
+        loadInterstitialAds();
     }
 
     @Override
@@ -401,11 +424,20 @@ public class BaseActivity extends AnalyticsActivity implements BaseActivityInter
     }
 
     @Override
+    public void onTrainingSelected(int id) {
+        DialogUniversalApprove approve = new DialogUniversalApprove();
+        Bundle args = new Bundle();
+        args.putInt(Constants.TYPE_OF_DIALOG, DialogUniversalApprove.TYPE_START_WORKOUT);
+        args.putInt(Constants._ID, id);
+        approve.setArguments(args);
+        approve.show(getFragmentManager(), "");
+    }
+
+    @Override
     public void onChoose() {
+        showInterstitialAds();
         getActionBar().setSubtitle(null);
         setTrainingAlreadyStarted(false);
-        initStrings();
-        MyBackupAgent.requestBackup(this);
         DB db = new DB(this);
         db.open();
         Cursor tmpCursor = db.getDataMain(null, null, null, null, null, null);
@@ -441,7 +473,27 @@ public class BaseActivity extends AnalyticsActivity implements BaseActivityInter
         Prefs.get().setTrainingsCount(Prefs.get().getTrainingsCount() + 1);
         getFragmentManager().beginTransaction().replace(R.id.content, new StartTrainingFragment()).commit();
         db.close();
+        listButtons[0] = getResources().getString(
+                R.string.startTrainingButtonString);
+        adapter.notifyDataSetChanged();
         getActionBar().setSubtitle(null);
+        BackupManager bm = new BackupManager(this);
+        bm.dataChanged();
+        showInterstitialAds();
+    }
+
+    @Override
+    public void onStartTrainingAccepted(int id) {
+        trainingFragment = new TrainingFragment();
+        currentFragment = trainingFragment;
+        Bundle args = new Bundle();
+        args.putInt(TrainingFragment.BUNDLE_KEY_TRAINING_ID, id);
+        currentFragment.setArguments(args);
+        getFragmentManager().beginTransaction().replace(R.id.content, currentFragment).commit();
+        setTrainingAlreadyStarted(true);
+        listButtons[0] = getResources().getString(R.string.continue_training);
+        adapter.notifyDataSetChanged();
+        loadInterstitialAds();
     }
 
     @Override
