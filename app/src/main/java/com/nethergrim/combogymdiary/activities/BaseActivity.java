@@ -28,8 +28,6 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.android.vending.billing.IInAppBillingService;
-import com.appodeal.ads.Appodeal;
-import com.appodeal.ads.BannerView;
 import com.nethergrim.combogymdiary.Constants;
 import com.nethergrim.combogymdiary.DB;
 import com.nethergrim.combogymdiary.R;
@@ -94,10 +92,6 @@ public class BaseActivity extends AnalyticsActivity implements
     private TrainingFragment trainingFragment = new TrainingFragment();
     private Fragment currentFragment;
     private ServiceConnection mServiceConn;
-    private long mLastUpdateTime = 0;
-    private int UPDATE_DELAY_MS = 30000;
-
-    private BannerView mBannerView;
 
     public static boolean isTrainingAlreadyStarted() {
         return startedTraining;
@@ -122,14 +116,6 @@ public class BaseActivity extends AnalyticsActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_base);
 
-
-        String appKey = "b82e45591fb64821ced4230973e853adc2f1c66d61bbe0de";
-        Appodeal.initialize(this, appKey);
-
-        mBannerView = (BannerView) findViewById(R.id.appodealBannerView);
-        Appodeal.setBannerViewId(R.id.appodealBannerView);
-        showBannerAds();
-
         db = new DB(this);
         db.open();
         mServiceConn = new ServiceConnection() {
@@ -142,7 +128,6 @@ public class BaseActivity extends AnalyticsActivity implements
             public void onServiceConnected(ComponentName name, IBinder service) {
                 mService = IInAppBillingService.Stub.asInterface(service);
                 checkAd();
-                showBannerAds();
             }
         };
         bindService(new Intent("com.android.vending.billing.InAppBillingService.BIND"), mServiceConn, Context.BIND_AUTO_CREATE);
@@ -189,32 +174,6 @@ public class BaseActivity extends AnalyticsActivity implements
         mDrawerList.setItemChecked(0, true);
         if (savedInstanceState == null) {
             onItemSelected(0);
-        }
-    }
-
-    private void showBannerAds() {
-        if (Prefs.get().getAdsRemoved()) {
-            Appodeal.hide(this, Appodeal.BANNER_VIEW);
-            mBannerView.setVisibility(View.GONE);
-        } else {
-            if (mLastUpdateTime + UPDATE_DELAY_MS < System.currentTimeMillis()) {
-                mLastUpdateTime = System.currentTimeMillis();
-                Appodeal.show(this, Appodeal.BANNER_VIEW);
-                mBannerView.setVisibility(View.VISIBLE);
-            }
-
-        }
-    }
-
-    private void loadInterstitialAds() {
-        if (!Prefs.get().getAdsRemoved()) {
-            Appodeal.setAutoCache(Appodeal.ALL | Appodeal.ANY, true);
-        }
-    }
-
-    private void showInterstitialAds() {
-        if (!Prefs.get().getAdsRemoved()) {
-            Appodeal.show(this, Appodeal.ALL | Appodeal.ANY);
         }
     }
 
@@ -317,7 +276,6 @@ public class BaseActivity extends AnalyticsActivity implements
     }
 
     public void onItemSelected(int position) {
-        showBannerAds();
         mDrawerLayout.closeDrawer(mDrawerList);
         if (position == 8) {
             removeAds();
@@ -408,15 +366,12 @@ public class BaseActivity extends AnalyticsActivity implements
         super.onResume();
         Counter.sharedInstance().onResumeActivity(this);
         initStrings();
-        showBannerAds();
-        loadInterstitialAds();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         Counter.sharedInstance().onPauseActivity(this);
-        loadInterstitialAds();
     }
 
     @Override
@@ -442,7 +397,6 @@ public class BaseActivity extends AnalyticsActivity implements
 
     @Override
     public void onChoose() {
-        showInterstitialAds();
         getActionBar().setSubtitle(null);
         setTrainingAlreadyStarted(false);
         DB db = new DB(this);
@@ -486,7 +440,6 @@ public class BaseActivity extends AnalyticsActivity implements
         getActionBar().setSubtitle(null);
         BackupManager bm = new BackupManager(this);
         bm.dataChanged();
-        showInterstitialAds();
     }
 
     @Override
@@ -500,7 +453,6 @@ public class BaseActivity extends AnalyticsActivity implements
         setTrainingAlreadyStarted(true);
         listButtons[0] = getResources().getString(R.string.continue_training);
         adapter.notifyDataSetChanged();
-        loadInterstitialAds();
     }
 
     @Override

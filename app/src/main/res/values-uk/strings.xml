@@ -13,8 +13,7 @@
     <string name="without_category">Без категорії</string>
     <string name="ads">Реклама</string>
     <string name="weight_for_30_days">Вага за 30 днів</string>
-    <string name="remove_ads">Прибрати рекламу</string>
-    <string name="remove_ads_detailed">Прибрати рекламу назавжди!</string>
+    <string name="remove_ads">Підтримати розробника</string>
     <string name="parsing_error">Помилка в значенні таймера відпочинку. Він буде встановлений на 60 секунд.</string>
     <string name="cannot_delete_all_exe">Не можна видалити всі вправи!</string>
     <string name="delete_exe">Видалити вправу</string>

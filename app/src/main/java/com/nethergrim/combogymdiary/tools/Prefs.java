@@ -48,36 +48,37 @@ public class Prefs {
         return pref;
     }
 
-    public void setAdsRemoved(boolean removed) {
-        prefs.edit().putBoolean(KEY_ADS_REMOVED, removed).apply();
-    }
-
     public boolean getAdsRemoved() {
         return prefs.getBoolean(KEY_ADS_REMOVED, false);
+//        return true;
     }
 
-    public void setSuperSetInfoShowed(int times) {
-        prefs.edit().putInt(KEY_SUPERSET_INFO_SHOWED, times).apply();
+    public void setAdsRemoved(boolean removed) {
+        prefs.edit().putBoolean(KEY_ADS_REMOVED, removed).apply();
     }
 
     public int getSuperSetInfoShowed() {
         return prefs.getInt(KEY_SUPERSET_INFO_SHOWED, 0);
     }
 
-    public void setTrainingAtProgress(boolean atProgress) {
-        prefs.edit().putBoolean(KEY_TRAINING_AT_PROGRESS, atProgress).apply();
+    public void setSuperSetInfoShowed(int times) {
+        prefs.edit().putInt(KEY_SUPERSET_INFO_SHOWED, times).apply();
     }
 
     public boolean getTrainingAtProgress() {
         return prefs.getBoolean(KEY_TRAINING_AT_PROGRESS, false);
     }
 
-    public void setDatabaseFilled(boolean filled){
-        prefs.edit().putBoolean(KEY_DATABASE_FILLED, filled).apply();
+    public void setTrainingAtProgress(boolean atProgress) {
+        prefs.edit().putBoolean(KEY_TRAINING_AT_PROGRESS, atProgress).apply();
     }
 
     public boolean getDatabaseFilled(){
         return prefs.getBoolean(KEY_DATABASE_FILLED, false);
+    }
+
+    public void setDatabaseFilled(boolean filled) {
+        prefs.edit().putBoolean(KEY_DATABASE_FILLED, filled).apply();
     }
 
     public boolean getDbUpdatedToV5(){
@@ -98,100 +99,100 @@ public class Prefs {
         return "";
     }
 
-    public void setCurrentTrainingId(int id){
-        prefs.edit().putInt(KEY_CURRENT_TRAINING_ID, id).apply();
-    }
-
     public int getCurrentTrainingId(){
         return prefs.getInt(KEY_CURRENT_TRAINING_ID, 0);
     }
 
-    public void setTrainingsCount(int count){
-        prefs.edit().putInt(KEY_TRAININGS_COUNT, count).apply();
+    public void setCurrentTrainingId(int id) {
+        prefs.edit().putInt(KEY_CURRENT_TRAINING_ID, id).apply();
     }
 
     public int getTrainingsCount(){
         return prefs.getInt(KEY_TRAININGS_COUNT, 0);
     }
 
-    public void setMarketAlreadyLeavedFeedback(boolean already){
-        prefs.edit().putBoolean(KEY_MARKET_ALREADY_LEAVED_FEEDBACK, already).apply();
+    public void setTrainingsCount(int count) {
+        prefs.edit().putInt(KEY_TRAININGS_COUNT, count).apply();
     }
 
     public boolean getMarketAlreadyLeavedFeedback(){
         return prefs.getBoolean(KEY_MARKET_ALREADY_LEAVED_FEEDBACK, false);
     }
 
-    public void setStartTime(long time){
-        prefs.edit().putLong(KEY_START_TIME, time).apply();
+    public void setMarketAlreadyLeavedFeedback(boolean already) {
+        prefs.edit().putBoolean(KEY_MARKET_ALREADY_LEAVED_FEEDBACK, already).apply();
     }
 
     public long getStartTime(){
         return prefs.getLong(KEY_START_TIME, 0);
     }
 
-    public void setCheckedPosition(int position){
-        prefs.edit().putInt(KEY_CHECKED_POSITION, position).apply();
+    public void setStartTime(long time) {
+        prefs.edit().putLong(KEY_START_TIME, time).apply();
     }
 
     public int getCheckedPosition(){
         return prefs.getInt(KEY_CHECKED_POSITION, 0);
     }
 
-    public void setTurnScreenOff(boolean turnOff){
-        prefs.edit().putBoolean(KEY_TURN_SCREEN_OFF, turnOff).apply();
+    public void setCheckedPosition(int position) {
+        prefs.edit().putInt(KEY_CHECKED_POSITION, position).apply();
     }
 
     public boolean getTurnScreenOff(){
         return prefs.getBoolean(KEY_TURN_SCREEN_OFF, false);
     }
 
-    public void setVibrateOn(boolean vibrate){
-        prefs.edit().putBoolean(KEY_VIBRATE_ON, vibrate).apply();
+    public void setTurnScreenOff(boolean turnOff) {
+        prefs.edit().putBoolean(KEY_TURN_SCREEN_OFF, turnOff).apply();
     }
 
     public boolean getVibrateOn(){
         return prefs.getBoolean(KEY_VIBRATE_ON, true);
     }
 
-    public void setVibrateLenght(String value){
-        prefs.edit().putString(KEY_VIBRATE_LENGHT, value).apply();
+    public void setVibrateOn(boolean vibrate) {
+        prefs.edit().putBoolean(KEY_VIBRATE_ON, vibrate).apply();
     }
 
     public String getVibrateLenght(){
         return prefs.getString(KEY_VIBRATE_LENGHT, "2");
     }
 
-    public void setNotifyWithSound(boolean notify){
-        prefs.edit().putBoolean(KEY_TO_NOTIFY_WITH_ALARM, notify).apply();
+    public void setVibrateLenght(String value) {
+        prefs.edit().putString(KEY_VIBRATE_LENGHT, value).apply();
     }
 
     public boolean getNotifyWithSound(){
         return prefs.getBoolean(KEY_TO_NOTIFY_WITH_ALARM, true);
     }
 
-    public void setProgress(int progress){
-        prefs.edit().putInt(KEY_PROGRESS, progress).apply();
+    public void setNotifyWithSound(boolean notify) {
+        prefs.edit().putBoolean(KEY_TO_NOTIFY_WITH_ALARM, notify).apply();
     }
 
     public int getProgress(){
         return prefs.getInt(KEY_PROGRESS, 0);
     }
 
-    public void setTimerOn(boolean timerOn){
-        prefs.edit().putBoolean(KEY_TIMER_ON, timerOn).apply();
+    public void setProgress(int progress) {
+        prefs.edit().putInt(KEY_PROGRESS, progress).apply();
     }
 
     public boolean getTimerOn(){
         return prefs.getBoolean(KEY_TIMER_ON, false);
     }
 
-    public void setRingtone(String ringtone){
-        prefs.edit().putString(KEY_RINGTONE_ALARM, ringtone).apply();
+    public void setTimerOn(boolean timerOn) {
+        prefs.edit().putBoolean(KEY_TIMER_ON, timerOn).apply();
     }
 
     public String getRingtone(){
         return prefs.getString(KEY_RINGTONE_ALARM, null);
+    }
+
+    public void setRingtone(String ringtone) {
+        prefs.edit().putString(KEY_RINGTONE_ALARM, ringtone).apply();
     }
 
     public void saveSets(String sets){
@@ -202,19 +203,19 @@ public class Prefs {
         return prefs.getString(KEY_SETS, "");
     }
 
-    public void setCommentToTraining(String text){
-        prefs.edit().putString(KEY_COMMENT_TO_TRAINING, text).apply();
-    }
-
     public String getCommentToTraining(){
         return prefs.getString(KEY_COMMENT_TO_TRAINING, "");
     }
 
-    public void setAutoBackupToDrive(boolean auto){
-        prefs.edit().putBoolean(KEY_AUTOBACKUP_TO_DRIVE, auto).apply();
+    public void setCommentToTraining(String text) {
+        prefs.edit().putString(KEY_COMMENT_TO_TRAINING, text).apply();
     }
 
     public boolean getAutoBackupToDrive(){
         return prefs.getBoolean(KEY_AUTOBACKUP_TO_DRIVE, true);
+    }
+
+    public void setAutoBackupToDrive(boolean auto) {
+        prefs.edit().putBoolean(KEY_AUTOBACKUP_TO_DRIVE, auto).apply();
     }
 }
