@@ -133,7 +133,11 @@ public class BaseActivity extends AnalyticsActivity implements
         bindService(new Intent("com.android.vending.billing.InAppBillingService.BIND"), mServiceConn, Context.BIND_AUTO_CREATE);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
-        mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
+        try {
+            mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
         initStrings();
         adapter = new ArrayAdapter<String>(this, R.layout.menu_list_item, listButtons);
         mDrawerList.setAdapter(adapter);
