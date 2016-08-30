@@ -1,4 +1,19 @@
+buildscript {
+    repositories {
+        maven { url 'https://maven.fabric.io/public' }
+    }
+
+    dependencies {
+        classpath 'io.fabric.tools:gradle:1.+'
+    }
+}
 apply plugin: 'com.android.application'
+apply plugin: 'io.fabric'
+
+repositories {
+    maven { url 'https://maven.fabric.io/public' }
+}
+
 
 android {
     compileSdkVersion 19
@@ -36,5 +51,8 @@ dependencies {
     compile files('libs/libGoogleAnalyticsServices.jar')
     compile files('libs/yandex-mobmetrica-lib-android-1.2-wlibs.jar')
     compile files('libs/google-play-services.jar')
+    compile('com.crashlytics.sdk.android:crashlytics:2.6.2@aar') {
+        transitive = true;
+    }
 
 }

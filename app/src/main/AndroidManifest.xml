@@ -160,6 +160,9 @@
             android:value="@integer/google_play_services_version" />
 
 
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="d3812f8628ea561cc5a0cf4ceb3f9abce85fb588" />
     </application>
 
 </manifest>
