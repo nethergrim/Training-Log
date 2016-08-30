@@ -20,6 +20,7 @@ android {
     buildToolsVersion '20.0.0'
     defaultConfig {
         applicationId 'com.nethergrim.combogymdiary'
+
         minSdkVersion 15
         targetSdkVersion 19
     }
