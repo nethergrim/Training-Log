@@ -2,14 +2,15 @@ package com.nethergrim.combogymdiary.activities;
 
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.analytics.tracking.android.EasyTracker;
 import com.nethergrim.combogymdiary.Constants;
 
 
-public abstract class AnalyticsActivity extends FragmentActivity {
+public abstract class AnalyticsActivity extends AppCompatActivity {
 
 
     @Override

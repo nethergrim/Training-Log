@@ -7,12 +7,10 @@
     android:versionName="1.5.3">
 
     <uses-sdk
-        android:minSdkVersion="15"
-        android:targetSdkVersion="19" />
+        android:minSdkVersion="21"
+        android:targetSdkVersion="29" />
 
     <uses-permission android:name="com.android.vending.BILLING" />
-    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
-    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -37,14 +35,10 @@
             android:name="com.google.android.backup.api_key"
             android:value="AEdPqrEAAAAIV4H7afwcMJOgR3ZuDw1eUCyyNdtzLv5evDXyQQ" />
 
-        <meta-data
-            android:name="com.google.android.gms.version"
-            android:value="@integer/google_play_services_version" />
-
         <activity
             android:name=".activities.StartActivity"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Holo.Light.Dialog.NoActionBar">
+            android:theme="@style/Theme.AppCompat.Light.DarkActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -154,15 +148,6 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
 
-
-        <meta-data
-            android:name="com.google.android.gms.version"
-            android:value="@integer/google_play_services_version" />
-
-
-        <meta-data
-            android:name="io.fabric.ApiKey"
-            android:value="d3812f8628ea561cc5a0cf4ceb3f9abce85fb588" />
     </application>
 
 </manifest>

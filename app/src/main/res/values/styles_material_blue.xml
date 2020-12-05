@@ -19,7 +19,7 @@
 
 <resources>
 
-    <style name="Theme.Material_blue" parent="@android:style/Theme.Holo.Light.DarkActionBar">
+    <style name="Theme.Material_blue" parent="@style/Theme.AppCompat.Light.NoActionBar">
         <item name="android:actionBarItemBackground">@drawable/selectable_background_material_blue</item>
         <item name="android:popupMenuStyle">@style/PopupMenu.Material_blue</item>
         <item name="floatingActionButtonStyle">@style/AppTheme.Fab</item>
@@ -30,6 +30,7 @@
         <item name="android:actionModeBackground">@drawable/cab_background_top_material_blue</item>
         <item name="android:actionModeSplitBackground">@drawable/cab_background_bottom_material_blue</item>
         <item name="android:actionModeCloseButtonStyle">@style/ActionButton.CloseMode.Material_blue</item>
+        <item name="android:windowActionBar">false</item>
         
                 <!-- Light.DarkActionBar specific -->
         <item name="android:actionBarWidgetTheme">@style/Theme.Material_blue.Widget</item>

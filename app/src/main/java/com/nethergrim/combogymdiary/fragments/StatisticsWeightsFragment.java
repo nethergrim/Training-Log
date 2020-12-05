@@ -4,10 +4,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.LoaderManager.LoaderCallbacks;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -20,6 +16,12 @@ import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.CursorLoader;
+import androidx.loader.content.Loader;
+
 import com.jjoe64.graphview.CustomLabelFormatter;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.GraphViewDataInterface;
@@ -29,8 +31,8 @@ import com.jjoe64.graphview.LineGraphView;
 import com.nethergrim.combogymdiary.DB;
 import com.nethergrim.combogymdiary.R;
 
-public class StatisticsWeightsFragment extends android.support.v4.app.Fragment
-        implements LoaderCallbacks<Cursor> {
+public class StatisticsWeightsFragment extends Fragment
+        implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final int LOADER_EXE_ID = 7;
     private FrameLayout content;
@@ -88,7 +90,7 @@ public class StatisticsWeightsFragment extends android.support.v4.app.Fragment
     @Override
     public void onResume() {
         super.onResume();
-        ((FragmentActivity) getActivity()).getSupportLoaderManager()
+        getActivity().getSupportLoaderManager()
                 .getLoader(LOADER_EXE_ID).forceLoad();
         spinnerExercises
                 .setOnItemSelectedListener(new OnItemSelectedListener() {
@@ -109,7 +111,7 @@ public class StatisticsWeightsFragment extends android.support.v4.app.Fragment
 
     public void onStart() {
         super.onStart();
-        ((FragmentActivity) getActivity()).getSupportLoaderManager()
+        getActivity().getSupportLoaderManager()
                 .initLoader(LOADER_EXE_ID, null, this);
     }
 

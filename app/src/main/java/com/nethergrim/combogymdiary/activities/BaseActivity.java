@@ -17,15 +17,17 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.preference.PreferenceManager;
-import android.support.v4.app.ActionBarDrawerToggle;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.android.vending.billing.IInAppBillingService;
 import com.nethergrim.combogymdiary.Constants;
@@ -42,8 +44,6 @@ import com.nethergrim.combogymdiary.fragments.MeasurementsFragment;
 import com.nethergrim.combogymdiary.fragments.StartTrainingFragment;
 import com.nethergrim.combogymdiary.fragments.StartTrainingFragment.OnSelectedListener;
 import com.nethergrim.combogymdiary.fragments.TrainingFragment;
-import com.nethergrim.combogymdiary.googledrive.BaseDriveActivity;
-import com.nethergrim.combogymdiary.googledrive.DriveBackupActivity;
 import com.nethergrim.combogymdiary.model.Exercise;
 import com.nethergrim.combogymdiary.service.TrainingService;
 import com.nethergrim.combogymdiary.tools.Backuper;
@@ -118,6 +118,10 @@ public class BaseActivity extends AnalyticsActivity implements
 
         db = new DB(this);
         db.open();
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
         mServiceConn = new ServiceConnection() {
             @Override
             public void onServiceDisconnected(ComponentName name) {
@@ -130,7 +134,7 @@ public class BaseActivity extends AnalyticsActivity implements
                 checkAd();
             }
         };
-        bindService(new Intent("com.android.vending.billing.InAppBillingService.BIND"), mServiceConn, Context.BIND_AUTO_CREATE);
+//        bindService(new Intent("com.android.vending.billing.InAppBillingService.BIND"), mServiceConn, Context.BIND_AUTO_CREATE);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
         try {
@@ -144,9 +148,11 @@ public class BaseActivity extends AnalyticsActivity implements
         mDrawerList.setOnItemClickListener(this);
         mDrawerToggle = new ActionBarDrawerToggle(this, /* host Activity */
                 mDrawerLayout, /* DrawerLayout object */
+                (Toolbar) findViewById(R.id.toolbar),
                 R.drawable.ic_drawer, /* nav drawer image to replace 'Up' caret */
-                R.string.drawer_open, /* "open drawer" description for accessibility */
-                R.string.drawer_close /* "close drawer" description for accessibility */
+                R.drawable.ic_drawer/* nav drawer image to replace 'Up' caret */
+//                R.string.drawer_open, /* "open drawer" description for accessibility */
+//                R.string.drawer_close /* "close drawer" description for accessibility */
         ) {
             public void onDrawerClosed(View view) {
                 invalidateOptionsMenu();
@@ -157,8 +163,8 @@ public class BaseActivity extends AnalyticsActivity implements
             }
         };
         mDrawerLayout.setDrawerListener(mDrawerToggle);
-        getActionBar().setDisplayHomeAsUpEnabled(true);
-        getActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
         sp = PreferenceManager.getDefaultSharedPreferences(this);
         if (Prefs.get().getTrainingAtProgress()) {
             currentFragment = trainingFragment;
@@ -229,6 +235,7 @@ public class BaseActivity extends AnalyticsActivity implements
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1001 && resultCode == RESULT_OK) {
             String purchaseData = data.getStringExtra("INAPP_PURCHASE_DATA");
             try {
@@ -430,9 +437,9 @@ public class BaseActivity extends AnalyticsActivity implements
         notificationManager.cancelAll();
 
         if (Prefs.get().getAutoBackupToDrive()) {
-            Intent intent = new Intent(this, DriveBackupActivity.class);
-            intent.putExtra(BaseDriveActivity.KEY_AUTOBACKUP, true);
-            startActivity(intent);
+//            Intent intent = new Intent(this, DriveBackupActivity.class);
+//            intent.putExtra(BaseDriveActivity.KEY_AUTOBACKUP, true);
+//            startActivity(intent);
         }
 
         Prefs.get().setTrainingsCount(Prefs.get().getTrainingsCount() + 1);

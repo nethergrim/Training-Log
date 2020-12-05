@@ -45,13 +45,13 @@ public class TrainingService extends Service {
         // intent.putExtra("trainingName", trainingNAME);
         PendingIntent pIntent = PendingIntent.getActivity(this, 0, intent, 0);
 
-        notif.setLatestEventInfo(this,
-                getResources().getString(R.string.finish_training), "", pIntent);
+//        notif.setLatestEventInfo(this,
+//                getResources().getString(R.string.finish_training), "", pIntent);
 
         notif.flags |= Notification.FLAG_AUTO_CANCEL;
         notif.flags |= Notification.FLAG_ONGOING_EVENT;
 
-        nm.notify(1, notif);
+//        nm.notify(1, notif);
 
     }
 
